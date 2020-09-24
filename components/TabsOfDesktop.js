@@ -1,3 +1,7 @@
+import Timesheet from "./main/Timesheet";
+import SubcontractorTask from "./main/SubcontractorTask";
+import SelfPerformedTask from "./main/SelfPerformedTask";
+
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -34,10 +38,10 @@ const TabsOfDesktop = ({ tapNumber, handleChangeTabs }) => {
         </Tabs>
       </AppBar>
       <TabPanel tapNumber={tapNumber} index={0}>
-        Item One Item Two
+        <Timesheet /> <SelfPerformedTask />
       </TabPanel>
       <TabPanel tapNumber={tapNumber} index={1}>
-        Item Three Item Four
+        <SubcontractorTask />
       </TabPanel>
     </>
   );
