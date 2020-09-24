@@ -1,15 +1,20 @@
+import Timesheet from "./main/Timesheet";
+import SubcontractorTask from "./main/SubcontractorTask";
+import SelfPerformedTask from "./main/SelfPerformedTask";
+
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import { Typography } from "@material-ui/core";
+import TabPanel from "./Tab/TabPanel";
+import a11yProps from "./Tab/a11yProps";
 
-export default function tabsForTablet({ tapNumber, handleTabChange }) {
+const TabsOfTablet = ({ tapNumber, handleChangeTabs }) => {
   return (
     <>
       <AppBar position="static">
         <Tabs
           value={tapNumber}
-          onChange={handleTabChange}
+          onChange={handleChangeTabs}
           aria-label="tabs"
           variant="scrollable"
           scrollButtons="auto"
@@ -21,39 +26,17 @@ export default function tabsForTablet({ tapNumber, handleTabChange }) {
         </Tabs>
       </AppBar>
       <TabPanel tapNumber={tapNumber} index={0}>
-        Item One
+        <Timesheet></Timesheet>
       </TabPanel>
       <TabPanel tapNumber={tapNumber} index={1}>
-        Item Two
+        <SelfPerformedTask />
       </TabPanel>
       <TabPanel tapNumber={tapNumber} index={2}>
-        Item Three
+        <SubcontractorTask />
       </TabPanel>
-      <TabPanel tapNumber={tapNumber} index={3}>
-        Item Four
-      </TabPanel>
+      <TabPanel tapNumber={tapNumber} index={3}></TabPanel>
     </>
   );
-}
-
-const TabPanel = props => {
-  const { children, tapNumber, index, ...other } = props;
-  return (
-    <div
-      role="tabpanel"
-      hidden={tapNumber !== index}
-      refer={`tabpanel-${index}`}
-      aria-labelledby={`tab-${index}`}
-      {...other}
-    >
-      {tapNumber === index && <Typography>{children}</Typography>}
-    </div>
-  );
 };
 
-const a11yProps = index => {
-  return {
-    refer: `tab-${index}`,
-    "aria-controls": `tabpanel-${index}`,
-  };
-};
+export default TabsOfTablet;

@@ -1,71 +1,34 @@
-import { useState, useEffect, useRef } from "react";
-import Link from "next/link";
+import { useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import TabsForDesktop from "./tabsForDesktop";
-import TabsForTablet from "./tabsForTablet";
+import TabsOfDesktop from "./TabsOfDesktop";
+import TabsOfTablet from "./TabsOfTablet";
 
-let isPreviousTabletView;
+const Container = () => {
+  const isTabletOrMobileDevice = useMediaQuery({
+    query: "(max-device-width: 1224px)",
+  });
 
-const container = () => {
-  const handleTabChange = (event, newValue) => {
+  const [tapNumber, setTapNumber] = useState(0);
+  const handleChangeTabs = (event, newValue) => {
     setTapNumber(newValue);
   };
 
-  const [tapNumber, setTapNumber] = useState(0);
-
-  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
-
-  const mounted = useRef();
-  useEffect(() => {
-    if (!mounted.current) {
-      // do componentDidMount logic
-      mounted.current = true;
-    } else {
-      isPreviousTabletView = isTabletOrMobile;
-      // do componentDidUpdate logic
-    }
-  });
   return (
-    <div>
-      {console.log("render")}
-      {console.log("isPreviousTabletView")}
-      {console.log(isPreviousTabletView)}
-      {!isTabletOrMobile &&
-        (!isPreviousTabletView ? (
-          <TabsForDesktop
-            tapNumber={tapNumber}
-            handleTabChange={handleTabChange}
-          ></TabsForDesktop>
-        ) : tapNumber === 0 || tapNumber === 1 ? (
-          <TabsForDesktop
-            tapNumber={tapNumber}
-            handleTabChange={handleTabChange}
-          ></TabsForDesktop>
-        ) : (
-          <TabsForDesktop
-            tapNumber={1}
-            handleTabChange={handleTabChange}
-          ></TabsForDesktop>
-        ))}
-      {isTabletOrMobile &&
-        (isPreviousTabletView ? (
-          <TabsForTablet
-            tapNumber={tapNumber}
-            handleTabChange={handleTabChange}
-          ></TabsForTablet>
-        ) : tapNumber === 0 ? (
-          <TabsForTablet
-            tapNumber={0}
-            handleTabChange={handleTabChange}
-          ></TabsForTablet>
-        ) : (
-          <TabsForTablet
-            tapNumber={2}
-            handleTabChange={handleTabChange}
-          ></TabsForTablet>
-        ))}
-    </div>
+    <>
+      {!isTabletOrMobileDevice && (
+        <TabsOfDesktop
+          tapNumber={tapNumber}
+          handleChangeTabs={handleChangeTabs}
+        ></TabsOfDesktop>
+      )}
+      {isTabletOrMobileDevice && (
+        <TabsOfTablet
+          tapNumber={tapNumber}
+          handleChangeTabs={handleChangeTabs}
+        ></TabsOfTablet>
+      )}
+    </>
   );
 };
 
-export default container;
+export default Container;
