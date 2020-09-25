@@ -110,56 +110,56 @@ const TimesheetTable = () => {
     {
       employeeName: "Hyunmyung",
       trade: "Sheet Metal",
-      workFrom: "7am10m",
-      workTo: "7am10m",
-      mealFrom: "5",
-      mealTo: "5",
-      laborHours: "5",
+      workFrom: "07:00AM",
+      mealFrom: "12:00PM",
+      mealTo: "01:00PM",
+      workTo: "05:00PM",
+      laborHours: "9",
     },
     {
       employeeName: "John Doe",
-      trade: "Sheet Metal",
-      workFrom: "7am10m",
-      workTo: "7am10m",
-      mealFrom: "5",
-      mealTo: "5",
-      laborHours: "5",
+      trade: "Project Manager",
+      workFrom: "06:00AM",
+      mealFrom: "12:00PM",
+      mealTo: "02:00PM",
+      workTo: "08:00PM",
+      laborHours: "12",
     },
     {
-      employeeName: "Hyunmyung",
-      trade: "Sheet Metal",
-      workFrom: "7am10m",
-      workTo: "7am10m",
-      mealFrom: "5",
-      mealTo: "5",
-      laborHours: "5",
+      employeeName: "Jane Doe",
+      trade: "Project Manager",
+      workFrom: "08:00AM",
+      mealFrom: "12:00PM",
+      mealTo: "12:00PM",
+      workTo: "11:30AM",
+      laborHours: "3.5",
     },
     {
-      employeeName: "John Doe",
+      employeeName: "Baby Doe",
       trade: "Sheet Metal",
-      workFrom: "7am10m",
-      workTo: "7am10m",
-      mealFrom: "5",
-      mealTo: "5",
-      laborHours: "5",
+      workFrom: "07:10AM",
+      mealFrom: "12:00PM",
+      mealTo: "12:40PM",
+      workTo: "03:30PM",
+      laborHours: "7.66",
     },
     {
-      employeeName: "Hyunmyung",
-      trade: "Sheet Metal",
-      workFrom: "7am10m",
-      workTo: "7am10m",
-      mealFrom: "5",
-      mealTo: "5",
-      laborHours: "5",
+      employeeName: "Johnny Doe",
+      trade: "Roofer",
+      workFrom: "11:00AM",
+      mealFrom: "05:00PM",
+      mealTo: "06:00PM",
+      workTo: "10:00PM",
+      laborHours: "10",
     },
     {
-      employeeName: "John Doe",
-      trade: "Sheet Metal",
-      workFrom: "7am10m",
-      workTo: "7am10m",
-      mealFrom: "5",
-      mealTo: "5",
-      laborHours: "5",
+      employeeName: "Richard Roe",
+      trade: "Roofer",
+      workFrom: "07:30AM",
+      mealFrom: "01:00PM",
+      mealTo: "01:30PM",
+      workTo: "17:30PM",
+      laborHours: "9.5",
     },
   ]);
 
@@ -188,11 +188,12 @@ const TimesheetTable = () => {
     }, [initialValue]);
     if (id === "trade") {
       return (
-        <Select native value={value} onChange={onChange} onBlur={onBlur}>
+        // <Select native value={value} onChange={onChange} onBlur={onBlur}>
+        <select value={value} onChange={onChange} onBlur={onBlur}>
           <option value={10}>Project Manager</option>
           <option value={20}>Roofer</option>
           <option value={30}>Sheet Metal</option>
-        </Select>
+        </select>
       );
     }
 
