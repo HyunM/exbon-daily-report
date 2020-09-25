@@ -42,7 +42,7 @@ const TabsOfDesktop = ({ tapNumber, handleChangeTabs }) => {
         </Tabs>
       </AppBar>
       <TabPanel tapNumber={tapNumber} index={0}>
-        <Timesheet></Timesheet> <SelfPerformedTask />
+        <Timesheet /> <SelfPerformedTask />
       </TabPanel>
       <TabPanel tapNumber={tapNumber} index={1}>
         <SubcontractorTask />

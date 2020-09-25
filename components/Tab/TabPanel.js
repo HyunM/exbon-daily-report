@@ -1,5 +1,3 @@
-import { Typography } from "@material-ui/core";
-
 const TabPanel = props => {
   const { children, tapNumber, index, ...other } = props;
   return (
@@ -10,7 +8,7 @@ const TabPanel = props => {
       aria-labelledby={`tab-${index}`}
       {...other}
     >
-      {tapNumber === index && <Typography>{children}</Typography>}
+      {tapNumber === index && <>{children}</>}
     </div>
   );
 };
