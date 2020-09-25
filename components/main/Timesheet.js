@@ -18,6 +18,7 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import { toDate } from "date-fns";
+import inputTime from "./inputTime";
 
 const Timesheet = () => {
   const [selectedDate, setSelectedDate] = React.useState(
@@ -109,56 +110,56 @@ const TimesheetTable = () => {
   const [data, setData] = React.useState(() => [
     {
       employeeName: "Hyunmyung",
-      trade: "Sheet Metal",
-      workFrom: "07:00AM",
-      mealFrom: "12:00PM",
-      mealTo: "01:00PM",
-      workTo: "05:00PM",
+      trade: "Roofer",
+      workFrom: "1900-01-01 07:00:00.000",
+      mealFrom: "1900-01-01 12:00:00.000",
+      mealTo: "1900-01-01 13:00:00.000",
+      workTo: "1900-01-01 17:00:00.000",
       laborHours: "9",
     },
     {
       employeeName: "John Doe",
       trade: "Project Manager",
-      workFrom: "06:00AM",
-      mealFrom: "12:00PM",
-      mealTo: "02:00PM",
-      workTo: "08:00PM",
+      workFrom: "1900-01-01 06:00:00.000",
+      mealFrom: "1900-01-01 12:00:00.000",
+      mealTo: "1900-01-01 14:00:00.000",
+      workTo: "1900-01-01 20:00:00.000",
       laborHours: "12",
     },
     {
       employeeName: "Jane Doe",
-      trade: "Project Manager",
-      workFrom: "08:00AM",
-      mealFrom: "12:00PM",
-      mealTo: "12:00PM",
-      workTo: "11:30AM",
+      trade: "Sheet Metal",
+      workFrom: "1900-01-01 08:00:00.000",
+      mealFrom: "1900-01-01 12:00:00.000",
+      mealTo: "1900-01-01 12:00:00.000",
+      workTo: "1900-01-01 11:30:00.000",
       laborHours: "3.5",
     },
     {
       employeeName: "Baby Doe",
       trade: "Sheet Metal",
-      workFrom: "07:10AM",
-      mealFrom: "12:00PM",
-      mealTo: "12:40PM",
-      workTo: "03:30PM",
+      workFrom: "1900-01-01 07:10:00.000",
+      mealFrom: "1900-01-01 12:00:00.000",
+      mealTo: "1900-01-01 12:40:00.000",
+      workTo: "1900-01-01 15:30:00.000",
       laborHours: "7.66",
     },
     {
       employeeName: "Johnny Doe",
-      trade: "Roofer",
-      workFrom: "11:00AM",
-      mealFrom: "05:00PM",
-      mealTo: "06:00PM",
-      workTo: "10:00PM",
+      trade: "Project Manager",
+      workFrom: "1900-01-01 11:00:00.000",
+      mealFrom: "1900-01-01 17:00:00.000",
+      mealTo: "1900-01-01 18:00:00.000",
+      workTo: "1900-01-01 22:00:00.000",
       laborHours: "10",
     },
     {
       employeeName: "Richard Roe",
       trade: "Roofer",
-      workFrom: "07:30AM",
-      mealFrom: "01:00PM",
-      mealTo: "01:30PM",
-      workTo: "17:30PM",
+      workFrom: "1900-01-01 07:30:00.000",
+      mealFrom: "1900-01-01 13:00:00.000",
+      mealTo: "1900-01-01 13:30:00.000",
+      workTo: "1900-01-01 17:30:00.000",
       laborHours: "9.5",
     },
   ]);
@@ -190,9 +191,24 @@ const TimesheetTable = () => {
       return (
         // <Select native value={value} onChange={onChange} onBlur={onBlur}>
         <select value={value} onChange={onChange} onBlur={onBlur}>
-          <option value={10}>Project Manager</option>
-          <option value={20}>Roofer</option>
-          <option value={30}>Sheet Metal</option>
+          <option value={"Project Manager"}>Project Manager</option>
+          <option value={"Roofer"}>Roofer</option>
+          <option value={"Sheet Matal"}>Sheet Metal</option>
+        </select>
+      );
+    } else if (
+      id === "workFrom" ||
+      id === "mealFrom" ||
+      id === "mealTo" ||
+      id === "workTo"
+    ) {
+      return (
+        <select value={value} onChange={onChange} onBlur={onBlur} label="Top">
+          {inputTime.map(inputTime => (
+            <option key={inputTime.time} value={inputTime.time}>
+              {inputTime.input}
+            </option>
+          ))}
         </select>
       );
     }
