@@ -150,11 +150,11 @@ const SelfPerformedTask = () => {
 
   return (
     <>
-      <h1>SelfPerformedTask</h1>
+      <h1>Self-Performed Task</h1>
       <table>
         <tbody>
           <tr>
-            <th>SelfPerformedTask</th>
+            <th>Self-Performed Task</th>
             <th>FirstName</th>
             <th>Lastname</th>
           </tr>
