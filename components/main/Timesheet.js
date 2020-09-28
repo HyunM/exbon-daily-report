@@ -19,6 +19,19 @@ import {
 } from "@material-ui/pickers";
 import { toDate } from "date-fns";
 import inputTime from "./inputTime";
+import Button from "@material-ui/core/Button";
+import SaveIcon from "@material-ui/icons/Save";
+import TextField from "@material-ui/core/TextField";
+
+const convertTimeToInput = time => {
+  let match = inputTime.filter(data => data.time === time);
+  return match[0].input;
+};
+
+const convertInputToTime = time => {
+  let match = inputTime.filter(data => data.input === time);
+  return match[0].time;
+};
 
 const Timesheet = () => {
   const [selectedDate, setSelectedDate] = React.useState(
@@ -34,21 +47,33 @@ const Timesheet = () => {
   return (
     <>
       <h1>Timesheet</h1>
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <KeyboardDatePicker
-          margin="normal"
-          id="date-picker-dialog"
-          label="Timesheet Date"
-          format="MM/dd/yyyy"
-          value={selectedDate}
-          onChange={handleDateChange}
-          KeyboardButtonProps={{
-            "aria-label": "change date",
-          }}
-        />
-      </MuiPickersUtilsProvider>
 
       <div className="halfTable">
+        <div className="flex timesheetAndSave">
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              margin="normal"
+              id="date-picker-dialog"
+              label="Timesheet Date"
+              format="MM/dd/yyyy"
+              value={selectedDate}
+              onChange={handleDateChange}
+              KeyboardButtonProps={{
+                "aria-label": "change date",
+              }}
+            />
+          </MuiPickersUtilsProvider>
+
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            className="saveBtn"
+            startIcon={<SaveIcon />}
+          >
+            Save
+          </Button>
+        </div>
         <TimesheetTable />
       </div>
     </>
@@ -61,7 +86,6 @@ const TimesheetTable = () => {
       {
         Header: "Employee Name",
         accessor: "employeeName",
-        maxWidth: 1,
       },
       {
         Header: "Trade",
@@ -91,76 +115,54 @@ const TimesheetTable = () => {
     []
   );
 
-  // const data = React.useMemo(
-  //   () => [
-  //     {
-  //       employeeName: "Hyunmyung",
-  //       trade: "Sheet Metal",
-  //       workFrom: "7am10m",
-  //       workTo: "5",
-  //     },
-  //     {
-  //       firstName: "John",
-  //       lastName: "Doe",
-  //     },
-  //   ],
-  //   []
-  // );
-
   const [data, setData] = React.useState(() => [
     {
       employeeName: "Hyunmyung",
       trade: "Roofer",
-      workFrom: "1900-01-01 07:00:00.000",
-      mealFrom: "1900-01-01 12:00:00.000",
-      mealTo: "1900-01-01 13:00:00.000",
-      workTo: "1900-01-01 17:00:00.000",
-      laborHours: "9",
+      workFrom: "07:00AM",
+      mealFrom: "12:00PM",
+      mealTo: "01:00PM",
+      workTo: "05:00PM",
     },
     {
       employeeName: "John Doe",
       trade: "Project Manager",
-      workFrom: "1900-01-01 06:00:00.000",
-      mealFrom: "1900-01-01 12:00:00.000",
-      mealTo: "1900-01-01 14:00:00.000",
-      workTo: "1900-01-01 20:00:00.000",
-      laborHours: "12",
+      workFrom: "06:00AM",
+      mealFrom: "12:00PM",
+      mealTo: "02:00PM",
+      workTo: "08:00PM",
     },
     {
       employeeName: "Jane Doe",
       trade: "Sheet Metal",
-      workFrom: "1900-01-01 08:00:00.000",
-      mealFrom: "1900-01-01 12:00:00.000",
-      mealTo: "1900-01-01 12:00:00.000",
-      workTo: "1900-01-01 11:30:00.000",
-      laborHours: "3.5",
+      workFrom: "08:00AM",
+      mealFrom: "12:00PM",
+      mealTo: "12:00PM",
+      workTo: "11:30AM",
     },
     {
       employeeName: "Baby Doe",
       trade: "Sheet Metal",
-      workFrom: "1900-01-01 07:10:00.000",
-      mealFrom: "1900-01-01 12:00:00.000",
-      mealTo: "1900-01-01 12:40:00.000",
-      workTo: "1900-01-01 15:30:00.000",
-      laborHours: "7.66",
+      workFrom: "07:10AM",
+      mealFrom: "12:00PM",
+      mealTo: "12:40PM",
+      workTo: "03:30PM",
     },
     {
       employeeName: "Johnny Doe",
       trade: "Project Manager",
-      workFrom: "1900-01-01 11:00:00.000",
-      mealFrom: "1900-01-01 17:00:00.000",
-      mealTo: "1900-01-01 18:00:00.000",
-      workTo: "1900-01-01 22:00:00.000",
-      laborHours: "10",
+      workFrom: "11:00AM",
+      mealFrom: "05:00PM",
+      mealTo: "06:00PM",
+      workTo: "10:00PM",
     },
     {
       employeeName: "Richard Roe",
       trade: "Roofer",
-      workFrom: "1900-01-01 07:30:00.000",
-      mealFrom: "1900-01-01 13:00:00.000",
-      mealTo: "1900-01-01 13:30:00.000",
-      workTo: "1900-01-01 17:30:00.000",
-      laborHours: "9.5",
+      workFrom: "07:30AM",
+      mealFrom: "01:00PM",
+      mealTo: "01:30PM",
+      workTo: "05:30PM",
     },
   ]);
 
@@ -169,10 +171,15 @@ const TimesheetTable = () => {
     value: initialValue,
     row: { index },
     column: { id },
+    row,
     updateMyData, // This is a custom function that we supplied to our table instance
   }) => {
     // We need to keep and update the state of the cell normally
     const [value, setValue] = React.useState(initialValue);
+
+    const onChangeTime = e => {
+      updateMyData(index, id, e.target.value);
+    };
 
     const onChange = e => {
       setValue(e.target.value);
@@ -189,11 +196,10 @@ const TimesheetTable = () => {
     }, [initialValue]);
     if (id === "trade") {
       return (
-        // <Select native value={value} onChange={onChange} onBlur={onBlur}>
         <select value={value} onChange={onChange} onBlur={onBlur}>
           <option value={"Project Manager"}>Project Manager</option>
           <option value={"Roofer"}>Roofer</option>
-          <option value={"Sheet Matal"}>Sheet Metal</option>
+          <option value={"Sheet Metal"}>Sheet Metal</option>
         </select>
       );
     } else if (
@@ -203,29 +209,56 @@ const TimesheetTable = () => {
       id === "workTo"
     ) {
       return (
-        <select
+        <TextField
+          type="time"
           value={value}
           onChange={onChange}
           onBlur={onBlur}
-          className="scrollChange"
-        >
-          {inputTime.map(inputTime => (
-            <option key={inputTime.time} value={inputTime.time}>
-              {inputTime.input}
-            </option>
-          ))}
-        </select>
-      );
-    }
+          className="tableInput"
+          inputProps={{ step: 600 }}
+        />
 
-    return (
-      <input
-        value={value}
-        onChange={onChange}
-        onBlur={onBlur}
-        className="tableInput"
-      />
-    );
+        /* <input
+          type="time"
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+          className="tableInput"
+          step="600"
+        /> */
+
+        // <select
+        //   value={value}
+        //   onChange={onChangeTime}
+        //   onBlur={onBlur}
+        //   className="scrollChange"
+        // >
+        //   {inputTime.map(inputTime => (
+        //     <option key={inputTime.time} value={inputTime.time}>
+        //       {inputTime.input}
+        //     </option>
+        //   ))}
+        // </select>
+      );
+    } else if (id === "employeeName") {
+      return (
+        <input
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+          className="tableInput"
+        />
+      );
+    } else if (id === "laborHours") {
+      return 1;
+      // return (
+      //   (new Date(convertInputToTime(row.values.workTo)) -
+      //     new Date(convertInputToTime(row.values.workFrom)) -
+      //     (new Date(convertInputToTime(row.values.mealTo)) -
+      //       new Date(convertInputToTime(row.values.mealFrom)))) /
+      //   3600000
+      // ).toFixed(2);
+    }
   };
 
   // Set our editable cell renderer as the default Cell renderer
@@ -266,7 +299,8 @@ const TimesheetTable = () => {
   });
   // Render the UI for your table
   return (
-    <Table stickyHeader aria-label="sticky table">
+    // <Table stickyHeader aria-label="sticky table">
+    <Table>
       {console.log(data)}
       <TableHead>
         {headerGroups.map(headerGroup => (
