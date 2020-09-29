@@ -146,34 +146,6 @@ const SelfPerformedTask = () => {
     { input: "11:50PM", time: "1900-01-01 23:50:00.000" },
   ];
 
-  return (
-    <>
-      <h1>Self-Performed Task</h1>
-      <table>
-        <tbody>
-          <tr>
-            <th>Self-Performed Task</th>
-            <th>FirstName</th>
-            <th>Lastname</th>
-          </tr>
-          <tr>
-            <td>Jill</td>
-            <td>Smith</td>
-            <td>50</td>
-          </tr>
-          <tr>
-            <td>Eve</td>
-            <td>Jackson</td>
-            <td>94</td>
-          </tr>
-          <tr>
-            <td>John</td>
-            <td>Doe</td>
-            <td>80</td>
-          </tr>
-        </tbody>
-      </table>
-    </>
-  );
+  return <></>;
 };
 export default SelfPerformedTask;

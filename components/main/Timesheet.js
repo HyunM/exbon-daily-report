@@ -21,7 +21,9 @@ import { toDate } from "date-fns";
 import inputTime from "./inputTime";
 import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
-import TextField from "@material-ui/core/TextField";
+import InputMask from "react-input-mask";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 const convertTimeToInput = time => {
   let match = inputTime.filter(data => data.time === time);
@@ -30,6 +32,9 @@ const convertTimeToInput = time => {
 
 const convertInputToTime = time => {
   let match = inputTime.filter(data => data.input === time);
+  if (match[0] === undefined) {
+    return "error";
+  }
   return match[0].time;
 };
 
@@ -40,12 +45,10 @@ const Timesheet = () => {
     })
   );
 
-  const a = new Date("1900-01-01 00:10:00.000");
-  console.log(selectedDate);
-  console.log(a);
   const handleDateChange = date => {
     setSelectedDate(date);
   };
+
   return (
     <>
       <h1>Timesheet</h1>
@@ -65,18 +68,9 @@ const Timesheet = () => {
               }}
             />
           </MuiPickersUtilsProvider>
-
-          <Button
-            variant="contained"
-            color="primary"
-            size="small"
-            className="saveBtn"
-            startIcon={<SaveIcon />}
-          >
-            Save
-          </Button>
         </div>
         <TimesheetTable />
+        <div className="mt-5"></div>
       </div>
     </>
   );
@@ -179,8 +173,37 @@ const TimesheetTable = () => {
     // We need to keep and update the state of the cell normally
     const [value, setValue] = React.useState(initialValue);
 
-    const onChangeTime = e => {
-      updateMyData(index, id, e.target.value);
+    const onCheckHour = e => {
+      if (12 < parseInt(e.target.value)) {
+        alert("Please input 0 ~ 12 number");
+        setValue("  :" + value.slice(3, 5) + value.slice(5, 7));
+      } else {
+        setValue(e.target.value + ":" + value.slice(3, 5) + value.slice(5, 7));
+      }
+    };
+
+    const onCheckMin = e => {
+      // if (12 < parseInt(e.target.value)) {
+      //   alert("error");
+      //   setValue("");
+      // } else {
+      // }
+      setValue(value.slice(0, 2) + ":" + e.target.value + value.slice(5, 7));
+    };
+
+    const onCheckAmPm = e => {
+      // if (12 < parseInt(e.target.value)) {
+      //   alert("error");
+      //   setValue("");
+      // } else {
+      // }
+      if (e.target.value === "aM" || e.target.value === "AM") {
+        setValue(value.slice(0, 2) + ":" + value.slice(3, 5) + "AM");
+      } else if (e.target.value === "pM" || e.target.value === "PM") {
+        setValue(value.slice(0, 2) + ":" + value.slice(3, 5) + "PM");
+      } else {
+        setValue(value.slice(0, 2) + ":" + value.slice(3, 5) + e.target.value);
+      }
     };
 
     const onChange = e => {
@@ -188,7 +211,7 @@ const TimesheetTable = () => {
     };
 
     // We'll only update the external data when the input is blurred
-    const onBlur = () => {
+    const onBlur = e => {
       updateMyData(index, id, value);
     };
 
@@ -211,14 +234,64 @@ const TimesheetTable = () => {
       id === "workTo"
     ) {
       return (
-        <TextField
-          type="time"
-          value={value}
-          onChange={onChange}
-          onBlur={onBlur}
-          className="tableInput"
-          inputProps={{ step: 600 }}
-        />
+        <div className="flex">
+          {/* <InputMask
+            onChange={onChange}
+            className="timeInput"
+            mask="29:90 1M"
+            formatChars={{
+              2: "[0-1]",
+              9: "[0-9]",
+              1: "[AP]",
+            }}
+            min="01"
+            max="12"
+          /> */}
+          <InputMask
+            value={value.slice(0, 2)}
+            onChange={onCheckHour}
+            onBlur={onBlur}
+            className="timeInput"
+            mask="29"
+            placeholder="01~12"
+            formatChars={{
+              2: "[0-1]",
+              9: "[0-9]",
+            }}
+          />
+          :
+          <InputMask
+            value={value.slice(3, 5)}
+            onChange={onCheckMin}
+            onBlur={onBlur}
+            className="timeInput"
+            placeholder="00~50"
+            mask="50"
+            formatChars={{
+              5: "[0-5]",
+            }}
+          />
+          <select
+            value={value.slice(5, 7)}
+            onChange={onCheckAmPm}
+            onBlur={onBlur}
+            className="ampm"
+          >
+            <option value="AM">AM</option>
+            <option value="PM">PM</option>
+          </select>
+          {/* <InputMask
+            value={value.slice(5, 7)}
+            onChange={onCheckAmPm}
+            onBlur={onBlur}
+            className="timeInput ampm"
+            placeholder="PM"
+            mask="wM"
+            formatChars={{
+              w: "[AaPp]",
+            }}
+          /> */}
+        </div>
 
         /* <input
           type="time"
@@ -252,14 +325,13 @@ const TimesheetTable = () => {
         />
       );
     } else if (id === "laborHours") {
-      return 1;
-      // return (
-      //   (new Date(convertInputToTime(row.values.workTo)) -
-      //     new Date(convertInputToTime(row.values.workFrom)) -
-      //     (new Date(convertInputToTime(row.values.mealTo)) -
-      //       new Date(convertInputToTime(row.values.mealFrom)))) /
-      //   3600000
-      // ).toFixed(2);
+      return (
+        (new Date(convertInputToTime(row.values.workTo)) -
+          new Date(convertInputToTime(row.values.workFrom)) -
+          (new Date(convertInputToTime(row.values.mealTo)) -
+            new Date(convertInputToTime(row.values.mealFrom)))) /
+        3600000
+      ).toFixed(2);
     }
   };
 
@@ -286,6 +358,20 @@ const TimesheetTable = () => {
     );
   };
 
+  const clickSameTimeBtn = () => {
+    setData(old =>
+      old.map((row, index) => {
+        return {
+          ...old[index],
+          workFrom: old[0].workFrom,
+          mealFrom: old[0].mealFrom,
+          mealTo: old[0].mealTo,
+          workTo: old[0].workTo,
+        };
+      })
+    );
+  };
+
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
@@ -301,37 +387,63 @@ const TimesheetTable = () => {
   });
   // Render the UI for your table
   return (
-    // <Table stickyHeader aria-label="sticky table">
-    <Table>
-      {console.log(data)}
-      <TableHead>
-        {headerGroups.map(headerGroup => (
-          <TableRow {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map(column => (
-              <TableCell {...column.getHeaderProps()}>
-                {column.render("Header")}
-              </TableCell>
-            ))}
-          </TableRow>
-        ))}
-      </TableHead>
-      <TableBody>
-        {rows.map((row, i) => {
-          prepareRow(row);
-          return (
-            <TableRow {...row.getRowProps()}>
-              {row.cells.map(cell => {
-                return (
-                  <TableCell {...cell.getCellProps()}>
-                    {cell.render("Cell")}
+    <>
+      <div className="flex timeTableBtn">
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          className="saveBtn"
+          startIcon={<SaveIcon />}
+        >
+          Save
+        </Button>
+        {/* <Button
+          id="sameTimeBtn"
+          variant="outlined"
+          className=""
+          onClick={clickSameTimeBtn}
+        >
+          Set same time of all
+        </Button> */}
+        <FormControlLabel
+          control={<Checkbox name="checkedB" color="secondary" />}
+          label="Set Same Time of All"
+        />
+      </div>
+      <div className="tableDiv">
+        <Table>
+          {console.log(data)}
+          <TableHead>
+            {headerGroups.map(headerGroup => (
+              <TableRow {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map(column => (
+                  <TableCell {...column.getHeaderProps()}>
+                    {column.render("Header")}
                   </TableCell>
-                );
-              })}
-            </TableRow>
-          );
-        })}
-      </TableBody>
-    </Table>
+                ))}
+              </TableRow>
+            ))}
+          </TableHead>
+          <TableBody>
+            {rows.map((row, i) => {
+              prepareRow(row);
+              return (
+                <TableRow {...row.getRowProps()}>
+                  {row.cells.map(cell => {
+                    return (
+                      <TableCell {...cell.getCellProps()}>
+                        {cell.render("Cell")}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </div>
+    </>
   );
 };
 
