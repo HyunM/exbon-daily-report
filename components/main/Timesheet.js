@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTable } from "react-table";
 import { makeStyles } from "@material-ui/core/styles";
 // import CssBaseline from "@material-ui/core/CssBaseline";
@@ -77,6 +77,34 @@ const Timesheet = () => {
 };
 
 const TimesheetTable = () => {
+  const [checkState, setCheckState] = useState(false);
+  const checkChange = event => {
+    if (event.target.checked) {
+      let a = document.getElementsByClassName("disabledTime");
+      for (
+        let i = 12;
+        i < document.getElementsByClassName("disabledTime").length;
+        i++
+      ) {
+        document
+          .getElementsByClassName("disabledTime")
+          [i].setAttribute("disabled", true);
+      }
+      setSameTime();
+    } else {
+      for (
+        let i = 12;
+        i < document.getElementsByClassName("disabledTime").length;
+        i++
+      ) {
+        document
+          .getElementsByClassName("disabledTime")
+          [i].removeAttribute("disabled");
+      }
+    }
+    setCheckState(event.target.checked);
+  };
+
   const columns = React.useMemo(
     () => [
       {
@@ -219,6 +247,7 @@ const TimesheetTable = () => {
     React.useEffect(() => {
       setValue(initialValue);
     }, [initialValue]);
+
     if (id === "trade") {
       return (
         <select value={value} onChange={onChange} onBlur={onBlur}>
@@ -236,22 +265,22 @@ const TimesheetTable = () => {
       return (
         <div className="flex">
           {/* <InputMask
-            onChange={onChange}
-            className="timeInput"
-            mask="29:90 1M"
-            formatChars={{
-              2: "[0-1]",
-              9: "[0-9]",
-              1: "[AP]",
-            }}
-            min="01"
-            max="12"
-          /> */}
+              onChange={onChange}
+              className="timeInput"
+              mask="29:90 1M"
+              formatChars={{
+                2: "[0-1]",
+                9: "[0-9]",
+                1: "[AP]",
+              }}
+              min="01"
+              max="12"
+            /> */}
           <InputMask
             value={value.slice(0, 2)}
             onChange={onCheckHour}
             onBlur={onBlur}
-            className="timeInput"
+            className="timeInput disabledTime"
             mask="29"
             placeholder="01~12"
             formatChars={{
@@ -264,7 +293,7 @@ const TimesheetTable = () => {
             value={value.slice(3, 5)}
             onChange={onCheckMin}
             onBlur={onBlur}
-            className="timeInput"
+            className="timeInput disabledTime"
             placeholder="00~50"
             mask="50"
             formatChars={{
@@ -275,32 +304,21 @@ const TimesheetTable = () => {
             value={value.slice(5, 7)}
             onChange={onCheckAmPm}
             onBlur={onBlur}
-            className="ampm"
+            className="ampm disabledTime"
           >
             <option value="AM">AM</option>
             <option value="PM">PM</option>
           </select>
-          {/* <InputMask
-            value={value.slice(5, 7)}
-            onChange={onCheckAmPm}
-            onBlur={onBlur}
-            className="timeInput ampm"
-            placeholder="PM"
-            mask="wM"
-            formatChars={{
-              w: "[AaPp]",
-            }}
-          /> */}
         </div>
 
         /* <input
-          type="time"
-          value={value}
-          onChange={onChange}
-          onBlur={onBlur}
-          className="tableInput"
-          step="600"
-        /> */
+            type="time"
+            value={value}
+            onChange={onChange}
+            onBlur={onBlur}
+            className="tableInput"
+            step="600"
+          /> */
 
         // <select
         //   value={value}
@@ -325,13 +343,16 @@ const TimesheetTable = () => {
         />
       );
     } else if (id === "laborHours") {
-      return (
-        (new Date(convertInputToTime(row.values.workTo)) -
-          new Date(convertInputToTime(row.values.workFrom)) -
-          (new Date(convertInputToTime(row.values.mealTo)) -
-            new Date(convertInputToTime(row.values.mealFrom)))) /
+      let laborDate = (
+        (new Date(convertInputToTime(row.values.workTo).replace(" ", "T")) -
+          new Date(convertInputToTime(row.values.workFrom).replace(" ", "T")) -
+          (new Date(convertInputToTime(row.values.mealTo).replace(" ", "T")) -
+            new Date(
+              convertInputToTime(row.values.mealFrom).replace(" ", "T")
+            ))) /
         3600000
       ).toFixed(2);
+      return laborDate;
     }
   };
 
@@ -358,7 +379,7 @@ const TimesheetTable = () => {
     );
   };
 
-  const clickSameTimeBtn = () => {
+  const setSameTime = () => {
     setData(old =>
       old.map((row, index) => {
         return {
@@ -386,8 +407,10 @@ const TimesheetTable = () => {
     updateMyData,
   });
   // Render the UI for your table
+
   return (
     <>
+      {console.log(checkState)}
       <div className="flex timeTableBtn">
         <Button
           variant="contained"
@@ -407,7 +430,14 @@ const TimesheetTable = () => {
           Set same time of all
         </Button> */}
         <FormControlLabel
-          control={<Checkbox name="checkedB" color="secondary" />}
+          control={
+            <Checkbox
+              checked={checkState}
+              onChange={checkChange}
+              name="checkbox"
+              color="secondary"
+            />
+          }
           label="Set Same Time of All"
         />
       </div>
