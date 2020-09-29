@@ -40,7 +40,9 @@ const Timesheet = () => {
     })
   );
 
+  const a = new Date("1900-01-01 00:10:00.000");
   console.log(selectedDate);
+  console.log(a);
   const handleDateChange = date => {
     setSelectedDate(date);
   };
