@@ -1,6 +1,15 @@
+import Head from "next/head";
 import Container from "../components/container";
 
 const Index = () => {
-  return <Container></Container>;
+  return (
+    <>
+      <Head>
+        <title>Daily Report</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <Container></Container>
+    </>
+  );
 };
 export default Index;
