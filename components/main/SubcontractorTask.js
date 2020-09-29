@@ -3,7 +3,7 @@ import React from "react";
 const SubcontractorTask = () => {
   return (
     <>
-      <h1>SubcontractorTask</h1>
+      <h1>Subcontractor Task</h1>
       <table>
         <tbody>
           <tr>
@@ -12,19 +12,19 @@ const SubcontractorTask = () => {
             <th>Lastname</th>
           </tr>
           <tr>
+            <td>50</td>
             <td>Jill</td>
             <td>Smith</td>
-            <td>50</td>
           </tr>
           <tr>
+            <td>94</td>
             <td>Eve</td>
             <td>Jackson</td>
-            <td>94</td>
           </tr>
           <tr>
+            <td>80</td>
             <td>John</td>
             <td>Doe</td>
-            <td>80</td>
           </tr>
         </tbody>
       </table>

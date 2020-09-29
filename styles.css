@@ -361,162 +361,35 @@ td {
   border: 1px solid black;
   border-collapse: collapse;
 } */
+@media screen and (min-width: 1000px) {
+  .halfTable {
+    width: 50%;
+  }
+}
 
-.halfTable {
-  width: 50%;
+@media screen and (max-width: 1100px) {
+  .halfTable {
+    width: 100%;
+  }
 }
 
 .tableInput {
-  width: 100px;
+  width: 120px;
 }
 
-.react-clock {
-  display: block;
-  position: relative;
+.scrollChange {
+  display: inline-block;
 }
-.react-clock,
-.react-clock *,
-.react-clock *:before,
-.react-clock *:after {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-.react-clock__face {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  border: 1px solid black;
-  border-radius: 50%;
-}
-.react-clock__hand {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  right: 50%;
-}
-.react-clock__hand__body {
-  position: absolute;
-  background-color: black;
-  transform: translateX(-50%);
-}
-.react-clock__mark {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  right: 50%;
-}
-.react-clock__mark__body {
-  position: absolute;
-  background-color: black;
-  transform: translateX(-50%);
-}
-.react-clock__mark__number {
-  position: absolute;
-  left: -40px;
-  width: 80px;
-  text-align: center;
-}
-.react-clock__second-hand__body {
-  background-color: red;
-}
-.react-timerange-picker {
-  display: inline-flex;
-  position: relative;
-}
-.react-timerange-picker,
-.react-timerange-picker *,
-.react-timerange-picker *:before,
-.react-timerange-picker *:after {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-.react-timerange-picker--disabled {
-  background-color: #f0f0f0;
-  color: #6d6d6d;
-}
-.react-timerange-picker__wrapper {
+
+.flex {
   display: flex;
-  flex-grow: 1;
-  flex-shrink: 0;
-  align-items: center;
-  border: thin solid gray;
 }
-.react-timerange-picker__inputGroup {
-  min-width: calc((4px * 3) + 0.54em * 6 + 0.217em * 2);
-  height: 100%;
-  flex-grow: 1;
-  padding: 0 2px;
-  box-sizing: content-box;
+
+.timesheetAndSave {
+  justify-content: space-between;
 }
-.react-timerange-picker__inputGroup__divider {
-  padding: 1px 0;
-  white-space: pre;
-}
-.react-timerange-picker__inputGroup__input {
-  min-width: 0.54em;
-  height: 100%;
-  position: relative;
-  padding: 0 1px;
-  border: 0;
-  background: none;
-  font: inherit;
-  box-sizing: content-box;
-  -moz-appearance: textfield;
-}
-.react-timerange-picker__inputGroup__input::-webkit-outer-spin-button,
-.react-timerange-picker__inputGroup__input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-.react-timerange-picker__inputGroup__input:invalid {
-  background: rgba(255, 0, 0, 0.1);
-}
-.react-timerange-picker__inputGroup__input--hasLeadingZero {
-  margin-left: -0.54em;
-  padding-left: calc(1px + 0.54em);
-}
-.react-timerange-picker__inputGroup__amPm {
-  font: inherit;
-  -moz-appearance: menulist;
-}
-.react-timerange-picker__button {
-  border: 0;
-  background: transparent;
-  padding: 4px 6px;
-}
-.react-timerange-picker__button:enabled {
-  cursor: pointer;
-}
-.react-timerange-picker__button:enabled:hover
-  .react-timerange-picker__button__icon,
-.react-timerange-picker__button:enabled:focus
-  .react-timerange-picker__button__icon {
-  stroke: #0078d7;
-}
-.react-timerange-picker__button:disabled .react-timerange-picker__button__icon {
-  stroke: #6d6d6d;
-}
-.react-timerange-picker__button svg {
-  display: inherit;
-}
-.react-timerange-picker__clock {
-  width: 200px;
-  height: 200px;
-  max-width: 100vw;
-  padding: 25px;
-  background-color: white;
-  border: thin solid #a0a096;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 1;
-}
-.react-timerange-picker__clock--closed {
-  display: none;
+
+.saveBtn {
+  height: fit-content;
+  margin-top: 20px !important;
 }
