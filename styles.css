@@ -375,20 +375,21 @@ td {
   }
 }
 
-.tableInput {
-  width: 120px;
-}
-
 .timeInput {
   width: 28px;
   text-align: center;
   margin-right: 2%;
   margin-left: 2%;
+  display: inline-block;
+  height: 20px;
+  outline: none;
+  color: rgb(116, 100, 110);
+  border: 1px solid rgb(200, 191, 196);
+  border-radius: 4px;
+  box-shadow: rgb(221, 216, 220) 1px 1px 2px inset;
+  background: rgb(255, 255, 255);
 }
-.ampm {
-  margin-left: 5% !important;
-  width: 50px;
-}
+
 .scrollChange {
   display: inline-block;
 }
@@ -400,6 +401,11 @@ td {
 .saveBtn {
   margin-left: 3% !important;
   margin-right: 1% !important;
+  margin-bottom: 1% !important;
+}
+
+.checkBoxForm {
+  margin-bottom: 1%;
 }
 
 .mt-3p {
@@ -412,4 +418,40 @@ td {
 
 .tableDiv {
   overflow: auto;
+}
+
+.tableSelect {
+  display: inline-block;
+  height: 25px;
+  width: 130px;
+  outline: none;
+  color: #74646e;
+  border: 1px solid #c8bfc4;
+  border-radius: 4px;
+  box-shadow: inset 1px 1px 2px #ddd8dc;
+  background: #fff;
+}
+.tableInput {
+  width: 100px;
+  display: inline-block;
+  height: 20px;
+  outline: none;
+  color: rgb(116, 100, 110);
+  border: 1px solid rgb(200, 191, 196);
+  border-radius: 4px;
+  box-shadow: rgb(221, 216, 220) 1px 1px 2px inset;
+  background: rgb(255, 255, 255);
+}
+
+.ampm {
+  margin-left: 5% !important;
+  width: 50px;
+}
+
+.classDisabled {
+  opacity: 0.4;
+}
+
+body {
+  background-color: rgb(240, 240, 245);
 }

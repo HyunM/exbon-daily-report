@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useTable } from "react-table";
-import { makeStyles } from "@material-ui/core/styles";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
 // import CssBaseline from "@material-ui/core/CssBaseline";
 import TableContainer from "@material-ui/core/TableContainer";
 import Table from "@material-ui/core/Table";
@@ -89,6 +89,9 @@ const TimesheetTable = () => {
         document
           .getElementsByClassName("disabledTime")
           [i].setAttribute("disabled", true);
+        document
+          .getElementsByClassName("disabledTime")
+          [i].classList.add("classDisabled");
       }
       setSameTime();
     } else {
@@ -100,6 +103,9 @@ const TimesheetTable = () => {
         document
           .getElementsByClassName("disabledTime")
           [i].removeAttribute("disabled");
+        document
+          .getElementsByClassName("disabledTime")
+          [i].classList.remove("classDisabled");
       }
     }
     setCheckState(event.target.checked);
@@ -203,7 +209,7 @@ const TimesheetTable = () => {
 
     const onCheckHour = e => {
       if (12 < parseInt(e.target.value)) {
-        alert("Please input 0 ~ 12 number");
+        alert("Please input 00 ~ 12 number");
         setValue("  :" + value.slice(3, 5) + value.slice(5, 7));
       } else {
         setValue(e.target.value + ":" + value.slice(3, 5) + value.slice(5, 7));
@@ -250,7 +256,12 @@ const TimesheetTable = () => {
 
     if (id === "trade") {
       return (
-        <select value={value} onChange={onChange} onBlur={onBlur}>
+        <select
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+          className="tableSelect"
+        >
           <option value={"Project Manager"}>Project Manager</option>
           <option value={"Roofer"}>Roofer</option>
           <option value={"Sheet Metal"}>Sheet Metal</option>
@@ -304,7 +315,7 @@ const TimesheetTable = () => {
             value={value.slice(5, 7)}
             onChange={onCheckAmPm}
             onBlur={onBlur}
-            className="ampm disabledTime"
+            className="ampm disabledTime tableSelect"
           >
             <option value="AM">AM</option>
             <option value="PM">PM</option>
@@ -410,7 +421,6 @@ const TimesheetTable = () => {
 
   return (
     <>
-      {console.log(checkState)}
       <div className="flex timeTableBtn">
         <Button
           variant="contained"
@@ -421,14 +431,6 @@ const TimesheetTable = () => {
         >
           Save
         </Button>
-        {/* <Button
-          id="sameTimeBtn"
-          variant="outlined"
-          className=""
-          onClick={clickSameTimeBtn}
-        >
-          Set same time of all
-        </Button> */}
         <FormControlLabel
           control={
             <Checkbox
@@ -439,39 +441,42 @@ const TimesheetTable = () => {
             />
           }
           label="Set Same Time of All"
+          className="checkBoxForm"
         />
       </div>
       <div className="tableDiv">
-        <Table>
-          {console.log(data)}
-          <TableHead>
-            {headerGroups.map(headerGroup => (
-              <TableRow {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map(column => (
-                  <TableCell {...column.getHeaderProps()}>
-                    {column.render("Header")}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableHead>
-          <TableBody>
-            {rows.map((row, i) => {
-              prepareRow(row);
-              return (
-                <TableRow {...row.getRowProps()}>
-                  {row.cells.map(cell => {
-                    return (
-                      <TableCell {...cell.getCellProps()}>
-                        {cell.render("Cell")}
-                      </TableCell>
-                    );
-                  })}
+        <TableContainer component={Paper}>
+          <Table>
+            {console.log(data)}
+            <TableHead>
+              {headerGroups.map(headerGroup => (
+                <TableRow {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map(column => (
+                    <TableCell {...column.getHeaderProps()}>
+                      {column.render("Header")}
+                    </TableCell>
+                  ))}
                 </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+              ))}
+            </TableHead>
+            <TableBody>
+              {rows.map((row, i) => {
+                prepareRow(row);
+                return (
+                  <TableRow {...row.getRowProps()}>
+                    {row.cells.map(cell => {
+                      return (
+                        <TableCell {...cell.getCellProps()}>
+                          {cell.render("Cell")}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
     </>
   );
