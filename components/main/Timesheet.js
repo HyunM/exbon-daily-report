@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useTable } from "react-table";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 // import CssBaseline from "@material-ui/core/CssBaseline";
@@ -21,6 +21,7 @@ import { toDate } from "date-fns";
 import inputTime from "./inputTime";
 import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
+import AddIcon from "@material-ui/icons/Add";
 import InputMask from "react-input-mask";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -39,36 +40,9 @@ const convertInputToTime = time => {
 };
 
 const Timesheet = () => {
-  const [selectedDate, setSelectedDate] = React.useState(
-    new Date().toLocaleString({
-      timeZone: "America/Los_Angeles",
-    })
-  );
-
-  const handleDateChange = date => {
-    setSelectedDate(date);
-  };
-
   return (
     <>
-      <h1>Timesheet</h1>
-
       <div className="halfTable">
-        <div className="flex timesheetAndSave">
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker
-              margin="normal"
-              id="date-picker-dialog"
-              label="Timesheet Date"
-              format="MM/dd/yyyy"
-              value={selectedDate}
-              onChange={handleDateChange}
-              KeyboardButtonProps={{
-                "aria-label": "change date",
-              }}
-            />
-          </MuiPickersUtilsProvider>
-        </div>
         <TimesheetTable />
         <div className="mt-5"></div>
       </div>
@@ -111,7 +85,7 @@ const TimesheetTable = () => {
     setCheckState(event.target.checked);
   };
 
-  const columns = React.useMemo(
+  const columns = useMemo(
     () => [
       {
         Header: "Employee Name",
@@ -145,7 +119,7 @@ const TimesheetTable = () => {
     []
   );
 
-  const [data, setData] = React.useState(() => [
+  const [data, setData] = useState(() => [
     {
       employeeName: "Hyunmyung",
       trade: "Roofer",
@@ -246,7 +220,12 @@ const TimesheetTable = () => {
 
     // We'll only update the external data when the input is blurred
     const onBlur = e => {
-      updateMyData(index, id, value);
+      if (document.getElementById("checkbox1").checked) {
+        updateMyData(index, id, value);
+        setSameTime();
+      } else {
+        updateMyData(index, id, value);
+      }
     };
 
     // If the initialValue is changed external, sync it up with our state
@@ -363,8 +342,10 @@ const TimesheetTable = () => {
             ))) /
         3600000
       ).toFixed(2);
-      return laborDate;
+
+      return <div className="text-right">{laborDate}</div>;
     }
+    0;
   };
 
   // Set our editable cell renderer as the default Cell renderer
@@ -404,6 +385,20 @@ const TimesheetTable = () => {
     );
   };
 
+  const addTimesheetRow = () => {
+    setData([
+      ...data,
+      {
+        employeeName: "",
+        trade: "Project Manager",
+        workFrom: "07:00AM",
+        mealFrom: "12:00PM",
+        mealTo: "01:00PM",
+        workTo: "05:00PM",
+      },
+    ]);
+  };
+
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
@@ -419,31 +414,73 @@ const TimesheetTable = () => {
   });
   // Render the UI for your table
 
+  const [selectedDate, setSelectedDate] = useState(
+    new Date().toLocaleString({
+      timeZone: "America/Los_Angeles",
+    })
+  );
+
+  const handleDateChange = date => {
+    setSelectedDate(date);
+  };
+
   return (
     <>
-      <div className="flex timeTableBtn">
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
-          className="saveBtn"
-          startIcon={<SaveIcon />}
-        >
-          Save
-        </Button>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={checkState}
-              onChange={checkChange}
-              name="checkbox"
-              color="secondary"
+      <div className="responsiveFlex timesheetAndDate">
+        <div className="flex">
+          <h1 className="mr-5" id="timesheetTitle">
+            Timesheet
+          </h1>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              margin="normal"
+              id="date-picker-dialog"
+              label="Timesheet Date"
+              format="MM/dd/yyyy"
+              value={selectedDate}
+              onChange={handleDateChange}
+              KeyboardButtonProps={{
+                "aria-label": "change date",
+              }}
             />
-          }
-          label="Set Same Time of All"
-          className="checkBoxForm"
-        />
+          </MuiPickersUtilsProvider>
+        </div>
+        <div className="flex">
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={checkState}
+                onChange={checkChange}
+                name="checkbox"
+                color="secondary"
+                id="checkbox1"
+              />
+            }
+            label="Set Same Time of All"
+            className="checkBoxForm"
+          />
+          <Button
+            variant="contained"
+            color="secondary"
+            size="small"
+            className="addBtn"
+            onClick={addTimesheetRow}
+            startIcon={<AddIcon />}
+          >
+            Add
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            className="saveBtn"
+            startIcon={<SaveIcon />}
+          >
+            Save
+          </Button>
+        </div>
       </div>
+      <div className="flex timeTableBtn"></div>
       <div className="tableDiv">
         <TableContainer component={Paper}>
           <Table>
