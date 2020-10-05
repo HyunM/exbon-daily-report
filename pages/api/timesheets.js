@@ -11,11 +11,11 @@ const timesheetHandler = (req, res) => {
           console.error(err);
           return null;
         }
-        let request = new mssql.Request();
+        const request = new mssql.Request();
 
         const selectedDate = req.query.selectedDate;
 
-        let query = `EXEC [Hammer].[dbo].[Timesheet_SelectByDate]
+        const query = `EXEC [Hammer].[dbo].[Timesheet_SelectByDate]
         '${selectedDate}' `;
 
         request.query(query, (err, recordset) => {
@@ -23,7 +23,7 @@ const timesheetHandler = (req, res) => {
             console.error(err);
             return null;
           }
-          let response = recordset.recordset;
+          const response = recordset.recordset;
           res.status(200).json(response);
         });
       });

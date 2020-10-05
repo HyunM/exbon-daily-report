@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+
 import { useTable } from "react-table";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 // import CssBaseline from "@material-ui/core/CssBaseline";
@@ -25,6 +26,10 @@ import AddIcon from "@material-ui/icons/Add";
 import InputMask from "react-input-mask";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import useSwr from "swr";
+import Link from "next/link";
+
+const fetcher = url => fetch(url).then(res => res.json());
 
 const convertTimeToInput = time => {
   let match = inputTime.filter(data => data.time === time);
@@ -89,27 +94,27 @@ const TimesheetTable = () => {
     () => [
       {
         Header: "Employee Name",
-        accessor: "employeeName",
+        accessor: "EmployeeID",
       },
       {
         Header: "Trade",
-        accessor: "trade",
+        accessor: "Trade",
       },
       {
         Header: "Work From",
-        accessor: "workFrom",
+        accessor: "WorkStart",
       },
       {
         Header: "Meal From",
-        accessor: "mealFrom",
+        accessor: "MealStart",
       },
       {
         Header: "Meal To",
-        accessor: "mealTo",
+        accessor: "MealEnd",
       },
       {
         Header: "Work To",
-        accessor: "workTo",
+        accessor: "WorkEnd",
       },
       {
         Header: "Labor Hours",
@@ -119,54 +124,56 @@ const TimesheetTable = () => {
     []
   );
 
+  // const [data, setData] = useState(() => dataOfTimesheet);
+
   const [data, setData] = useState(() => [
     {
-      employeeName: "Hyunmyung",
-      trade: "Roofer",
-      workFrom: "07:00AM",
-      mealFrom: "12:00PM",
-      mealTo: "01:00PM",
-      workTo: "05:00PM",
+      EmployeeID: "Hyunmyung",
+      Trade: "Roofer",
+      WorkStart: "07:00AM",
+      MealStart: "12:00PM",
+      MealEnd: "01:00PM",
+      WorkEnd: "05:00PM",
     },
     {
-      employeeName: "John Doe",
-      trade: "Project Manager",
-      workFrom: "06:00AM",
-      mealFrom: "12:00PM",
-      mealTo: "02:00PM",
-      workTo: "08:00PM",
+      EmployeeID: "John Doe",
+      Trade: "Project Manager",
+      WorkStart: "06:00AM",
+      MealStart: "12:00PM",
+      MealEnd: "02:00PM",
+      WorkEnd: "08:00PM",
     },
     {
-      employeeName: "Jane Doe",
-      trade: "Sheet Metal",
-      workFrom: "08:00AM",
-      mealFrom: "12:00PM",
-      mealTo: "12:00PM",
-      workTo: "11:30AM",
+      EmployeeID: "Jane Doe",
+      Trade: "Sheet Metal",
+      WorkStart: "08:00AM",
+      MealStart: "12:00PM",
+      MealEnd: "12:00PM",
+      WorkEnd: "11:30AM",
     },
     {
-      employeeName: "Baby Doe",
-      trade: "Sheet Metal",
-      workFrom: "07:10AM",
-      mealFrom: "12:00PM",
-      mealTo: "12:40PM",
-      workTo: "03:30PM",
+      EmployeeID: "Baby Doe",
+      Trade: "Sheet Metal",
+      WorkStart: "07:10AM",
+      MealStart: "12:00PM",
+      MealEnd: "12:40PM",
+      WorkEnd: "03:30PM",
     },
     {
-      employeeName: "Johnny Doe",
-      trade: "Project Manager",
-      workFrom: "11:00AM",
-      mealFrom: "05:00PM",
-      mealTo: "06:00PM",
-      workTo: "10:00PM",
+      EmployeeID: "Johnny Doe",
+      Trade: "Project Manager",
+      WorkStart: "11:00AM",
+      MealStart: "05:00PM",
+      MealEnd: "06:00PM",
+      WorkEnd: "10:00PM",
     },
     {
-      employeeName: "Richard Roe",
-      trade: "Roofer",
-      workFrom: "07:30AM",
-      mealFrom: "01:00PM",
-      mealTo: "01:30PM",
-      workTo: "05:30PM",
+      EmployeeID: "Richard Roe",
+      Trade: "Roofer",
+      WorkStart: "07:30AM",
+      MealStart: "01:00PM",
+      MealEnd: "01:30PM",
+      WorkEnd: "05:30PM",
     },
   ]);
 
@@ -233,7 +240,7 @@ const TimesheetTable = () => {
       setValue(initialValue);
     }, [initialValue]);
 
-    if (id === "trade") {
+    if (id === "Trade") {
       return (
         <select
           value={value}
@@ -247,10 +254,10 @@ const TimesheetTable = () => {
         </select>
       );
     } else if (
-      id === "workFrom" ||
-      id === "mealFrom" ||
-      id === "mealTo" ||
-      id === "workTo"
+      id === "WorkStart" ||
+      id === "MealStart" ||
+      id === "MealEnd" ||
+      id === "WorkEnd"
     ) {
       return (
         <div className="flex">
@@ -289,7 +296,7 @@ const TimesheetTable = () => {
           </select>
         </div>
       );
-    } else if (id === "employeeName") {
+    } else if (id === "EmployeeID") {
       return (
         <input
           value={value}
@@ -299,13 +306,19 @@ const TimesheetTable = () => {
         />
       );
     } else if (id === "laborHours") {
+      // let laborDate = (
+      //   (new Date(convertInputToTime(row.values.WorkEnd).replace(" ", "T")) -
+      //     new Date(convertInputToTime(row.values.WorkStart).replace(" ", "T")) -
+      //     (new Date(convertInputToTime(row.values.MealEnd).replace(" ", "T")) -
+      //       new Date(
+      //         convertInputToTime(row.values.MealStart).replace(" ", "T")
+      //       ))) /
+      //   3600000
+      // ).toFixed(2);
       let laborDate = (
-        (new Date(convertInputToTime(row.values.workTo).replace(" ", "T")) -
-          new Date(convertInputToTime(row.values.workFrom).replace(" ", "T")) -
-          (new Date(convertInputToTime(row.values.mealTo).replace(" ", "T")) -
-            new Date(
-              convertInputToTime(row.values.mealFrom).replace(" ", "T")
-            ))) /
+        (new Date(row.values.WorkEnd) -
+          new Date(row.values.WorkStart) -
+          (new Date(row.values.MealStart) - new Date(row.values.MealEnd))) /
         3600000
       ).toFixed(2);
 
@@ -342,10 +355,10 @@ const TimesheetTable = () => {
       old.map((row, index) => {
         return {
           ...old[index],
-          workFrom: old[0].workFrom,
-          mealFrom: old[0].mealFrom,
-          mealTo: old[0].mealTo,
-          workTo: old[0].workTo,
+          WorkStart: old[0].WorkStart,
+          MealStart: old[0].MealStart,
+          MealEnd: old[0].MealEnd,
+          WorkEnd: old[0].WorkEnd,
         };
       })
     );
@@ -355,12 +368,12 @@ const TimesheetTable = () => {
     setData([
       ...data,
       {
-        employeeName: "",
-        trade: "Project Manager",
-        workFrom: "07:00AM",
-        mealFrom: "12:00PM",
-        mealTo: "01:00PM",
-        workTo: "05:00PM",
+        EmployeeID: "",
+        Trade: "Project Manager",
+        WorkStart: "07:00AM",
+        MealStart: "12:00PM",
+        MealEnd: "01:00PM",
+        WorkEnd: "05:00PM",
       },
     ]);
   };
@@ -390,6 +403,17 @@ const TimesheetTable = () => {
     setSelectedDate(date);
   };
 
+  // const dataOfTimesheet = useSwr(
+  //   "/api/timesheets?selectedDate=2020-10-05",
+  //   fetcher
+  // ).data;
+  // const errorOfTimesheet = useSwr(
+  //   "/api/timesheets?selectedDate=2020-10-05",
+  //   fetcher
+  // ).error;
+  // if (!dataOfTimesheet) return <div>loading....</div>;
+  // if (errorOfTimesheet) return <div>failed to load</div>;
+  // console.log(dataOfTimesheet);
   return (
     <>
       <div className="responsiveFlex timesheetAndDate">
@@ -450,7 +474,6 @@ const TimesheetTable = () => {
       <div className="tableDiv">
         <TableContainer component={Paper}>
           <Table>
-            {console.log(data)}
             <TableHead>
               {headerGroups.map(headerGroup => (
                 <TableRow {...headerGroup.getHeaderGroupProps()}>
