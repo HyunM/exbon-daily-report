@@ -12,6 +12,7 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/pickers": "^3.2.10",
     "date-fns": "^2.16.1",
+    "mssql": "^6.2.3",
     "next": "latest",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",

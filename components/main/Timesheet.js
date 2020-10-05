@@ -254,18 +254,6 @@ const TimesheetTable = () => {
     ) {
       return (
         <div className="flex">
-          {/* <InputMask
-              onChange={onChange}
-              className="timeInput"
-              mask="29:90 1M"
-              formatChars={{
-                2: "[0-1]",
-                9: "[0-9]",
-                1: "[AP]",
-              }}
-              min="01"
-              max="12"
-            /> */}
           <InputMask
             value={value.slice(0, 2)}
             onChange={onCheckHour}
@@ -300,28 +288,6 @@ const TimesheetTable = () => {
             <option value="PM">PM</option>
           </select>
         </div>
-
-        /* <input
-            type="time"
-            value={value}
-            onChange={onChange}
-            onBlur={onBlur}
-            className="tableInput"
-            step="600"
-          /> */
-
-        // <select
-        //   value={value}
-        //   onChange={onChangeTime}
-        //   onBlur={onBlur}
-        //   className="scrollChange"
-        // >
-        //   {inputTime.map(inputTime => (
-        //     <option key={inputTime.time} value={inputTime.time}>
-        //       {inputTime.input}
-        //     </option>
-        //   ))}
-        // </select>
       );
     } else if (id === "employeeName") {
       return (
