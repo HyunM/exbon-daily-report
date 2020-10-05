@@ -28,8 +28,16 @@ import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import useSwr from "swr";
 import Link from "next/link";
+// const fetcher = url => fetch(url).then(res => res.json());
 
-const fetcher = url => fetch(url).then(res => res.json());
+// const dataOfTimesheet = useSwr(
+//   "/api/timesheets?selectedDate=2020-10-05",
+//   fetcher
+// ).data;
+// const errorOfTimesheet = useSwr(
+//   "/api/timesheets?selectedDate=2020-10-05",
+//   fetcher
+// ).error;
 
 const convertTimeToInput = time => {
   let match = inputTime.filter(data => data.time === time);
@@ -403,17 +411,6 @@ const TimesheetTable = () => {
     setSelectedDate(date);
   };
 
-  // const dataOfTimesheet = useSwr(
-  //   "/api/timesheets?selectedDate=2020-10-05",
-  //   fetcher
-  // ).data;
-  // const errorOfTimesheet = useSwr(
-  //   "/api/timesheets?selectedDate=2020-10-05",
-  //   fetcher
-  // ).error;
-  // if (!dataOfTimesheet) return <div>loading....</div>;
-  // if (errorOfTimesheet) return <div>failed to load</div>;
-  // console.log(dataOfTimesheet);
   return (
     <>
       <div className="responsiveFlex timesheetAndDate">
