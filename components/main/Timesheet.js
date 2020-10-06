@@ -314,21 +314,21 @@ const TimesheetTable = () => {
         />
       );
     } else if (id === "laborHours") {
-      // let laborDate = (
-      //   (new Date(convertInputToTime(row.values.WorkEnd).replace(" ", "T")) -
-      //     new Date(convertInputToTime(row.values.WorkStart).replace(" ", "T")) -
-      //     (new Date(convertInputToTime(row.values.MealEnd).replace(" ", "T")) -
-      //       new Date(
-      //         convertInputToTime(row.values.MealStart).replace(" ", "T")
-      //       ))) /
-      //   3600000
-      // ).toFixed(2);
       let laborDate = (
-        (new Date(row.values.WorkEnd) -
-          new Date(row.values.WorkStart) -
-          (new Date(row.values.MealStart) - new Date(row.values.MealEnd))) /
+        (new Date(convertInputToTime(row.values.WorkEnd).replace(" ", "T")) -
+          new Date(convertInputToTime(row.values.WorkStart).replace(" ", "T")) -
+          (new Date(convertInputToTime(row.values.MealEnd).replace(" ", "T")) -
+            new Date(
+              convertInputToTime(row.values.MealStart).replace(" ", "T")
+            ))) /
         3600000
       ).toFixed(2);
+      // let laborDate = (
+      //   (new Date(row.values.WorkEnd) -
+      //     new Date(row.values.WorkStart) -
+      //     (new Date(row.values.MealStart) - new Date(row.values.MealEnd))) /
+      //   3600000
+      // ).toFixed(2);
 
       return <div className="text-right">{laborDate}</div>;
     }
