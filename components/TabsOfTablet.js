@@ -7,6 +7,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import TabPanel from "./Tab/TabPanel";
 import a11yProps from "./Tab/a11yProps";
+import { FetchTimesheet } from "./main/FetchTimesheet";
 
 const TabsOfTablet = ({ tapNumber, handleChangeTabs }) => {
   return (
@@ -26,7 +27,7 @@ const TabsOfTablet = ({ tapNumber, handleChangeTabs }) => {
         </Tabs>
       </AppBar>
       <TabPanel tapNumber={tapNumber} index={0}>
-        <Timesheet></Timesheet>
+        <FetchTimesheet />
       </TabPanel>
       <TabPanel tapNumber={tapNumber} index={1}>
         <SelfPerformedTask />

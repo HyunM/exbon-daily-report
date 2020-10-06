@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 
 import { useTable } from "react-table";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
@@ -28,6 +28,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import useSwr from "swr";
 import Link from "next/link";
+import { formatDate } from "./formatDate";
 // const fetcher = url => fetch(url).then(res => res.json());
 
 // const dataOfTimesheet = useSwr(
@@ -52,18 +53,66 @@ const convertInputToTime = time => {
   return match[0].time;
 };
 
-const Timesheet = () => {
+const Timesheet = ({ data, dateState, setDateState }) => {
+  const convertData = data => {
+    if (data[0].WorkStart.length > 10) {
+      for (let i = 0; i < data.length; i++) {
+        data[i].WorkStart = convertTime(data[i].WorkStart);
+        data[i].WorkEnd = convertTime(data[i].WorkEnd);
+        data[i].MealStart = convertTime(data[i].MealStart);
+        data[i].MealEnd = convertTime(data[i].MealEnd);
+      }
+    }
+    return data;
+  };
+  const convertTime = time => {
+    //format 1970-01-01T13:00:00.000Z
+    //hh : time.slice(11,13)
+    //mm: time.slice(14,16)
+    let mm = time.slice(14, 16);
+    if (time.slice(11, 13) === "00") return "00:" + mm + "AM";
+    else if (time.slice(11, 13) === "01") return "01:" + mm + "AM";
+    else if (time.slice(11, 13) === "02") return "02:" + mm + "AM";
+    else if (time.slice(11, 13) === "03") return "03:" + mm + "AM";
+    else if (time.slice(11, 13) === "04") return "04:" + mm + "AM";
+    else if (time.slice(11, 13) === "05") return "05:" + mm + "AM";
+    else if (time.slice(11, 13) === "06") return "06:" + mm + "AM";
+    else if (time.slice(11, 13) === "07") return "07:" + mm + "AM";
+    else if (time.slice(11, 13) === "08") return "08:" + mm + "AM";
+    else if (time.slice(11, 13) === "09") return "09:" + mm + "AM";
+    else if (time.slice(11, 13) === "10") return "10:" + mm + "AM";
+    else if (time.slice(11, 13) === "11") return "11:" + mm + "AM";
+    else if (time.slice(11, 13) === "12") return "12:" + mm + "PM";
+    else if (time.slice(11, 13) === "13") return "01:" + mm + "PM";
+    else if (time.slice(11, 13) === "14") return "02:" + mm + "PM";
+    else if (time.slice(11, 13) === "15") return "03:" + mm + "PM";
+    else if (time.slice(11, 13) === "16") return "04:" + mm + "PM";
+    else if (time.slice(11, 13) === "17") return "05:" + mm + "PM";
+    else if (time.slice(11, 13) === "18") return "06:" + mm + "PM";
+    else if (time.slice(11, 13) === "19") return "07:" + mm + "PM";
+    else if (time.slice(11, 13) === "20") return "08:" + mm + "PM";
+    else if (time.slice(11, 13) === "21") return "09:" + mm + "PM";
+    else if (time.slice(11, 13) === "22") return "10:" + mm + "PM";
+    else if (time.slice(11, 13) === "23") return "11:" + mm + "PM";
+    else return null;
+  };
   return (
     <>
       <div className="halfTable">
-        <TimesheetTable />
+        <TimesheetTable
+          dataOfTimesheet={convertData(data)}
+          dateState={dateState}
+          setDateState={setDateState}
+        />
         <div className="mt-5"></div>
       </div>
     </>
   );
 };
 
-const TimesheetTable = () => {
+const TimesheetTable = ({ dataOfTimesheet, dateState, setDateState }) => {
+  const [data, setData] = useState(() => dataOfTimesheet);
+
   const [checkState, setCheckState] = useState(false);
   const checkChange = event => {
     if (event.target.checked) {
@@ -132,58 +181,56 @@ const TimesheetTable = () => {
     []
   );
 
-  // const [data, setData] = useState(() => dataOfTimesheet);
-
-  const [data, setData] = useState(() => [
-    {
-      EmployeeID: "Hyunmyung",
-      Trade: "Roofer",
-      WorkStart: "07:00AM",
-      MealStart: "12:00PM",
-      MealEnd: "01:00PM",
-      WorkEnd: "05:00PM",
-    },
-    {
-      EmployeeID: "John Doe",
-      Trade: "Project Manager",
-      WorkStart: "06:00AM",
-      MealStart: "12:00PM",
-      MealEnd: "02:00PM",
-      WorkEnd: "08:00PM",
-    },
-    {
-      EmployeeID: "Jane Doe",
-      Trade: "Sheet Metal",
-      WorkStart: "08:00AM",
-      MealStart: "12:00PM",
-      MealEnd: "12:00PM",
-      WorkEnd: "11:30AM",
-    },
-    {
-      EmployeeID: "Baby Doe",
-      Trade: "Sheet Metal",
-      WorkStart: "07:10AM",
-      MealStart: "12:00PM",
-      MealEnd: "12:40PM",
-      WorkEnd: "03:30PM",
-    },
-    {
-      EmployeeID: "Johnny Doe",
-      Trade: "Project Manager",
-      WorkStart: "11:00AM",
-      MealStart: "05:00PM",
-      MealEnd: "06:00PM",
-      WorkEnd: "10:00PM",
-    },
-    {
-      EmployeeID: "Richard Roe",
-      Trade: "Roofer",
-      WorkStart: "07:30AM",
-      MealStart: "01:00PM",
-      MealEnd: "01:30PM",
-      WorkEnd: "05:30PM",
-    },
-  ]);
+  // const [data, setData] = useState(() => [
+  //   {
+  //     EmployeeID: "Hyunmyung",
+  //     Trade: "Roofer",
+  //     WorkStart: "07:00AM",
+  //     MealStart: "12:00PM",
+  //     MealEnd: "01:00PM",
+  //     WorkEnd: "05:00PM",
+  //   },
+  //   {
+  //     EmployeeID: "John Doe",
+  //     Trade: "Project Manager",
+  //     WorkStart: "06:00AM",
+  //     MealStart: "12:00PM",
+  //     MealEnd: "02:00PM",
+  //     WorkEnd: "08:00PM",
+  //   },
+  //   {
+  //     EmployeeID: "Jane Doe",
+  //     Trade: "Sheet Metal",
+  //     WorkStart: "08:00AM",
+  //     MealStart: "12:00PM",
+  //     MealEnd: "12:00PM",
+  //     WorkEnd: "11:30AM",
+  //   },
+  //   {
+  //     EmployeeID: "Baby Doe",
+  //     Trade: "Sheet Metal",
+  //     WorkStart: "07:10AM",
+  //     MealStart: "12:00PM",
+  //     MealEnd: "12:40PM",
+  //     WorkEnd: "03:30PM",
+  //   },
+  //   {
+  //     EmployeeID: "Johnny Doe",
+  //     Trade: "Project Manager",
+  //     WorkStart: "11:00AM",
+  //     MealStart: "05:00PM",
+  //     MealEnd: "06:00PM",
+  //     WorkEnd: "10:00PM",
+  //   },
+  //   {
+  //     EmployeeID: "Richard Roe",
+  //     Trade: "Roofer",
+  //     WorkStart: "07:30AM",
+  //     MealStart: "01:00PM",
+  //     MealEnd: "01:30PM",
+  //     WorkEnd: "05:30PM",
+  //   },
+  // ]);
 
   // Create an editable cell renderer
   const EditableCell = ({
@@ -314,21 +361,21 @@ const TimesheetTable = () => {
         />
       );
     } else if (id === "laborHours") {
-      // let laborDate = (
-      //   (new Date(convertInputToTime(row.values.WorkEnd).replace(" ", "T")) -
-      //     new Date(convertInputToTime(row.values.WorkStart).replace(" ", "T")) -
-      //     (new Date(convertInputToTime(row.values.MealEnd).replace(" ", "T")) -
-      //       new Date(
-      //         convertInputToTime(row.values.MealStart).replace(" ", "T")
-      //       ))) /
-      //   3600000
-      // ).toFixed(2);
       let laborDate = (
-        (new Date(row.values.WorkEnd) -
-          new Date(row.values.WorkStart) -
-          (new Date(row.values.MealStart) - new Date(row.values.MealEnd))) /
+        (new Date(convertInputToTime(row.values.WorkEnd).replace(" ", "T")) -
+          new Date(convertInputToTime(row.values.WorkStart).replace(" ", "T")) -
+          (new Date(convertInputToTime(row.values.MealEnd).replace(" ", "T")) -
+            new Date(
+              convertInputToTime(row.values.MealStart).replace(" ", "T")
+            ))) /
         3600000
       ).toFixed(2);
+      // let laborDate = (
+      //   (new Date(row.values.WorkEnd) -
+      //     new Date(row.values.WorkStart) -
+      //     (new Date(row.values.MealStart) - new Date(row.values.MealEnd))) /
+      //   3600000
+      // ).toFixed(2);
 
       return <div className="text-right">{laborDate}</div>;
     }
@@ -401,18 +448,20 @@ const TimesheetTable = () => {
   });
   // Render the UI for your table
 
-  const [selectedDate, setSelectedDate] = useState(
-    new Date().toLocaleString({
-      timeZone: "America/Los_Angeles",
-    })
-  );
+  // const [selectedDate, setSelectedDate] = useState(
+  //   new Date().toLocaleString({
+  //     timeZone: "America/Los_Angeles",
+  //   })
+  // );
 
   const handleDateChange = date => {
     setSelectedDate(date);
+    // setDateState(formatDate(date));
   };
 
   return (
     <>
+      {console.log(data)}
       <div className="responsiveFlex timesheetAndDate">
         <div className="flex">
           <h1 className="mr-5" id="timesheetTitle">
@@ -424,7 +473,8 @@ const TimesheetTable = () => {
               id="date-picker-dialog"
               label="Timesheet Date"
               format="MM/dd/yyyy"
-              value={selectedDate}
+              // format="yyyy-MM-dd"
+              value={dateState + " 00:00:00"}
               onChange={handleDateChange}
               KeyboardButtonProps={{
                 "aria-label": "change date",
