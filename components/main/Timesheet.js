@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from "react";
+import React, { Fragment, useState, useMemo, useEffect } from "react";
+import axios from "axios";
 
 import { useTable } from "react-table";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
@@ -28,21 +29,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import useSwr from "swr";
 import Link from "next/link";
-// const fetcher = url => fetch(url).then(res => res.json());
-
-// const dataOfTimesheet = useSwr(
-//   "/api/timesheets?selectedDate=2020-10-05",
-//   fetcher
-// ).data;
-// const errorOfTimesheet = useSwr(
-//   "/api/timesheets?selectedDate=2020-10-05",
-//   fetcher
-// ).error;
-
-const convertTimeToInput = time => {
-  let match = inputTime.filter(data => data.time === time);
-  return match[0].input;
-};
+import { formatDate } from "./formatDate";
 
 const convertInputToTime = time => {
   let match = inputTime.filter(data => data.input === time);
@@ -102,7 +89,7 @@ const TimesheetTable = () => {
     () => [
       {
         Header: "Employee Name",
-        accessor: "EmployeeID",
+        accessor: "EmployeeName",
       },
       {
         Header: "Trade",
@@ -132,58 +119,58 @@ const TimesheetTable = () => {
     []
   );
 
-  // const [data, setData] = useState(() => dataOfTimesheet);
+  const [data, setData] = useState(() => []);
 
-  const [data, setData] = useState(() => [
-    {
-      EmployeeID: "Hyunmyung",
-      Trade: "Roofer",
-      WorkStart: "07:00AM",
-      MealStart: "12:00PM",
-      MealEnd: "01:00PM",
-      WorkEnd: "05:00PM",
-    },
-    {
-      EmployeeID: "John Doe",
-      Trade: "Project Manager",
-      WorkStart: "06:00AM",
-      MealStart: "12:00PM",
-      MealEnd: "02:00PM",
-      WorkEnd: "08:00PM",
-    },
-    {
-      EmployeeID: "Jane Doe",
-      Trade: "Sheet Metal",
-      WorkStart: "08:00AM",
-      MealStart: "12:00PM",
-      MealEnd: "12:00PM",
-      WorkEnd: "11:30AM",
-    },
-    {
-      EmployeeID: "Baby Doe",
-      Trade: "Sheet Metal",
-      WorkStart: "07:10AM",
-      MealStart: "12:00PM",
-      MealEnd: "12:40PM",
-      WorkEnd: "03:30PM",
-    },
-    {
-      EmployeeID: "Johnny Doe",
-      Trade: "Project Manager",
-      WorkStart: "11:00AM",
-      MealStart: "05:00PM",
-      MealEnd: "06:00PM",
-      WorkEnd: "10:00PM",
-    },
-    {
-      EmployeeID: "Richard Roe",
-      Trade: "Roofer",
-      WorkStart: "07:30AM",
-      MealStart: "01:00PM",
-      MealEnd: "01:30PM",
-      WorkEnd: "05:30PM",
-    },
-  ]);
+  // const [data, setData] = useState(() => [
+  //   {
+  //     EmployeeID: "Hyunmyung",
+  //     Trade: "Roofer",
+  //     WorkStart: "07:00AM",
+  //     MealStart: "12:00PM",
+  //     MealEnd: "01:00PM",
+  //     WorkEnd: "05:00PM",
+  //   },
+  //   {
+  //     EmployeeID: "John Doe",
+  //     Trade: "Project Manager",
+  //     WorkStart: "06:00AM",
+  //     MealStart: "12:00PM",
+  //     MealEnd: "02:00PM",
+  //     WorkEnd: "08:00PM",
+  //   },
+  //   {
+  //     EmployeeID: "Jane Doe",
+  //     Trade: "Sheet Metal",
+  //     WorkStart: "08:00AM",
+  //     MealStart: "12:00PM",
+  //     MealEnd: "12:00PM",
+  //     WorkEnd: "11:30AM",
+  //   },
+  //   {
+  //     EmployeeID: "Baby Doe",
+  //     Trade: "Sheet Metal",
+  //     WorkStart: "07:10AM",
+  //     MealStart: "12:00PM",
+  //     MealEnd: "12:40PM",
+  //     WorkEnd: "03:30PM",
+  //   },
+  //   {
+  //     EmployeeID: "Johnny Doe",
+  //     Trade: "Project Manager",
+  //     WorkStart: "11:00AM",
+  //     MealStart: "05:00PM",
+  //     MealEnd: "06:00PM",
+  //     WorkEnd: "10:00PM",
+  //   },
+  //   {
+  //     EmployeeID: "Richard Roe",
+  //     Trade: "Roofer",
+  //     WorkStart: "07:30AM",
+  //     MealStart: "01:00PM",
+  //     MealEnd: "01:30PM",
+  //     WorkEnd: "05:30PM",
+  //   },
+  // ]);
 
   // Create an editable cell renderer
   const EditableCell = ({
@@ -220,9 +207,9 @@ const TimesheetTable = () => {
       //   setValue("");
       // } else {
       // }
-      if (e.target.value === "aM" || e.target.value === "AM") {
+      if (e.target.value === "AM") {
         setValue(value.slice(0, 2) + ":" + value.slice(3, 5) + "AM");
-      } else if (e.target.value === "pM" || e.target.value === "PM") {
+      } else if (e.target.value === "PM") {
         setValue(value.slice(0, 2) + ":" + value.slice(3, 5) + "PM");
       } else {
         setValue(value.slice(0, 2) + ":" + value.slice(3, 5) + e.target.value);
@@ -304,7 +291,7 @@ const TimesheetTable = () => {
           </select>
         </div>
       );
-    } else if (id === "EmployeeID") {
+    } else if (id === "EmployeeName") {
       return (
         <input
           value={value}
@@ -332,7 +319,6 @@ const TimesheetTable = () => {
 
       return <div className="text-right">{laborDate}</div>;
     }
-    0;
   };
 
   // Set our editable cell renderer as the default Cell renderer
@@ -376,7 +362,8 @@ const TimesheetTable = () => {
     setData([
       ...data,
       {
-        EmployeeID: "",
+        TimesheetID: 0,
+        EmployeeName: "",
         Trade: "Project Manager",
         WorkStart: "07:00AM",
         MealStart: "12:00PM",
@@ -411,9 +398,31 @@ const TimesheetTable = () => {
     setSelectedDate(date);
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await axios({
+        method: "get",
+        url: `/api/timesheets?selectedDate=${formatDate(selectedDate)}`,
+        timeout: 4000, // 4 seconds timeout
+        headers: {},
+        // data: {
+        //   firstName: "David",
+        //   lastName: "Pollock",
+        // },
+      });
+
+      setData(result.data);
+    };
+
+    fetchData();
+  }, [selectedDate]);
+
+  const handleSaveTimesheetBtn = () => {};
+
   return (
     <>
       <div className="responsiveFlex timesheetAndDate">
+        {console.log(data)}
         <div className="flex">
           <h1 className="mr-5" id="timesheetTitle">
             Timesheet
@@ -457,8 +466,10 @@ const TimesheetTable = () => {
             Add
           </Button>
           <Button
+            id="saveTimesheetBtn"
             variant="contained"
             color="primary"
+            onClick={handleSaveTimesheetBtn}
             size="small"
             className="saveBtn"
             startIcon={<SaveIcon />}
