@@ -417,7 +417,29 @@ const TimesheetTable = () => {
     fetchData();
   }, [selectedDate]);
 
-  const handleSaveTimesheetBtn = () => {};
+  const handleSaveTimesheetBtn = () => {
+    const fetchData = async () => {
+      for (let i = 0; i < data.length; i++) {
+        const result = await axios({
+          method: "put",
+          url: `/api/timesheet/${data[i].TimesheetID}`,
+          timeout: 4000, // 4 seconds timeout
+          headers: {},
+          data: {
+            EmployeeID: data[i].EmployeeID,
+            Trade: data[i].Trade,
+            WorkStart: data[i].WorkStart,
+            WorkEnd: data[i].WorkEnd,
+            MealStart: data[i].MealStart,
+            MealEnd: data[i].MealEnd,
+          },
+        });
+        console.log(result);
+      }
+    };
+
+    fetchData();
+  };
 
   return (
     <>
