@@ -1,4 +1,4 @@
-[
+export const employeeInfo = [
   {
     EmployeeID: 7817,
     EmployeeTitle: "Field Labor",

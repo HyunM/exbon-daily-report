@@ -30,6 +30,9 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import useSwr from "swr";
 import Link from "next/link";
 import { formatDate } from "./formatDate";
+import { employeeInfo } from "./Employee";
+import TextField from "@material-ui/core/TextField";
+import Autocomplete from "react-autocomplete";
 
 const convertInputToTime = time => {
   let match = inputTime.filter(data => data.input === time);
@@ -217,7 +220,13 @@ const TimesheetTable = () => {
     };
 
     const onChange = e => {
+      console.log("onChange");
       setValue(e.target.value);
+    };
+
+    const onChangeSelect = value => {
+      console.log("onChangeSelect");
+      setValue(value);
     };
 
     // We'll only update the external data when the input is blurred
@@ -227,6 +236,19 @@ const TimesheetTable = () => {
         setSameTime();
       } else {
         updateMyData(index, id, value);
+      }
+    };
+
+    const onBlurForEmployee = e => {
+      console.log("onBlurForEmployee");
+      let employee = employeeInfo.find(
+        employee => value === employee.FirstName + " " + employee.LastName
+      );
+      if (employee) {
+        updateEmployeeData(index, id, value);
+      } else {
+        alert("No exist employee name.");
+        updateEmployeeData(index, id, value);
       }
     };
 
@@ -293,11 +315,32 @@ const TimesheetTable = () => {
       );
     } else if (id === "EmployeeName") {
       return (
-        <input
+        // <input
+        //   className="tableInput employeeInput"
+        //   value={value}
+        //   onChange={onChange}
+        //   onBlur={onBlurForEmployee}
+        // />
+        <Autocomplete
+          getItemValue={item => item.FirstName + " " + item.LastName}
+          items={employeeInfo}
+          renderItem={(item, isHighlighted) => (
+            <div
+              key={item.EmployeeID}
+              style={{ background: isHighlighted ? "lightgray" : "white" }}
+            >
+              {item.FirstName + " " + item.LastName}
+            </div>
+          )}
+          shouldItemRender={(item, value) =>
+            (item.FirstName + " " + item.LastName)
+              .toLowerCase()
+              .indexOf(value.toLowerCase()) > -1
+          }
           value={value}
           onChange={onChange}
-          onBlur={onBlur}
-          className="tableInput"
+          inputProps={{ onBlur: onBlurForEmployee }}
+          onSelect={val => onChangeSelect(val)}
         />
       );
     } else if (id === "laborHours") {
@@ -344,6 +387,34 @@ const TimesheetTable = () => {
     );
   };
 
+  const updateEmployeeData = (rowIndex, columnId, value) => {
+    // We also turn on the flag to not reset the page
+    setData(old =>
+      old.map((row, index) => {
+        if (index === rowIndex) {
+          return {
+            ...old[rowIndex],
+            [columnId]: value,
+            ["EmployeeID"]: convertEmployeeNameToID(value),
+          };
+        }
+        return row;
+      })
+    );
+  };
+
+  const convertEmployeeNameToID = name => {
+    console.log(name);
+    let employee = employeeInfo.find(
+      employee => name === employee.FirstName + " " + employee.LastName
+    );
+    if (employee) {
+      return employee.EmployeeID;
+    } else {
+      return 0;
+    }
+  };
+
   const setSameTime = () => {
     setData(old =>
       old.map((row, index) => {
@@ -363,6 +434,7 @@ const TimesheetTable = () => {
       ...data,
       {
         TimesheetID: 0,
+        EmployeeID: 0,
         EmployeeName: "",
         Trade: "Project Manager",
         WorkStart: "07:00AM",
@@ -418,27 +490,33 @@ const TimesheetTable = () => {
   }, [selectedDate]);
 
   const handleSaveTimesheetBtn = () => {
-    const fetchData = async () => {
-      for (let i = 0; i < data.length; i++) {
-        const result = await axios({
-          method: "put",
-          url: `/api/timesheet/${data[i].TimesheetID}`,
-          timeout: 4000, // 4 seconds timeout
-          headers: {},
-          data: {
-            EmployeeID: data[i].EmployeeID,
-            Trade: data[i].Trade,
-            WorkStart: data[i].WorkStart,
-            WorkEnd: data[i].WorkEnd,
-            MealStart: data[i].MealStart,
-            MealEnd: data[i].MealEnd,
-          },
-        });
-        console.log(result);
-      }
-    };
+    let check = data.find(employee => employee.EmployeeID === 0);
 
-    fetchData();
+    if (check) {
+      alert("Cannot save. Please check again employee name");
+    } else {
+      const fetchData = async () => {
+        for (let i = 0; i < data.length; i++) {
+          const result = await axios({
+            method: "put",
+            url: `/api/timesheet/${data[i].TimesheetID}`,
+            timeout: 4000, // 4 seconds timeout
+            headers: {},
+            data: {
+              EmployeeID: data[i].EmployeeID,
+              Trade: data[i].Trade,
+              WorkStart: data[i].WorkStart,
+              WorkEnd: data[i].WorkEnd,
+              MealStart: data[i].MealStart,
+              MealEnd: data[i].MealEnd,
+            },
+          });
+          console.log(result);
+        }
+      };
+
+      fetchData();
+    }
   };
 
   return (
@@ -537,5 +615,230 @@ const TimesheetTable = () => {
     </>
   );
 };
+
+var countries = [
+  "Afghanistan",
+  "Albania",
+  "Algeria",
+  "Andorra",
+  "Angola",
+  "Anguilla",
+  "Antigua & Barbuda",
+  "Argentina",
+  "Armenia",
+  "Aruba",
+  "Australia",
+  "Austria",
+  "Azerbaijan",
+  "Bahamas",
+  "Bahrain",
+  "Bangladesh",
+  "Barbados",
+  "Belarus",
+  "Belgium",
+  "Belize",
+  "Benin",
+  "Bermuda",
+  "Bhutan",
+  "Bolivia",
+  "Bosnia & Herzegovina",
+  "Botswana",
+  "Brazil",
+  "British Virgin Islands",
+  "Brunei",
+  "Bulgaria",
+  "Burkina Faso",
+  "Burundi",
+  "Cambodia",
+  "Cameroon",
+  "Canada",
+  "Cape Verde",
+  "Cayman Islands",
+  "Central Arfrican Republic",
+  "Chad",
+  "Chile",
+  "China",
+  "Colombia",
+  "Congo",
+  "Cook Islands",
+  "Costa Rica",
+  "Cote D Ivoire",
+  "Croatia",
+  "Cuba",
+  "Curacao",
+  "Cyprus",
+  "Czech Republic",
+  "Denmark",
+  "Djibouti",
+  "Dominica",
+  "Dominican Republic",
+  "Ecuador",
+  "Egypt",
+  "El Salvador",
+  "Equatorial Guinea",
+  "Eritrea",
+  "Estonia",
+  "Ethiopia",
+  "Falkland Islands",
+  "Faroe Islands",
+  "Fiji",
+  "Finland",
+  "France",
+  "French Polynesia",
+  "French West Indies",
+  "Gabon",
+  "Gambia",
+  "Georgia",
+  "Germany",
+  "Ghana",
+  "Gibraltar",
+  "Greece",
+  "Greenland",
+  "Grenada",
+  "Guam",
+  "Guatemala",
+  "Guernsey",
+  "Guinea",
+  "Guinea Bissau",
+  "Guyana",
+  "Haiti",
+  "Honduras",
+  "Hong Kong",
+  "Hungary",
+  "Iceland",
+  "India",
+  "Indonesia",
+  "Iran",
+  "Iraq",
+  "Ireland",
+  "Isle of Man",
+  "Israel",
+  "Italy",
+  "Jamaica",
+  "Japan",
+  "Jersey",
+  "Jordan",
+  "Kazakhstan",
+  "Kenya",
+  "Kiribati",
+  "Kosovo",
+  "Kuwait",
+  "Kyrgyzstan",
+  "Laos",
+  "Latvia",
+  "Lebanon",
+  "Lesotho",
+  "Liberia",
+  "Libya",
+  "Liechtenstein",
+  "Lithuania",
+  "Luxembourg",
+  "Macau",
+  "Macedonia",
+  "Madagascar",
+  "Malawi",
+  "Malaysia",
+  "Maldives",
+  "Mali",
+  "Malta",
+  "Marshall Islands",
+  "Mauritania",
+  "Mauritius",
+  "Mexico",
+  "Micronesia",
+  "Moldova",
+  "Monaco",
+  "Mongolia",
+  "Montenegro",
+  "Montserrat",
+  "Morocco",
+  "Mozambique",
+  "Myanmar",
+  "Namibia",
+  "Nauro",
+  "Nepal",
+  "Netherlands",
+  "Netherlands Antilles",
+  "New Caledonia",
+  "New Zealand",
+  "Nicaragua",
+  "Niger",
+  "Nigeria",
+  "North Korea",
+  "Norway",
+  "Oman",
+  "Pakistan",
+  "Palau",
+  "Palestine",
+  "Panama",
+  "Papua New Guinea",
+  "Paraguay",
+  "Peru",
+  "Philippines",
+  "Poland",
+  "Portugal",
+  "Puerto Rico",
+  "Qatar",
+  "Reunion",
+  "Romania",
+  "Russia",
+  "Rwanda",
+  "Saint Pierre & Miquelon",
+  "Samoa",
+  "San Marino",
+  "Sao Tome and Principe",
+  "Saudi Arabia",
+  "Senegal",
+  "Serbia",
+  "Seychelles",
+  "Sierra Leone",
+  "Singapore",
+  "Slovakia",
+  "Slovenia",
+  "Solomon Islands",
+  "Somalia",
+  "South Africa",
+  "South Korea",
+  "South Sudan",
+  "Spain",
+  "Sri Lanka",
+  "St Kitts & Nevis",
+  "St Lucia",
+  "St Vincent",
+  "Sudan",
+  "Suriname",
+  "Swaziland",
+  "Sweden",
+  "Switzerland",
+  "Syria",
+  "Taiwan",
+  "Tajikistan",
+  "Tanzania",
+  "Thailand",
+  "Timor L'Este",
+  "Togo",
+  "Tonga",
+  "Trinidad & Tobago",
+  "Tunisia",
+  "Turkey",
+  "Turkmenistan",
+  "Turks & Caicos",
+  "Tuvalu",
+  "Uganda",
+  "Ukraine",
+  "United Arab Emirates",
+  "United Kingdom",
+  "United States of America",
+  "Uruguay",
+  "Uzbekistan",
+  "Vanuatu",
+  "Vatican City",
+  "Venezuela",
+  "Vietnam",
+  "Virgin Islands (US)",
+  "Yemen",
+  "Zambia",
+  "Zimbabwe",
+];
 //
 export default Timesheet;
