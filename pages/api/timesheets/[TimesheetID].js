@@ -67,6 +67,7 @@ export default function TimesheetHandler(req, res) {
       default:
         res.setHeader("Allow", ["PUT"]);
         res.status(405).end(`Method ${method} Not Allowed`);
+        res.status(500).end("This is an error");
         return resolve();
     }
   });

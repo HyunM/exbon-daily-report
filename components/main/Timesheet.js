@@ -517,7 +517,7 @@ const TimesheetTable = () => {
           } else {
             await axios({
               method: "put",
-              url: `/api/timesheet/${data[i].TimesheetID}`,
+              url: `/api/timesheets/${data[i].TimesheetID}`,
               timeout: 4000, // 4 seconds timeout
               headers: {},
               data: {
