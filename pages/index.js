@@ -17,7 +17,6 @@ const Index = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Container></Container>
-      {/* {console.log(dataOfTimesheet)} */}
     </>
   );
 };

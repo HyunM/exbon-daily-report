@@ -402,20 +402,6 @@ td {
   }
 }
 
-.timeInput {
-  width: 28px;
-  text-align: center;
-  margin-right: 2%;
-  margin-left: 2%;
-  display: inline-block;
-  height: 20px;
-  color: rgb(116, 100, 110);
-  border: 1px solid rgb(200, 191, 196);
-  border-radius: 4px;
-  box-shadow: rgb(221, 216, 220) 1px 1px 2px inset;
-  background: rgb(255, 255, 255);
-}
-
 .scrollChange {
   display: inline-block;
 }
@@ -490,4 +476,29 @@ body {
 #timesheetTitle {
   font-family: system-ui;
   color: darkblue;
+}
+
+.MuiTableCell-root input {
+  width: 120px;
+  display: inline-block;
+  height: 20px;
+  color: rgb(116, 100, 110);
+  border: 1px solid rgb(200, 191, 196);
+  border-radius: 4px;
+  box-shadow: rgb(221, 216, 220) 1px 1px 2px inset;
+  background: rgb(255, 255, 255);
+}
+
+.MuiTableCell-root .timeInput {
+  width: 28px;
+  text-align: center;
+  margin-right: 2%;
+  margin-left: 2%;
+  display: inline-block;
+  height: 20px;
+  color: rgb(116, 100, 110);
+  border: 1px solid rgb(200, 191, 196);
+  border-radius: 4px;
+  box-shadow: rgb(221, 216, 220) 1px 1px 2px inset;
+  background: rgb(255, 255, 255);
 }

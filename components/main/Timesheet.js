@@ -219,12 +219,10 @@ const TimesheetTable = () => {
     };
 
     const onChange = e => {
-      console.log("onChange");
       setValue(e.target.value);
     };
 
     const onChangeSelect = value => {
-      console.log("onChangeSelect");
       setValue(value);
     };
 
@@ -239,7 +237,6 @@ const TimesheetTable = () => {
     };
 
     const onBlurForEmployee = e => {
-      console.log("onBlurForEmployee");
       let employee = employeeInfo.find(
         employee => value === employee.FirstName + " " + employee.LastName
       );
@@ -403,7 +400,6 @@ const TimesheetTable = () => {
   };
 
   const convertEmployeeNameToID = name => {
-    console.log(name);
     let employee = employeeInfo.find(
       employee => name === employee.FirstName + " " + employee.LastName
     );
@@ -437,10 +433,10 @@ const TimesheetTable = () => {
         EmployeeName: "",
         Date: formatDate(selectedDate),
         Trade: "Project Manager",
-        WorkStart: "07:00AM",
-        MealStart: "12:00PM",
-        MealEnd: "01:00PM",
-        WorkEnd: "05:00PM",
+        WorkStart: data[0].WorkStart,
+        MealStart: data[0].MealStart,
+        MealEnd: data[0].MealEnd,
+        WorkEnd: data[0].WorkEnd,
       },
     ]);
   };
@@ -489,6 +485,23 @@ const TimesheetTable = () => {
     fetchData();
   }, [selectedDate]);
 
+  useEffect(() => {
+    if (checkState) {
+      for (
+        let i = 12;
+        i < document.getElementsByClassName("disabledTime").length;
+        i++
+      ) {
+        document
+          .getElementsByClassName("disabledTime")
+          [i].setAttribute("disabled", true);
+        document
+          .getElementsByClassName("disabledTime")
+          [i].classList.add("classDisabled");
+      }
+    }
+  }, [data.length]);
+
   const handleSaveTimesheetBtn = () => {
     let check = data.find(employee => employee.EmployeeID === 0);
 
@@ -513,7 +526,6 @@ const TimesheetTable = () => {
                 MealEnd: data[i].MealEnd,
               },
             });
-            console.log(result);
           } else {
             const result = await axios({
               method: "put",
@@ -529,7 +541,6 @@ const TimesheetTable = () => {
                 MealEnd: data[i].MealEnd,
               },
             });
-            console.log(result);
           }
         }
       };
