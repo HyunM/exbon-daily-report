@@ -33,6 +33,8 @@ import { formatDate } from "./formatDate";
 import { employeeInfo } from "./Employee";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "react-autocomplete";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const convertInputToTime = time => {
   let match = inputTime.filter(data => data.input === time);
@@ -356,7 +358,7 @@ const TimesheetTable = () => {
       //   3600000
       // ).toFixed(2);
 
-      return <div className="text-right">{laborDate}</div>;
+      return <div className="text-right laborDiv">{laborDate}</div>;
     }
   };
 
@@ -503,10 +505,20 @@ const TimesheetTable = () => {
   }, [data.length]);
 
   const handleSaveTimesheetBtn = () => {
-    let check = data.find(employee => employee.EmployeeID === 0);
-
-    if (check) {
-      alert("Cannot save. Please check again employee name");
+    let checkEmployeeName = data.find(employee => employee.EmployeeID === 0);
+    let checkTime = 0;
+    for (
+      let i = 0;
+      i < document.getElementsByClassName("laborDiv").length;
+      i++
+    ) {
+      if (document.getElementsByClassName("laborDiv")[i].innerText === "NaN")
+        checkTime++;
+    }
+    if (checkEmployeeName) {
+      alert("Cannot save. Please check again employee name.");
+    } else if (checkTime++) {
+      alert("Cannot save. Please check again input time.");
     } else {
       const fetchData = async () => {
         for (let i = 0; i < data.length; i++) {
