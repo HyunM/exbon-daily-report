@@ -36,6 +36,8 @@ import Autocomplete from "react-autocomplete";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+toast.configure();
+
 const convertInputToTime = time => {
   let match = inputTime.filter(data => data.input === time);
   if (match[0] === undefined) {
@@ -125,57 +127,6 @@ const TimesheetTable = () => {
 
   const [data, setData] = useState(() => []);
 
-  // const [data, setData] = useState(() => [
-  //   {
-  //     EmployeeID: "Hyunmyung",
-  //     Trade: "Roofer",
-  //     WorkStart: "07:00AM",
-  //     MealStart: "12:00PM",
-  //     MealEnd: "01:00PM",
-  //     WorkEnd: "05:00PM",
-  //   },
-  //   {
-  //     EmployeeID: "John Doe",
-  //     Trade: "Project Manager",
-  //     WorkStart: "06:00AM",
-  //     MealStart: "12:00PM",
-  //     MealEnd: "02:00PM",
-  //     WorkEnd: "08:00PM",
-  //   },
-  //   {
-  //     EmployeeID: "Jane Doe",
-  //     Trade: "Sheet Metal",
-  //     WorkStart: "08:00AM",
-  //     MealStart: "12:00PM",
-  //     MealEnd: "12:00PM",
-  //     WorkEnd: "11:30AM",
-  //   },
-  //   {
-  //     EmployeeID: "Baby Doe",
-  //     Trade: "Sheet Metal",
-  //     WorkStart: "07:10AM",
-  //     MealStart: "12:00PM",
-  //     MealEnd: "12:40PM",
-  //     WorkEnd: "03:30PM",
-  //   },
-  //   {
-  //     EmployeeID: "Johnny Doe",
-  //     Trade: "Project Manager",
-  //     WorkStart: "11:00AM",
-  //     MealStart: "05:00PM",
-  //     MealEnd: "06:00PM",
-  //     WorkEnd: "10:00PM",
-  //   },
-  //   {
-  //     EmployeeID: "Richard Roe",
-  //     Trade: "Roofer",
-  //     WorkStart: "07:30AM",
-  //     MealStart: "01:00PM",
-  //     MealEnd: "01:30PM",
-  //     WorkEnd: "05:30PM",
-  //   },
-  // ]);
-
   // Create an editable cell renderer
   const EditableCell = ({
     value: initialValue,
@@ -189,7 +140,16 @@ const TimesheetTable = () => {
 
     const onCheckHour = e => {
       if (12 < parseInt(e.target.value)) {
-        alert("Please input 00 ~ 12 number");
+        toast.warning(
+          <div className="text-center">
+            Only <strong>00 to 12</strong> can be entered into the time hour
+            input.
+          </div>,
+          {
+            position: toast.POSITION.BOTTOM_CENTER,
+            hideProgressBar: true,
+          }
+        );
         setValue("  :" + value.slice(3, 5) + value.slice(5, 7));
       } else {
         setValue(e.target.value + ":" + value.slice(3, 5) + value.slice(5, 7));
@@ -197,20 +157,10 @@ const TimesheetTable = () => {
     };
 
     const onCheckMin = e => {
-      // if (12 < parseInt(e.target.value)) {
-      //   alert("error");
-      //   setValue("");
-      // } else {
-      // }
       setValue(value.slice(0, 2) + ":" + e.target.value + value.slice(5, 7));
     };
 
     const onCheckAmPm = e => {
-      // if (12 < parseInt(e.target.value)) {
-      //   alert("error");
-      //   setValue("");
-      // } else {
-      // }
       if (e.target.value === "AM") {
         setValue(value.slice(0, 2) + ":" + value.slice(3, 5) + "AM");
       } else if (e.target.value === "PM") {
@@ -245,7 +195,15 @@ const TimesheetTable = () => {
       if (employee) {
         updateEmployeeData(index, id, value);
       } else {
-        alert("No exist employee name.");
+        toast.warning(
+          <div className="text-center">
+            <strong>That employee name</strong> does not exist.
+          </div>,
+          {
+            position: toast.POSITION.BOTTOM_CENTER,
+            hideProgressBar: true,
+          }
+        );
         updateEmployeeData(index, id, value);
       }
     };
@@ -516,14 +474,32 @@ const TimesheetTable = () => {
         checkTime++;
     }
     if (checkEmployeeName) {
-      alert("Cannot save. Please check again employee name.");
+      toast.error(
+        <div className="text-center">
+          Unable to save. <br /> Please check <strong>employee name </strong>
+          again.
+        </div>,
+        {
+          position: toast.POSITION.BOTTOM_CENTER,
+          hideProgressBar: true,
+        }
+      );
     } else if (checkTime++) {
-      alert("Cannot save. Please check again input time.");
+      toast.error(
+        <div className="text-center">
+          Unable to save. <br /> Please check the <strong>time input </strong>
+          again.
+        </div>,
+        {
+          position: toast.POSITION.BOTTOM_CENTER,
+          hideProgressBar: true,
+        }
+      );
     } else {
       const fetchData = async () => {
         for (let i = 0; i < data.length; i++) {
           if (data[i].TimesheetID === 0) {
-            const result = await axios({
+            await axios({
               method: "post",
               url: `/api/timesheets`,
               timeout: 4000, // 4 seconds timeout
@@ -539,7 +515,7 @@ const TimesheetTable = () => {
               },
             });
           } else {
-            const result = await axios({
+            await axios({
               method: "put",
               url: `/api/timesheet/${data[i].TimesheetID}`,
               timeout: 4000, // 4 seconds timeout
@@ -558,6 +534,15 @@ const TimesheetTable = () => {
       };
 
       fetchData();
+      toast.success(
+        <div className="text-center">
+          <strong>Save Complete</strong>
+        </div>,
+        {
+          position: toast.POSITION.BOTTOM_CENTER,
+          hideProgressBar: true,
+        }
+      );
     }
   };
 
