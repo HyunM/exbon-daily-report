@@ -64,6 +64,31 @@ export default function TimesheetHandler(req, res) {
           });
         });
         break;
+      case "DELETE":
+        mssql.connect(dbserver.dbConfig, err => {
+          if (err) {
+            console.error(err);
+            return resolve();
+          }
+          const request = new mssql.Request();
+
+          const query = `EXEC [Hammer].[dbo].[Timesheet_DeleteByTimesheetID]
+                          ${TimesheetID}`;
+          /* --Params--
+            @timesheetID int
+            */
+
+          request.query(query, (err, recordset) => {
+            if (err) {
+              console.error(err);
+              return resolve();
+            }
+
+            res.status(200).json("1");
+            return resolve();
+          });
+        });
+        break;
       default:
         res.setHeader("Allow", ["PUT"]);
         res.status(405).end(`Method ${method} Not Allowed`);

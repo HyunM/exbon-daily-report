@@ -393,10 +393,14 @@ const TimesheetTable = () => {
         EmployeeName: "",
         Date: formatDate(selectedDate),
         Trade: "Project Manager",
-        WorkStart: data[0].WorkStart,
-        MealStart: data[0].MealStart,
-        MealEnd: data[0].MealEnd,
-        WorkEnd: data[0].WorkEnd,
+        // WorkStart: data[0] !== undefined ? data[0].WorkStart : "07:00AM",
+        // MealStart: data[0] !== undefined ? data[0].MealStart : "12:00PM",
+        // MealEnd: data[0] !== undefined ? data[0].MealEnd : "01:00PM",
+        // WorkEnd: data[0] !== undefined ? data[0].WorkEnd : "05:00PM",
+        WorkStart: "07:00AM",
+        MealStart: "12:00PM",
+        MealEnd: "01:00PM",
+        WorkEnd: "05:00PM",
       },
     ]);
   };
@@ -567,6 +571,7 @@ const TimesheetTable = () => {
               }}
             />
           </MuiPickersUtilsProvider>
+          <h3 id="projectID">Project ID : 7</h3>
         </div>
         <div className="flex">
           <FormControlLabel
@@ -590,7 +595,7 @@ const TimesheetTable = () => {
             onClick={addTimesheetRow}
             startIcon={<AddIcon />}
           >
-            Add
+            Add&nbsp;Row
           </Button>
           <Button
             id="saveTimesheetBtn"
