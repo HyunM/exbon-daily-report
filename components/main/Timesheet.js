@@ -24,6 +24,7 @@ import inputTime from "./inputTime";
 import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
 import AddIcon from "@material-ui/icons/Add";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import InputMask from "react-input-mask";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -35,6 +36,8 @@ import TextField from "@material-ui/core/TextField";
 import Autocomplete from "react-autocomplete";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+let deleteQueue = []; //must be modified
 
 toast.configure();
 
@@ -93,6 +96,10 @@ const TimesheetTable = () => {
 
   const columns = useMemo(
     () => [
+      {
+        Header: " ", //Delete Timesheet
+        accessor: "TimesheetID",
+      },
       {
         Header: "Employee Name",
         accessor: "EmployeeName",
@@ -208,12 +215,26 @@ const TimesheetTable = () => {
       }
     };
 
+    const clickDeleteTimesheet = value => {
+      //value = TimesheetID
+      deleteTimesheetRow(index, id);
+      deleteQueue.push(value);
+    };
+
     // If the initialValue is changed external, sync it up with our state
     React.useEffect(() => {
       setValue(initialValue);
     }, [initialValue]);
 
-    if (id === "Trade") {
+    if (id === "TimesheetID") {
+      return (
+        <DeleteForeverIcon
+          color="action"
+          className="deletePointer"
+          onClick={() => clickDeleteTimesheet(value)}
+        ></DeleteForeverIcon>
+      );
+    } else if (id === "Trade") {
       return (
         <select
           value={value}
@@ -405,6 +426,14 @@ const TimesheetTable = () => {
     ]);
   };
 
+  const deleteTimesheetRow = (rowIndex, columnId) => {
+    setData(old =>
+      old.filter((row, index) => {
+        return index !== rowIndex;
+      })
+    );
+  };
+
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
@@ -447,6 +476,7 @@ const TimesheetTable = () => {
     };
 
     fetchData();
+    deleteQueue = [];
   }, [selectedDate]);
 
   useEffect(() => {
@@ -553,7 +583,10 @@ const TimesheetTable = () => {
   return (
     <>
       <div className="responsiveFlex timesheetAndDate">
+        {console.log("data")}
         {console.log(data)}
+        {console.log("deleteQueue")}
+        {console.log(deleteQueue)}
         <div className="flex">
           <h1 className="mr-5" id="timesheetTitle">
             Timesheet
