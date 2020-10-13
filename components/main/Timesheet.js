@@ -109,19 +109,19 @@ const TimesheetTable = () => {
         accessor: "Trade",
       },
       {
-        Header: "Work From",
+        Header: "Work Start",
         accessor: "WorkStart",
       },
       {
-        Header: "Meal From",
+        Header: "Meal Start",
         accessor: "MealStart",
       },
       {
-        Header: "Meal To",
+        Header: "Meal End",
         accessor: "MealEnd",
       },
       {
-        Header: "Work To",
+        Header: "Work End",
         accessor: "WorkEnd",
       },
       {
@@ -565,6 +565,14 @@ const TimesheetTable = () => {
             });
           }
         }
+        for (let i = 0; i < deleteQueue.length; i++) {
+          await axios({
+            method: "delete",
+            url: `/api/timesheets/${deleteQueue[i]}`,
+            timeout: 4000, // 4 seconds timeout
+            headers: {},
+          });
+        }
       };
 
       fetchData();
@@ -681,5 +689,4 @@ const TimesheetTable = () => {
   );
 };
 
-//
 export default Timesheet;

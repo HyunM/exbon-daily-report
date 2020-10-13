@@ -118,7 +118,7 @@ body {
 }
 
 .MuiTableCell-root input {
-  width: 120px;
+  width: 110px;
   display: inline-block;
   height: 20px;
   color: rgb(116, 100, 110);
@@ -129,7 +129,7 @@ body {
 }
 
 .MuiTableCell-root .timeInput {
-  width: 28px;
+  width: 20px;
   text-align: center;
   margin-right: 2%;
   margin-left: 2%;
