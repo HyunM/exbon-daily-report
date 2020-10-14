@@ -242,13 +242,18 @@ const TimesheetTable = () => {
     }, [initialValue]);
 
     if (id === "TimesheetID") {
-      return (
-        <DeleteForeverIcon
-          color="action"
-          className="deletePointer"
-          onClick={() => clickDeleteTimesheet(value)}
-        ></DeleteForeverIcon>
+      let check = dateCheckEditable(
+        new Date(document.getElementById("date-picker-dialog").value)
       );
+      if (check)
+        return (
+          <DeleteForeverIcon
+            color="action"
+            className="deletePointer"
+            onClick={() => clickDeleteTimesheet(value)}
+          ></DeleteForeverIcon>
+        );
+      else return null;
     } else if (id === "Trade") {
       return (
         <select
@@ -464,11 +469,41 @@ const TimesheetTable = () => {
   });
   // Render the UI for your table
 
-  const [selectedDate, setSelectedDate] = useState(
-    new Date().toLocaleString({
-      timeZone: "America/Los_Angeles",
-    })
-  );
+  const now = new Date().toLocaleString({
+    timeZone: "America/Los_Angeles",
+  });
+
+  const [selectedDate, setSelectedDate] = useState(now);
+
+  const getSunday = d => {
+    d = new Date(d);
+    var day = d.getDay(),
+      diff = d.getDate() - day;
+    return new Date(d.setDate(diff));
+  };
+
+  const date_diff_indays = (date1, date2) => {
+    return Math.floor(
+      (Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate()) -
+        Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate())) /
+        (1000 * 60 * 60 * 24)
+    );
+  };
+
+  const dateCheckEditable = str => {
+    const toStr = str.toLocaleString();
+    const dateFromStr = new Date(
+      toStr.split("/")[0] +
+        "-" +
+        toStr.split("/")[1] +
+        "-" +
+        toStr.split("/")[2]
+    );
+    const sundayOfSelected = getSunday(dateFromStr);
+    const sundayOfToday = getSunday(now);
+    if (date_diff_indays(sundayOfToday, sundayOfSelected) >= 0) return true;
+    else return false;
+  };
 
   const handleDateChange = date => {
     setSelectedDate(date);
@@ -611,6 +646,18 @@ const TimesheetTable = () => {
         {console.log(data)}
         {console.log("deleteQueue")}
         {console.log(deleteQueue)}
+        {console.log("dateCheckThisWeek(selectedDate)")}
+        {console.log(dateCheckEditable(selectedDate))}
+
+        {/* {console.log("getSunday")}
+        {console.log(getSunday(selectedDate))}
+        {console.log("check Sunday")}
+        {console.log(
+          getSunday(selectedDate) === getSunday(now)
+            ? "editable"
+            : "not editable"
+        )} */}
+
         <div className="flex">
           <h1 className="mr-5" id="timesheetTitle">
             Timesheet
@@ -620,7 +667,7 @@ const TimesheetTable = () => {
               margin="normal"
               id="date-picker-dialog"
               label="Timesheet Date"
-              format="MM/dd/yyyy"
+              format="yyyy-MM-dd"
               value={selectedDate}
               onChange={handleDateChange}
               KeyboardButtonProps={{
@@ -630,42 +677,44 @@ const TimesheetTable = () => {
           </MuiPickersUtilsProvider>
           <h3 id="projectID">Project ID : 7</h3>
         </div>
-        <div className="flex">
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={checkState}
-                onChange={checkChange}
-                name="checkbox"
-                color="secondary"
-                id="checkbox1"
-              />
-            }
-            label="Set Same Time of All"
-            className="checkBoxForm"
-          />
-          <Button
-            variant="contained"
-            color="secondary"
-            size="small"
-            className="addBtn"
-            onClick={addTimesheetRow}
-            startIcon={<AddIcon />}
-          >
-            Add&nbsp;Row
-          </Button>
-          <Button
-            id="saveTimesheetBtn"
-            variant="contained"
-            color="primary"
-            onClick={handleSaveTimesheetBtn}
-            size="small"
-            className="saveBtn"
-            startIcon={<SaveIcon />}
-          >
-            Save
-          </Button>
-        </div>
+        {dateCheckEditable(selectedDate) && (
+          <div className="flex">
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={checkState}
+                  onChange={checkChange}
+                  name="checkbox"
+                  color="secondary"
+                  id="checkbox1"
+                />
+              }
+              label="Set Same Time of All"
+              className="checkBoxForm"
+            />
+            <Button
+              variant="contained"
+              color="secondary"
+              size="small"
+              className="addBtn"
+              onClick={addTimesheetRow}
+              startIcon={<AddIcon />}
+            >
+              Add&nbsp;Row
+            </Button>
+            <Button
+              id="saveTimesheetBtn"
+              variant="contained"
+              color="primary"
+              onClick={handleSaveTimesheetBtn}
+              size="small"
+              className="saveBtn"
+              startIcon={<SaveIcon />}
+            >
+              Save
+            </Button>
+          </div>
+        )}
       </div>
       <div className="flex timeTableBtn"></div>
       <div className="tableDiv">
