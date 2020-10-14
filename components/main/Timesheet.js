@@ -208,6 +208,8 @@ const TimesheetTable = () => {
         } else {
           updateMyData(index, id, value);
         }
+      } else {
+        updateMyData(index, id, value);
       }
     };
 
@@ -255,7 +257,7 @@ const TimesheetTable = () => {
             onClick={() => clickDeleteTimesheet(value)}
           ></DeleteForeverIcon>
         );
-      else return null;
+      else return <></>;
     } else if (id === "Trade") {
       return (
         <select
@@ -516,7 +518,7 @@ const TimesheetTable = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios({
+      let result = await axios({
         method: "get",
         url: `/api/timesheets?selectedDate=${formatDate(selectedDate)}`,
         timeout: 4000, // 4 seconds timeout
