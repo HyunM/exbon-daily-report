@@ -36,8 +36,9 @@ import TextField from "@material-ui/core/TextField";
 import Autocomplete from "react-autocomplete";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useSelector, useDispatch } from "react-redux";
 
-let deleteQueue = []; //must be modified
+// let deleteQueue = []; //must be modified
 
 toast.configure();
 
@@ -61,6 +62,19 @@ const Timesheet = () => {
 };
 
 const TimesheetTable = () => {
+  const deleteQueue = useSelector(state => state.deleteQueue);
+  const dispatch = useDispatch();
+  const addDeleteQueue = value =>
+    dispatch({
+      type: "ADDDELETEQUEUE",
+      addDeleteQueue: value,
+    });
+
+  const initializaDeleteQueue = () =>
+    dispatch({
+      type: "INITIALIZE",
+    });
+
   const [checkState, setCheckState] = useState(false);
   const checkChange = event => {
     if (event.target.checked) {
@@ -218,7 +232,8 @@ const TimesheetTable = () => {
     const clickDeleteTimesheet = value => {
       //value = TimesheetID
       deleteTimesheetRow(index, id);
-      deleteQueue.push(value);
+      addDeleteQueue(value);
+      // deleteQueue.push(value);
     };
 
     // If the initialValue is changed external, sync it up with our state
@@ -476,7 +491,7 @@ const TimesheetTable = () => {
     };
 
     fetchData();
-    deleteQueue = [];
+    initializaDeleteQueue();
   }, [selectedDate]);
 
   useEffect(() => {
@@ -573,6 +588,7 @@ const TimesheetTable = () => {
             headers: {},
           });
         }
+        initializaDeleteQueue();
       };
 
       fetchData();
