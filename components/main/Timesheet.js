@@ -201,11 +201,13 @@ const TimesheetTable = () => {
 
     // We'll only update the external data when the input is blurred
     const onBlur = e => {
-      if (document.getElementById("checkbox1").checked) {
-        updateMyData(index, id, value);
-        setSameTime();
-      } else {
-        updateMyData(index, id, value);
+      if (document.getElementById("checkbox1")) {
+        if (document.getElementById("checkbox1").checked) {
+          updateMyData(index, id, value);
+          setSameTime();
+        } else {
+          updateMyData(index, id, value);
+        }
       }
     };
 
@@ -350,6 +352,9 @@ const TimesheetTable = () => {
             ))) /
         3600000
       ).toFixed(2);
+      if (parseFloat(laborDate) < 0) {
+        laborDate = (parseFloat(laborDate) + 24).toFixed(2);
+      }
       // let laborDate = (
       //   (new Date(row.values.WorkEnd) -
       //     new Date(row.values.WorkStart) -
