@@ -75,7 +75,7 @@ const TimesheetTable = () => {
       type: "INITIALIZE",
     });
 
-  const [checkState, setCheckState] = useState(false);
+  const [checkState, setCheckState] = useState(true);
   const checkChange = event => {
     if (event.target.checked) {
       for (
@@ -441,14 +441,14 @@ const TimesheetTable = () => {
         EmployeeName: "",
         Date: formatDate(selectedDate),
         Trade: "Project Manager",
-        // WorkStart: data[0] !== undefined ? data[0].WorkStart : "07:00AM",
-        // MealStart: data[0] !== undefined ? data[0].MealStart : "12:00PM",
-        // MealEnd: data[0] !== undefined ? data[0].MealEnd : "01:00PM",
-        // WorkEnd: data[0] !== undefined ? data[0].WorkEnd : "05:00PM",
-        WorkStart: "07:00AM",
-        MealStart: "12:00PM",
-        MealEnd: "01:00PM",
-        WorkEnd: "05:00PM",
+        WorkStart: data[0] !== undefined ? data[0].WorkStart : "07:00AM",
+        MealStart: data[0] !== undefined ? data[0].MealStart : "12:00PM",
+        MealEnd: data[0] !== undefined ? data[0].MealEnd : "01:00PM",
+        WorkEnd: data[0] !== undefined ? data[0].WorkEnd : "05:00PM",
+        // WorkStart: "07:00AM",
+        // MealStart: "12:00PM",
+        // MealEnd: "01:00PM",
+        // WorkEnd: "05:00PM",
       },
     ]);
   };
@@ -518,6 +518,8 @@ const TimesheetTable = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log("selectedDate");
+      console.log(selectedDate.toLocaleString());
       let result = await axios({
         method: "get",
         url: `/api/timesheets?selectedDate=${formatDate(selectedDate)}`,
@@ -528,6 +530,9 @@ const TimesheetTable = () => {
         //   lastName: "Pollock",
         // },
       });
+      if (now.slice(0, 10) === selectedDate.toLocaleString().slice(0, 10))
+        setCheckState(true);
+      else setCheckState(false);
 
       setData(result.data);
     };
