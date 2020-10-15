@@ -530,9 +530,35 @@ const TimesheetTable = () => {
         //   lastName: "Pollock",
         // },
       });
-      if (now.slice(0, 10) === selectedDate.toLocaleString().slice(0, 10))
+      if (now.slice(0, 10) === selectedDate.toLocaleString().slice(0, 10)) {
         setCheckState(true);
-      else setCheckState(false);
+        for (
+          let i = 12;
+          i < document.getElementsByClassName("disabledTime").length;
+          i++
+        ) {
+          document
+            .getElementsByClassName("disabledTime")
+            [i].setAttribute("disabled", true);
+          document
+            .getElementsByClassName("disabledTime")
+            [i].classList.add("classDisabled");
+        }
+      } else {
+        setCheckState(false);
+        for (
+          let i = 12;
+          i < document.getElementsByClassName("disabledTime").length;
+          i++
+        ) {
+          document
+            .getElementsByClassName("disabledTime")
+            [i].setAttribute("disabled", false);
+          document
+            .getElementsByClassName("disabledTime")
+            [i].classList.remove("classDisabled");
+        }
+      }
 
       setData(result.data);
     };
