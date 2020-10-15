@@ -44,14 +44,14 @@ export default function TimesheetHandler(req, res) {
           const query = `EXEC [Hammer].[dbo].[Timesheet_UpdateByTimesheetID]
           ${TimesheetID}, ${body.EmployeeID}, "${body.Trade}", "${body.WorkStart}",  "${body.WorkEnd}", "${body.MealStart}", "${body.MealEnd}"`;
           /* --Params--
-        @timesheetID int,
-        @employeeID int,
-        @trade nvarchar(100),
-        @workStart time(0),
-        @workEnd time(0),
-        @mealStart time(0),
-        @mealEnd time(0)
-        */
+          @timesheetID int,
+          @employeeID int,
+          @trade nvarchar(100),
+          @workStart time(0),
+          @workEnd time(0),
+          @mealStart time(0),
+          @mealEnd time(0)
+          */
 
           request.query(query, (err, recordset) => {
             if (err) {
@@ -75,8 +75,8 @@ export default function TimesheetHandler(req, res) {
           const query = `EXEC [Hammer].[dbo].[Timesheet_DeleteByTimesheetID]
                           ${TimesheetID}`;
           /* --Params--
-            @timesheetID int
-            */
+          @timesheetID int
+          */
 
           request.query(query, (err, recordset) => {
             if (err) {
@@ -90,7 +90,7 @@ export default function TimesheetHandler(req, res) {
         });
         break;
       default:
-        res.setHeader("Allow", ["PUT"]);
+        res.setHeader("Allow", ["PUT", "DELETE"]);
         res.status(405).end(`Method ${method} Not Allowed`);
         res.status(500).end("This is an error");
         return resolve();

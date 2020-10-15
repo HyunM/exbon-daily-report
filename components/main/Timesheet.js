@@ -209,7 +209,7 @@ const TimesheetTable = () => {
           updateMyData(index, id, value);
         }
       } else {
-        updateMyData(index, id, value);
+        updateMyData(index, id, value); //important bug fix but why?
       }
     };
 
