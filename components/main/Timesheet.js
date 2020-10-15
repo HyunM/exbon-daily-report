@@ -523,7 +523,7 @@ const TimesheetTable = () => {
       let result = await axios({
         method: "get",
         url: `/api/timesheets?selectedDate=${formatDate(selectedDate)}`,
-        timeout: 4000, // 4 seconds timeout
+        timeout: 15000, // 15 seconds timeout
         headers: {},
         // data: {
         //   firstName: "David",
@@ -624,7 +624,7 @@ const TimesheetTable = () => {
             await axios({
               method: "post",
               url: `/api/timesheets`,
-              timeout: 4000, // 4 seconds timeout
+              timeout: 15000, // 15 seconds timeout
               headers: {},
               data: {
                 EmployeeID: data[i].EmployeeID,
@@ -640,7 +640,7 @@ const TimesheetTable = () => {
             await axios({
               method: "put",
               url: `/api/timesheets/${data[i].TimesheetID}`,
-              timeout: 4000, // 4 seconds timeout
+              timeout: 15000, // 15 seconds timeout
               headers: {},
               data: {
                 EmployeeID: data[i].EmployeeID,
@@ -657,7 +657,7 @@ const TimesheetTable = () => {
           await axios({
             method: "delete",
             url: `/api/timesheets/${deleteQueue[i]}`,
-            timeout: 4000, // 4 seconds timeout
+            timeout: 15000, // 15 seconds timeout
             headers: {},
           });
         }
