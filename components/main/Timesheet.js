@@ -532,32 +532,8 @@ const TimesheetTable = () => {
       });
       if (now.slice(0, 10) === selectedDate.toLocaleString().slice(0, 10)) {
         setCheckState(true);
-        for (
-          let i = 12;
-          i < document.getElementsByClassName("disabledTime").length;
-          i++
-        ) {
-          document
-            .getElementsByClassName("disabledTime")
-            [i].setAttribute("disabled", true);
-          document
-            .getElementsByClassName("disabledTime")
-            [i].classList.add("classDisabled");
-        }
       } else {
         setCheckState(false);
-        for (
-          let i = 12;
-          i < document.getElementsByClassName("disabledTime").length;
-          i++
-        ) {
-          document
-            .getElementsByClassName("disabledTime")
-            [i].setAttribute("disabled", false);
-          document
-            .getElementsByClassName("disabledTime")
-            [i].classList.remove("classDisabled");
-        }
       }
 
       setData(result.data);
@@ -581,8 +557,21 @@ const TimesheetTable = () => {
           .getElementsByClassName("disabledTime")
           [i].classList.add("classDisabled");
       }
+    } else {
+      for (
+        let i = 12;
+        i < document.getElementsByClassName("disabledTime").length;
+        i++
+      ) {
+        document
+          .getElementsByClassName("disabledTime")
+          [i].removeAttribute("disabled");
+        document
+          .getElementsByClassName("disabledTime")
+          [i].classList.remove("classDisabled");
+      }
     }
-  }, [data.length]);
+  }, [data]);
 
   const handleSaveTimesheetBtn = () => {
     let checkEmployeeName = data.find(employee => employee.EmployeeID === 0);
@@ -686,15 +675,6 @@ const TimesheetTable = () => {
         {console.log(deleteQueue)}
         {console.log("dateCheckThisWeek(selectedDate)")}
         {console.log(dateCheckEditable(selectedDate))}
-
-        {/* {console.log("getSunday")}
-        {console.log(getSunday(selectedDate))}
-        {console.log("check Sunday")}
-        {console.log(
-          getSunday(selectedDate) === getSunday(now)
-            ? "editable"
-            : "not editable"
-        )} */}
 
         <div className="flex">
           <h1 className="mr-5" id="timesheetTitle">
