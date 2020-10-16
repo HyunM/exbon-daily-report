@@ -59,7 +59,9 @@ export default function TimesheetHandler(req, res) {
               return resolve();
             }
 
-            res.status(200).json("1");
+            res.status(200).json({
+              message: "Success, the timesheet has been updated.",
+            });
             return resolve();
           });
         });
@@ -84,7 +86,9 @@ export default function TimesheetHandler(req, res) {
               return resolve();
             }
 
-            res.status(200).json("1");
+            res.status(200).json({
+              message: "Success, the timesheet has been deleted.",
+            });
             return resolve();
           });
         });
