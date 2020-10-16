@@ -11,8 +11,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
+
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
@@ -28,11 +27,8 @@ import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import InputMask from "react-input-mask";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import useSwr from "swr";
-import Link from "next/link";
 import { formatDate } from "./formatDate";
 import { employeeInfo } from "./Employee";
-import TextField from "@material-ui/core/TextField";
 import Autocomplete from "react-autocomplete";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

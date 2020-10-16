@@ -19,7 +19,7 @@ paths:
           required: true
           schema:
             type: string
-            example: "2020-10-16"
+            example: "2020-10-17"
       responses:
         200:
           description: A list of timesheets.
@@ -41,7 +41,7 @@ paths:
                   example: "Project Manager"
                 Date:
                   type: string
-                  example: "2020-10-16"
+                  example: "2020-10-17"
                 WorkStart:
                   type: string
                   example: "07:00:00"
@@ -55,7 +55,7 @@ paths:
                   type: string
                   example: "13:00:00"
       responses:
-        200: 
+        200:
           description: The timesheet has been created.
   /timesheets/{TimesheetID}:
     put:
@@ -131,7 +131,7 @@ components:
           example: Project Manager
         Date:
           type: string
-          example: "2020-10-16"
+          example: "2020-10-17"
         WorkStart:
           type: string
           example: "07:00:00"
