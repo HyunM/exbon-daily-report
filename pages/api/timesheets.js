@@ -55,7 +55,10 @@ const timesheetHandler = (req, res) => {
               console.error(err);
               return resolve();
             }
-            res.status(200).json(recordset.rowsAffected);
+            // res.status(200).json(recordset.rowsAffected);
+            res.status(200).json({
+              message: "Success, the timesheet has been created.",
+            });
             return resolve();
           });
         });

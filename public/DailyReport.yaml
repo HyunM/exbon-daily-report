@@ -1,0 +1,152 @@
+openapi: 3.0.3
+info:
+  title: Daily Report API
+  version: 1.0.0
+tags:
+  - name: "Timesheet"
+servers:
+  - url: /api
+
+paths:
+  /timesheets:
+    get:
+      tags:
+        - "Timesheet"
+      description: Get the timesheets of the specific date.
+      parameters:
+        - in: query
+          name: selectedDate
+          required: true
+          schema:
+            type: string
+            example: "2020-10-16"
+      responses:
+        200:
+          description: A list of timesheets.
+    post:
+      tags:
+        - "Timesheet"
+      description: Create a new timesheet.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                EmployeeID:
+                  type: integer
+                  example: 7784
+                Trade:
+                  type: string
+                  example: "Project Manager"
+                Date:
+                  type: string
+                  example: "2020-10-16"
+                WorkStart:
+                  type: string
+                  example: "07:00:00"
+                WorkEnd:
+                  type: string
+                  example: "17:00:00"
+                MealStart:
+                  type: string
+                  example: "12:00:00"
+                MealEnd:
+                  type: string
+                  example: "13:00:00"
+      responses:
+        200: 
+          description: The timesheet has been created.
+  /timesheets/{TimesheetID}:
+    put:
+      tags:
+        - "Timesheet"
+      description: Update the timesheet.
+      parameters:
+        - in: path
+          name: TimesheetID
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                EmployeeID:
+                  type: integer
+                  example: 7784
+                Trade:
+                  type: string
+                  example: "Project Manager"
+                WorkStart:
+                  type: string
+                  example: "07:00:00"
+                WorkEnd:
+                  type: string
+                  example: "17:00:00"
+                MealStart:
+                  type: string
+                  example: "12:00:00"
+                MealEnd:
+                  type: string
+                  example: "13:00:00"
+      responses:
+        200:
+          description: Update timesheets.
+    delete:
+      tags:
+        - "Timesheet"
+      description: Delete the timesheet.
+      parameters:
+        - in: path
+          name: TimesheetID
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        200:
+          description: Delete the timesheet.
+components:
+  schemas:
+    Timesheet:
+      type: object
+      required:
+        - TimesheetID
+      properties:
+        TimesheetID:
+          type: integer
+          example: 5
+        ProjectID:
+          type: integer
+          example: 1
+        EmployeeID:
+          type: integer
+          example: 7784
+        Trade:
+          type: string
+          example: Project Manager
+        Date:
+          type: string
+          example: "2020-10-16"
+        WorkStart:
+          type: string
+          example: "07:00:00"
+        WorkEnd:
+          type: string
+          example: "17:00:00"
+        MealStart:
+          type: string
+          example: "12:00:00"
+        MealEnd:
+          type: string
+          example: "13:00:00"
+        LaborHours:
+          type: number
+          example: 9
+        MealHours:
+          type: number
+          example: 1

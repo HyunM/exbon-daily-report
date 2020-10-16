@@ -26,6 +26,7 @@
     "react-toastify": "^6.0.9",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
+    "swagger-ui-react": "^3.35.2",
     "swr": "^0.1.18"
   },
   "license": "MIT"
