@@ -499,13 +499,13 @@ const TimesheetTable = () => {
 
   const dateCheckEditable = str => {
     const toStr = str.toLocaleString();
-    const dateFromStr = new Date(
+    const newStr =
       toStr.split("/")[0] +
-        "-" +
-        toStr.split("/")[1] +
-        "-" +
-        toStr.split("/")[2]
-    );
+      "/" +
+      toStr.split("/")[1] +
+      "/" +
+      toStr.split("/")[2];
+    const dateFromStr = new Date(newStr);
     const sundayOfSelected = getSunday(dateFromStr);
     const sundayOfToday = getSunday(now);
     if (date_diff_indays(sundayOfToday, sundayOfSelected) >= 0) return true;
