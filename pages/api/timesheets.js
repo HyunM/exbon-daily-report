@@ -2,6 +2,8 @@ const mssql = require("mssql");
 const dbserver = require("../../dbConfig.js");
 
 const timesheetHandler = (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
   const { method, body } = req;
   return new Promise(resolve => {
     switch (method) {
