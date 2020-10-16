@@ -95,7 +95,7 @@ paths:
                   example: "13:00:00"
       responses:
         200:
-          description: Update timesheets.
+          description: The timesheet has been updated.
     delete:
       tags:
         - "Timesheet"
@@ -109,7 +109,7 @@ paths:
             example: 1
       responses:
         200:
-          description: Delete the timesheet.
+          description: The timesheet has been deleted.
 components:
   schemas:
     Timesheet:
