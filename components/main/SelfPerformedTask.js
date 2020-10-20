@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
+import axios from "axios";
 import { useTable } from "react-table";
 import TableContainer from "@material-ui/core/TableContainer";
 import Table from "@material-ui/core/Table";
@@ -8,6 +9,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import DateFnsUtils from "@date-io/date-fns";
+import { formatDate } from "./formatDate";
 
 import {
   MuiPickersUtilsProvider,
@@ -31,15 +33,15 @@ const SelfPerformedTaskTable = () => {
     () => [
       {
         Header: "Task",
-        accessor: "Task",
+        accessor: "TaskID",
       },
       {
         Header: "Previous Work %",
-        accessor: "WorkCompleted",
+        accessor: "PreviousWork",
       },
       {
         Header: "Current Work %",
-        accessor: "CurrentWorkCompleted",
+        accessor: "CurrentWork",
       },
     ],
     []
@@ -149,6 +151,21 @@ const SelfPerformedTaskTable = () => {
     setSelectedDate(date);
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      let result = await axios({
+        method: "get",
+        url: `/api/project-self-task?selectedDate=${formatDate(selectedDate)}`,
+        timeout: 15000, // 15 seconds timeout
+        headers: {},
+      });
+
+      setData(result.data);
+    };
+
+    fetchData();
+  }, [selectedDate]);
+
   return (
     <>
       <div className="responsiveFlex selfPerformedTasksAndDate">
@@ -156,11 +173,15 @@ const SelfPerformedTaskTable = () => {
         {console.log(data)}
         {console.log("dateCheckThisWeek(selectedDate)")}
         {console.log(dateCheckEditable(selectedDate))}
-        <div className="flex">
+        <div className="flex leftTitle">
           <h2 className="mr-5" id="selfPerformedTitle">
             Self-Performed Tasks
           </h2>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <MuiPickersUtilsProvider
+            utils={DateFnsUtils}
+            id="selfPerformedTaskCalendar"
+            width="5"
+          >
             <KeyboardDatePicker
               margin="normal"
               id="date-picker-dialog"
@@ -171,12 +192,14 @@ const SelfPerformedTaskTable = () => {
               KeyboardButtonProps={{
                 "aria-label": "change date",
               }}
+              className="dateWidth"
             />
           </MuiPickersUtilsProvider>
+          <h3 id="selfPerformedTaskProjectID">Project ID : 7</h3>
         </div>
 
         {dateCheckEditable(selectedDate) && (
-          <div className="flex">
+          <div className="flex rightTitle">
             <Button
               id="saveSelfPerforemdTaskBtn"
               variant="contained"
