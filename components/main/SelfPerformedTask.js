@@ -1,151 +1,229 @@
-const SelfPerformedTask = () => {
-  const inputTime = [
-    { input: "00:00AM", time: "1900-01-01 00:00:00.000" },
-    { input: "00:10AM", time: "1900-01-01 00:10:00.000" },
-    { input: "00:20AM", time: "1900-01-01 00:20:00.000" },
-    { input: "00:30AM", time: "1900-01-01 00:30:00.000" },
-    { input: "00:40AM", time: "1900-01-01 00:40:00.000" },
-    { input: "00:50AM", time: "1900-01-01 00:50:00.000" },
-    { input: "01:00AM", time: "1900-01-01 01:00:00.000" },
-    { input: "01:10AM", time: "1900-01-01 01:10:00.000" },
-    { input: "01:20AM", time: "1900-01-01 01:20:00.000" },
-    { input: "01:30AM", time: "1900-01-01 01:30:00.000" },
-    { input: "01:40AM", time: "1900-01-01 01:40:00.000" },
-    { input: "01:50AM", time: "1900-01-01 01:50:00.000" },
-    { input: "02:00AM", time: "1900-01-01 02:00:00.000" },
-    { input: "02:10AM", time: "1900-01-01 02:10:00.000" },
-    { input: "02:20AM", time: "1900-01-01 02:20:00.000" },
-    { input: "02:30AM", time: "1900-01-01 02:30:00.000" },
-    { input: "02:40AM", time: "1900-01-01 02:40:00.000" },
-    { input: "02:50AM", time: "1900-01-01 02:50:00.000" },
-    { input: "03:00AM", time: "1900-01-01 03:00:00.000" },
-    { input: "03:10AM", time: "1900-01-01 03:10:00.000" },
-    { input: "03:20AM", time: "1900-01-01 03:20:00.000" },
-    { input: "03:30AM", time: "1900-01-01 03:30:00.000" },
-    { input: "03:40AM", time: "1900-01-01 03:40:00.000" },
-    { input: "03:50AM", time: "1900-01-01 03:50:00.000" },
-    { input: "04:00AM", time: "1900-01-01 04:00:00.000" },
-    { input: "04:10AM", time: "1900-01-01 04:10:00.000" },
-    { input: "04:20AM", time: "1900-01-01 04:20:00.000" },
-    { input: "04:30AM", time: "1900-01-01 04:30:00.000" },
-    { input: "04:40AM", time: "1900-01-01 04:40:00.000" },
-    { input: "04:50AM", time: "1900-01-01 04:50:00.000" },
-    { input: "05:00AM", time: "1900-01-01 05:00:00.000" },
-    { input: "05:10AM", time: "1900-01-01 05:10:00.000" },
-    { input: "05:20AM", time: "1900-01-01 05:20:00.000" },
-    { input: "05:30AM", time: "1900-01-01 05:30:00.000" },
-    { input: "05:40AM", time: "1900-01-01 05:40:00.000" },
-    { input: "05:50AM", time: "1900-01-01 05:50:00.000" },
-    { input: "06:00AM", time: "1900-01-01 06:00:00.000" },
-    { input: "06:10AM", time: "1900-01-01 06:10:00.000" },
-    { input: "06:20AM", time: "1900-01-01 06:20:00.000" },
-    { input: "06:30AM", time: "1900-01-01 06:30:00.000" },
-    { input: "06:40AM", time: "1900-01-01 06:40:00.000" },
-    { input: "06:50AM", time: "1900-01-01 06:50:00.000" },
-    { input: "07:00AM", time: "1900-01-01 07:00:00.000" },
-    { input: "07:10AM", time: "1900-01-01 07:10:00.000" },
-    { input: "07:20AM", time: "1900-01-01 07:20:00.000" },
-    { input: "07:30AM", time: "1900-01-01 07:30:00.000" },
-    { input: "07:40AM", time: "1900-01-01 07:40:00.000" },
-    { input: "07:50AM", time: "1900-01-01 07:50:00.000" },
-    { input: "08:00AM", time: "1900-01-01 08:00:00.000" },
-    { input: "08:10AM", time: "1900-01-01 08:10:00.000" },
-    { input: "08:20AM", time: "1900-01-01 08:20:00.000" },
-    { input: "08:30AM", time: "1900-01-01 08:30:00.000" },
-    { input: "08:40AM", time: "1900-01-01 08:40:00.000" },
-    { input: "08:50AM", time: "1900-01-01 08:50:00.000" },
-    { input: "09:00AM", time: "1900-01-01 09:00:00.000" },
-    { input: "09:10AM", time: "1900-01-01 09:10:00.000" },
-    { input: "09:20AM", time: "1900-01-01 09:20:00.000" },
-    { input: "09:30AM", time: "1900-01-01 09:30:00.000" },
-    { input: "09:40AM", time: "1900-01-01 09:40:00.000" },
-    { input: "09:50AM", time: "1900-01-01 09:50:00.000" },
-    { input: "10:00AM", time: "1900-01-01 10:00:00.000" },
-    { input: "10:10AM", time: "1900-01-01 10:10:00.000" },
-    { input: "10:20AM", time: "1900-01-01 10:20:00.000" },
-    { input: "10:30AM", time: "1900-01-01 10:30:00.000" },
-    { input: "10:40AM", time: "1900-01-01 10:40:00.000" },
-    { input: "10:50AM", time: "1900-01-01 10:50:00.000" },
-    { input: "11:00AM", time: "1900-01-01 11:00:00.000" },
-    { input: "11:10AM", time: "1900-01-01 11:10:00.000" },
-    { input: "11:20AM", time: "1900-01-01 11:20:00.000" },
-    { input: "11:30AM", time: "1900-01-01 11:30:00.000" },
-    { input: "11:40AM", time: "1900-01-01 11:40:00.000" },
-    { input: "11:50AM", time: "1900-01-01 11:50:00.000" },
-    { input: "12:00PM", time: "1900-01-01 12:00:00.000" },
-    { input: "12:10PM", time: "1900-01-01 12:10:00.000" },
-    { input: "12:20PM", time: "1900-01-01 12:20:00.000" },
-    { input: "12:30PM", time: "1900-01-01 12:30:00.000" },
-    { input: "12:40PM", time: "1900-01-01 12:40:00.000" },
-    { input: "12:50PM", time: "1900-01-01 12:50:00.000" },
-    { input: "01:00PM", time: "1900-01-01 13:00:00.000" },
-    { input: "01:10PM", time: "1900-01-01 13:10:00.000" },
-    { input: "01:20PM", time: "1900-01-01 13:20:00.000" },
-    { input: "01:30PM", time: "1900-01-01 13:30:00.000" },
-    { input: "01:40PM", time: "1900-01-01 13:40:00.000" },
-    { input: "01:50PM", time: "1900-01-01 13:50:00.000" },
-    { input: "02:00PM", time: "1900-01-01 14:00:00.000" },
-    { input: "02:10PM", time: "1900-01-01 14:10:00.000" },
-    { input: "02:20PM", time: "1900-01-01 14:20:00.000" },
-    { input: "02:30PM", time: "1900-01-01 14:30:00.000" },
-    { input: "02:40PM", time: "1900-01-01 14:40:00.000" },
-    { input: "02:50PM", time: "1900-01-01 14:50:00.000" },
-    { input: "03:00PM", time: "1900-01-01 15:00:00.000" },
-    { input: "03:10PM", time: "1900-01-01 15:10:00.000" },
-    { input: "03:20PM", time: "1900-01-01 15:20:00.000" },
-    { input: "03:30PM", time: "1900-01-01 15:30:00.000" },
-    { input: "03:40PM", time: "1900-01-01 15:40:00.000" },
-    { input: "03:50PM", time: "1900-01-01 15:50:00.000" },
-    { input: "04:00PM", time: "1900-01-01 16:00:00.000" },
-    { input: "04:10PM", time: "1900-01-01 16:10:00.000" },
-    { input: "04:20PM", time: "1900-01-01 16:20:00.000" },
-    { input: "04:30PM", time: "1900-01-01 16:30:00.000" },
-    { input: "04:40PM", time: "1900-01-01 16:40:00.000" },
-    { input: "04:50PM", time: "1900-01-01 16:50:00.000" },
-    { input: "05:00PM", time: "1900-01-01 17:00:00.000" },
-    { input: "05:10PM", time: "1900-01-01 17:10:00.000" },
-    { input: "05:20PM", time: "1900-01-01 17:20:00.000" },
-    { input: "05:30PM", time: "1900-01-01 17:30:00.000" },
-    { input: "05:40PM", time: "1900-01-01 17:40:00.000" },
-    { input: "05:50PM", time: "1900-01-01 17:50:00.000" },
-    { input: "06:00PM", time: "1900-01-01 18:00:00.000" },
-    { input: "06:10PM", time: "1900-01-01 18:10:00.000" },
-    { input: "06:20PM", time: "1900-01-01 18:20:00.000" },
-    { input: "06:30PM", time: "1900-01-01 18:30:00.000" },
-    { input: "06:40PM", time: "1900-01-01 18:40:00.000" },
-    { input: "06:50PM", time: "1900-01-01 18:50:00.000" },
-    { input: "07:00PM", time: "1900-01-01 19:00:00.000" },
-    { input: "07:10PM", time: "1900-01-01 19:10:00.000" },
-    { input: "07:20PM", time: "1900-01-01 19:20:00.000" },
-    { input: "07:30PM", time: "1900-01-01 19:30:00.000" },
-    { input: "07:40PM", time: "1900-01-01 19:40:00.000" },
-    { input: "07:50PM", time: "1900-01-01 19:50:00.000" },
-    { input: "08:00PM", time: "1900-01-01 20:00:00.000" },
-    { input: "08:10PM", time: "1900-01-01 20:10:00.000" },
-    { input: "08:20PM", time: "1900-01-01 20:20:00.000" },
-    { input: "08:30PM", time: "1900-01-01 20:30:00.000" },
-    { input: "08:40PM", time: "1900-01-01 20:40:00.000" },
-    { input: "08:50PM", time: "1900-01-01 20:50:00.000" },
-    { input: "09:00PM", time: "1900-01-01 21:00:00.000" },
-    { input: "09:10PM", time: "1900-01-01 21:10:00.000" },
-    { input: "09:20PM", time: "1900-01-01 21:20:00.000" },
-    { input: "09:30PM", time: "1900-01-01 21:30:00.000" },
-    { input: "09:40PM", time: "1900-01-01 21:40:00.000" },
-    { input: "09:50PM", time: "1900-01-01 21:50:00.000" },
-    { input: "10:00PM", time: "1900-01-01 22:00:00.000" },
-    { input: "10:10PM", time: "1900-01-01 22:10:00.000" },
-    { input: "10:20PM", time: "1900-01-01 22:20:00.000" },
-    { input: "10:30PM", time: "1900-01-01 22:30:00.000" },
-    { input: "10:40PM", time: "1900-01-01 22:40:00.000" },
-    { input: "10:50PM", time: "1900-01-01 22:50:00.000" },
-    { input: "11:00PM", time: "1900-01-01 23:00:00.000" },
-    { input: "11:10PM", time: "1900-01-01 23:10:00.000" },
-    { input: "11:20PM", time: "1900-01-01 23:20:00.000" },
-    { input: "11:30PM", time: "1900-01-01 23:30:00.000" },
-    { input: "11:40PM", time: "1900-01-01 23:40:00.000" },
-    { input: "11:50PM", time: "1900-01-01 23:50:00.000" },
-  ];
+import { useState, useMemo, useEffect } from "react";
+import { useTable } from "react-table";
+import TableContainer from "@material-ui/core/TableContainer";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
+import DateFnsUtils from "@date-io/date-fns";
 
-  return <></>;
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
+import Button from "@material-ui/core/Button";
+import SaveIcon from "@material-ui/icons/Save";
+const SelfPerformedTask = () => {
+  return (
+    <>
+      <div className="halfTable">
+        <SelfPerformedTaskTable />
+        <div className="mt-5"></div>
+      </div>
+    </>
+  );
+};
+
+const SelfPerformedTaskTable = () => {
+  const columns = useMemo(
+    () => [
+      {
+        Header: "Task",
+        accessor: "Task",
+      },
+      {
+        Header: "Previous Work %",
+        accessor: "WorkCompleted",
+      },
+      {
+        Header: "Current Work %",
+        accessor: "CurrentWorkCompleted",
+      },
+    ],
+    []
+  );
+  const [data, setData] = useState(() => [
+    { Task: "1", WorkCompleted: "2", CurrentWorkCompleted: "3" },
+  ]);
+
+  const EditableCell = ({
+    value: initialValue,
+    row: { index },
+    column: { id },
+    updateMyData, // This is a custom function that we supplied to our table instance
+  }) => {
+    // We need to keep and update the state of the cell normally
+    const [value, setValue] = React.useState(initialValue);
+
+    const onChange = e => {
+      setValue(e.target.value);
+    };
+
+    // We'll only update the external data when the input is blurred
+    const onBlur = () => {
+      updateMyData(index, id, value);
+    };
+
+    // If the initialValue is changed external, sync it up with our state
+    React.useEffect(() => {
+      setValue(initialValue);
+    }, [initialValue]);
+
+    return <input value={value} onChange={onChange} onBlur={onBlur} />;
+  };
+
+  const defaultColumn = {
+    Cell: EditableCell,
+  };
+
+  const updateMyData = (rowIndex, columnId, value) => {
+    // We also turn on the flag to not reset the page
+    setData(old =>
+      old.map((row, index) => {
+        if (index === rowIndex) {
+          return {
+            ...old[rowIndex],
+            [columnId]: value,
+          };
+        }
+        return row;
+      })
+    );
+  };
+
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+  } = useTable({
+    columns,
+    data,
+    defaultColumn,
+    updateMyData,
+  });
+
+  const now = new Date().toLocaleString({
+    timeZone: "America/Los_Angeles",
+  });
+
+  const [selectedDate, setSelectedDate] = useState(now);
+
+  const dateCheckEditable = str => {
+    const getSunday = d => {
+      d = new Date(d);
+      var day = d.getDay(),
+        diff = d.getDate() - day;
+      return new Date(d.setDate(diff));
+    };
+
+    const date_diff_indays = (date1, date2) => {
+      return Math.floor(
+        (Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate()) -
+          Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate())) /
+          (1000 * 60 * 60 * 24)
+      );
+    };
+
+    const toStr = str.toLocaleString();
+
+    const newStr =
+      toStr.split("/")[0] +
+      "/" +
+      toStr.split("/")[1] +
+      "/" +
+      toStr.split("/")[2];
+
+    const dateFromStr = new Date(newStr);
+    const sundayOfSelected = getSunday(dateFromStr);
+    const sundayOfToday = getSunday(now);
+
+    if (date_diff_indays(sundayOfToday, sundayOfSelected) >= 0) return true;
+    else return false;
+  };
+
+  const handleDateChange = date => {
+    setSelectedDate(date);
+  };
+
+  return (
+    <>
+      <div className="responsiveFlex selfPerformedTasksAndDate">
+        {console.log("data")}
+        {console.log(data)}
+        {console.log("dateCheckThisWeek(selectedDate)")}
+        {console.log(dateCheckEditable(selectedDate))}
+        <div className="flex">
+          <h2 className="mr-5" id="selfPerformedTitle">
+            Self-Performed Tasks
+          </h2>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              margin="normal"
+              id="date-picker-dialog"
+              label="Timesheet Date"
+              format="yyyy-MM-dd"
+              value={selectedDate}
+              onChange={handleDateChange}
+              KeyboardButtonProps={{
+                "aria-label": "change date",
+              }}
+            />
+          </MuiPickersUtilsProvider>
+        </div>
+
+        {dateCheckEditable(selectedDate) && (
+          <div className="flex">
+            <Button
+              id="saveSelfPerforemdTaskBtn"
+              variant="contained"
+              color="primary"
+              size="small"
+              className="saveBtn"
+              startIcon={<SaveIcon />}
+            >
+              Save
+            </Button>
+          </div>
+        )}
+      </div>
+      <div className="tableDiv">
+        <TableContainer component={Paper}>
+          <Table {...getTableProps()}>
+            <TableHead>
+              {headerGroups.map(headerGroup => (
+                <TableRow {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map(column => (
+                    <TableCell {...column.getHeaderProps()}>
+                      {column.render("Header")}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableHead>
+            <TableBody {...getTableBodyProps()}>
+              {rows.map((row, i) => {
+                prepareRow(row);
+                return (
+                  <TableRow {...row.getRowProps()}>
+                    {row.cells.map(cell => {
+                      return (
+                        <TableCell {...cell.getCellProps()}>
+                          {cell.render("Cell")}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
+    </>
+  );
 };
 export default SelfPerformedTask;

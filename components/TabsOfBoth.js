@@ -8,47 +8,35 @@ import Tab from "@material-ui/core/Tab";
 import TabPanel from "./Tab/TabPanel";
 import a11yProps from "./Tab/a11yProps";
 
-const TabsOfDesktop = ({ tapNumber, handleChangeTabs }) => {
+const TabsOfBoth = ({ tapNumber, handleChangeTabs }) => {
   return (
     <>
-      {/* <AppBar position="static">
+      <AppBar position="static">
         <Tabs
           value={tapNumber}
           onChange={handleChangeTabs}
+          aria-label="tabs"
           variant="scrollable"
           scrollButtons="auto"
-          aria-label="tabs"
         >
-          <Tab
-            label={
-              <>
-                Timesheet
-                <br />
-                Self-Perforemd Tasks
-              </>
-            }
-            {...a11yProps(0)}
-          />
-          <Tab
-            label={
-              <>
-                Subcontractor Tasks
-                <br />
-                Not Fixed
-              </>
-            }
-            {...a11yProps(1)}
-          />
+          <Tab label="Timesheet" {...a11yProps(0)} />
+          <Tab label="Self-Perforemd Tasks" {...a11yProps(1)} />
+          <Tab label="Subcontractor Tasks" {...a11yProps(2)} />
+          <Tab label="Not Fixed" {...a11yProps(3)} />
         </Tabs>
       </AppBar>
       <TabPanel tapNumber={tapNumber} index={0}>
-        <Timesheet /> <SelfPerformedTask />
+        <Timesheet />
       </TabPanel>
       <TabPanel tapNumber={tapNumber} index={1}>
+        <SelfPerformedTask />
+      </TabPanel>
+      <TabPanel tapNumber={tapNumber} index={2}>
         <SubcontractorTask />
-      </TabPanel> */}
+      </TabPanel>
+      <TabPanel tapNumber={tapNumber} index={3}></TabPanel>
     </>
   );
 };
 
-export default TabsOfDesktop;
+export default TabsOfBoth;

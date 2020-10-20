@@ -103,7 +103,8 @@ body {
   margin-right: 5%;
 }
 
-.timesheetAndDate {
+.timesheetAndDate,
+.selfPerformedTasksAndDate {
   justify-content: space-between;
   margin-top: 5%;
 }
@@ -112,7 +113,8 @@ body {
   text-align: center;
 }
 
-#timesheetTitle {
+#timesheetTitle,
+#selfPerformedTitle {
   font-family: system-ui;
   color: darkblue;
 }
@@ -158,4 +160,9 @@ body {
 
 .deletePointer:hover {
   color: slateblue;
+}
+
+#saveSelfPerforemdTaskBtn {
+  padding: 1em !important;
+  height: auto;
 }
