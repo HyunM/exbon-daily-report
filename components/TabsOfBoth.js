@@ -20,7 +20,7 @@ const TabsOfBoth = ({ tapNumber, handleChangeTabs }) => {
           scrollButtons="auto"
         >
           <Tab label="Timesheet" {...a11yProps(0)} />
-          <Tab label="Self-Perforemd Tasks" {...a11yProps(1)} />
+          <Tab label="Self-Performed Tasks" {...a11yProps(1)} />
           <Tab label="Subcontractor Tasks" {...a11yProps(2)} />
           <Tab label="Not Fixed" {...a11yProps(3)} />
         </Tabs>
