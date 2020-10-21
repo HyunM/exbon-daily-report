@@ -159,7 +159,7 @@ const SelfPerformedTaskTable = () => {
     const fetchData = async () => {
       let result = await axios({
         method: "get",
-        url: `/api/project-self-task?selectedDate=${formatDate(selectedDate)}`,
+        url: `/api/project-self-tasks?selectedDate=${formatDate(selectedDate)}`,
         timeout: 15000, // 15 seconds timeout
         headers: {},
       });

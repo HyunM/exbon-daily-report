@@ -1,7 +1,7 @@
 const mssql = require("mssql");
 const dbserver = require("../../dbConfig.js");
 
-const projectSelfTaskHandler = (req, res) => {
+const projectSelfTasksHandler = (req, res) => {
   const { method, body } = req;
   return new Promise(resolve => {
     switch (method) {
@@ -39,4 +39,4 @@ const projectSelfTaskHandler = (req, res) => {
   });
 };
 
-export default projectSelfTaskHandler;
+export default projectSelfTasksHandler;
