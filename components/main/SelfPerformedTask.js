@@ -33,7 +33,7 @@ const SelfPerformedTaskTable = () => {
     () => [
       {
         Header: "Task",
-        accessor: "TaskID",
+        accessor: "TaskName",
       },
       {
         Header: "Previous Work %",
@@ -46,9 +46,7 @@ const SelfPerformedTaskTable = () => {
     ],
     []
   );
-  const [data, setData] = useState(() => [
-    { Task: "1", WorkCompleted: "2", CurrentWorkCompleted: "3" },
-  ]);
+  const [data, setData] = useState(() => []);
 
   const EditableCell = ({
     value: initialValue,
@@ -60,7 +58,7 @@ const SelfPerformedTaskTable = () => {
     const [value, setValue] = React.useState(initialValue);
 
     const onChange = e => {
-      setValue(e.target.value);
+      setValue(parseFloat(e.target.value));
     };
 
     // We'll only update the external data when the input is blurred
@@ -73,7 +71,13 @@ const SelfPerformedTaskTable = () => {
       setValue(initialValue);
     }, [initialValue]);
 
-    return <input value={value} onChange={onChange} onBlur={onBlur} />;
+    if (id === "TaskName") {
+      return <div>{value}</div>;
+    } else if (id === "PreviousWork") {
+      return <div>{value}</div>;
+    } else if (id === "CurrentWork") {
+      return <input value={value || ""} onChange={onChange} onBlur={onBlur} />;
+    }
   };
 
   const defaultColumn = {
@@ -171,8 +175,7 @@ const SelfPerformedTaskTable = () => {
       <div className="responsiveFlex selfPerformedTasksAndDate">
         {console.log("data")}
         {console.log(data)}
-        {console.log("dateCheckThisWeek(selectedDate)")}
-        {console.log(dateCheckEditable(selectedDate))}
+
         <div className="flex leftTitle">
           <h2 className="mr-5" id="selfPerformedTitle">
             Self-Performed Tasks
