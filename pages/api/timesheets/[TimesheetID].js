@@ -1,7 +1,7 @@
 const mssql = require("mssql");
 const dbserver = require("../../../dbConfig.js");
 
-export default function TimesheetHandler(req, res) {
+const TimesheetIDHandler = (req, res) => {
   const {
     query: { TimesheetID },
     body,
@@ -100,4 +100,5 @@ export default function TimesheetHandler(req, res) {
         return resolve();
     }
   });
-}
+};
+export default TimesheetIDHandler;
