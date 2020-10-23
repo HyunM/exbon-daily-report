@@ -17,6 +17,10 @@ import {
 } from "@material-ui/pickers";
 import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
+import { ToastContainer, toast } from "react-toastify";
+
+toast.configure();
+
 const SelfPerformedTask = () => {
   return (
     <>
@@ -62,8 +66,24 @@ const SelfPerformedTaskTable = () => {
     };
 
     // We'll only update the external data when the input is blurred
-    const onBlur = () => {
-      updateMyData(index, id, value);
+    const onBlur = e => {
+      if (
+        parseFloat(e.target.parentNode.previousElementSibling.innerText) >=
+        parseFloat(e.target.value)
+      ) {
+        toast.warning(
+          <div className="text-center">
+            Current Work must be <strong>bigger</strong> than Previous Work.
+          </div>,
+          {
+            position: toast.POSITION.BOTTOM_CENTER,
+            hideProgressBar: true,
+          }
+        );
+        updateMyData(index, id, value);
+      } else {
+        updateMyData(index, id, value);
+      }
     };
 
     // If the initialValue is changed external, sync it up with our state
@@ -155,12 +175,84 @@ const SelfPerformedTaskTable = () => {
     setSelectedDate(date);
   };
 
+  const handleSaveBtn = () => {
+    let checkSavePossible = 0;
+    data.forEach(element => {
+      if (element.CurrentWork < element.PreviousWork) checkSavePossible++;
+    });
+    if (checkSavePossible) {
+      toast.error(
+        <div className="text-center">
+          Unable to save. <br /> Please check <strong>Current Work </strong>
+          input.
+          <br />
+          (Current Work must be bigger than Previous Work)
+        </div>,
+        {
+          position: toast.POSITION.BOTTOM_CENTER,
+          hideProgressBar: true,
+        }
+      );
+    } else {
+      const fetchData = async () => {
+        for (let i = 0; i < data.length; i++) {
+          if (
+            data[i].LastDate.slice(0, 10) !=
+            document.getElementById("date-picker-dialog").value
+          ) {
+            await axios({
+              method: "post",
+              url: `/api/project-self-tasks`,
+              timeout: 5000, // 5 seconds timeout
+              headers: {},
+              data: {
+                TaskID: data[i].TaskID,
+                Date: document.getElementById("date-picker-dialog").value,
+                WorkCompleted: data[i].CurrentWork,
+              },
+            });
+            toast.success(
+              <div className="text-center">
+                <strong>Save Complete</strong>
+              </div>,
+              {
+                position: toast.POSITION.BOTTOM_CENTER,
+                hideProgressBar: true,
+              }
+            );
+          } else {
+            await axios({
+              method: "put",
+              url: `/api/project-self-tasks/${data[i].RecordID}`,
+              timeout: 5000, // 5 seconds timeout
+              headers: {},
+              data: {
+                WorkCompleted: data[i].CurrentWork,
+              },
+            });
+            toast.success(
+              <div className="text-center">
+                <strong>Save Complete</strong>
+              </div>,
+              {
+                position: toast.POSITION.BOTTOM_CENTER,
+                hideProgressBar: true,
+              }
+            );
+          }
+        }
+      };
+
+      fetchData();
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       let result = await axios({
         method: "get",
         url: `/api/project-self-tasks?selectedDate=${formatDate(selectedDate)}`,
-        timeout: 15000, // 15 seconds timeout
+        timeout: 5000, // 5 seconds timeout
         headers: {},
       });
 
@@ -210,6 +302,7 @@ const SelfPerformedTaskTable = () => {
               size="small"
               className="saveBtn"
               startIcon={<SaveIcon />}
+              onClick={handleSaveBtn}
             >
               Save
             </Button>

@@ -519,7 +519,7 @@ const TimesheetTable = () => {
       let result = await axios({
         method: "get",
         url: `/api/timesheets?selectedDate=${formatDate(selectedDate)}`,
-        timeout: 15000, // 15 seconds timeout
+        timeout: 5000, // 5 seconds timeout
         headers: {},
         // data: {
         //   firstName: "David",
@@ -591,7 +591,7 @@ const TimesheetTable = () => {
           hideProgressBar: true,
         }
       );
-    } else if (checkTime++) {
+    } else if (checkTime) {
       toast.error(
         <div className="text-center">
           Unable to save. <br /> Please check the <strong>time input </strong>
@@ -609,7 +609,7 @@ const TimesheetTable = () => {
             await axios({
               method: "post",
               url: `/api/timesheets`,
-              timeout: 15000, // 15 seconds timeout
+              timeout: 5000, // 5 seconds timeout
               headers: {},
               data: {
                 EmployeeID: data[i].EmployeeID,
@@ -625,7 +625,7 @@ const TimesheetTable = () => {
             await axios({
               method: "put",
               url: `/api/timesheets/${data[i].TimesheetID}`,
-              timeout: 15000, // 15 seconds timeout
+              timeout: 5000, // 5 seconds timeout
               headers: {},
               data: {
                 EmployeeID: data[i].EmployeeID,
@@ -642,7 +642,7 @@ const TimesheetTable = () => {
           await axios({
             method: "delete",
             url: `/api/timesheets/${deleteQueue[i]}`,
-            timeout: 15000, // 15 seconds timeout
+            timeout: 5000, // 5 seconds timeout
             headers: {},
           });
         }
