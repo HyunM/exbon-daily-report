@@ -294,7 +294,7 @@ const SelfPerformedTaskTable = () => {
             <KeyboardDatePicker
               margin="normal"
               id="date-picker-dialog"
-              label="Timesheet Date"
+              label="Date"
               format="yyyy-MM-dd"
               value={selectedDate}
               onChange={handleDateChange}
