@@ -24,7 +24,7 @@ toast.configure();
 const SelfPerformedTask = () => {
   return (
     <>
-      <div className="halfTable">
+      <div className="halfTableTab2">
         <SelfPerformedTaskTable />
         <div className="mt-5"></div>
       </div>
@@ -38,14 +38,17 @@ const SelfPerformedTaskTable = () => {
       {
         Header: "Task",
         accessor: "TaskName",
+        align: "center",
       },
       {
         Header: "Previous Work %",
         accessor: "PreviousWork",
+        align: "center",
       },
       {
         Header: "Current Work %",
         accessor: "CurrentWork",
+        align: "center",
       },
     ],
     []
@@ -68,8 +71,9 @@ const SelfPerformedTaskTable = () => {
     // We'll only update the external data when the input is blurred
     const onBlur = e => {
       if (
-        parseFloat(e.target.parentNode.previousElementSibling.innerText) >=
-        parseFloat(e.target.value)
+        parseFloat(
+          e.target.parentNode.parentNode.previousElementSibling.innerText
+        ) >= parseFloat(e.target.value)
       ) {
         toast.warning(
           <div className="text-center">
@@ -92,17 +96,20 @@ const SelfPerformedTaskTable = () => {
     }, [initialValue]);
 
     if (id === "TaskName") {
-      return <div>{value}</div>;
+      return <div className="text-center">{value}</div>;
     } else if (id === "PreviousWork") {
-      return <div>{value}</div>;
+      return <div className="text-center">{value}</div>;
     } else if (id === "CurrentWork") {
       return (
-        <input
-          value={value || ""}
-          type="number"
-          onChange={onChange}
-          onBlur={onBlur}
-        />
+        <div className="text-center">
+          <input
+            className="text-center input-current-work"
+            value={value || ""}
+            type="number"
+            onChange={onChange}
+            onBlur={onBlur}
+          />
+        </div>
       );
     }
   };
@@ -282,7 +289,7 @@ const SelfPerformedTaskTable = () => {
           <MuiPickersUtilsProvider
             utils={DateFnsUtils}
             id="selfPerformedTaskCalendar"
-            width="5"
+            width="10"
           >
             <KeyboardDatePicker
               margin="normal"
@@ -323,7 +330,12 @@ const SelfPerformedTaskTable = () => {
               {headerGroups.map(headerGroup => (
                 <TableRow {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map(column => (
-                    <TableCell {...column.getHeaderProps()}>
+                    <TableCell
+                      {...column.getHeaderProps()}
+                      style={{
+                        textAlign: "center",
+                      }}
+                    >
                       {column.render("Header")}
                     </TableCell>
                   ))}

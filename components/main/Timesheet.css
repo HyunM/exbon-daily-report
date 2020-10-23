@@ -3,6 +3,12 @@
     width: 60%;
     margin: auto;
   }
+
+  .halfTableTab2 {
+    width: 580px;
+    margin: auto;
+  }
+
   .responsiveFlex {
     display: flex;
   }
@@ -27,6 +33,10 @@
     width: 100%;
     margin: auto;
   }
+  .halfTableTab2 {
+    width: 580px;
+    margin: auto;
+  }
   .saveBtn {
     height: 50%;
     margin-top: auto !important;
@@ -37,6 +47,13 @@
     margin-top: auto !important;
     margin-bottom: auto !important;
     margin-right: 5% !important;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .halfTableTab2 {
+    width: 100%;
+    margin: auto;
   }
 }
 
@@ -103,21 +120,31 @@ body {
   margin-right: 5%;
 }
 
-.timesheetAndDate,
-.selfPerformedTasksAndDate {
+.timesheetAndDate {
   justify-content: space-between;
   margin-top: 5%;
 }
 
-.text-right {
+.selfPerformedTasksAndDate {
+  justify-content: space-between;
+  margin-top: 10%;
+}
+
+.text-center {
   text-align: center;
 }
 
-#timesheetTitle,
+#timesheetTitle {
+  font-family: system-ui;
+  color: darkblue;
+  flex: 0 1 auto;
+}
+
 #selfPerformedTitle {
   font-family: system-ui;
   color: darkblue;
   flex: 0 1 auto;
+  margin-right: 1%;
 }
 
 .MuiTableCell-root input {
@@ -164,8 +191,9 @@ body {
 }
 
 #saveSelfPerforemdTaskBtn {
-  padding: 1em !important;
+  padding: 0.5em !important;
   height: auto;
+  margin-bottom: 2em !important;
 }
 
 .leftTitle {
@@ -175,7 +203,7 @@ body {
 .rightTitle {
   flex: 0 1 auto;
   flex-direction: row-reverse;
-  margin-bottom: 1rem;
+  margin-bottom: 0rem;
 }
 
 /* #selfPerformedTaskCalendar {
@@ -183,12 +211,16 @@ body {
 }*/
 
 #selfPerformedTaskProjectID {
-  flex-basis: 40%;
+  flex-basis: 30%;
   font-family: monospace;
   margin-bottom: 0 !important;
-  margin-left: 5% !important;
+  margin-left: 3% !important;
 }
 
 .dateWidth {
   width: 160px;
+}
+
+.input-current-work {
+  width: 50px !important;
 }

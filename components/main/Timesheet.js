@@ -360,7 +360,7 @@ const TimesheetTable = () => {
       //   3600000
       // ).toFixed(2);
 
-      return <div className="text-right laborDiv">{laborDate}</div>;
+      return <div className="text-center laborDiv">{laborDate}</div>;
     }
   };
 
