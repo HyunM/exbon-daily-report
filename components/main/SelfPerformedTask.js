@@ -62,7 +62,7 @@ const SelfPerformedTaskTable = () => {
     const [value, setValue] = React.useState(initialValue);
 
     const onChange = e => {
-      setValue(parseFloat(e.target.value));
+      setValue(e.target.value);
     };
 
     // We'll only update the external data when the input is blurred
@@ -96,7 +96,14 @@ const SelfPerformedTaskTable = () => {
     } else if (id === "PreviousWork") {
       return <div>{value}</div>;
     } else if (id === "CurrentWork") {
-      return <input value={value || ""} onChange={onChange} onBlur={onBlur} />;
+      return (
+        <input
+          value={value || ""}
+          type="number"
+          onChange={onChange}
+          onBlur={onBlur}
+        />
+      );
     }
   };
 
