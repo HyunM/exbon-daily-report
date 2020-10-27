@@ -64,6 +64,10 @@
     width: 100%;
     margin: auto;
   }
+  .halfTableTab3 {
+    width: 100%;
+    margin: auto;
+  }
 }
 
 .scrollChange {
@@ -224,11 +228,21 @@ body {
 }
 
 .leftTitle {
-  flex: 1 1 auto;
+  flex: 0 1 auto;
+}
+
+.leftTitleForSubcontractor {
+  flex: 0 1 auto;
 }
 
 .rightTitle {
-  flex: 0 1 auto;
+  flex: 1 1 auto;
+  flex-direction: row-reverse;
+  margin-bottom: 0rem;
+}
+
+.rightTitleForSubcontractor {
+  flex: 1 1 auto;
   flex-direction: row-reverse;
   margin-bottom: 0rem;
 }

@@ -52,7 +52,18 @@ const SubcontractorTaskTable = () => {
     []
   );
 
-  const [data, setData] = useState(() => []);
+  const [data, setData] = useState(() => [
+    {
+      TaskName: "Test",
+      PreviousWork: 40,
+      CurrentWork: 50,
+    },
+    {
+      TaskName: "Test2",
+      PreviousWork: 50,
+      CurrentWork: "",
+    },
+  ]);
 
   const EditableCell = ({
     value: initialValue,
@@ -77,7 +88,23 @@ const SubcontractorTaskTable = () => {
       setValue(initialValue);
     }, [initialValue]);
 
-    return <input value={value} onChange={onChange} onBlur={onBlur} />;
+    if (id === "TaskName") {
+      return <div className="text-center">{value}</div>;
+    } else if (id === "PreviousWork") {
+      return <div className="text-center">{value}</div>;
+    } else if (id === "CurrentWork") {
+      return (
+        <div className="text-center">
+          <input
+            className="text-center input-current-work"
+            value={value || ""}
+            type="number"
+            onChange={onChange}
+            onBlur={onBlur}
+          />
+        </div>
+      );
+    }
   };
 
   // Set our editable cell renderer as the default Cell renderer
@@ -113,13 +140,55 @@ const SubcontractorTaskTable = () => {
     updateMyData,
   });
 
+  const now = new Date().toLocaleString({
+    timeZone: "America/Los_Angeles",
+  });
+
+  const [selectedDate, setSelectedDate] = useState(now);
+
+  const dateCheckEditable = str => {
+    const getSunday = d => {
+      d = new Date(d);
+      var day = d.getDay(),
+        diff = d.getDate() - day;
+      return new Date(d.setDate(diff));
+    };
+
+    const date_diff_indays = (date1, date2) => {
+      return Math.floor(
+        (Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate()) -
+          Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate())) /
+          (1000 * 60 * 60 * 24)
+      );
+    };
+
+    const toStr = str.toLocaleString();
+
+    const newStr =
+      toStr.split("/")[0] +
+      "/" +
+      toStr.split("/")[1] +
+      "/" +
+      toStr.split("/")[2];
+
+    const dateFromStr = new Date(newStr);
+    const sundayOfSelected = getSunday(dateFromStr);
+    const sundayOfToday = getSunday(now);
+
+    if (date_diff_indays(sundayOfToday, sundayOfSelected) >= 0) return true;
+    else return false;
+  };
+
+  const handleDateChange = date => {
+    setSelectedDate(date);
+  };
   return (
     <>
       <div className="responsiveFlex subcontractorTasksAndDate">
         {console.log("data")}
         {console.log(data)}
 
-        <div className="flex leftTitle">
+        <div className="flex leftTitleForSubcontractor">
           <h2 className="mr-5" id="subcontractorTitle">
             Subcontractor Tasks
           </h2>
@@ -132,24 +201,27 @@ const SubcontractorTaskTable = () => {
               KeyboardButtonProps={{
                 "aria-label": "change date",
               }}
+              value={selectedDate}
+              onChange={handleDateChange}
               className="dateWidth"
             />
           </MuiPickersUtilsProvider>
           <h3 id="subcontractorTaskProjectID">Project ID : 7</h3>
         </div>
-
-        <div className="flex rightTitle">
-          <Button
-            id="saveSubcontractorTaskBtn"
-            variant="contained"
-            color="primary"
-            size="small"
-            className="saveBtn"
-            startIcon={<SaveIcon />}
-          >
-            Save
-          </Button>
-        </div>
+        {dateCheckEditable(selectedDate) && (
+          <div className="flex rightTitleForSubcontractor">
+            <Button
+              id="saveSubcontractorTaskBtn"
+              variant="contained"
+              color="primary"
+              size="small"
+              className="saveBtn"
+              startIcon={<SaveIcon />}
+            >
+              Save
+            </Button>
+          </div>
+        )}
       </div>
       <div className="tableDiv">
         <TableContainer component={Paper}>
