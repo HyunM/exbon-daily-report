@@ -9,6 +9,11 @@
     margin: auto;
   }
 
+  .halfTableTab3 {
+    width: 580px;
+    margin: auto;
+  }
+
   .responsiveFlex {
     display: flex;
   }
@@ -34,6 +39,10 @@
     margin: auto;
   }
   .halfTableTab2 {
+    width: 580px;
+    margin: auto;
+  }
+  .halfTableTab3 {
     width: 580px;
     margin: auto;
   }
@@ -130,6 +139,11 @@ body {
   margin-top: 10%;
 }
 
+.subcontractorTasksAndDate {
+  justify-content: space-between;
+  margin-top: 10%;
+}
+
 .text-center {
   text-align: center;
 }
@@ -145,6 +159,13 @@ body {
   color: darkblue;
   flex: 0 1 auto;
   margin-right: 1%;
+}
+
+#subcontractorTitle {
+  font-family: system-ui;
+  color: darkblue;
+  flex: 0 1 auto;
+  margin-right: 0;
 }
 
 .MuiTableCell-root input {
@@ -196,6 +217,12 @@ body {
   margin-bottom: 2em !important;
 }
 
+#saveSubcontractorTaskBtn {
+  padding: 0.5em !important;
+  height: auto;
+  margin-bottom: 2em !important;
+}
+
 .leftTitle {
   flex: 1 1 auto;
 }
@@ -211,6 +238,13 @@ body {
 }*/
 
 #selfPerformedTaskProjectID {
+  flex-basis: 30%;
+  font-family: monospace;
+  margin-bottom: 0 !important;
+  margin-left: 3% !important;
+}
+
+#subcontractorTaskProjectID {
   flex-basis: 30%;
   font-family: monospace;
   margin-bottom: 0 !important;

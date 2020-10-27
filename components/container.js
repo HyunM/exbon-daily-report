@@ -5,11 +5,11 @@ import TabsOfTablet from "./TabsOfTablet";
 import TabsOfBoth from "./TabsOfBoth";
 
 const Container = () => {
-  const isTabletOrMobileDevice = useMediaQuery({
-    query: "(max-device-width: 1224px)",
-  });
+  // const isTabletOrMobileDevice = useMediaQuery({
+  //   query: "(max-device-width: 1224px)",
+  // });
 
-  const [tapNumber, setTapNumber] = useState(1);
+  const [tapNumber, setTapNumber] = useState(2);
   const handleChangeTabs = (event, newValue) => {
     setTapNumber(newValue);
   };
