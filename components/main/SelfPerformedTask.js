@@ -155,7 +155,7 @@ const SelfPerformedTaskTable = () => {
   const dateCheckEditable = str => {
     const getSunday = d => {
       d = new Date(d);
-      var day = d.getDay(),
+      let day = d.getDay(),
         diff = d.getDate() - day;
       return new Date(d.setDate(diff));
     };
