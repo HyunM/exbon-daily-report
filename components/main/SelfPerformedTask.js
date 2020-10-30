@@ -36,17 +36,28 @@ const SelfPerformedTaskTable = () => {
   const columns = useMemo(
     () => [
       {
-        Header: "Task",
+        Header: "Task Name",
         accessor: "TaskName",
         align: "center",
       },
+
       {
-        Header: "Previous Work %",
+        Header: "Start Date",
+        accessor: "StartDate",
+        align: "center",
+      },
+      {
+        Header: "Finish Date",
+        accessor: "FinishDate",
+        align: "center",
+      },
+      {
+        Header: "Previous Work Completion",
         accessor: "PreviousWork",
         align: "center",
       },
       {
-        Header: "Current Work %",
+        Header: "Current Work Completion",
         accessor: "CurrentWork",
         align: "center",
       },
@@ -98,7 +109,7 @@ const SelfPerformedTaskTable = () => {
     if (id === "TaskName") {
       return <div className="text-center">{value}</div>;
     } else if (id === "PreviousWork") {
-      return <div className="text-center">{value}</div>;
+      return <div className="text-center">{value} %</div>;
     } else if (id === "CurrentWork") {
       return (
         <div className="text-center">
@@ -109,8 +120,13 @@ const SelfPerformedTaskTable = () => {
             onChange={onChange}
             onBlur={onBlur}
           />
+          &nbsp; %
         </div>
       );
+    } else if (id === "StartDate") {
+      return <div className="text-center">{value}</div>;
+    } else if (id === "FinishDate") {
+      return <div className="text-center">{value}</div>;
     }
   };
 
