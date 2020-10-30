@@ -22,7 +22,7 @@ const TabsOfBoth = ({ tapNumber, handleChangeTabs }) => {
           <Tab label="Timesheet" {...a11yProps(0)} />
           <Tab label="Self-Performed Tasks" {...a11yProps(1)} />
           <Tab label="Subcontractor Tasks" {...a11yProps(2)} />
-          <Tab label="Not Fixed" {...a11yProps(3)} />
+          <Tab label="Miscellaneous" {...a11yProps(3)} />
         </Tabs>
       </AppBar>
       <TabPanel tapNumber={tapNumber} index={0}>
