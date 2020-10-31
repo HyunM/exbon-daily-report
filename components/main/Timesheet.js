@@ -15,7 +15,6 @@ import Paper from "@material-ui/core/Paper";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import { toDate } from "date-fns";
@@ -33,7 +32,7 @@ import Autocomplete from "react-autocomplete";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector, useDispatch } from "react-redux";
-
+import styles from "./Timesheet.module.css";
 // let deleteQueue = []; //must be modified
 
 toast.configure();
@@ -49,9 +48,8 @@ const convertInputToTime = time => {
 const Timesheet = () => {
   return (
     <>
-      <div className="halfTable">
+      <div className={styles.halfTable}>
         <TimesheetTable />
-        <div className="mt-5"></div>
       </div>
     </>
   );
@@ -158,7 +156,7 @@ const TimesheetTable = () => {
     const onCheckHour = e => {
       if (12 < parseInt(e.target.value)) {
         toast.warning(
-          <div className="text-center">
+          <div className={styles.text__center}>
             Only <strong>00 to 12</strong> can be entered into the time hour
             input.
           </div>,
@@ -217,7 +215,7 @@ const TimesheetTable = () => {
         updateEmployeeData(index, id, value);
       } else {
         toast.warning(
-          <div className="text-center">
+          <div className={styles.text__center}>
             <strong>That employee name</strong> does not exist.
           </div>,
           {
@@ -249,7 +247,7 @@ const TimesheetTable = () => {
         return (
           <DeleteForeverIcon
             color="action"
-            className="deletePointer"
+            className={styles.deletePointer}
             onClick={() => clickDeleteTimesheet(value)}
           ></DeleteForeverIcon>
         );
@@ -260,7 +258,7 @@ const TimesheetTable = () => {
           value={value}
           onChange={onChange}
           onBlur={onBlur}
-          className="tableSelect"
+          className={styles.tableSelect}
         >
           <option value={"Project Manager"}>Project Manager</option>
           <option value={"Roofer"}>Roofer</option>
@@ -274,12 +272,12 @@ const TimesheetTable = () => {
       id === "WorkEnd"
     ) {
       return (
-        <div className="flex">
+        <div className={styles.flex}>
           <InputMask
             value={value.slice(0, 2)}
             onChange={onCheckHour}
             onBlur={onBlur}
-            className="timeInput disabledTime"
+            className={`${styles.timeInput} disabledTIme`}
             mask="29"
             placeholder="01~12"
             formatChars={{
@@ -292,7 +290,7 @@ const TimesheetTable = () => {
             value={value.slice(3, 5)}
             onChange={onCheckMin}
             onBlur={onBlur}
-            className="timeInput disabledTime"
+            className={`${styles.timeInput} disabledTIme`}
             placeholder="00~50"
             mask="50"
             formatChars={{
@@ -303,7 +301,7 @@ const TimesheetTable = () => {
             value={value.slice(5, 7)}
             onChange={onCheckAmPm}
             onBlur={onBlur}
-            className="ampm disabledTime tableSelect"
+            className={`${styles.ampm} ${styles.tableSelect} disabledTIme`}
           >
             <option value="AM">AM</option>
             <option value="PM">PM</option>
@@ -338,6 +336,9 @@ const TimesheetTable = () => {
           onChange={onChange}
           inputProps={{ onBlur: onBlurForEmployee }}
           onSelect={val => onChangeSelect(val)}
+          renderInput={props => {
+            return <input className={styles.employeeInput} {...props}></input>;
+          }}
         />
       );
     } else if (id === "laborHours") {
@@ -360,7 +361,11 @@ const TimesheetTable = () => {
       //   3600000
       // ).toFixed(2);
 
-      return <div className="text-center laborDiv">{laborDate}</div>;
+      return (
+        <div className={`${styles.text__center} ${styles.laborDiv}`}>
+          {laborDate}
+        </div>
+      );
     }
   };
 
@@ -582,7 +587,7 @@ const TimesheetTable = () => {
     }
     if (checkEmployeeName) {
       toast.error(
-        <div className="text-center">
+        <div className={styles.text__center}>
           Unable to save. <br /> Please check <strong>employee name </strong>
           again.
         </div>,
@@ -593,7 +598,7 @@ const TimesheetTable = () => {
       );
     } else if (checkTime) {
       toast.error(
-        <div className="text-center">
+        <div className={styles.text__center}>
           Unable to save. <br /> Please check the <strong>time input </strong>
           again.
         </div>,
@@ -651,7 +656,7 @@ const TimesheetTable = () => {
 
       fetchData();
       toast.success(
-        <div className="text-center">
+        <div className={styles.text__center}>
           <strong>Save Complete</strong>
         </div>,
         {
@@ -663,8 +668,8 @@ const TimesheetTable = () => {
   };
 
   return (
-    <>
-      <div className="responsiveFlex timesheetAndDate">
+    <div className={styles.body}>
+      <div className={`${styles.responsiveFlex} ${styles.timesheetAndDate}`}>
         {console.log("data")}
         {console.log(data)}
         {console.log("deleteQueue")}
@@ -672,8 +677,8 @@ const TimesheetTable = () => {
         {console.log("dateCheckThisWeek(selectedDate)")}
         {console.log(dateCheckEditable(selectedDate))}
 
-        <div className="flex">
-          <h1 className="mr-5" id="timesheetTitle">
+        <div className={styles.flex}>
+          <h1 className={styles.mr__5} id={styles.timesheetTitle}>
             Timesheet
           </h1>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -689,10 +694,10 @@ const TimesheetTable = () => {
               }}
             />
           </MuiPickersUtilsProvider>
-          <h3 id="projectID">Project ID : 7</h3>
+          <h3 id={styles.projectID}>Project ID : 7</h3>
         </div>
         {dateCheckEditable(selectedDate) && (
-          <div className="flex">
+          <div className={styles.flex}>
             <FormControlLabel
               control={
                 <Checkbox
@@ -704,25 +709,25 @@ const TimesheetTable = () => {
                 />
               }
               label="Set Same Time of All"
-              className="checkBoxForm"
+              className={styles.checkBoxForm}
             />
             <Button
               variant="contained"
               color="secondary"
               size="small"
-              className="addBtn"
+              className={styles.addBtn}
               onClick={addTimesheetRow}
               startIcon={<AddIcon />}
             >
               Add&nbsp;Row
             </Button>
             <Button
-              id="saveTimesheetBtn"
+              id={styles.saveTimesheetBtn}
               variant="contained"
               color="primary"
               onClick={handleSaveTimesheetBtn}
               size="small"
-              className="saveBtn"
+              className={styles.saveBtn}
               startIcon={<SaveIcon />}
             >
               Save
@@ -731,7 +736,7 @@ const TimesheetTable = () => {
         )}
       </div>
       {/* <div className="flex timeTableBtn"></div> */}
-      <div className="tableDiv">
+      <div className={styles.tableDiv}>
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -764,7 +769,7 @@ const TimesheetTable = () => {
           </Table>
         </TableContainer>
       </div>
-    </>
+    </div>
   );
 };
 

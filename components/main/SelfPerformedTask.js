@@ -18,6 +18,7 @@ import {
 import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
 import { ToastContainer, toast } from "react-toastify";
+import styles from "./SelfPerformedTask.module.css";
 
 toast.configure();
 
@@ -101,6 +102,8 @@ const SelfPerformedTaskTable = () => {
       }
     };
 
+    const [selectedFinishDate, handleFinishDateChange] = useState(new Date());
+
     // If the initialValue is changed external, sync it up with our state
     React.useEffect(() => {
       setValue(initialValue);
@@ -126,7 +129,17 @@ const SelfPerformedTaskTable = () => {
     } else if (id === "StartDate") {
       return <div className="text-center">{value}</div>;
     } else if (id === "FinishDate") {
-      return <div className="text-center">{value}</div>;
+      return (
+        <div className="text-center">
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              value={value}
+              onChange={handleFinishDateChange}
+              format="yyyy-MM-dd"
+            />
+          </MuiPickersUtilsProvider>
+        </div>
+      );
     }
   };
 

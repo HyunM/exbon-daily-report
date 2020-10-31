@@ -1,5 +1,4 @@
 import "../styles.css";
-import "../components/main/Timesheet.css";
 import { Provider } from "react-redux";
 import { useStore } from "../store";
 

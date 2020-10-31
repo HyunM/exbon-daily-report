@@ -352,12 +352,6 @@
   -webkit-font-feature-settings: "liga";
   -webkit-font-smoothing: antialiased;
 }
-
-/* table {
-  width: 100%;
+body {
+  background-color: rgb(240, 240, 245);
 }
-th,
-td {
-  border: 1px solid black;
-  border-collapse: collapse;
-} */

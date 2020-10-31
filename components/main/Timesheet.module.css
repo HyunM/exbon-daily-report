@@ -124,12 +124,12 @@
 .classDisabled {
   opacity: 0.4;
 }
-
+/* 
 body {
   background-color: rgb(240, 240, 245);
-}
+} */
 
-.mr-5 {
+.mr__5 {
   margin-right: 5%;
 }
 
@@ -148,7 +148,7 @@ body {
   margin-top: 10%;
 }
 
-.text-center {
+.text__center {
   text-align: center;
 }
 
@@ -172,7 +172,7 @@ body {
   margin-right: 0;
 }
 
-.MuiTableCell-root input {
+.employeeInput {
   width: 110px;
   display: inline-block;
   height: 20px;
@@ -183,7 +183,7 @@ body {
   background: rgb(255, 255, 255);
 }
 
-.MuiTableCell-root .timeInput {
+.timeInput {
   width: 20px;
   text-align: center;
   margin-right: 2%;
