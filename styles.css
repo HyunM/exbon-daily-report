@@ -358,3 +358,7 @@ body {
 .table__time-wrapper__target-disabled--disabled {
   opacity: 0.4;
 }
+
+.MuiInputBase-input.MuiInput-input {
+  text-align: center;
+}

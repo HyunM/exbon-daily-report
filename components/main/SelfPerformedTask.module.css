@@ -98,12 +98,21 @@
 
 .table__start-date-wrapper {
   text-align: center;
+  font-size: medium;
 }
 
 .table__finish-date-wrapper {
   text-align: center;
+  font-size: medium;
 }
 
+.table__finish-date-wrapper__date-picker {
+  width: 100px;
+}
+
+.table__finish-date-wrapper__date-picker__input {
+  text-align: center;
+}
 .alert__table__current-work-wrapper__input {
   text-align: center;
 }

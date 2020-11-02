@@ -12,6 +12,7 @@ import DateFnsUtils from "@date-io/date-fns";
 import { formatDate } from "./formatDate";
 
 import {
+  DatePicker,
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
@@ -69,6 +70,10 @@ const SelfPerformedTask = () => {
       setValue(e.target.value);
     };
 
+    const onChangeDatePicker = e => {
+      setValue(e);
+    };
+
     // We'll only update the external data when the input is blurred
     const onBlur = e => {
       if (
@@ -90,8 +95,6 @@ const SelfPerformedTask = () => {
         updateMyData(index, id, value);
       }
     };
-
-    const [selectedFinishDate, handleFinishDateChange] = useState(new Date());
 
     // If the initialValue is changed external, sync it up with our state
     React.useEffect(() => {
@@ -123,10 +126,11 @@ const SelfPerformedTask = () => {
       return (
         <div className={styles["table__finish-date-wrapper"]}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker
-              value={value}
-              onChange={handleFinishDateChange}
+            <DatePicker
+              value={value.length === undefined ? value : value.split("-")}
+              onChange={onChangeDatePicker}
               format="yyyy-MM-dd"
+              className={styles["table__finish-date-wrapper__date-picker"]}
             />
           </MuiPickersUtilsProvider>
         </div>
@@ -298,8 +302,8 @@ const SelfPerformedTask = () => {
 
   return (
     <div id={styles.mainDiv}>
-      {/* {console.log("data")}
-        {console.log(data)} */}
+      {console.log("data")}
+      {console.log(data)}
       <div className={styles["header"]}>
         <div className={styles["header__left"]}>
           <h2 className={styles["header__left__title"]}>
