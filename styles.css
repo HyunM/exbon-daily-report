@@ -355,3 +355,6 @@
 body {
   background-color: rgb(240, 240, 245);
 }
+.table__time-wrapper__target-disabled--disabled {
+  opacity: 0.4;
+}

@@ -33,6 +33,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./Timesheet.module.css";
+import classNames from "classnames/bind";
 // let deleteQueue = []; //must be modified
 
 toast.configure();
@@ -46,16 +47,6 @@ const convertInputToTime = time => {
 };
 
 const Timesheet = () => {
-  return (
-    <>
-      <div className={styles.halfTable}>
-        <TimesheetTable />
-      </div>
-    </>
-  );
-};
-
-const TimesheetTable = () => {
   const deleteQueue = useSelector(state => state.deleteQueue);
   const dispatch = useDispatch();
   const addDeleteQueue = value =>
@@ -74,29 +65,35 @@ const TimesheetTable = () => {
     if (event.target.checked) {
       for (
         let i = 12;
-        i < document.getElementsByClassName("disabledTime").length;
+        i <
+        document.getElementsByClassName("table__time-wrapper__target-disabled")
+          .length;
         i++
       ) {
         document
-          .getElementsByClassName("disabledTime")
+          .getElementsByClassName("table__time-wrapper__target-disabled")
           [i].setAttribute("disabled", true);
         document
-          .getElementsByClassName("disabledTime")
-          [i].classList.add("classDisabled");
+          .getElementsByClassName("table__time-wrapper__target-disabled")
+          [i].classList.add("table__time-wrapper__target-disabled--disabled");
       }
       setSameTime();
     } else {
       for (
         let i = 12;
-        i < document.getElementsByClassName("disabledTime").length;
+        i <
+        document.getElementsByClassName("table__time-wrapper__target-disabled")
+          .length;
         i++
       ) {
         document
-          .getElementsByClassName("disabledTime")
+          .getElementsByClassName("table__time-wrapper__target-disabled")
           [i].removeAttribute("disabled");
         document
-          .getElementsByClassName("disabledTime")
-          [i].classList.remove("classDisabled");
+          .getElementsByClassName("table__time-wrapper__target-disabled")
+          [i].classList.remove(
+            "table__time-wrapper__target-disabled--disabled"
+          );
       }
     }
     setCheckState(event.target.checked);
@@ -156,7 +153,7 @@ const TimesheetTable = () => {
     const onCheckHour = e => {
       if (12 < parseInt(e.target.value)) {
         toast.warning(
-          <div className={styles.text__center}>
+          <div className={styles["alert__table__hour-input"]}>
             Only <strong>00 to 12</strong> can be entered into the time hour
             input.
           </div>,
@@ -195,8 +192,8 @@ const TimesheetTable = () => {
 
     // We'll only update the external data when the input is blurred
     const onBlur = e => {
-      if (document.getElementById("checkbox1")) {
-        if (document.getElementById("checkbox1").checked) {
+      if (document.getElementById("checkboxForSetSameTime")) {
+        if (document.getElementById("checkboxForSetSameTime").checked) {
           updateMyData(index, id, value);
           setSameTime();
         } else {
@@ -215,7 +212,7 @@ const TimesheetTable = () => {
         updateEmployeeData(index, id, value);
       } else {
         toast.warning(
-          <div className={styles.text__center}>
+          <div className={styles["alert__table__employee-input"]}>
             <strong>That employee name</strong> does not exist.
           </div>,
           {
@@ -241,13 +238,13 @@ const TimesheetTable = () => {
 
     if (id === "TimesheetID") {
       let check = dateCheckEditable(
-        new Date(document.getElementById("date-picker-dialog").value)
+        new Date(document.getElementById("datePickerDialog").value)
       );
       if (check)
         return (
           <DeleteForeverIcon
             color="action"
-            className={styles.deletePointer}
+            className={styles["table__delete-icon"]}
             onClick={() => clickDeleteTimesheet(value)}
           ></DeleteForeverIcon>
         );
@@ -258,7 +255,7 @@ const TimesheetTable = () => {
           value={value}
           onChange={onChange}
           onBlur={onBlur}
-          className={styles.tableSelect}
+          className={styles["table__trade-dropdown"]}
         >
           <option value={"Project Manager"}>Project Manager</option>
           <option value={"Roofer"}>Roofer</option>
@@ -272,12 +269,15 @@ const TimesheetTable = () => {
       id === "WorkEnd"
     ) {
       return (
-        <div className={styles.flex}>
+        <div className={styles["table__time-wrapper"]}>
           <InputMask
             value={value.slice(0, 2)}
             onChange={onCheckHour}
             onBlur={onBlur}
-            className={`${styles.timeInput} disabledTIme`}
+            className={classNames(
+              "table__time-wrapper__target-disabled",
+              styles["table__time-wrapper__hour-input"]
+            )}
             mask="29"
             placeholder="01~12"
             formatChars={{
@@ -290,7 +290,10 @@ const TimesheetTable = () => {
             value={value.slice(3, 5)}
             onChange={onCheckMin}
             onBlur={onBlur}
-            className={`${styles.timeInput} disabledTIme`}
+            className={classNames(
+              "table__time-wrapper__target-disabled",
+              styles["table__time-wrapper__min-input"]
+            )}
             placeholder="00~50"
             mask="50"
             formatChars={{
@@ -301,7 +304,10 @@ const TimesheetTable = () => {
             value={value.slice(5, 7)}
             onChange={onCheckAmPm}
             onBlur={onBlur}
-            className={`${styles.ampm} ${styles.tableSelect} disabledTIme`}
+            className={classNames(
+              "table__time-wrapper__target-disabled",
+              styles["table__ampm-dropdown"]
+            )}
           >
             <option value="AM">AM</option>
             <option value="PM">PM</option>
@@ -337,7 +343,12 @@ const TimesheetTable = () => {
           inputProps={{ onBlur: onBlurForEmployee }}
           onSelect={val => onChangeSelect(val)}
           renderInput={props => {
-            return <input className={styles.employeeInput} {...props}></input>;
+            return (
+              <input
+                className={styles["table__employee-input"]}
+                {...props}
+              ></input>
+            );
           }}
         />
       );
@@ -362,7 +373,12 @@ const TimesheetTable = () => {
       // ).toFixed(2);
 
       return (
-        <div className={`${styles.text__center} ${styles.laborDiv}`}>
+        <div
+          className={classNames([
+            styles["table__labor-hours-input"],
+            "table__labor-hours-input",
+          ])}
+        >
           {laborDate}
         </div>
       );
@@ -548,28 +564,34 @@ const TimesheetTable = () => {
     if (checkState) {
       for (
         let i = 12;
-        i < document.getElementsByClassName("disabledTime").length;
+        i <
+        document.getElementsByClassName("table__time-wrapper__target-disabled")
+          .length;
         i++
       ) {
         document
-          .getElementsByClassName("disabledTime")
+          .getElementsByClassName("table__time-wrapper__target-disabled")
           [i].setAttribute("disabled", true);
         document
-          .getElementsByClassName("disabledTime")
-          [i].classList.add("classDisabled");
+          .getElementsByClassName("table__time-wrapper__target-disabled")
+          [i].classList.add("table__time-wrapper__target-disabled--disabled");
       }
     } else {
       for (
         let i = 12;
-        i < document.getElementsByClassName("disabledTime").length;
+        i <
+        document.getElementsByClassName("table__time-wrapper__target-disabled")
+          .length;
         i++
       ) {
         document
-          .getElementsByClassName("disabledTime")
+          .getElementsByClassName("table__time-wrapper__target-disabled")
           [i].removeAttribute("disabled");
         document
-          .getElementsByClassName("disabledTime")
-          [i].classList.remove("classDisabled");
+          .getElementsByClassName("table__time-wrapper__target-disabled")
+          [i].classList.remove(
+            "table__time-wrapper__target-disabled--disabled"
+          );
       }
     }
   }, [data]);
@@ -579,15 +601,18 @@ const TimesheetTable = () => {
     let checkTime = 0;
     for (
       let i = 0;
-      i < document.getElementsByClassName("laborDiv").length;
+      i < document.getElementsByClassName("table__labor-hours-input").length;
       i++
     ) {
-      if (document.getElementsByClassName("laborDiv")[i].innerText === "NaN")
+      if (
+        document.getElementsByClassName("table__labor-hours-input")[i]
+          .innerText === "NaN"
+      )
         checkTime++;
     }
     if (checkEmployeeName) {
       toast.error(
-        <div className={styles.text__center}>
+        <div className={styles["alert__table__employee-input"]}>
           Unable to save. <br /> Please check <strong>employee name </strong>
           again.
         </div>,
@@ -598,7 +623,7 @@ const TimesheetTable = () => {
       );
     } else if (checkTime) {
       toast.error(
-        <div className={styles.text__center}>
+        <div className={styles["alert__table__time-wrapper"]}>
           Unable to save. <br /> Please check the <strong>time input </strong>
           again.
         </div>,
@@ -656,7 +681,7 @@ const TimesheetTable = () => {
 
       fetchData();
       toast.success(
-        <div className={styles.text__center}>
+        <div className={styles["alert__complete"]}>
           <strong>Save Complete</strong>
         </div>,
         {
@@ -668,23 +693,21 @@ const TimesheetTable = () => {
   };
 
   return (
-    <div className={styles.body}>
-      <div className={`${styles.responsiveFlex} ${styles.timesheetAndDate}`}>
-        {console.log("data")}
+    <div id={styles.mainDiv}>
+      <div className={styles["header"]}>
+        {/* {console.log("data")}
         {console.log(data)}
         {console.log("deleteQueue")}
         {console.log(deleteQueue)}
         {console.log("dateCheckThisWeek(selectedDate)")}
-        {console.log(dateCheckEditable(selectedDate))}
+        {console.log(dateCheckEditable(selectedDate))} */}
 
-        <div className={styles.flex}>
-          <h1 className={styles.mr__5} id={styles.timesheetTitle}>
-            Timesheet
-          </h1>
+        <div className={styles["header__left"]}>
+          <h1 className={styles["header__left__title"]}>Timesheet</h1>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               margin="normal"
-              id="date-picker-dialog"
+              id="datePickerDialog"
               label="Date"
               format="yyyy-MM-dd"
               value={selectedDate}
@@ -694,10 +717,10 @@ const TimesheetTable = () => {
               }}
             />
           </MuiPickersUtilsProvider>
-          <h3 id={styles.projectID}>Project ID : 7</h3>
+          <h3 className={styles["header__left__project-id"]}>Project ID : 7</h3>
         </div>
         {dateCheckEditable(selectedDate) && (
-          <div className={styles.flex}>
+          <div className={styles["header__right"]}>
             <FormControlLabel
               control={
                 <Checkbox
@@ -705,29 +728,28 @@ const TimesheetTable = () => {
                   onChange={checkChange}
                   name="checkbox"
                   color="secondary"
-                  id="checkbox1"
+                  id="checkboxForSetSameTime"
                 />
               }
               label="Set Same Time of All"
-              className={styles.checkBoxForm}
+              className={styles["header__right__checkbox"]}
             />
             <Button
               variant="contained"
               color="secondary"
               size="small"
-              className={styles.addBtn}
+              className={styles["header__right__add-btn"]}
               onClick={addTimesheetRow}
               startIcon={<AddIcon />}
             >
               Add&nbsp;Row
             </Button>
             <Button
-              id={styles.saveTimesheetBtn}
               variant="contained"
               color="primary"
-              onClick={handleSaveTimesheetBtn}
               size="small"
-              className={styles.saveBtn}
+              className={styles["header__right__save-btn"]}
+              onClick={handleSaveTimesheetBtn}
               startIcon={<SaveIcon />}
             >
               Save
@@ -735,8 +757,7 @@ const TimesheetTable = () => {
           </div>
         )}
       </div>
-      {/* <div className="flex timeTableBtn"></div> */}
-      <div className={styles.tableDiv}>
+      <div className={styles["table"]}>
         <TableContainer component={Paper}>
           <Table>
             <TableHead>

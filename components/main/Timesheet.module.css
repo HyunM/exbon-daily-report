@@ -1,101 +1,99 @@
 @media screen and (min-width: 900px) {
-  .halfTable {
+  #mainDiv {
     width: 60%;
     margin: auto;
   }
-
-  .halfTableTab2 {
-    width: 780px;
-    margin: auto;
-  }
-
-  .halfTableTab3 {
-    width: 580px;
-    margin: auto;
-  }
-
-  .responsiveFlex {
+  .header {
     display: flex;
   }
-  .saveBtn {
+  .header__right__add-btn {
+    height: 50%;
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+    margin-right: 5% !important;
+    padding: 1rem !important;
+  }
+  .header__right__save-btn {
     height: 50%;
     margin-top: auto !important;
     margin-bottom: auto !important;
     padding: 1rem !important;
     align-self: flex-end;
   }
-  .addBtn {
-    height: 50%;
-    margin-top: auto !important;
-    margin-bottom: auto !important;
-    margin-right: 5% !important;
-    padding: 1rem !important;
-  }
 }
 
 @media screen and (max-width: 1420px) {
-  .halfTable {
+  #mainDiv {
     width: 100%;
     margin: auto;
   }
-  .halfTableTab2 {
-    width: 780px;
-    margin: auto;
-  }
-  .halfTableTab3 {
-    width: 580px;
-    margin: auto;
-  }
-  .saveBtn {
-    height: 50%;
-    margin-top: auto !important;
-    margin-bottom: auto !important;
-  }
-  .addBtn {
+  .header__right__add-btn {
     height: 50%;
     margin-top: auto !important;
     margin-bottom: auto !important;
     margin-right: 5% !important;
   }
-}
-
-@media screen and (max-width: 750px) {
-  .halfTableTab2 {
-    width: 100%;
-    margin: auto;
-  }
-  .halfTableTab3 {
-    width: 100%;
-    margin: auto;
+  .header__right__save-btn {
+    height: 50%;
+    margin-top: auto !important;
+    margin-bottom: auto !important;
   }
 }
 
-.scrollChange {
-  display: inline-block;
+.header {
+  justify-content: space-between;
+  margin-top: 5%;
 }
 
-.flex {
+.header__left {
   display: flex;
   align-items: center;
 }
 
-.checkBoxForm {
+.header__left__title {
+  margin-right: 5%;
+  font-family: system-ui;
+  color: darkblue;
+  flex: 0 1 auto;
+}
+
+.header__left__project-id {
+  flex-basis: 40%;
+  font-family: monospace;
+  margin-bottom: 0 !important;
+  margin-left: 10% !important;
+}
+
+.header__right {
+  display: flex;
+  align-items: center;
+}
+
+.header__right__checkbox {
   flex-shrink: 0;
 }
 
-.mt-3p {
-  margin-top: 3% !important;
-}
-
-.timeTableBtn {
-  flex-direction: row-reverse;
-}
-
-.tableDiv {
+.table {
   overflow: auto;
 }
 
-.tableSelect {
+.table__labor-hours-input {
+  text-align: center;
+}
+
+.table__ampm-dropdown {
+  margin-left: 5% !important;
+  width: 50px;
+  display: inline-block;
+  height: 25px;
+  color: #74646e;
+  border: 1px solid #c8bfc4;
+  border-radius: 4px;
+  box-shadow: inset 1px 1px 2px #ddd8dc;
+  background: #fff;
+}
+
+.table__trade-dropdown {
   display: inline-block;
   height: 25px;
   width: 130px;
@@ -105,85 +103,12 @@
   box-shadow: inset 1px 1px 2px #ddd8dc;
   background: #fff;
 }
-.tableInput {
-  width: 100px;
-  display: inline-block;
-  height: 20px;
-  color: rgb(116, 100, 110);
-  border: 1px solid rgb(200, 191, 196);
-  border-radius: 4px;
-  box-shadow: rgb(221, 216, 220) 1px 1px 2px inset;
-  background: rgb(255, 255, 255);
+
+.table__time-wrapper {
+  display: flex;
 }
 
-.ampm {
-  margin-left: 5% !important;
-  width: 50px;
-}
-
-.classDisabled {
-  opacity: 0.4;
-}
-/* 
-body {
-  background-color: rgb(240, 240, 245);
-} */
-
-.mr__5 {
-  margin-right: 5%;
-}
-
-.timesheetAndDate {
-  justify-content: space-between;
-  margin-top: 5%;
-}
-
-.selfPerformedTasksAndDate {
-  justify-content: space-between;
-  margin-top: 10%;
-}
-
-.subcontractorTasksAndDate {
-  justify-content: space-between;
-  margin-top: 10%;
-}
-
-.text__center {
-  text-align: center;
-}
-
-#timesheetTitle {
-  font-family: system-ui;
-  color: darkblue;
-  flex: 0 1 auto;
-}
-
-#selfPerformedTitle {
-  font-family: system-ui;
-  color: darkblue;
-  flex: 0 1 auto;
-  margin-right: 1%;
-}
-
-#subcontractorTitle {
-  font-family: system-ui;
-  color: darkblue;
-  flex: 0 1 auto;
-  margin-right: 0;
-}
-
-.employeeInput {
-  width: 110px;
-  display: inline-block;
-  height: 20px;
-  color: rgb(116, 100, 110);
-  border: 1px solid rgb(200, 191, 196);
-  border-radius: 4px;
-  box-shadow: rgb(221, 216, 220) 1px 1px 2px inset;
-  background: rgb(255, 255, 255);
-}
-
-.timeInput {
+.table__time-wrapper__hour-input {
   width: 20px;
   text-align: center;
   margin-right: 2%;
@@ -196,79 +121,49 @@ body {
   box-shadow: rgb(221, 216, 220) 1px 1px 2px inset;
   background: rgb(255, 255, 255);
 }
-.text-center {
+
+.table__time-wrapper__min-input {
+  width: 20px;
+  text-align: center;
+  margin-right: 2%;
+  margin-left: 2%;
+  display: inline-block;
+  height: 20px;
+  color: rgb(116, 100, 110);
+  border: 1px solid rgb(200, 191, 196);
+  border-radius: 4px;
+  box-shadow: rgb(221, 216, 220) 1px 1px 2px inset;
+  background: rgb(255, 255, 255);
+}
+
+.alert__table__hour-input {
+  text-align: center;
+}
+.alert__table__employee-input {
+  text-align: center;
+}
+.alert__table__time-wrapper {
+  text-align: center;
+}
+.alert__complete {
   text-align: center;
 }
 
-#projectID {
-  flex-basis: 40%;
-  font-family: monospace;
-  margin-bottom: 0 !important;
-  margin-left: 10% !important;
+.table__employee-input {
+  width: 110px;
+  display: inline-block;
+  height: 20px;
+  color: rgb(116, 100, 110);
+  border: 1px solid rgb(200, 191, 196);
+  border-radius: 4px;
+  box-shadow: rgb(221, 216, 220) 1px 1px 2px inset;
+  background: rgb(255, 255, 255);
 }
 
-.deletePointer {
+.table__delete-icon {
   cursor: pointer;
 }
 
-.deletePointer:hover {
+.table__delete-icon:hover {
   color: slateblue;
-}
-
-#saveSelfPerforemdTaskBtn {
-  padding: 0.5em !important;
-  height: auto;
-  margin-bottom: 2em !important;
-}
-
-#saveSubcontractorTaskBtn {
-  padding: 0.5em !important;
-  height: auto;
-  margin-bottom: 2em !important;
-}
-
-.leftTitle {
-  flex: 0 1 auto;
-}
-
-.leftTitleForSubcontractor {
-  flex: 0 1 auto;
-}
-
-.rightTitle {
-  flex: 1 1 auto;
-  flex-direction: row-reverse;
-  margin-bottom: 0rem;
-}
-
-.rightTitleForSubcontractor {
-  flex: 1 1 auto;
-  flex-direction: row-reverse;
-  margin-bottom: 0rem;
-}
-
-/* #selfPerformedTaskCalendar {
-  flex: 0 1 auto;
-}*/
-
-#selfPerformedTaskProjectID {
-  flex-basis: 30%;
-  font-family: monospace;
-  margin-bottom: 0 !important;
-  margin-left: 3% !important;
-}
-
-#subcontractorTaskProjectID {
-  flex-basis: 30%;
-  font-family: monospace;
-  margin-bottom: 0 !important;
-  margin-left: 3% !important;
-}
-
-.dateWidth {
-  width: 160px;
-}
-
-.input-current-work {
-  width: 50px !important;
 }

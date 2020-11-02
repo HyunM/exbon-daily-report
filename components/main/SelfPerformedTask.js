@@ -25,7 +25,7 @@ toast.configure();
 const SelfPerformedTask = () => {
   return (
     <>
-      <div className="halfTableTab2">
+      <div className={styles.halfTableTab2}>
         <SelfPerformedTaskTable />
         <div className="mt-5"></div>
       </div>
