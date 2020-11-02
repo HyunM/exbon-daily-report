@@ -694,14 +694,13 @@ const Timesheet = () => {
 
   return (
     <div id={styles.mainDiv}>
-      <div className={styles["header"]}>
-        {/* {console.log("data")}
+      {/* {console.log("data")}
         {console.log(data)}
         {console.log("deleteQueue")}
         {console.log(deleteQueue)}
         {console.log("dateCheckThisWeek(selectedDate)")}
         {console.log(dateCheckEditable(selectedDate))} */}
-
+      <div className={styles["header"]}>
         <div className={styles["header__left"]}>
           <h1 className={styles["header__left__title"]}>Timesheet</h1>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>

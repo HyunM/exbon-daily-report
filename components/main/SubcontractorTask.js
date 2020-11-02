@@ -21,17 +21,6 @@ import { ToastContainer, toast } from "react-toastify";
 import styles from "./SubcontractorTask.module.css";
 
 const SubcontractorTask = () => {
-  return (
-    <>
-      <div className="halfTableTab3">
-        <SubcontractorTaskTable />
-        <div className="mt-5"></div>
-      </div>
-    </>
-  );
-};
-
-const SubcontractorTaskTable = () => {
   const columns = useMemo(
     () => [
       {
@@ -90,14 +79,16 @@ const SubcontractorTaskTable = () => {
     }, [initialValue]);
 
     if (id === "TaskName") {
-      return <div className="text-center">{value}</div>;
+      return <div className={styles["table__task-wrapper"]}>{value}</div>;
     } else if (id === "PreviousWork") {
-      return <div className="text-center">{value}</div>;
+      return (
+        <div className={styles["table__previous-work-wrapper"]}>{value}</div>
+      );
     } else if (id === "CurrentWork") {
       return (
-        <div className="text-center">
+        <div className={styles["table__current-work-wrapper"]}>
           <input
-            className="text-center input-current-work"
+            className={styles["table__current-work-wrapper__input"]}
             value={value || ""}
             type="number"
             onChange={onChange}
@@ -184,19 +175,16 @@ const SubcontractorTaskTable = () => {
     setSelectedDate(date);
   };
   return (
-    <>
-      <div className="responsiveFlex subcontractorTasksAndDate">
-        {console.log("data")}
-        {console.log(data)}
-
-        <div className="flex leftTitleForSubcontractor">
-          <h2 className="mr-5" id="subcontractorTitle">
-            Subcontractor Tasks
-          </h2>
+    <div id={styles.mainDiv}>
+      {/* {console.log("data")}
+      {console.log(data)} */}
+      <div className={styles["header"]}>
+        <div className={styles["header__left"]}>
+          <h2 className={styles["header__left__title"]}>Subcontractor Tasks</h2>
           <MuiPickersUtilsProvider utils={DateFnsUtils} width="10">
             <KeyboardDatePicker
               margin="normal"
-              id="date-picker-dialog"
+              id="datePickerDialog"
               label="Date"
               format="yyyy-MM-dd"
               KeyboardButtonProps={{
@@ -204,19 +192,18 @@ const SubcontractorTaskTable = () => {
               }}
               value={selectedDate}
               onChange={handleDateChange}
-              className="dateWidth"
+              className={styles["header__left__date-picker"]}
             />
           </MuiPickersUtilsProvider>
-          <h3 id="subcontractorTaskProjectID">Project ID : 7</h3>
+          <h3 className={styles["header__left__project-id"]}>Project ID : 7</h3>
         </div>
         {dateCheckEditable(selectedDate) && (
-          <div className="flex rightTitleForSubcontractor">
+          <div className={styles["header__right"]}>
             <Button
-              id="saveSubcontractorTaskBtn"
               variant="contained"
               color="primary"
               size="small"
-              className="saveBtn"
+              className={styles["header__right__save-btn"]}
               startIcon={<SaveIcon />}
             >
               Save
@@ -224,7 +211,7 @@ const SubcontractorTaskTable = () => {
           </div>
         )}
       </div>
-      <div className="tableDiv">
+      <div className={styles["table"]}>
         <TableContainer component={Paper}>
           <Table {...getTableProps()}>
             <TableHead>
@@ -262,7 +249,7 @@ const SubcontractorTaskTable = () => {
           </Table>
         </TableContainer>
       </div>
-    </>
+    </div>
   );
 };
 

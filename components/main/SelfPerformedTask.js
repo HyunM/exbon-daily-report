@@ -23,17 +23,6 @@ import styles from "./SelfPerformedTask.module.css";
 toast.configure();
 
 const SelfPerformedTask = () => {
-  return (
-    <>
-      <div className={styles.halfTableTab2}>
-        <SelfPerformedTaskTable />
-        <div className="mt-5"></div>
-      </div>
-    </>
-  );
-};
-
-const SelfPerformedTaskTable = () => {
   const columns = useMemo(
     () => [
       {
@@ -88,7 +77,7 @@ const SelfPerformedTaskTable = () => {
         ) >= parseFloat(e.target.value)
       ) {
         toast.warning(
-          <div className="text-center">
+          <div className={styles["alert__table__current-work-wrapper__input"]}>
             Current Work must be <strong>bigger</strong> than Previous Work.
           </div>,
           {
@@ -110,14 +99,16 @@ const SelfPerformedTaskTable = () => {
     }, [initialValue]);
 
     if (id === "TaskName") {
-      return <div className="text-center">{value}</div>;
+      return <div className={styles["table__task-wrapper"]}>{value}</div>;
     } else if (id === "PreviousWork") {
-      return <div className="text-center">{value} %</div>;
+      return (
+        <div className={styles["table__previous-work-wrapper"]}>{value} %</div>
+      );
     } else if (id === "CurrentWork") {
       return (
-        <div className="text-center">
+        <div className={styles["table__current-work-wrapper"]}>
           <input
-            className="text-center input-current-work"
+            className={styles["table__current-work-wrapper__input"]}
             value={value || ""}
             type="number"
             onChange={onChange}
@@ -127,10 +118,10 @@ const SelfPerformedTaskTable = () => {
         </div>
       );
     } else if (id === "StartDate") {
-      return <div className="text-center">{value}</div>;
+      return <div className={styles["table__start-date-wrapper"]}>{value}</div>;
     } else if (id === "FinishDate") {
       return (
-        <div className="text-center">
+        <div className={styles["table__finish-date-wrapper"]}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               value={value}
@@ -225,7 +216,7 @@ const SelfPerformedTaskTable = () => {
     });
     if (checkSavePossible) {
       toast.error(
-        <div className="text-center">
+        <div className={styles["alert__table__current-work-wrapper__input"]}>
           Unable to save. <br /> Please check <strong>Current Work </strong>
           input.
           <br />
@@ -241,7 +232,7 @@ const SelfPerformedTaskTable = () => {
         for (let i = 0; i < data.length; i++) {
           if (
             data[i].LastDate.slice(0, 10) !=
-            document.getElementById("date-picker-dialog").value
+            document.getElementById("datePickerDialog").value
           ) {
             await axios({
               method: "post",
@@ -250,12 +241,12 @@ const SelfPerformedTaskTable = () => {
               headers: {},
               data: {
                 TaskID: data[i].TaskID,
-                Date: document.getElementById("date-picker-dialog").value,
+                Date: document.getElementById("datePickerDialog").value,
                 WorkCompleted: data[i].CurrentWork,
               },
             });
             toast.success(
-              <div className="text-center">
+              <div className={styles["alert__complete"]}>
                 <strong>Save Complete</strong>
               </div>,
               {
@@ -274,7 +265,7 @@ const SelfPerformedTaskTable = () => {
               },
             });
             toast.success(
-              <div className="text-center">
+              <div className={styles["alert__complete"]}>
                 <strong>Save Complete</strong>
               </div>,
               {
@@ -306,23 +297,18 @@ const SelfPerformedTaskTable = () => {
   }, [selectedDate]);
 
   return (
-    <>
-      <div className="responsiveFlex selfPerformedTasksAndDate">
-        {console.log("data")}
-        {console.log(data)}
-
-        <div className="flex leftTitle">
-          <h2 className="mr-5" id="selfPerformedTitle">
+    <div id={styles.mainDiv}>
+      {/* {console.log("data")}
+        {console.log(data)} */}
+      <div className={styles["header"]}>
+        <div className={styles["header__left"]}>
+          <h2 className={styles["header__left__title"]}>
             Self-Performed Tasks
           </h2>
-          <MuiPickersUtilsProvider
-            utils={DateFnsUtils}
-            id="selfPerformedTaskCalendar"
-            width="10"
-          >
+          <MuiPickersUtilsProvider utils={DateFnsUtils} width="10">
             <KeyboardDatePicker
               margin="normal"
-              id="date-picker-dialog"
+              id="datePickerDialog"
               label="Date"
               format="yyyy-MM-dd"
               value={selectedDate}
@@ -330,20 +316,19 @@ const SelfPerformedTaskTable = () => {
               KeyboardButtonProps={{
                 "aria-label": "change date",
               }}
-              className="dateWidth"
+              className={styles["header__left__date-picker"]}
             />
           </MuiPickersUtilsProvider>
-          <h3 id="selfPerformedTaskProjectID">Project ID : 7</h3>
+          <h3 className={styles["header__left__project-id"]}>Project ID : 7</h3>
         </div>
 
         {dateCheckEditable(selectedDate) && (
-          <div className="flex rightTitle">
+          <div className={styles["header__right"]}>
             <Button
-              id="saveSelfPerforemdTaskBtn"
               variant="contained"
               color="primary"
               size="small"
-              className="saveBtn"
+              className={styles["header__right__save-btn"]}
               startIcon={<SaveIcon />}
               onClick={handleSaveBtn}
             >
@@ -352,7 +337,7 @@ const SelfPerformedTaskTable = () => {
           </div>
         )}
       </div>
-      <div className="tableDiv">
+      <div className={styles["table"]}>
         <TableContainer component={Paper}>
           <Table {...getTableProps()}>
             <TableHead>
@@ -390,7 +375,7 @@ const SelfPerformedTaskTable = () => {
           </Table>
         </TableContainer>
       </div>
-    </>
+    </div>
   );
 };
 export default SelfPerformedTask;
