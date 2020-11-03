@@ -258,88 +258,89 @@ const SubcontractorTask = () => {
         }
       );
     } else {
-      // const fetchData = async () => {
-      //   for (let i = 0; i < data.length; i++) {
-      //     if (
-      //       data[i].LastDate.slice(0, 10) ===
-      //       document.getElementById("datePickerDialog").value
-      //     ) {
-      //       if (data[i].CurrentWork === "" || data[i].CurrentWork === 0) {
-      //         await axios({
-      //           method: "put",
-      //           url: `/api/project-sub-tasks/${data[i].TaskID}`,
-      //           timeout: 5000,
-      //           headers: {},
-      //           data: {
-      //             FinishDate: data[i].FinishDate,
-      //           },
-      //         });
-      //       } else {
-      //         await axios({
-      //           method: "put",
-      //           url: `/api/project-sub-tasks-progress/${data[i].RecordID}`,
-      //           timeout: 5000,
-      //           headers: {},
-      //           data: {
-      //             WorkCompleted: data[i].CurrentWork,
-      //           },
-      //         });
-      //         await axios({
-      //           method: "put",
-      //           url: `/api/project-sub-tasks/${data[i].TaskID}`,
-      //           timeout: 5000,
-      //           headers: {},
-      //           data: {
-      //             FinishDate: data[i].FinishDate,
-      //           },
-      //         });
-      //       }
-      //     } else {
-      //       if (data[i].CurrentWork === "" || data[i].CurrentWork === 0) {
-      //         await axios({
-      //           method: "put",
-      //           url: `/api/project-sub-tasks/${data[i].TaskID}`,
-      //           timeout: 5000,
-      //           headers: {},
-      //           data: {
-      //             FinishDate: data[i].FinishDate,
-      //           },
-      //         });
-      //       } else {
-      //         await axios({
-      //           method: "put",
-      //           url: `/api/project-sub-tasks/${data[i].TaskID}`,
-      //           timeout: 5000,
-      //           headers: {},
-      //           data: {
-      //             FinishDate: data[i].FinishDate,
-      //           },
-      //         });
-      //         await axios({
-      //           method: "post",
-      //           url: `/api/project-sub-tasks-progress`,
-      //           timeout: 5000,
-      //           headers: {},
-      //           data: {
-      //             TaskID: data[i].TaskID,
-      //             Date: document.getElementById("datePickerDialog").value,
-      //             WorkCompleted: data[i].CurrentWork,
-      //           },
-      //         });
-      //       }
-      //     }
-      //   }
-      // };
-      // fetchData();
-      // toast.success(
-      //   <div className={styles["alert__complete"]}>
-      //     <strong>Save Complete</strong>
-      //   </div>,
-      //   {
-      //     position: toast.POSITION.BOTTOM_CENTER,
-      //     hideProgressBar: true,
-      //   }
-      // );
+      const fetchData = async () => {
+        for (let i = 0; i < data.length; i++) {
+          if (
+            data[i].LastDate.slice(0, 10) ===
+            document.getElementById("datePickerDialog").value
+          ) {
+            if (data[i].CurrentWork === "" || data[i].CurrentWork === 0) {
+              await axios({
+                method: "put",
+                url: `/api/project-sub-tasks/${data[i].TaskID}`,
+                timeout: 5000,
+                headers: {},
+                data: {
+                  FinishDate: data[i].FinishDate,
+                },
+              });
+            } else {
+              await axios({
+                method: "put",
+                url: `/api/project-sub-tasks-progress/${data[i].RecordID}`,
+                timeout: 5000,
+                headers: {},
+                data: {
+                  WorkCompleted: data[i].CurrentWork,
+                },
+              });
+              await axios({
+                method: "put",
+                url: `/api/project-sub-tasks/${data[i].TaskID}`,
+                timeout: 5000,
+                headers: {},
+                data: {
+                  FinishDate: data[i].FinishDate,
+                },
+              });
+            }
+          } else {
+            if (data[i].CurrentWork === "" || data[i].CurrentWork === 0) {
+              await axios({
+                method: "put",
+                url: `/api/project-sub-tasks/${data[i].TaskID}`,
+                timeout: 5000,
+                headers: {},
+                data: {
+                  FinishDate: data[i].FinishDate,
+                },
+              });
+            } else {
+              await axios({
+                method: "put",
+                url: `/api/project-sub-tasks/${data[i].TaskID}`,
+                timeout: 5000,
+                headers: {},
+                data: {
+                  FinishDate: data[i].FinishDate,
+                },
+              });
+              await axios({
+                method: "post",
+                url: `/api/project-sub-tasks-progress`,
+                timeout: 5000,
+                headers: {},
+                data: {
+                  TaskID: data[i].TaskID,
+                  Date: document.getElementById("datePickerDialog").value,
+                  WorkCompleted: data[i].CurrentWork,
+                },
+              });
+            }
+          }
+        }
+      };
+
+      fetchData();
+      toast.success(
+        <div className={styles["alert__complete"]}>
+          <strong>Save Complete</strong>
+        </div>,
+        {
+          position: toast.POSITION.BOTTOM_CENTER,
+          hideProgressBar: true,
+        }
+      );
     }
   };
 
