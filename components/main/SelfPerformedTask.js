@@ -75,7 +75,7 @@ const SelfPerformedTask = () => {
     };
 
     // We'll only update the external data when the input is blurred
-    const onBlur = e => {
+    const onBlurForCurrentWork = e => {
       if (
         parseFloat(
           e.target.parentNode.parentNode.previousElementSibling.innerText
@@ -94,6 +94,10 @@ const SelfPerformedTask = () => {
       } else {
         updateMyData(index, id, value);
       }
+    };
+
+    const onBlur = () => {
+      updateMyData(index, id, value);
     };
 
     // If the initialValue is changed external, sync it up with our state
@@ -115,7 +119,7 @@ const SelfPerformedTask = () => {
             value={value || ""}
             type="number"
             onChange={onChange}
-            onBlur={onBlur}
+            onBlur={onBlurForCurrentWork}
           />
           &nbsp; %
         </div>
@@ -129,6 +133,7 @@ const SelfPerformedTask = () => {
             <DatePicker
               value={value.length === undefined ? value : value.split("-")}
               onChange={onChangeDatePicker}
+              onBlur={onBlur}
               format="yyyy-MM-dd"
               className={styles["table__finish-date-wrapper__date-picker"]}
             />
@@ -240,7 +245,7 @@ const SelfPerformedTask = () => {
           ) {
             await axios({
               method: "post",
-              url: `/api/project-self-tasks`,
+              url: `/api/project-self-tasks-progress`,
               timeout: 5000, // 5 seconds timeout
               headers: {},
               data: {
@@ -261,11 +266,20 @@ const SelfPerformedTask = () => {
           } else {
             await axios({
               method: "put",
-              url: `/api/project-self-tasks/${data[i].RecordID}`,
+              url: `/api/project-self-tasks-progress/${data[i].RecordID}`,
               timeout: 5000, // 5 seconds timeout
               headers: {},
               data: {
                 WorkCompleted: data[i].CurrentWork,
+              },
+            });
+            await axios({
+              method: "put",
+              url: `/api/project-self-tasks/${data[i].TaskID}`,
+              timeout: 5000, // 5 seconds timeout
+              headers: {},
+              data: {
+                FinishDate: data[i].FinishDate,
               },
             });
             toast.success(
@@ -289,7 +303,9 @@ const SelfPerformedTask = () => {
     const fetchData = async () => {
       let result = await axios({
         method: "get",
-        url: `/api/project-self-tasks?selectedDate=${formatDate(selectedDate)}`,
+        url: `/api/project-self-tasks-progress?selectedDate=${formatDate(
+          selectedDate
+        )}`,
         timeout: 5000, // 5 seconds timeout
         headers: {},
       });

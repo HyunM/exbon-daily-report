@@ -116,3 +116,7 @@
 .alert__table__current-work-wrapper__input {
   text-align: center;
 }
+
+.alert__complete {
+  text-align: center;
+}
