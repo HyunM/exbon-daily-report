@@ -12,6 +12,7 @@ import DateFnsUtils from "@date-io/date-fns";
 import { formatDate } from "./formatDate";
 
 import {
+  DatePicker,
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
@@ -20,21 +21,43 @@ import SaveIcon from "@material-ui/icons/Save";
 import { ToastContainer, toast } from "react-toastify";
 import styles from "./SubcontractorTask.module.css";
 
+toast.configure();
+
 const SubcontractorTask = () => {
   const columns = useMemo(
     () => [
       {
-        Header: "Task",
+        Header: "Trade",
+        accessor: "Trade",
+        align: "center",
+      },
+      {
+        Header: "Company",
+        accessor: "Company",
+        align: "center",
+      },
+      {
+        Header: "Task Name",
         accessor: "TaskName",
         align: "center",
       },
       {
-        Header: "Previous Work %",
+        Header: "Start Date",
+        accessor: "StartDate",
+        align: "center",
+      },
+      {
+        Header: "Finish Date",
+        accessor: "FinishDate",
+        align: "center",
+      },
+      {
+        Header: "Previous Work Completion",
         accessor: "PreviousWork",
         align: "center",
       },
       {
-        Header: "Current Work %",
+        Header: "Current Work Completion",
         accessor: "CurrentWork",
         align: "center",
       },
@@ -42,18 +65,7 @@ const SubcontractorTask = () => {
     []
   );
 
-  const [data, setData] = useState(() => [
-    {
-      TaskName: "Test",
-      PreviousWork: 40,
-      CurrentWork: 50,
-    },
-    {
-      TaskName: "Test2",
-      PreviousWork: 50,
-      CurrentWork: "",
-    },
-  ]);
+  const [data, setData] = useState(() => []);
 
   const EditableCell = ({
     value: initialValue,
@@ -68,21 +80,65 @@ const SubcontractorTask = () => {
       setValue(e.target.value);
     };
 
+    const onChangeDatePicker = e => {
+      setValue(e);
+    };
+
     // We'll only update the external data when the input is blurred
     const onBlur = () => {
       updateMyData(index, id, value);
+    };
+
+    const onBlurForCurrentWork = e => {
+      if (
+        parseFloat(
+          e.target.parentNode.parentNode.previousElementSibling.innerText
+        ) >= parseFloat(e.target.value)
+      ) {
+        toast.warning(
+          <div className={styles["alert__table__current-work-wrapper__input"]}>
+            Current Work must be <strong>bigger</strong> than Previous Work.
+          </div>,
+          {
+            position: toast.POSITION.BOTTOM_CENTER,
+            hideProgressBar: true,
+          }
+        );
+        updateMyData(index, id, value);
+      } else {
+        updateMyData(index, id, value);
+      }
     };
 
     // If the initialValue is changed external, sync it up with our state
     React.useEffect(() => {
       setValue(initialValue);
     }, [initialValue]);
-
-    if (id === "TaskName") {
-      return <div className={styles["table__task-wrapper"]}>{value}</div>;
+    if (id === "Trade") {
+      return <div className={styles["table__trade-wrapper"]}>{value}</div>;
+    } else if (id === "Company") {
+      return <div className={styles["table__company-wrapper"]}>{value}</div>;
+    } else if (id === "TaskName") {
+      return <div className={styles["table__task-name-wrapper"]}>{value}</div>;
+    } else if (id === "StartDate") {
+      return <div className={styles["table__start-date-wrapper"]}>{value}</div>;
+    } else if (id === "FinishDate") {
+      return (
+        <div className={styles["table__finish-date-wrapper"]}>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <DatePicker
+              value={value.length === undefined ? value : value.split("-")}
+              onChange={onChangeDatePicker}
+              onBlur={onBlur}
+              format="yyyy-MM-dd"
+              className={styles["table__finish-date-wrapper__date-picker"]}
+            />
+          </MuiPickersUtilsProvider>
+        </div>
+      );
     } else if (id === "PreviousWork") {
       return (
-        <div className={styles["table__previous-work-wrapper"]}>{value}</div>
+        <div className={styles["table__previous-work-wrapper"]}>{value} %</div>
       );
     } else if (id === "CurrentWork") {
       return (
@@ -92,8 +148,9 @@ const SubcontractorTask = () => {
             value={value || ""}
             type="number"
             onChange={onChange}
-            onBlur={onBlur}
+            onBlur={onBlurForCurrentWork}
           />
+          &nbsp; %
         </div>
       );
     }
@@ -174,6 +231,24 @@ const SubcontractorTask = () => {
   const handleDateChange = date => {
     setSelectedDate(date);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      let result = await axios({
+        method: "get",
+        url: `/api/project-sub-tasks-progress?selectedDate=${formatDate(
+          selectedDate
+        )}`,
+        timeout: 5000, // 5 seconds timeout
+        headers: {},
+      });
+
+      setData(result.data);
+    };
+
+    fetchData();
+  }, [selectedDate]);
+
   return (
     <div id={styles.mainDiv}>
       {/* {console.log("data")}

@@ -1,6 +1,6 @@
 @media screen and (min-width: 900px) {
   #mainDiv {
-    width: 580px;
+    width: 1000px;
     margin: auto;
   }
   .header {
@@ -17,7 +17,7 @@
 
 @media screen and (max-width: 1420px) {
   #mainDiv {
-    width: 580px;
+    width: 1000px;
     margin: auto;
   }
   .header__right__save-btn {
@@ -85,10 +85,26 @@
   text-align: center;
 }
 
+.table__company-wrapper {
+  text-align: center;
+}
+.table__task-name-wrapper {
+  text-align: center;
+}
+.table__start-date-wrapper {
+  font-size: medium;
+  text-align: center;
+}
+.table__finish-date-wrapper {
+  font-size: medium;
+  text-align: center;
+}
+.table__finish-date-wrapper__date-picker {
+  width: 100px;
+}
 .table__previous-work-wrapper {
   text-align: center;
 }
-
 .table__current-work-wrapper {
   text-align: center;
 }
@@ -96,4 +112,12 @@
 .table__current-work-wrapper__input {
   text-align: center;
   width: 50px !important;
+}
+
+.alert__table__current-work-wrapper__input {
+  text-align: center;
+}
+
+.alert__complete {
+  text-align: center;
 }
