@@ -30,6 +30,35 @@ const projectSubTasksProgressHandler = (req, res) => {
         });
         break;
 
+      case "POST":
+        mssql.connect(dbserver.dbConfig, err => {
+          if (err) {
+            console.error(err);
+            return resolve();
+          }
+          const request = new mssql.Request();
+
+          const query = `EXEC [Hammer].[dbo].[ProjectSubTaskProgress_Insert]
+          ${body.TaskID}, "${body.Date}", ${body.WorkCompleted}`;
+          /* --Params--
+          	@taskID	int,
+            @date date,
+            @workCompleted float
+          */
+
+          request.query(query, (err, recordset) => {
+            if (err) {
+              console.error(err);
+              return resolve();
+            }
+            res.status(200).json({
+              message: "Success, the record of task progress has been created.",
+            });
+            return resolve();
+          });
+        });
+        break;
+
       default:
         res.setHeader("Allow", ["GET", "POST"]);
         res.status(405).end(`Method ${method} Not Allowed`);
