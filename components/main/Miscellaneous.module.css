@@ -8,3 +8,29 @@
     width: 100%;
   }
 }
+
+.safety-report__dropzone-wrapper {
+  padding: 20px;
+}
+
+.inspection-record__wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.inspection-record__wrapper__description {
+  width: 100%;
+}
+
+.inspection-record__wrapper__resolution {
+  width: 100%;
+}
+
+.inspection-record__wrapper__between {
+  width: 10%;
+}
+
+.memo__wrapper {
+  width: 100%;
+}
