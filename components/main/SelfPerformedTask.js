@@ -16,13 +16,19 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
+import { deepOrange } from "@material-ui/core/colors";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
 import { ToastContainer, toast } from "react-toastify";
 import styles from "./SelfPerformedTask.module.css";
 
 toast.configure();
-
+const defaultMaterialTheme = createMuiTheme({
+  palette: {
+    primary: deepOrange,
+  },
+});
 const SelfPerformedTask = () => {
   const columns = useMemo(
     () => [
@@ -130,13 +136,15 @@ const SelfPerformedTask = () => {
       return (
         <div className={styles["table__finish-date-wrapper"]}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <DatePicker
-              value={value.length === undefined ? value : value.split("-")}
-              onChange={onChangeDatePicker}
-              onBlur={onBlur}
-              format="yyyy-MM-dd"
-              className={styles["table__finish-date-wrapper__date-picker"]}
-            />
+            <ThemeProvider theme={defaultMaterialTheme}>
+              <DatePicker
+                value={value.length === undefined ? value : value.split("-")}
+                onChange={onChangeDatePicker}
+                onBlur={onBlur}
+                format="yyyy-MM-dd"
+                className={styles["table__finish-date-wrapper__date-picker"]}
+              />
+            </ThemeProvider>
           </MuiPickersUtilsProvider>
         </div>
       );

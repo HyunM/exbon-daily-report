@@ -7,6 +7,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import TabPanel from "./Tab/TabPanel";
 import a11yProps from "./Tab/a11yProps";
+import Miscellaneous from "./main/Miscellaneous";
 
 const TabsOfBoth = ({ tapNumber, handleChangeTabs }) => {
   return (
@@ -34,7 +35,9 @@ const TabsOfBoth = ({ tapNumber, handleChangeTabs }) => {
       <TabPanel tapNumber={tapNumber} index={2}>
         <SubcontractorTask />
       </TabPanel>
-      <TabPanel tapNumber={tapNumber} index={3}></TabPanel>
+      <TabPanel tapNumber={tapNumber} index={3}>
+        <Miscellaneous />
+      </TabPanel>
     </>
   );
 };
