@@ -69,7 +69,7 @@ const Miscellaneous = () => {
                 label="Description"
                 multiline
                 rows={6}
-                defaultValue=" "
+                defaultValue="Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi quae, quibusdam consequuntur error repudiandae odio voluptates deserunt modi voluptatum autem?"
                 variant="outlined"
                 fullWidth
               />
@@ -82,7 +82,7 @@ const Miscellaneous = () => {
                 label="Resolution"
                 multiline
                 rows={6}
-                defaultValue=" "
+                defaultValue="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Non, repellat."
                 variant="outlined"
                 fullWidth
               />
@@ -111,7 +111,7 @@ const Miscellaneous = () => {
             <TextField
               multiline
               rows={4}
-              defaultValue=" "
+              defaultValue="Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime voluptas error nobis odit commodi, in harum dolorem quaerat doloribus eius et reprehenderit. Rem aperiam aliquam exercitationem sequi id ratione aut."
               variant="outlined"
               fullWidth
             />
