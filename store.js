@@ -5,17 +5,33 @@ import { composeWithDevTools } from "redux-devtools-extension";
 let store;
 
 const initialState = {
+  updateQueue: [],
   deleteQueue: [],
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case "ADDUPDATEQUEUE":
+      const queue = [...state.updateQueue, action.addUpdateQueue];
+
+      const filterArray = queue.filter(function (item, index) {
+        if (queue.indexOf(item) == index) return item;
+      });
+      return {
+        ...state,
+        updateQueue: filterArray,
+      };
     case "ADDDELETEQUEUE":
       return {
         ...state,
         deleteQueue: [...state.deleteQueue, action.addDeleteQueue],
       };
-    case "INITIALIZE":
+    case "INITIALIZEUPDATEQUEUE":
+      return {
+        ...state,
+        updateQueue: initialState.updateQueue,
+      };
+    case "INITIALIZEDELETEQUEUE":
       return {
         ...state,
         deleteQueue: initialState.deleteQueue,

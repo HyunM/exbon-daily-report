@@ -48,16 +48,29 @@ const convertInputToTime = time => {
 
 const Timesheet = () => {
   const deleteQueue = useSelector(state => state.deleteQueue);
+  const updateQueue = useSelector(state => state.updateQueue);
   const dispatch = useDispatch();
+
+  const addUpdateQueue = value =>
+    dispatch({
+      type: "ADDUPDATEQUEUE",
+      addUpdateQueue: value,
+    });
+
   const addDeleteQueue = value =>
     dispatch({
       type: "ADDDELETEQUEUE",
       addDeleteQueue: value,
     });
 
-  const initializaDeleteQueue = () =>
+  const initializeUpdateQueue = () =>
     dispatch({
-      type: "INITIALIZE",
+      type: "INITIALIZEUPDATEQUEUE",
+    });
+
+  const initializeDeleteQueue = () =>
+    dispatch({
+      type: "INITIALIZEDELETEQUEUE",
     });
 
   const [checkState, setCheckState] = useState(true);
@@ -151,6 +164,10 @@ const Timesheet = () => {
     const [value, setValue] = React.useState(initialValue);
 
     const onCheckHour = e => {
+      const TimesheetID = e.target.parentElement.parentElement.parentElement.children[0].children[0].getAttribute(
+        "value"
+      );
+      addUpdateQueue(TimesheetID);
       if (12 < parseInt(e.target.value)) {
         toast.warning(
           <div className={styles["alert__table__hour-input"]}>
@@ -169,10 +186,18 @@ const Timesheet = () => {
     };
 
     const onCheckMin = e => {
+      const TimesheetID = e.target.parentElement.parentElement.parentElement.children[0].children[0].getAttribute(
+        "value"
+      );
+      addUpdateQueue(TimesheetID);
       setValue(value.slice(0, 2) + ":" + e.target.value + value.slice(5, 7));
     };
 
     const onCheckAmPm = e => {
+      const TimesheetID = e.target.parentElement.parentElement.parentElement.children[0].children[0].getAttribute(
+        "value"
+      );
+      addUpdateQueue(TimesheetID);
       if (e.target.value === "AM") {
         setValue(value.slice(0, 2) + ":" + value.slice(3, 5) + "AM");
       } else if (e.target.value === "PM") {
@@ -182,7 +207,19 @@ const Timesheet = () => {
       }
     };
 
+    const onChangeTrade = e => {
+      const TimesheetID = e.target.parentElement.parentElement.children[0].children[0].getAttribute(
+        "value"
+      );
+      addUpdateQueue(TimesheetID);
+      setValue(e.target.value);
+    };
+
     const onChange = e => {
+      const TimesheetID = e.target.parentElement.parentElement.parentElement.children[0].children[0].getAttribute(
+        "value"
+      );
+      addUpdateQueue(TimesheetID);
       setValue(e.target.value);
     };
 
@@ -245,6 +282,7 @@ const Timesheet = () => {
           <DeleteForeverIcon
             color="action"
             className={styles["table__delete-icon"]}
+            value={value}
             onClick={() => clickDeleteTimesheet(value)}
           ></DeleteForeverIcon>
         );
@@ -253,7 +291,7 @@ const Timesheet = () => {
       return (
         <select
           value={value}
-          onChange={onChange}
+          onChange={onChangeTrade}
           onBlur={onBlur}
           className={styles["table__trade-dropdown"]}
         >
@@ -557,7 +595,8 @@ const Timesheet = () => {
     };
 
     fetchData();
-    initializaDeleteQueue();
+    initializeDeleteQueue();
+    initializeUpdateQueue();
   }, [selectedDate]);
 
   useEffect(() => {
@@ -676,7 +715,8 @@ const Timesheet = () => {
             headers: {},
           });
         }
-        initializaDeleteQueue();
+        initializeDeleteQueue();
+        initializeUpdateQueue();
       };
 
       fetchData();

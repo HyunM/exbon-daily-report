@@ -22,7 +22,7 @@ import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
 import { ToastContainer, toast } from "react-toastify";
 import styles from "./SubcontractorTask.module.css";
-
+import { useSelector, useDispatch } from "react-redux";
 toast.configure();
 const defaultMaterialTheme = createMuiTheme({
   palette: {
@@ -30,6 +30,25 @@ const defaultMaterialTheme = createMuiTheme({
   },
 });
 const SubcontractorTask = () => {
+  const deleteQueue = useSelector(state => state.deleteQueue);
+  const dispatch = useDispatch();
+
+  const addUpdateQueue = value =>
+    dispatch({
+      type: "ADDUPDATEQUEUE",
+      addUpdateQueue: value,
+    });
+
+  const initializeUpdateQueue = () =>
+    dispatch({
+      type: "INITIALIZEUPDATEQUEUE",
+    });
+
+  const initializeDeleteQueue = () =>
+    dispatch({
+      type: "INITIALIZEDELETEQUEUE",
+    });
+
   const columns = useMemo(
     () => [
       {
@@ -367,6 +386,8 @@ const SubcontractorTask = () => {
     };
 
     fetchData();
+    initializeDeleteQueue();
+    initializeUpdateQueue();
   }, [selectedDate]);
 
   return (
