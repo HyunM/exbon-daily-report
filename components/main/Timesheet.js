@@ -547,7 +547,7 @@ const Timesheet = () => {
         //   lastName: "Pollock",
         // },
       });
-      if (now.slice(0, 10) === selectedDate.toLocaleString().slice(0, 10)) {
+      if (now.split(",")[0] === selectedDate.toLocaleString().split(",")[0]) {
         setCheckState(true);
       } else {
         setCheckState(false);

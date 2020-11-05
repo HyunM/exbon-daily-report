@@ -34,3 +34,7 @@
 .memo__wrapper {
   width: 100%;
 }
+
+.alert__complete {
+  text-align: center;
+}

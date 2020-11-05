@@ -1,4 +1,5 @@
-import React from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
@@ -11,6 +12,9 @@ import Button from "@material-ui/core/Button";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 import { DropzoneArea } from "material-ui-dropzone";
 import TextField from "@material-ui/core/TextField";
+import { ToastContainer, toast } from "react-toastify";
+
+toast.configure();
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -22,10 +26,103 @@ const useStyles = makeStyles(theme =>
 );
 
 const Miscellaneous = () => {
+  const [data, setData] = useState(() => []);
+
   const classes = useStyles();
+  useEffect(() => {
+    const fetchData = async () => {
+      let result = await axios({
+        method: "get",
+        url: `/api/project-daily-report-misc?projectID=1`,
+        timeout: 5000, // 5 seconds timeout
+        headers: {},
+        // data: {
+        //   firstName: "David",
+        //   lastName: "Pollock",
+        // },
+      });
+
+      setData(result.data);
+    };
+
+    fetchData();
+  }, []);
+
+  const saveInspectionRecord = () => {
+    const description = document.getElementById("TextFieldForDescription")
+      .value;
+    const resolution = document.getElementById("TextFieldForResolution").value;
+
+    const today = new Date()
+      .toLocaleString({
+        timeZone: "America/Los_Angeles",
+      })
+      .split(",")[0];
+
+    const fetchData = async () => {
+      await axios({
+        method: "post",
+        url: `/api/project-daily-report-misc/description-and-resolution`,
+        timeout: 5000, // 5 seconds timeout
+        headers: {},
+        data: {
+          ProjectID: 1,
+          Date: today,
+          InspectionDescription: description,
+          InspectionResolution: resolution,
+        },
+      });
+    };
+    fetchData();
+    toast.success(
+      <div className={styles["alert__complete"]}>
+        <strong>Save Complete</strong>
+      </div>,
+      {
+        position: toast.POSITION.BOTTOM_CENTER,
+        hideProgressBar: true,
+      }
+    );
+  };
+
+  const saveMemo = () => {
+    const memo = document.getElementById("TextFieldForMemo").value;
+
+    const today = new Date()
+      .toLocaleString({
+        timeZone: "America/Los_Angeles",
+      })
+      .split(",")[0];
+
+    const fetchData = async () => {
+      await axios({
+        method: "post",
+        url: `/api/project-daily-report-misc/memo`,
+        timeout: 5000, // 5 seconds timeout
+        headers: {},
+        data: {
+          ProjectID: 1,
+          Date: today,
+          Memo: memo,
+        },
+      });
+    };
+    fetchData();
+    toast.success(
+      <div className={styles["alert__complete"]}>
+        <strong>Save Complete</strong>
+      </div>,
+      {
+        position: toast.POSITION.BOTTOM_CENTER,
+        hideProgressBar: true,
+      }
+    );
+  };
 
   return (
     <div id={styles.mainDiv}>
+      {console.log("data")}
+      {console.log(data)}
       <Accordion defaultExpanded={false}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -66,12 +163,18 @@ const Miscellaneous = () => {
           <div className={styles["inspection-record__wrapper"]}>
             <div className={styles["inspection-record__wrapper__description"]}>
               <TextField
+                id="TextFieldForDescription"
                 label="Description"
                 multiline
                 rows={6}
-                defaultValue="Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi quae, quibusdam consequuntur error repudiandae odio voluptates deserunt modi voluptatum autem?"
+                defaultValue={
+                  data[0] === undefined ? "" : data[0].InspectionDescription
+                }
                 variant="outlined"
                 fullWidth
+                InputLabelProps={{
+                  shrink: true,
+                }}
               />
             </div>
             <div
@@ -79,19 +182,25 @@ const Miscellaneous = () => {
             ></div>
             <div className={styles["inspection-record__wrapper__resolution"]}>
               <TextField
+                id="TextFieldForResolution"
                 label="Resolution"
                 multiline
                 rows={6}
-                defaultValue="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Non, repellat."
+                defaultValue={
+                  data[0] === undefined ? "" : data[0].InspectionResolution
+                }
                 variant="outlined"
                 fullWidth
+                InputLabelProps={{
+                  shrink: true,
+                }}
               />
             </div>
           </div>
         </AccordionDetails>
         <Divider />
         <AccordionActions>
-          <Button size="small" color="primary">
+          <Button size="small" color="primary" onClick={saveInspectionRecord}>
             Save
           </Button>
         </AccordionActions>
@@ -109,9 +218,10 @@ const Miscellaneous = () => {
         <AccordionDetails>
           <div className={styles["memo__wrapper"]}>
             <TextField
+              id="TextFieldForMemo"
               multiline
               rows={4}
-              defaultValue="Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime voluptas error nobis odit commodi, in harum dolorem quaerat doloribus eius et reprehenderit. Rem aperiam aliquam exercitationem sequi id ratione aut."
+              defaultValue={data[0] === undefined ? "" : data[0].Memo}
               variant="outlined"
               fullWidth
             />
@@ -119,7 +229,7 @@ const Miscellaneous = () => {
         </AccordionDetails>
         <Divider />
         <AccordionActions>
-          <Button size="small" color="primary">
+          <Button size="small" color="primary" onClick={saveMemo}>
             Save
           </Button>
         </AccordionActions>
