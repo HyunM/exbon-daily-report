@@ -121,3 +121,11 @@
 .alert__complete {
   text-align: center;
 }
+
+.table__report-icon {
+  cursor: pointer;
+}
+
+.table__report-icon:hover {
+  color: gray;
+}

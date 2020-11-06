@@ -68,12 +68,12 @@ const SelfPerformedTask = () => {
         align: "center",
       },
       {
-        Header: "Previous Work Completion",
+        Header: "Previous Work %",
         accessor: "PreviousWork",
         align: "center",
       },
       {
-        Header: "Current Work Completion",
+        Header: "Current Work %",
         accessor: "CurrentWork",
         align: "center",
       },

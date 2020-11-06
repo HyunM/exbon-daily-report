@@ -9,7 +9,7 @@ const Container = () => {
   //   query: "(max-device-width: 1224px)",
   // });
 
-  const [tapNumber, setTapNumber] = useState(0);
+  const [tapNumber, setTapNumber] = useState(2);
   const handleChangeTabs = (event, newValue) => {
     setTapNumber(newValue);
   };

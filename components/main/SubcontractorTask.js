@@ -23,6 +23,8 @@ import SaveIcon from "@material-ui/icons/Save";
 import { ToastContainer, toast } from "react-toastify";
 import styles from "./SubcontractorTask.module.css";
 import { useSelector, useDispatch } from "react-redux";
+import ReportIcon from "@material-ui/icons/Report";
+import Tooltip from "@material-ui/core/Tooltip";
 toast.configure();
 const defaultMaterialTheme = createMuiTheme({
   palette: {
@@ -52,6 +54,11 @@ const SubcontractorTask = () => {
   const columns = useMemo(
     () => [
       {
+        Header: "",
+        accessor: "RecordID",
+        align: "center",
+      },
+      {
         Header: "Trade",
         accessor: "Trade",
         align: "center",
@@ -77,12 +84,12 @@ const SubcontractorTask = () => {
         align: "center",
       },
       {
-        Header: "Previous Work Completion",
+        Header: "Previous Work %",
         accessor: "PreviousWork",
         align: "center",
       },
       {
-        Header: "Current Work Completion",
+        Header: "Current Work %",
         accessor: "CurrentWork",
         align: "center",
       },
@@ -139,7 +146,21 @@ const SubcontractorTask = () => {
     React.useEffect(() => {
       setValue(initialValue);
     }, [initialValue]);
-    if (id === "Trade") {
+    if (id === "RecordID") {
+      const longText = `
+                        Aliquam eget finibus ante, non facilisis lectus. Sed vitae dignissim est, vel aliquam tellus.
+                        Praesent non nunc mollis, fermentum neque at, semper arcu.
+                        Nullam eget est sed sem iaculis gravida eget vitae justo.
+                      `;
+      return (
+        <Tooltip title={longText}>
+          <ReportIcon
+            color="primary"
+            className={styles["table__report-icon"]}
+          />
+        </Tooltip>
+      );
+    } else if (id === "Trade") {
       return <div className={styles["table__trade-wrapper"]}>{value}</div>;
     } else if (id === "Company") {
       return <div className={styles["table__company-wrapper"]}>{value}</div>;
