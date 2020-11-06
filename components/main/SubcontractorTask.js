@@ -25,6 +25,7 @@ import styles from "./SubcontractorTask.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import ReportIcon from "@material-ui/icons/Report";
 import Tooltip from "@material-ui/core/Tooltip";
+import ReactTooltip from "react-tooltip";
 toast.configure();
 const defaultMaterialTheme = createMuiTheme({
   palette: {
@@ -153,12 +154,20 @@ const SubcontractorTask = () => {
                         Nullam eget est sed sem iaculis gravida eget vitae justo.
                       `;
       return (
-        <Tooltip title={longText}>
+        // <Tooltip title={longText}>
+        //   <ReportIcon
+        //     color="primary"
+        //     className={styles["table__report-icon"]}
+        //   />
+        // </Tooltip>
+        <>
           <ReportIcon
             color="primary"
             className={styles["table__report-icon"]}
+            data-tip="Praesent non nunc mollis, fermentum neque at"
           />
-        </Tooltip>
+          <ReactTooltip />
+        </>
       );
     } else if (id === "Trade") {
       return <div className={styles["table__trade-wrapper"]}>{value}</div>;
