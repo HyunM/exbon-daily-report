@@ -18,7 +18,7 @@ const RecordIDHandler = (req, res) => {
           }
           const request = new mssql.Request();
 
-          const query = `EXEC [Hammer].[dbo].[ProjectSubTaskProgress_Update]
+          const query = `EXEC [Hammer].[dbo].[ProjectTaskProgress_Update]
             ${RecordID}, ${body.WorkCompleted}`;
           /* --Params--
             @recordID int,

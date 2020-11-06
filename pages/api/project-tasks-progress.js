@@ -1,7 +1,7 @@
 const mssql = require("mssql");
 const dbserver = require("../../dbConfig.js");
 
-const projectSubTasksProgressHandler = (req, res) => {
+const projectTasksProgressHandler = (req, res) => {
   const { method, body } = req;
   return new Promise(resolve => {
     switch (method) {
@@ -15,7 +15,7 @@ const projectSubTasksProgressHandler = (req, res) => {
 
           const selectedDate = req.query.selectedDate;
 
-          const query = `EXEC [Hammer].[dbo].[ProjectSubTaskProgress_SelectByDate]
+          const query = `EXEC [Hammer].[dbo].[ProjectTaskProgress_SelectByDate]
           '${selectedDate}' `;
 
           request.query(query, (err, recordset) => {
@@ -38,7 +38,7 @@ const projectSubTasksProgressHandler = (req, res) => {
           }
           const request = new mssql.Request();
 
-          const query = `EXEC [Hammer].[dbo].[ProjectSubTaskProgress_Insert]
+          const query = `EXEC [Hammer].[dbo].[ProjectTaskProgress_Insert]
           ${body.TaskID}, "${body.Date}", ${body.WorkCompleted}`;
           /* --Params--
           	@taskID	int,
@@ -68,4 +68,4 @@ const projectSubTasksProgressHandler = (req, res) => {
   });
 };
 
-export default projectSubTasksProgressHandler;
+export default projectTasksProgressHandler;

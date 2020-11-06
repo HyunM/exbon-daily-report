@@ -1,6 +1,4 @@
 import Timesheet from "./main/Timesheet";
-import SubcontractorTask from "./main/SubcontractorTask";
-import SelfPerformedTask from "./main/SelfPerformedTask";
 
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
@@ -11,7 +9,7 @@ import a11yProps from "./Tab/a11yProps";
 const TabsOfTablet = ({ tapNumber, handleChangeTabs }) => {
   return (
     <>
-      <AppBar position="static">
+      {/* <AppBar position="static">
         <Tabs
           value={tapNumber}
           onChange={handleChangeTabs}
@@ -34,7 +32,7 @@ const TabsOfTablet = ({ tapNumber, handleChangeTabs }) => {
       <TabPanel tapNumber={tapNumber} index={2}>
         <SubcontractorTask />
       </TabPanel>
-      <TabPanel tapNumber={tapNumber} index={3}></TabPanel>
+      <TabPanel tapNumber={tapNumber} index={3}></TabPanel> */}
     </>
   );
 };

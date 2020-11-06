@@ -21,7 +21,7 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
 import { ToastContainer, toast } from "react-toastify";
-import styles from "./SubcontractorTask.module.css";
+import styles from "./Task.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import ReportIcon from "@material-ui/icons/Report";
 import ReactTooltip from "react-tooltip";
@@ -31,7 +31,7 @@ const defaultMaterialTheme = createMuiTheme({
     primary: deepOrange,
   },
 });
-const SubcontractorTask = () => {
+const Task = () => {
   const deleteQueue = useSelector(state => state.deleteQueue);
   const dispatch = useDispatch();
 
@@ -147,11 +147,6 @@ const SubcontractorTask = () => {
       setValue(initialValue);
     }, [initialValue]);
     if (id === "RecordID") {
-      const longText = `
-                        Aliquam eget finibus ante, non facilisis lectus. Sed vitae dignissim est, vel aliquam tellus.
-                        Praesent non nunc mollis, fermentum neque at, semper arcu.
-                        Nullam eget est sed sem iaculis gravida eget vitae justo.
-                      `;
       return (
         <>
           <ReportIcon
@@ -317,7 +312,7 @@ const SubcontractorTask = () => {
             if (data[i].CurrentWork === "" || data[i].CurrentWork === 0) {
               await axios({
                 method: "put",
-                url: `/api/project-sub-tasks/${data[i].TaskID}`,
+                url: `/api/project-tasks/${data[i].TaskID}`,
                 timeout: 5000,
                 headers: {},
                 data: {
@@ -327,7 +322,7 @@ const SubcontractorTask = () => {
             } else {
               await axios({
                 method: "put",
-                url: `/api/project-sub-tasks-progress/${data[i].RecordID}`,
+                url: `/api/project-tasks-progress/${data[i].RecordID}`,
                 timeout: 5000,
                 headers: {},
                 data: {
@@ -336,7 +331,7 @@ const SubcontractorTask = () => {
               });
               await axios({
                 method: "put",
-                url: `/api/project-sub-tasks/${data[i].TaskID}`,
+                url: `/api/project-tasks/${data[i].TaskID}`,
                 timeout: 5000,
                 headers: {},
                 data: {
@@ -348,7 +343,7 @@ const SubcontractorTask = () => {
             if (data[i].CurrentWork === "" || data[i].CurrentWork === 0) {
               await axios({
                 method: "put",
-                url: `/api/project-sub-tasks/${data[i].TaskID}`,
+                url: `/api/project-tasks/${data[i].TaskID}`,
                 timeout: 5000,
                 headers: {},
                 data: {
@@ -358,7 +353,7 @@ const SubcontractorTask = () => {
             } else {
               await axios({
                 method: "put",
-                url: `/api/project-sub-tasks/${data[i].TaskID}`,
+                url: `/api/project-tasks/${data[i].TaskID}`,
                 timeout: 5000,
                 headers: {},
                 data: {
@@ -367,7 +362,7 @@ const SubcontractorTask = () => {
               });
               await axios({
                 method: "post",
-                url: `/api/project-sub-tasks-progress`,
+                url: `/api/project-tasks-progress`,
                 timeout: 5000,
                 headers: {},
                 data: {
@@ -398,7 +393,7 @@ const SubcontractorTask = () => {
     const fetchData = async () => {
       let result = await axios({
         method: "get",
-        url: `/api/project-sub-tasks-progress?selectedDate=${formatDate(
+        url: `/api/project-tasks-progress?selectedDate=${formatDate(
           selectedDate
         )}`,
         timeout: 5000, // 5 seconds timeout
@@ -419,8 +414,8 @@ const SubcontractorTask = () => {
       {console.log(data)} */}
       <div className={styles["header"]}>
         <div className={styles["header__left"]}>
-          <h2 className={styles["header__left__title"]}>Subcontractor Tasks</h2>
-          <MuiPickersUtilsProvider utils={DateFnsUtils} width="10">
+          <h1 className={styles["header__left__title"]}>Tasks</h1>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               margin="normal"
               id="datePickerDialog"
@@ -493,4 +488,4 @@ const SubcontractorTask = () => {
   );
 };
 
-export default SubcontractorTask;
+export default Task;

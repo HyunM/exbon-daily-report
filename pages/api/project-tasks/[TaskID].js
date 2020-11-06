@@ -18,7 +18,7 @@ const TaskIDHandler = (req, res) => {
           }
           const request = new mssql.Request();
 
-          const query = `EXEC [Hammer].[dbo].[ProjectSubTask_Update]
+          const query = `EXEC [Hammer].[dbo].[ProjectTask_Update]
             ${TaskID}, "${body.FinishDate}"`;
           /* --Params--
             @TaskID int,

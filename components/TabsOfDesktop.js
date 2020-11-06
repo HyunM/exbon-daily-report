@@ -1,6 +1,4 @@
 import Timesheet from "./main/Timesheet";
-import SubcontractorTask from "./main/SubcontractorTask";
-import SelfPerformedTask from "./main/SelfPerformedTask";
 
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";

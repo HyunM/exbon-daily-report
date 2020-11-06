@@ -1,6 +1,5 @@
 import Timesheet from "./main/Timesheet";
-import SubcontractorTask from "./main/SubcontractorTask";
-import SelfPerformedTask from "./main/SelfPerformedTask";
+import Task from "./main/Task";
 
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
@@ -21,21 +20,17 @@ const TabsOfBoth = ({ tapNumber, handleChangeTabs }) => {
           scrollButtons="auto"
         >
           <Tab label="Timesheet" {...a11yProps(0)} />
-          <Tab label="Self-Performed Tasks" {...a11yProps(1)} />
-          <Tab label="Subcontractor Tasks" {...a11yProps(2)} />
-          <Tab label="Miscellaneous" {...a11yProps(3)} />
+          <Tab label="Tasks" {...a11yProps(1)} />
+          <Tab label="Miscellaneous" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <TabPanel tapNumber={tapNumber} index={0}>
         <Timesheet />
       </TabPanel>
       <TabPanel tapNumber={tapNumber} index={1}>
-        <SelfPerformedTask />
+        <Task />
       </TabPanel>
       <TabPanel tapNumber={tapNumber} index={2}>
-        <SubcontractorTask />
-      </TabPanel>
-      <TabPanel tapNumber={tapNumber} index={3}>
         <Miscellaneous />
       </TabPanel>
     </>
