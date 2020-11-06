@@ -462,6 +462,20 @@ const Timesheet = () => {
     );
   };
 
+  const updateTimesheetIDData = (InsertID, TimesheetID) => {
+    setData(old =>
+      old.map((row, index) => {
+        if (row.InsertID === InsertID) {
+          return {
+            ...old[index],
+            ["TimesheetID"]: TimesheetID,
+          };
+        }
+        return row;
+      })
+    );
+  };
+
   const convertEmployeeNameToID = name => {
     let employee = employeeInfo.find(
       employee => name === employee.FirstName + " " + employee.LastName
@@ -487,6 +501,12 @@ const Timesheet = () => {
     );
   };
 
+  const getRandomIntInclusive = (min, max) => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
+  };
+
   const addTimesheetRow = () => {
     setData([
       ...data,
@@ -500,6 +520,7 @@ const Timesheet = () => {
         MealStart: data[0] !== undefined ? data[0].MealStart : "12:00PM",
         MealEnd: data[0] !== undefined ? data[0].MealEnd : "01:00PM",
         WorkEnd: data[0] !== undefined ? data[0].WorkEnd : "05:00PM",
+        InsertID: getRandomIntInclusive(1, 10000000),
         // WorkStart: "07:00AM",
         // MealStart: "12:00PM",
         // MealEnd: "01:00PM",
@@ -689,6 +710,11 @@ const Timesheet = () => {
                 MealStart: data[i].MealStart,
                 MealEnd: data[i].MealEnd,
               },
+            }).then(function (response) {
+              updateTimesheetIDData(
+                data[i].InsertID,
+                response.data.TimesheetID
+              );
             });
           } else {
             await axios({
@@ -734,9 +760,9 @@ const Timesheet = () => {
 
   return (
     <div id={styles.mainDiv}>
-      {/* {console.log("data")}
-        {console.log(data)}
-        {console.log("deleteQueue")}
+      {console.log("data")}
+      {console.log(data)}
+      {/*console.log("deleteQueue")}
         {console.log(deleteQueue)}
         {console.log("dateCheckThisWeek(selectedDate)")}
         {console.log(dateCheckEditable(selectedDate))} */}
