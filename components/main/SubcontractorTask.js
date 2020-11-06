@@ -162,7 +162,7 @@ const SubcontractorTask = () => {
         // </Tooltip>
         <>
           <ReportIcon
-            color="primary"
+            color="secondary"
             className={styles["table__report-icon"]}
             data-tip="Praesent non nunc mollis, fermentum neque at"
           />
