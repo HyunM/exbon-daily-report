@@ -14,7 +14,7 @@ const reducer = (state = initialState, action) => {
     case "ADDUPDATEQUEUE":
       const queue = [...state.updateQueue, action.addUpdateQueue];
 
-      const filterArray = queue.filter(function (item, index) {
+      const filterArray = queue.filter((item, index) => {
         if (queue.indexOf(item) == index) return item;
       });
       return {

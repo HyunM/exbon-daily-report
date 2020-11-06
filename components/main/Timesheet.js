@@ -710,7 +710,7 @@ const Timesheet = () => {
                 MealStart: data[i].MealStart,
                 MealEnd: data[i].MealEnd,
               },
-            }).then(function (response) {
+            }).then(response => {
               updateTimesheetIDData(
                 data[i].InsertID,
                 response.data.TimesheetID
