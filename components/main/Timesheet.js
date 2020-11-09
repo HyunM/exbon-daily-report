@@ -681,6 +681,7 @@ const Timesheet = () => {
           hideProgressBar: true,
         }
       );
+      return null;
     } else if (checkTime) {
       toast.error(
         <div className={styles["alert__table__time-wrapper"]}>
@@ -692,6 +693,7 @@ const Timesheet = () => {
           hideProgressBar: true,
         }
       );
+      return null;
     } else {
       const fetchData = async () => {
         for (let i = 0; i < data.length; i++) {
@@ -756,6 +758,20 @@ const Timesheet = () => {
         }
       );
     }
+
+    axios({
+      method: "post",
+      url: `/api/log-daily-reports`,
+      timeout: 5000, // 5 seconds timeout
+      headers: {},
+      data: {
+        EmployeeID: 1,
+        ProjectID: 1,
+        Date: formatDate(selectedDate),
+        Category: "Timesheet",
+        Action: "update",
+      },
+    });
   };
 
   return (
