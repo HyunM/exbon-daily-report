@@ -2,8 +2,6 @@ import { Fragment, useState, useMemo, useEffect } from "react";
 import axios from "axios";
 
 import { useTable } from "react-table";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
-// import CssBaseline from "@material-ui/core/CssBaseline";
 import TableContainer from "@material-ui/core/TableContainer";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";

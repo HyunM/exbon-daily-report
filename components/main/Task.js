@@ -302,6 +302,7 @@ const Task = () => {
           hideProgressBar: true,
         }
       );
+      return null;
     } else {
       const fetchData = async () => {
         for (let i = 0; i < data.length; i++) {
@@ -387,6 +388,19 @@ const Task = () => {
         }
       );
     }
+    axios({
+      method: "post",
+      url: `/api/log-daily-reports`,
+      timeout: 5000, // 5 seconds timeout
+      headers: {},
+      data: {
+        EmployeeID: 1,
+        ProjectID: 1,
+        Date: formatDate(selectedDate),
+        Category: "Tasks",
+        Action: "update",
+      },
+    });
   };
 
   useEffect(() => {

@@ -48,16 +48,16 @@ const Miscellaneous = () => {
     fetchData();
   }, []);
 
+  const today = new Date()
+    .toLocaleString({
+      timeZone: "America/Los_Angeles",
+    })
+    .split(",")[0];
+
   const saveInspectionRecord = () => {
     const description = document.getElementById("TextFieldForDescription")
       .value;
     const resolution = document.getElementById("TextFieldForResolution").value;
-
-    const today = new Date()
-      .toLocaleString({
-        timeZone: "America/Los_Angeles",
-      })
-      .split(",")[0];
 
     const fetchData = async () => {
       await axios({
@@ -83,16 +83,24 @@ const Miscellaneous = () => {
         hideProgressBar: true,
       }
     );
+
+    axios({
+      method: "post",
+      url: `/api/log-daily-reports`,
+      timeout: 5000, // 5 seconds timeout
+      headers: {},
+      data: {
+        EmployeeID: 1,
+        ProjectID: 1,
+        Date: today,
+        Category: "Miscellaneous_InspectionRecord",
+        Action: "update",
+      },
+    });
   };
 
   const saveMemo = () => {
     const memo = document.getElementById("TextFieldForMemo").value;
-
-    const today = new Date()
-      .toLocaleString({
-        timeZone: "America/Los_Angeles",
-      })
-      .split(",")[0];
 
     const fetchData = async () => {
       await axios({
@@ -117,6 +125,20 @@ const Miscellaneous = () => {
         hideProgressBar: true,
       }
     );
+
+    axios({
+      method: "post",
+      url: `/api/log-daily-reports`,
+      timeout: 5000, // 5 seconds timeout
+      headers: {},
+      data: {
+        EmployeeID: 1,
+        ProjectID: 1,
+        Date: today,
+        Category: "Miscellaneous_Memo",
+        Action: "update",
+      },
+    });
   };
 
   return (
