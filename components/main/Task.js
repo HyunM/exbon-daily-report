@@ -25,6 +25,8 @@ import styles from "./Task.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import ReportIcon from "@material-ui/icons/Report";
 import ReactTooltip from "react-tooltip";
+import { usePromiseTracker, trackPromise } from "react-promise-tracker";
+import Loader from "react-loader-spinner";
 toast.configure();
 const defaultMaterialTheme = createMuiTheme({
   palette: {
@@ -395,7 +397,7 @@ const Task = () => {
       headers: {},
       data: {
         EmployeeID: 1,
-        ProjectID: 1,
+        ProjectID: 6130,
         Date: formatDate(selectedDate),
         Category: "Tasks",
         Action: "update",
@@ -417,87 +419,107 @@ const Task = () => {
       setData(result.data);
     };
 
-    fetchData();
+    trackPromise(fetchData());
     initializeDeleteQueue();
     initializeUpdateQueue();
   }, [selectedDate]);
+
+  const { promiseInProgress } = usePromiseTracker();
 
   return (
     <div id={styles.mainDiv}>
       {/* {console.log("data")}
       {console.log(data)} */}
-      <div className={styles["header"]}>
-        <div className={styles["header__left"]}>
-          <h1 className={styles["header__left__title"]}>Tasks</h1>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker
-              margin="normal"
-              id="datePickerDialog"
-              label="Date"
-              format="yyyy-MM-dd"
-              KeyboardButtonProps={{
-                "aria-label": "change date",
-              }}
-              value={selectedDate}
-              onChange={handleDateChange}
-              className={styles["header__left__date-picker"]}
-            />
-          </MuiPickersUtilsProvider>
-          <h3 className={styles["header__left__project-id"]}>Project ID : 7</h3>
+      {promiseInProgress ? (
+        <div
+          style={{
+            width: "100%",
+            height: "100",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Loader type="ThreeDots" color="#2BAD60" height="100" width="100" />
         </div>
-        {dateCheckEditable(selectedDate) && (
-          <div className={styles["header__right"]}>
-            <Button
-              variant="contained"
-              color="primary"
-              size="small"
-              className={styles["header__right__save-btn"]}
-              startIcon={<SaveIcon />}
-              onClick={handleSaveBtn}
-            >
-              Save
-            </Button>
+      ) : (
+        <>
+          <div className={styles["header"]}>
+            <div className={styles["header__left"]}>
+              <h1 className={styles["header__left__title"]}>Tasks</h1>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  margin="normal"
+                  id="datePickerDialog"
+                  label="Date"
+                  format="yyyy-MM-dd"
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                  value={selectedDate}
+                  onChange={handleDateChange}
+                  className={styles["header__left__date-picker"]}
+                />
+              </MuiPickersUtilsProvider>
+              <h3 className={styles["header__left__project-id"]}>
+                Project ID : 6130
+              </h3>
+            </div>
+            {dateCheckEditable(selectedDate) && (
+              <div className={styles["header__right"]}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  className={styles["header__right__save-btn"]}
+                  startIcon={<SaveIcon />}
+                  onClick={handleSaveBtn}
+                >
+                  Save
+                </Button>
+              </div>
+            )}
           </div>
-        )}
-      </div>
-      <div className={styles["table"]}>
-        <TableContainer component={Paper}>
-          <Table {...getTableProps()}>
-            <TableHead>
-              {headerGroups.map(headerGroup => (
-                <TableRow {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map(column => (
-                    <TableCell
-                      {...column.getHeaderProps()}
-                      style={{
-                        textAlign: "center",
-                      }}
-                    >
-                      {column.render("Header")}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHead>
-            <TableBody {...getTableBodyProps()}>
-              {rows.map((row, i) => {
-                prepareRow(row);
-                return (
-                  <TableRow {...row.getRowProps()}>
-                    {row.cells.map(cell => {
-                      return (
-                        <TableCell {...cell.getCellProps()}>
-                          {cell.render("Cell")}
+          <div className={styles["table"]}>
+            <TableContainer component={Paper}>
+              <Table {...getTableProps()}>
+                <TableHead>
+                  {headerGroups.map(headerGroup => (
+                    <TableRow {...headerGroup.getHeaderGroupProps()}>
+                      {headerGroup.headers.map(column => (
+                        <TableCell
+                          {...column.getHeaderProps()}
+                          style={{
+                            textAlign: "center",
+                          }}
+                        >
+                          {column.render("Header")}
                         </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </div>
+                      ))}
+                    </TableRow>
+                  ))}
+                </TableHead>
+                <TableBody {...getTableBodyProps()}>
+                  {rows.map((row, i) => {
+                    prepareRow(row);
+                    return (
+                      <TableRow {...row.getRowProps()}>
+                        {row.cells.map(cell => {
+                          return (
+                            <TableCell {...cell.getCellProps()}>
+                              {cell.render("Cell")}
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+        </>
+      )}
     </div>
   );
 };

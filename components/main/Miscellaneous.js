@@ -13,6 +13,8 @@ import { createStyles, makeStyles } from "@material-ui/core/styles";
 import { DropzoneArea } from "material-ui-dropzone";
 import TextField from "@material-ui/core/TextField";
 import { ToastContainer, toast } from "react-toastify";
+import { usePromiseTracker, trackPromise } from "react-promise-tracker";
+import Loader from "react-loader-spinner";
 
 toast.configure();
 
@@ -33,7 +35,7 @@ const Miscellaneous = () => {
     const fetchData = async () => {
       let result = await axios({
         method: "get",
-        url: `/api/project-daily-report-misc?projectID=1`,
+        url: `/api/project-daily-report-misc?projectID=6130`,
         timeout: 5000, // 5 seconds timeout
         headers: {},
         // data: {
@@ -45,7 +47,7 @@ const Miscellaneous = () => {
       setData(result.data);
     };
 
-    fetchData();
+    trackPromise(fetchData());
   }, []);
 
   const today = new Date()
@@ -66,7 +68,7 @@ const Miscellaneous = () => {
         timeout: 5000, // 5 seconds timeout
         headers: {},
         data: {
-          ProjectID: 1,
+          ProjectID: 6130,
           Date: today,
           InspectionDescription: description,
           InspectionResolution: resolution,
@@ -91,7 +93,7 @@ const Miscellaneous = () => {
       headers: {},
       data: {
         EmployeeID: 1,
-        ProjectID: 1,
+        ProjectID: 6130,
         Date: today,
         Category: "Miscellaneous_InspectionRecord",
         Action: "update",
@@ -109,7 +111,7 @@ const Miscellaneous = () => {
         timeout: 5000, // 5 seconds timeout
         headers: {},
         data: {
-          ProjectID: 1,
+          ProjectID: 6130,
           Date: today,
           Memo: memo,
         },
@@ -133,7 +135,7 @@ const Miscellaneous = () => {
       headers: {},
       data: {
         EmployeeID: 1,
-        ProjectID: 1,
+        ProjectID: 6130,
         Date: today,
         Category: "Miscellaneous_Memo",
         Action: "update",
@@ -141,121 +143,145 @@ const Miscellaneous = () => {
     });
   };
 
+  const { promiseInProgress } = usePromiseTracker();
+
   return (
     <div id={styles.mainDiv}>
-      {console.log("data")}
-      {console.log(data)}
-      <Accordion defaultExpanded={false}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
+      {promiseInProgress ? (
+        <div
+          style={{
+            width: "100%",
+            height: "100",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
         >
-          <Typography variant="h5" color="primary">
-            Safety Report
-          </Typography>
-        </AccordionSummary>
-        <div className={styles["safety-report__dropzone-wrapper"]}>
-          <DropzoneArea
-            showPreviews={true}
-            showPreviewsInDropzone={false}
-            useChipsForPreview
-            previewGridProps={{ container: { spacing: 1, direction: "row" } }}
-            previewChipProps={{ classes: { root: classes.previewChip } }}
-            previewText="Selected files"
-          />
+          <Loader type="ThreeDots" color="#2BAD60" height="100" width="100" />
         </div>
-        <Divider />
-        <AccordionActions>
-          <Button size="small" color="primary">
-            Upload
-          </Button>
-        </AccordionActions>
-      </Accordion>
-
-      <Accordion defaultExpanded={true}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel2a-content"
-        >
-          <Typography variant="h5" color="primary">
-            Inspection Record
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <div className={styles["inspection-record__wrapper"]}>
-            <div className={styles["inspection-record__wrapper__description"]}>
-              <TextField
-                id="TextFieldForDescription"
-                label="Description"
-                multiline
-                rows={6}
-                defaultValue={
-                  data[0] === undefined ? "" : data[0].InspectionDescription
-                }
-                variant="outlined"
-                fullWidth
-                InputLabelProps={{
-                  shrink: true,
+      ) : (
+        <>
+          <Accordion defaultExpanded={false}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+            >
+              <Typography variant="h5" color="primary">
+                Safety Report
+              </Typography>
+            </AccordionSummary>
+            <div className={styles["safety-report__dropzone-wrapper"]}>
+              <DropzoneArea
+                showPreviews={true}
+                showPreviewsInDropzone={false}
+                useChipsForPreview
+                previewGridProps={{
+                  container: { spacing: 1, direction: "row" },
                 }}
+                previewChipProps={{ classes: { root: classes.previewChip } }}
+                previewText="Selected files"
               />
             </div>
-            <div
-              className={styles["inspection-record__wrapper__between"]}
-            ></div>
-            <div className={styles["inspection-record__wrapper__resolution"]}>
-              <TextField
-                id="TextFieldForResolution"
-                label="Resolution"
-                multiline
-                rows={6}
-                defaultValue={
-                  data[0] === undefined ? "" : data[0].InspectionResolution
-                }
-                variant="outlined"
-                fullWidth
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </div>
-          </div>
-        </AccordionDetails>
-        <Divider />
-        <AccordionActions>
-          <Button size="small" color="primary" onClick={saveInspectionRecord}>
-            Save
-          </Button>
-        </AccordionActions>
-      </Accordion>
-
-      <Accordion defaultExpanded={true}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel3a-content"
-        >
-          <Typography variant="h5" color="primary">
-            Memo
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <div className={styles["memo__wrapper"]}>
-            <TextField
-              id="TextFieldForMemo"
-              multiline
-              rows={4}
-              defaultValue={data[0] === undefined ? "" : data[0].Memo}
-              variant="outlined"
-              fullWidth
-            />
-          </div>
-        </AccordionDetails>
-        <Divider />
-        <AccordionActions>
-          <Button size="small" color="primary" onClick={saveMemo}>
-            Save
-          </Button>
-        </AccordionActions>
-      </Accordion>
+            <Divider />
+            <AccordionActions>
+              <Button size="small" color="primary">
+                Upload
+              </Button>
+            </AccordionActions>
+          </Accordion>
+          <Accordion defaultExpanded={true}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel2a-content"
+            >
+              <Typography variant="h5" color="primary">
+                Inspection Record
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <div className={styles["inspection-record__wrapper"]}>
+                <div
+                  className={styles["inspection-record__wrapper__description"]}
+                >
+                  <TextField
+                    id="TextFieldForDescription"
+                    label="Description"
+                    multiline
+                    rows={6}
+                    defaultValue={
+                      data[0] === undefined ? "" : data[0].InspectionDescription
+                    }
+                    variant="outlined"
+                    fullWidth
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                </div>
+                <div
+                  className={styles["inspection-record__wrapper__between"]}
+                ></div>
+                <div
+                  className={styles["inspection-record__wrapper__resolution"]}
+                >
+                  <TextField
+                    id="TextFieldForResolution"
+                    label="Resolution"
+                    multiline
+                    rows={6}
+                    defaultValue={
+                      data[0] === undefined ? "" : data[0].InspectionResolution
+                    }
+                    variant="outlined"
+                    fullWidth
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                </div>
+              </div>
+            </AccordionDetails>
+            <Divider />
+            <AccordionActions>
+              <Button
+                size="small"
+                color="primary"
+                onClick={saveInspectionRecord}
+              >
+                Save
+              </Button>
+            </AccordionActions>
+          </Accordion>
+          <Accordion defaultExpanded={true}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel3a-content"
+            >
+              <Typography variant="h5" color="primary">
+                Memo
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <div className={styles["memo__wrapper"]}>
+                <TextField
+                  id="TextFieldForMemo"
+                  multiline
+                  rows={4}
+                  defaultValue={data[0] === undefined ? "" : data[0].Memo}
+                  variant="outlined"
+                  fullWidth
+                />
+              </div>
+            </AccordionDetails>
+            <Divider />
+            <AccordionActions>
+              <Button size="small" color="primary" onClick={saveMemo}>
+                Save
+              </Button>
+            </AccordionActions>
+          </Accordion>
+        </>
+      )}
     </div>
   );
 };

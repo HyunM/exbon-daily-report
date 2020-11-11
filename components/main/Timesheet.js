@@ -32,9 +32,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./Timesheet.module.css";
 import classNames from "classnames/bind";
+import { usePromiseTracker, trackPromise } from "react-promise-tracker";
+import Loader from "react-loader-spinner";
 // let deleteQueue = []; //must be modified
 
 toast.configure();
+let afterSundayCheck = true;
 
 const convertInputToTime = time => {
   let match = inputTime.filter(data => data.input === time);
@@ -47,6 +50,7 @@ const convertInputToTime = time => {
 const Timesheet = () => {
   const deleteQueue = useSelector(state => state.deleteQueue);
   const updateQueue = useSelector(state => state.updateQueue);
+
   const dispatch = useDispatch();
 
   const addUpdateQueue = value =>
@@ -272,10 +276,14 @@ const Timesheet = () => {
     }, [initialValue]);
 
     if (id === "TimesheetID") {
-      let check = dateCheckEditable(
-        new Date(document.getElementById("datePickerDialog").value)
-      );
-      if (check)
+      // let check = true;
+      // if (document.getElementById("datePickerDialog") !== null) {
+      //   check = dateCheckEditable(
+      //     new Date(document.getElementById("datePickerDialog").value)
+      //   );
+      // }
+      // check = dateCheckEditable(selecte
+      if (afterSundayCheck === true) {
         return (
           <DeleteForeverIcon
             color="action"
@@ -284,7 +292,7 @@ const Timesheet = () => {
             onClick={() => clickDeleteTimesheet(value)}
           ></DeleteForeverIcon>
         );
-      else return <></>;
+      } else return <></>;
     } else if (id === "Trade") {
       return (
         <select
@@ -578,12 +586,17 @@ const Timesheet = () => {
       "/" +
       toStr.split("/")[1] +
       "/" +
-      toStr.split("/")[2];
+      toStr.split("/")[2].slice(0, 4);
     const dateFromStr = new Date(newStr);
     const sundayOfSelected = getSunday(dateFromStr);
     const sundayOfToday = getSunday(now);
-    if (date_diff_indays(sundayOfToday, sundayOfSelected) >= 0) return true;
-    else return false;
+    if (date_diff_indays(sundayOfToday, sundayOfSelected) >= 0) {
+      afterSundayCheck = true;
+      return true;
+    } else {
+      afterSundayCheck = false;
+      return false;
+    }
   };
 
   const handleDateChange = date => {
@@ -594,6 +607,7 @@ const Timesheet = () => {
     const fetchData = async () => {
       console.log("selectedDate");
       console.log(selectedDate.toLocaleString());
+
       let result = await axios({
         method: "get",
         url: `/api/timesheets?selectedDate=${formatDate(selectedDate)}`,
@@ -618,7 +632,7 @@ const Timesheet = () => {
       setData(result.data);
     };
 
-    fetchData();
+    trackPromise(fetchData());
     initializeDeleteQueue();
     initializeUpdateQueue();
   }, [selectedDate]);
@@ -769,7 +783,7 @@ const Timesheet = () => {
       headers: {},
       data: {
         EmployeeID: 1,
-        ProjectID: 1,
+        ProjectID: 6130,
         Date: formatDate(selectedDate),
         Category: "Timesheet",
         Action: "update",
@@ -777,103 +791,124 @@ const Timesheet = () => {
     });
   };
 
+  const { promiseInProgress } = usePromiseTracker();
+
   return (
     <div id={styles.mainDiv}>
-      {console.log("data")}
-      {console.log(data)}
-      {/*console.log("deleteQueue")}
+      {promiseInProgress ? (
+        <div
+          style={{
+            width: "100%",
+            height: "100",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Loader type="ThreeDots" color="#2BAD60" height="100" width="100" />
+        </div>
+      ) : (
+        <>
+          {console.log("data")}
+          {console.log(data)}
+          {/*console.log("deleteQueue")}
         {console.log(deleteQueue)}
         {console.log("dateCheckThisWeek(selectedDate)")}
         {console.log(dateCheckEditable(selectedDate))} */}
-      <div className={styles["header"]}>
-        <div className={styles["header__left"]}>
-          <h1 className={styles["header__left__title"]}>Timesheet</h1>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker
-              margin="normal"
-              id="datePickerDialog"
-              label="Date"
-              format="yyyy-MM-dd"
-              value={selectedDate}
-              onChange={handleDateChange}
-              KeyboardButtonProps={{
-                "aria-label": "change date",
-              }}
-            />
-          </MuiPickersUtilsProvider>
-          <h3 className={styles["header__left__project-id"]}>Project ID : 7</h3>
-        </div>
-        {dateCheckEditable(selectedDate) && (
-          <div className={styles["header__right"]}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={checkState}
-                  onChange={checkChange}
-                  name="checkbox"
-                  color="secondary"
-                  id="checkboxForSetSameTime"
+
+          <div className={styles["header"]}>
+            <div className={styles["header__left"]}>
+              <h1 className={styles["header__left__title"]}>Timesheet</h1>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  margin="normal"
+                  id="datePickerDialog"
+                  label="Date"
+                  format="yyyy-MM-dd"
+                  value={selectedDate}
+                  onChange={handleDateChange}
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
                 />
-              }
-              label="Set Same Time of All"
-              className={styles["header__right__checkbox"]}
-            />
-            <Button
-              variant="contained"
-              color="secondary"
-              size="small"
-              className={styles["header__right__add-btn"]}
-              onClick={addTimesheetRow}
-              startIcon={<AddIcon />}
-            >
-              Add&nbsp;Row
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              size="small"
-              className={styles["header__right__save-btn"]}
-              onClick={handleSaveTimesheetBtn}
-              startIcon={<SaveIcon />}
-            >
-              Save
-            </Button>
+              </MuiPickersUtilsProvider>
+              <h3 className={styles["header__left__project-id"]}>
+                Project ID : 6130
+              </h3>
+            </div>
+            {dateCheckEditable(selectedDate) && (
+              <div className={styles["header__right"]}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={checkState}
+                      onChange={checkChange}
+                      name="checkbox"
+                      color="secondary"
+                      id="checkboxForSetSameTime"
+                    />
+                  }
+                  label="Set Same Time of All"
+                  className={styles["header__right__checkbox"]}
+                />
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  size="small"
+                  className={styles["header__right__add-btn"]}
+                  onClick={addTimesheetRow}
+                  startIcon={<AddIcon />}
+                >
+                  Add&nbsp;Row
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  className={styles["header__right__save-btn"]}
+                  onClick={handleSaveTimesheetBtn}
+                  startIcon={<SaveIcon />}
+                >
+                  Save
+                </Button>
+              </div>
+            )}
           </div>
-        )}
-      </div>
-      <div className={styles["table"]}>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              {headerGroups.map(headerGroup => (
-                <TableRow {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map(column => (
-                    <TableCell {...column.getHeaderProps()}>
-                      {column.render("Header")}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHead>
-            <TableBody>
-              {rows.map((row, i) => {
-                prepareRow(row);
-                return (
-                  <TableRow {...row.getRowProps()}>
-                    {row.cells.map(cell => {
-                      return (
-                        <TableCell {...cell.getCellProps()}>
-                          {cell.render("Cell")}
+          <div className={styles["table"]}>
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
+                  {headerGroups.map(headerGroup => (
+                    <TableRow {...headerGroup.getHeaderGroupProps()}>
+                      {headerGroup.headers.map(column => (
+                        <TableCell {...column.getHeaderProps()}>
+                          {column.render("Header")}
                         </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </div>
+                      ))}
+                    </TableRow>
+                  ))}
+                </TableHead>
+                <TableBody>
+                  {rows.map((row, i) => {
+                    prepareRow(row);
+                    return (
+                      <TableRow {...row.getRowProps()}>
+                        {row.cells.map(cell => {
+                          return (
+                            <TableCell {...cell.getCellProps()}>
+                              {cell.render("Cell")}
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+        </>
+      )}
     </div>
   );
 };

@@ -36,6 +36,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         deleteQueue: initialState.deleteQueue,
       };
+
     default:
       return state;
   }
