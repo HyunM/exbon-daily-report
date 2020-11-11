@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -12,6 +12,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import ContainerMain from "../components/container";
 import axios from "axios";
 
 const Copyright = () => {
@@ -49,6 +50,7 @@ const useStyles = makeStyles(theme => ({
 
 const signin = () => {
   const classes = useStyles();
+  const [login, setLogin] = useState(false);
 
   const handleSignIn = async () => {
     await axios({
@@ -64,58 +66,62 @@ const signin = () => {
       if (response.data.Employee === undefined) {
         alert("Login failed.");
       } else {
-        alert("success");
+        setLogin(true);
       }
     });
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <div className={classes.form}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="username"
-            label="Username"
-            name="username"
-            autoFocus
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
-          {/* <FormControlLabel
+    <>
+      {login ? (
+        <ContainerMain />
+      ) : (
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
+          <div className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Sign in
+            </Typography>
+            <div className={classes.form}>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="username"
+                label="Username"
+                name="username"
+                autoFocus
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+              {/* <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           /> */}
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={handleSignIn}
-          >
-            Sign In
-          </Button>
-          {/* <Grid container>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                onClick={handleSignIn}
+              >
+                Sign In
+              </Button>
+              {/* <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">
                 Forgot password?
@@ -127,12 +133,14 @@ const signin = () => {
               </Link>
             </Grid>
           </Grid> */}
-        </div>
-      </div>
-      {/* <Box mt={8}>
+            </div>
+          </div>
+          {/* <Box mt={8}>
         <Copyright />
       </Box> */}
-    </Container>
+        </Container>
+      )}
+    </>
   );
 };
 

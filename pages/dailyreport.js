@@ -1,12 +1,10 @@
 import Head from "next/head";
 import Container from "../components/container";
-import SignIn from "./signin";
-import useSwr from "swr";
 import Link from "next/link";
 
 // const fetcher = url => fetch(url).then(res => res.json());
 
-const Index = () => {
+const dailyreport = () => {
   // const dataOfTimesheet = useSwr(
   //   "/api/timesheets?selectedDate=2020-10-05",
   //   fetcher
@@ -21,9 +19,9 @@ const Index = () => {
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
-      <SignIn />
+      <Container></Container>
     </>
   );
 };
 
-export default Index;
+export default dailyreport;
