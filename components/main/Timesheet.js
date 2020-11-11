@@ -604,7 +604,12 @@ const Timesheet = () => {
         //   lastName: "Pollock",
         // },
       });
-      if (now.split(",")[0] === selectedDate.toLocaleString().split(",")[0]) {
+      // if (now.split(",")[0] === selectedDate.toLocaleString().split(",")[0]) {
+      //   setCheckState(true);
+      // } else {
+      //   setCheckState(false);
+      // }
+      if (result.data.length === 0) {
         setCheckState(true);
       } else {
         setCheckState(false);
