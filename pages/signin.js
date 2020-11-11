@@ -12,6 +12,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import axios from "axios";
 
 const Copyright = () => {
   return (
@@ -49,6 +50,25 @@ const useStyles = makeStyles(theme => ({
 const signin = () => {
   const classes = useStyles();
 
+  const handleSignIn = async () => {
+    await axios({
+      method: "post",
+      url: `/api/daily-report/signin`,
+      timeout: 5000, // 5 seconds timeout
+      headers: {},
+      data: {
+        Username: document.getElementById("username").value,
+        Password: document.getElementById("password").value,
+      },
+    }).then(response => {
+      if (response.data.Employee === undefined) {
+        alert("Login failed.");
+      } else {
+        alert("success");
+      }
+    });
+  };
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -59,7 +79,7 @@ const signin = () => {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <div className={classes.form}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -91,6 +111,7 @@ const signin = () => {
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={handleSignIn}
           >
             Sign In
           </Button>
@@ -106,7 +127,7 @@ const signin = () => {
               </Link>
             </Grid>
           </Grid> */}
-        </form>
+        </div>
       </div>
       {/* <Box mt={8}>
         <Copyright />
