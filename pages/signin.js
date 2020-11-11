@@ -14,6 +14,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import ContainerMain from "../components/container";
 import axios from "axios";
+import { sha256, sha224 } from "js-sha256";
 
 const Copyright = () => {
   return (
@@ -53,6 +54,9 @@ const signin = () => {
   const [login, setLogin] = useState(false);
 
   const handleSignIn = async () => {
+    const password =
+      "0x" + sha256(document.getElementById("password").value).toUpperCase();
+    console.log(password);
     await axios({
       method: "post",
       url: `/api/daily-report/signin`,
@@ -60,7 +64,7 @@ const signin = () => {
       headers: {},
       data: {
         Username: document.getElementById("username").value,
-        Password: document.getElementById("password").value,
+        Password: password,
       },
     }).then(response => {
       if (response.data.Employee === undefined) {
