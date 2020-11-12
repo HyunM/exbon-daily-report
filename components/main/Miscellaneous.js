@@ -62,7 +62,7 @@ const Miscellaneous = () => {
     const resolution = document.getElementById("TextFieldForResolution").value;
 
     const fetchData = async () => {
-      await axios({
+      axios({
         method: "post",
         url: `/api/project-daily-report-misc/description-and-resolution`,
         timeout: 5000, // 5 seconds timeout
@@ -105,7 +105,7 @@ const Miscellaneous = () => {
     const memo = document.getElementById("TextFieldForMemo").value;
 
     const fetchData = async () => {
-      await axios({
+      axios({
         method: "post",
         url: `/api/project-daily-report-misc/memo`,
         timeout: 5000, // 5 seconds timeout

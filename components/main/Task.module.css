@@ -92,12 +92,11 @@
   text-align: center;
 }
 .table__start-date-wrapper {
-  font-size: medium;
+  font-size: small;
   text-align: center;
 }
 .table__finish-date-wrapper {
-  font-size: medium;
-  text-align: center;
+  text-align: center !important;
 }
 .table__finish-date-wrapper__date-picker {
   width: 100px;

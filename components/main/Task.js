@@ -32,6 +32,10 @@ const defaultMaterialTheme = createMuiTheme({
   palette: {
     primary: deepOrange,
   },
+  typography: {
+    fontSize: 12,
+    textAlign: "center",
+  },
 });
 const Task = () => {
   const deleteQueue = useSelector(state => state.deleteQueue);
@@ -60,11 +64,11 @@ const Task = () => {
         accessor: "RecordID",
         align: "center",
       },
-      {
-        Header: "Trade",
-        accessor: "Trade",
-        align: "center",
-      },
+      // {
+      //   Header: "Trade",
+      //   accessor: "Trade",
+      //   align: "center",
+      // },
       {
         Header: "Company",
         accessor: "Company",
@@ -313,7 +317,7 @@ const Task = () => {
             document.getElementById("datePickerDialog").value
           ) {
             if (data[i].CurrentWork === "" || data[i].CurrentWork === 0) {
-              await axios({
+              axios({
                 method: "put",
                 url: `/api/project-tasks/${data[i].TaskID}`,
                 timeout: 5000,
@@ -323,7 +327,7 @@ const Task = () => {
                 },
               });
             } else {
-              await axios({
+              axios({
                 method: "put",
                 url: `/api/project-tasks-progress/${data[i].RecordID}`,
                 timeout: 5000,
@@ -332,7 +336,7 @@ const Task = () => {
                   WorkCompleted: data[i].CurrentWork,
                 },
               });
-              await axios({
+              axios({
                 method: "put",
                 url: `/api/project-tasks/${data[i].TaskID}`,
                 timeout: 5000,
@@ -344,7 +348,7 @@ const Task = () => {
             }
           } else {
             if (data[i].CurrentWork === "" || data[i].CurrentWork === 0) {
-              await axios({
+              axios({
                 method: "put",
                 url: `/api/project-tasks/${data[i].TaskID}`,
                 timeout: 5000,
@@ -354,7 +358,7 @@ const Task = () => {
                 },
               });
             } else {
-              await axios({
+              axios({
                 method: "put",
                 url: `/api/project-tasks/${data[i].TaskID}`,
                 timeout: 5000,
@@ -363,7 +367,7 @@ const Task = () => {
                   FinishDate: data[i].FinishDate,
                 },
               });
-              await axios({
+              axios({
                 method: "post",
                 url: `/api/project-tasks-progress`,
                 timeout: 5000,
@@ -379,7 +383,7 @@ const Task = () => {
         }
       };
 
-      fetchData();
+      trackPromise(fetchData());
       toast.success(
         <div className={styles["alert__complete"]}>
           <strong>Save Complete</strong>
@@ -428,8 +432,6 @@ const Task = () => {
 
   return (
     <div id={styles.mainDiv}>
-      {/* {console.log("data")}
-      {console.log(data)} */}
       {promiseInProgress ? (
         <div
           style={{

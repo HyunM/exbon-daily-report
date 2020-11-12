@@ -366,3 +366,6 @@ body {
 .MuiDropzoneArea-root {
   min-height: 160px !important;
 }
+input {
+  text-align: center;
+}

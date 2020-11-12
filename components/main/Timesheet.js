@@ -605,9 +605,6 @@ const Timesheet = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log("selectedDate");
-      console.log(selectedDate.toLocaleString());
-
       let result = await axios({
         method: "get",
         url: `/api/timesheets?selectedDate=${formatDate(selectedDate)}`,
@@ -715,7 +712,7 @@ const Timesheet = () => {
       const fetchData = async () => {
         for (let i = 0; i < data.length; i++) {
           if (data[i].TimesheetID === 0) {
-            await axios({
+            axios({
               method: "post",
               url: `/api/timesheets`,
               timeout: 5000, // 5 seconds timeout
@@ -736,7 +733,7 @@ const Timesheet = () => {
               );
             });
           } else {
-            await axios({
+            axios({
               method: "put",
               url: `/api/timesheets/${data[i].TimesheetID}`,
               timeout: 5000, // 5 seconds timeout
@@ -753,7 +750,7 @@ const Timesheet = () => {
           }
         }
         for (let i = 0; i < deleteQueue.length; i++) {
-          await axios({
+          axios({
             method: "delete",
             url: `/api/timesheets/${deleteQueue[i]}`,
             timeout: 5000, // 5 seconds timeout
@@ -809,13 +806,6 @@ const Timesheet = () => {
         </div>
       ) : (
         <>
-          {console.log("data")}
-          {console.log(data)}
-          {/*console.log("deleteQueue")}
-        {console.log(deleteQueue)}
-        {console.log("dateCheckThisWeek(selectedDate)")}
-        {console.log(dateCheckEditable(selectedDate))} */}
-
           <div className={styles["header"]}>
             <div className={styles["header__left"]}>
               <h1 className={styles["header__left__title"]}>Timesheet</h1>
