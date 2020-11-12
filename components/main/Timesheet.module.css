@@ -58,7 +58,7 @@
 }
 
 .header__left__project-id {
-  flex-basis: 40%;
+  flex-basis: 50%;
   font-family: monospace;
   margin-bottom: 0 !important;
   margin-left: 5% !important;
