@@ -128,24 +128,7 @@ const Task = () => {
     };
 
     const onBlurForCurrentWork = e => {
-      if (
-        parseFloat(
-          e.target.parentNode.parentNode.previousElementSibling.innerText
-        ) >= parseFloat(e.target.value)
-      ) {
-        toast.warning(
-          <div className={styles["alert__table__current-work-wrapper__input"]}>
-            Current Work must be <strong>bigger</strong> than Previous Work.
-          </div>,
-          {
-            position: toast.POSITION.BOTTOM_CENTER,
-            hideProgressBar: true,
-          }
-        );
-        updateMyData(index, id, value);
-      } else {
-        updateMyData(index, id, value);
-      }
+      updateMyData(index, id, value);
     };
 
     // If the initialValue is changed external, sync it up with our state
@@ -284,119 +267,94 @@ const Task = () => {
   };
 
   const handleSaveBtn = () => {
-    let checkSavePossibleForCurrentWork = 0;
-    data.forEach(element => {
-      if (
-        !(
-          element.CurrentWork > element.PreviousWork ||
-          element.CurrentWork === "" ||
-          element.CurrentWork === 0
-        )
-      )
-        checkSavePossibleForCurrentWork++;
-    });
-    if (checkSavePossibleForCurrentWork) {
-      toast.error(
-        <div className={styles["alert__table__current-work-wrapper__input"]}>
-          Unable to save. <br /> Please check <strong>Current Work </strong>
-          input.
-          <br />
-          (Current Work must be bigger than Previous Work)
-        </div>,
-        {
-          position: toast.POSITION.BOTTOM_CENTER,
-          hideProgressBar: true,
-        }
-      );
-      return null;
-    } else {
-      let promises = [];
-      const fetchData = async () => {
-        for (let i = 0; i < data.length; i++) {
-          if (
-            data[i].LastDate.slice(0, 10) ===
-            document.getElementById("datePickerDialog").value
-          ) {
-            if (data[i].CurrentWork === "" || data[i].CurrentWork === 0) {
-              promises.push(
-                axios({
-                  method: "put",
-                  url: `/api/project-tasks/${data[i].TaskID}`,
-                  timeout: 5000,
-                  headers: {},
-                  data: {
-                    FinishDate: data[i].FinishDate,
-                  },
-                })
-              );
-            } else {
-              promises.push(
-                axios({
-                  method: "put",
-                  url: `/api/project-tasks-progress/${data[i].RecordID}`,
-                  timeout: 5000,
-                  headers: {},
-                  data: {
-                    WorkCompleted: data[i].CurrentWork,
-                  },
-                })
-              );
-              promises.push(
-                axios({
-                  method: "put",
-                  url: `/api/project-tasks/${data[i].TaskID}`,
-                  timeout: 5000,
-                  headers: {},
-                  data: {
-                    FinishDate: data[i].FinishDate,
-                  },
-                })
-              );
-            }
+    let promises = [];
+    const fetchData = async () => {
+      for (let i = 0; i < data.length; i++) {
+        if (
+          data[i].LastDate.slice(0, 10) ===
+          document.getElementById("datePickerDialog").value
+        ) {
+          if (data[i].CurrentWork === null || data[i].CurrentWork === "") {
+            promises.push(
+              axios({
+                method: "put",
+                url: `/api/project-tasks/${data[i].TaskID}`,
+                timeout: 5000,
+                headers: {},
+                data: {
+                  FinishDate: data[i].FinishDate,
+                },
+              })
+            );
           } else {
-            if (data[i].CurrentWork === "" || data[i].CurrentWork === 0) {
-              promises.push(
-                axios({
-                  method: "put",
-                  url: `/api/project-tasks/${data[i].TaskID}`,
-                  timeout: 5000,
-                  headers: {},
-                  data: {
-                    FinishDate: data[i].FinishDate,
-                  },
-                })
-              );
-            } else {
-              promises.push(
-                axios({
-                  method: "put",
-                  url: `/api/project-tasks/${data[i].TaskID}`,
-                  timeout: 5000,
-                  headers: {},
-                  data: {
-                    FinishDate: data[i].FinishDate,
-                  },
-                })
-              );
-              promises.push(
-                axios({
-                  method: "post",
-                  url: `/api/project-tasks-progress`,
-                  timeout: 5000,
-                  headers: {},
-                  data: {
-                    TaskID: data[i].TaskID,
-                    Date: document.getElementById("datePickerDialog").value,
-                    WorkCompleted: data[i].CurrentWork,
-                  },
-                })
-              );
-            }
+            promises.push(
+              axios({
+                method: "put",
+                url: `/api/project-tasks-progress/${data[i].RecordID}`,
+                timeout: 5000,
+                headers: {},
+                data: {
+                  WorkCompleted: data[i].CurrentWork,
+                },
+              })
+            );
+            promises.push(
+              axios({
+                method: "put",
+                url: `/api/project-tasks/${data[i].TaskID}`,
+                timeout: 5000,
+                headers: {},
+                data: {
+                  FinishDate: data[i].FinishDate,
+                },
+              })
+            );
+          }
+        } else {
+          if (data[i].CurrentWork === null || data[i].CurrentWork === "") {
+            promises.push(
+              axios({
+                method: "put",
+                url: `/api/project-tasks/${data[i].TaskID}`,
+                timeout: 5000,
+                headers: {},
+                data: {
+                  FinishDate: data[i].FinishDate,
+                },
+              })
+            );
+          } else {
+            promises.push(
+              axios({
+                method: "put",
+                url: `/api/project-tasks/${data[i].TaskID}`,
+                timeout: 5000,
+                headers: {},
+                data: {
+                  FinishDate: data[i].FinishDate,
+                },
+              })
+            );
+            promises.push(
+              axios({
+                method: "post",
+                url: `/api/project-tasks-progress`,
+                timeout: 5000,
+                headers: {},
+                data: {
+                  TaskID: data[i].TaskID,
+                  Date: document.getElementById("datePickerDialog").value,
+                  WorkCompleted: data[i].CurrentWork,
+                },
+              })
+            );
           }
         }
-      };
+      }
+    };
 
-      trackPromise(fetchData());
+    trackPromise(fetchData());
+    trackPromise(
       Promise.all(promises).then(() => {
         toast.success(
           <div className={styles["alert__complete"]}>
@@ -407,8 +365,9 @@ const Task = () => {
             hideProgressBar: true,
           }
         );
-      });
-    }
+      })
+    );
+
     axios({
       method: "post",
       url: `/api/log-daily-reports`,
@@ -461,6 +420,7 @@ const Task = () => {
         </div>
       ) : (
         <>
+          {console.log(data)}
           <div className={styles["header"]}>
             <div className={styles["header__left"]}>
               <h1 className={styles["header__left__title"]}>Tasks</h1>

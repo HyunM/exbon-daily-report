@@ -769,18 +769,20 @@ const Timesheet = () => {
         initializeUpdateQueue();
       };
 
-      fetchData();
-      Promise.all(promises).then(result => {
-        toast.success(
-          <div className={styles["alert__complete"]}>
-            <strong>Save Complete</strong>
-          </div>,
-          {
-            position: toast.POSITION.BOTTOM_CENTER,
-            hideProgressBar: true,
-          }
-        );
-      });
+      trackPromise(fetchData());
+      trackPromise(
+        Promise.all(promises).then(result => {
+          toast.success(
+            <div className={styles["alert__complete"]}>
+              <strong>Save Complete</strong>
+            </div>,
+            {
+              position: toast.POSITION.BOTTOM_CENTER,
+              hideProgressBar: true,
+            }
+          );
+        })
+      );
     }
 
     axios({
