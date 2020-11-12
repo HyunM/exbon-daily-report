@@ -14,6 +14,7 @@ import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
+  DatePicker,
 } from "@material-ui/pickers";
 import { toDate } from "date-fns";
 import inputTime from "./inputTime";
@@ -822,16 +823,13 @@ const Timesheet = () => {
             <div className={styles["header__left"]}>
               <h1 className={styles["header__left__title"]}>Timesheet</h1>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
+                <DatePicker
                   margin="normal"
                   id="datePickerDialog"
                   label="Date"
                   format="yyyy-MM-dd"
                   value={selectedDate}
                   onChange={handleDateChange}
-                  KeyboardButtonProps={{
-                    "aria-label": "change date",
-                  }}
                 />
               </MuiPickersUtilsProvider>
               <h3 className={styles["header__left__project-id"]}>

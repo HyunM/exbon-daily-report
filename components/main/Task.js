@@ -155,12 +155,16 @@ const Task = () => {
     } else if (id === "StartDate") {
       return <div className={styles["table__start-date-wrapper"]}>{value}</div>;
     } else if (id === "FinishDate") {
+      debugger;
       return (
         <div className={styles["table__finish-date-wrapper"]}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <ThemeProvider theme={defaultMaterialTheme}>
               <DatePicker
-                value={value.length === undefined ? value : value.split("-")}
+                // value={value.length === undefined ? value : value.split("-")}
+                value={
+                  value.length === undefined ? value : value + "T08:00:00.000Z"
+                }
                 onChange={onChangeDatePicker}
                 onBlur={onBlur}
                 format="yyyy-MM-dd"
@@ -425,14 +429,11 @@ const Task = () => {
             <div className={styles["header__left"]}>
               <h1 className={styles["header__left__title"]}>Tasks</h1>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
+                <DatePicker
                   margin="normal"
                   id="datePickerDialog"
                   label="Date"
                   format="yyyy-MM-dd"
-                  KeyboardButtonProps={{
-                    "aria-label": "change date",
-                  }}
                   value={selectedDate}
                   onChange={handleDateChange}
                   className={styles["header__left__date-picker"]}
