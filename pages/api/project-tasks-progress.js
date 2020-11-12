@@ -59,8 +59,38 @@ const projectTasksProgressHandler = (req, res) => {
         });
         break;
 
+      case "PUT":
+        mssql.connect(dbserver.dbConfig, err => {
+          if (err) {
+            console.error(err);
+            return resolve();
+          }
+          const request = new mssql.Request();
+
+          const query = `EXEC [Hammer].[dbo].[ProjectTaskProgress_DeleteAndInsert]
+            ${body.TaskID}, '${body.Date}', '${body.WorkCompleted}'`;
+          /* --Params--
+            @taskID int,
+            @date int,
+            @workCompleted float,
+          */
+
+          request.query(query, (err, recordset) => {
+            if (err) {
+              console.error(err);
+              return resolve();
+            }
+
+            res.status(200).json({
+              message: "Success, the record has been deleted and inserted.",
+            });
+            return resolve();
+          });
+        });
+        break;
+
       default:
-        res.setHeader("Allow", ["GET", "POST"]);
+        res.setHeader("Allow", ["GET", "POST", "PUT"]);
         res.status(405).end(`Method ${method} Not Allowed`);
         res.status(404).end(`Failed`);
         resolve();
