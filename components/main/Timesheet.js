@@ -709,68 +709,78 @@ const Timesheet = () => {
       );
       return null;
     } else {
+      let promises = [];
+
       const fetchData = async () => {
         for (let i = 0; i < data.length; i++) {
           if (data[i].TimesheetID === 0) {
-            axios({
-              method: "post",
-              url: `/api/timesheets`,
-              timeout: 5000, // 5 seconds timeout
-              headers: {},
-              data: {
-                EmployeeID: data[i].EmployeeID,
-                Trade: data[i].Trade,
-                Date: data[i].Date,
-                WorkStart: data[i].WorkStart,
-                WorkEnd: data[i].WorkEnd,
-                MealStart: data[i].MealStart,
-                MealEnd: data[i].MealEnd,
-              },
-            }).then(response => {
-              updateTimesheetIDData(
-                data[i].InsertID,
-                response.data.TimesheetID
-              );
-            });
+            promises.push(
+              axios({
+                method: "post",
+                url: `/api/timesheets`,
+                timeout: 5000, // 5 seconds timeout
+                headers: {},
+                data: {
+                  EmployeeID: data[i].EmployeeID,
+                  Trade: data[i].Trade,
+                  Date: data[i].Date,
+                  WorkStart: data[i].WorkStart,
+                  WorkEnd: data[i].WorkEnd,
+                  MealStart: data[i].MealStart,
+                  MealEnd: data[i].MealEnd,
+                },
+              }).then(response => {
+                updateTimesheetIDData(
+                  data[i].InsertID,
+                  response.data.TimesheetID
+                );
+              })
+            );
           } else {
-            axios({
-              method: "put",
-              url: `/api/timesheets/${data[i].TimesheetID}`,
-              timeout: 5000, // 5 seconds timeout
-              headers: {},
-              data: {
-                EmployeeID: data[i].EmployeeID,
-                Trade: data[i].Trade,
-                WorkStart: data[i].WorkStart,
-                WorkEnd: data[i].WorkEnd,
-                MealStart: data[i].MealStart,
-                MealEnd: data[i].MealEnd,
-              },
-            });
+            promises.push(
+              axios({
+                method: "put",
+                url: `/api/timesheets/${data[i].TimesheetID}`,
+                timeout: 5000, // 5 seconds timeout
+                headers: {},
+                data: {
+                  EmployeeID: data[i].EmployeeID,
+                  Trade: data[i].Trade,
+                  WorkStart: data[i].WorkStart,
+                  WorkEnd: data[i].WorkEnd,
+                  MealStart: data[i].MealStart,
+                  MealEnd: data[i].MealEnd,
+                },
+              })
+            );
           }
         }
         for (let i = 0; i < deleteQueue.length; i++) {
-          axios({
-            method: "delete",
-            url: `/api/timesheets/${deleteQueue[i]}`,
-            timeout: 5000, // 5 seconds timeout
-            headers: {},
-          });
+          promises.push(
+            axios({
+              method: "delete",
+              url: `/api/timesheets/${deleteQueue[i]}`,
+              timeout: 5000, // 5 seconds timeout
+              headers: {},
+            })
+          );
         }
         initializeDeleteQueue();
         initializeUpdateQueue();
       };
 
       fetchData();
-      toast.success(
-        <div className={styles["alert__complete"]}>
-          <strong>Save Complete</strong>
-        </div>,
-        {
-          position: toast.POSITION.BOTTOM_CENTER,
-          hideProgressBar: true,
-        }
-      );
+      Promise.all(promises).then(result => {
+        toast.success(
+          <div className={styles["alert__complete"]}>
+            <strong>Save Complete</strong>
+          </div>,
+          {
+            position: toast.POSITION.BOTTOM_CENTER,
+            hideProgressBar: true,
+          }
+        );
+      });
     }
 
     axios({
