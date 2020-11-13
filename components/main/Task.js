@@ -98,7 +98,7 @@ const Task = () => {
         Header: "Message",
         accessor: "Trade",
         align: "center",
-        width: 330,
+        width: 328,
       },
     ],
     []
