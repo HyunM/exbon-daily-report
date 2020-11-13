@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import axios from "axios";
-import { useTable } from "react-table";
+import { useTable, useBlockLayout } from "react-table";
 import TableContainer from "@material-ui/core/TableContainer";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -67,27 +67,38 @@ const Task = () => {
       {
         Header: "Company",
         accessor: "Company",
-        width: 50,
+        width: 150,
       },
       {
         Header: "Task Name",
         accessor: "TaskName",
+        width: 150,
       },
       {
         Header: "Start Date",
         accessor: "StartDate",
+        width: 100,
       },
       {
         Header: "Finish Date",
         accessor: "FinishDate",
+        width: 120,
       },
       {
         Header: "Previous Work %",
         accessor: "PreviousWork",
+        width: 75,
       },
       {
         Header: "Current Work %",
         accessor: "CurrentWork",
+        width: 75,
+      },
+      {
+        Header: "Message",
+        accessor: "Trade",
+        align: "center",
+        width: 330,
       },
     ],
     []
@@ -171,7 +182,7 @@ const Task = () => {
           <input
             className={styles["table__current-work-wrapper__input"]}
             value={value || ""}
-            type="number"
+            type="text"
             onChange={onChange}
             onBlur={onBlurForCurrentWork}
           />
@@ -207,12 +218,15 @@ const Task = () => {
     headerGroups,
     rows,
     prepareRow,
-  } = useTable({
-    columns,
-    data,
-    defaultColumn,
-    updateMyData,
-  });
+  } = useTable(
+    {
+      columns,
+      data,
+      defaultColumn,
+      updateMyData,
+    },
+    useBlockLayout
+  );
 
   const now = new Date().toLocaleString({
     timeZone: "America/Los_Angeles",
@@ -404,54 +418,35 @@ const Task = () => {
             )}
           </div>
           <div className={styles["table"]}>
-            <TableContainer component={Paper}>
-              <Table {...getTableProps()}>
-                <TableHead>
-                  {headerGroups.map(headerGroup => (
-                    <TableRow {...headerGroup.getHeaderGroupProps()}>
-                      {headerGroup.headers.map(column =>
-                        column.Header === "Start Date" ||
-                        column.Header === "Finish Date" ? (
-                          <TableCell
-                            {...column.getHeaderProps()}
-                            style={{
-                              textAlign: "center",
-                            }}
-                          >
-                            {column.render("Header")}
-                          </TableCell>
-                        ) : (
-                          <TableCell
-                            {...column.getHeaderProps()}
-                            style={{
-                              textAlign: "left",
-                            }}
-                          >
-                            {column.render("Header")}
-                          </TableCell>
-                        )
-                      )}
-                    </TableRow>
-                  ))}
-                </TableHead>
-                <TableBody {...getTableBodyProps()}>
-                  {rows.map((row, i) => {
-                    prepareRow(row);
-                    return (
-                      <TableRow {...row.getRowProps()}>
-                        {row.cells.map(cell => {
-                          return (
-                            <TableCell {...cell.getCellProps()}>
-                              {cell.render("Cell")}
-                            </TableCell>
-                          );
-                        })}
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <table {...getTableProps()}>
+              <thead>
+                {headerGroups.map(headerGroup => (
+                  <tr {...headerGroup.getHeaderGroupProps()}>
+                    {headerGroup.headers.map(column => (
+                      <td {...column.getHeaderProps()}>
+                        {column.render("Header")}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </thead>
+              <tbody {...getTableBodyProps()}>
+                {rows.map((row, i) => {
+                  prepareRow(row);
+                  return (
+                    <tr {...row.getRowProps()}>
+                      {row.cells.map(cell => {
+                        return (
+                          <td {...cell.getCellProps()}>
+                            {cell.render("Cell")}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         </>
       )}

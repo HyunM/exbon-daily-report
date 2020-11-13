@@ -565,8 +565,8 @@ const Timesheet = () => {
       data,
       defaultColumn,
       updateMyData,
-    },
-    useBlockLayout
+    }
+    // useBlockLayout
   );
   // Render the UI for your table
 
@@ -887,35 +887,37 @@ const Timesheet = () => {
             )}
           </div>
           <div className={styles["table"]}>
-            <table>
-              <thead>
-                {headerGroups.map(headerGroup => (
-                  <tr {...headerGroup.getHeaderGroupProps()}>
-                    {headerGroup.headers.map(column => (
-                      <td {...column.getHeaderProps()}>
-                        {column.render("Header")}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </thead>
-              <tbody>
-                {rows.map((row, i) => {
-                  prepareRow(row);
-                  return (
-                    <tr {...row.getRowProps()}>
-                      {row.cells.map(cell => {
-                        return (
-                          <td {...cell.getCellProps()}>
-                            {cell.render("Cell")}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
+                  {headerGroups.map(headerGroup => (
+                    <TableRow {...headerGroup.getHeaderGroupProps()}>
+                      {headerGroup.headers.map(column => (
+                        <TableCell {...column.getHeaderProps()}>
+                          {column.render("Header")}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))}
+                </TableHead>
+                <TableBody>
+                  {rows.map((row, i) => {
+                    prepareRow(row);
+                    return (
+                      <TableRow {...row.getRowProps()}>
+                        {row.cells.map(cell => {
+                          return (
+                            <TableCell {...cell.getCellProps()}>
+                              {cell.render("Cell")}
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
           </div>
         </>
       )}

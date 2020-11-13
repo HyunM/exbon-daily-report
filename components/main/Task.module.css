@@ -84,6 +84,47 @@
 .table {
   overflow: auto;
 }
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+.table table {
+  font-family: "Roboto", sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.table td,
+.table thead {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.table thead tr td {
+  text-align: center;
+}
+
+.table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.table tr {
+  background-color: #ffffff;
+}
+
+.table tr:hover {
+  background-color: #ddd;
+}
+
+.table thead td {
+  padding-top: 13px;
+  padding-bottom: 3px;
+  text-align: left;
+  background-color: #2699e6;
+  color: white;
+}
+
+.table thead td:nth-child(5),
+.table thead td:nth-child(6) {
+  padding-top: 6px;
+}
 
 .table__task-wrapper {
   text-align: center;
@@ -120,7 +161,7 @@
 
 .table__current-work-wrapper__input {
   text-align: center;
-  width: 50px !important;
+  width: 25px !important;
 }
 
 .alert__table__current-work-wrapper__input {
