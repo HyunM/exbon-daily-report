@@ -359,13 +359,10 @@ body {
   opacity: 0.4;
 }
 
-.MuiInputBase-input.MuiInput-input {
+/* .MuiInputBase-input.MuiInput-input {
   text-align: center;
-}
+} */
 
 .MuiDropzoneArea-root {
   min-height: 160px !important;
-}
-input {
-  text-align: center;
 }

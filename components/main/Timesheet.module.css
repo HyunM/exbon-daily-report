@@ -57,6 +57,9 @@
   flex: 0 1 auto;
 }
 
+.header__left__date-picker input {
+  text-align: center;
+}
 .header__left__project-id {
   flex-basis: 50%;
   font-family: monospace;
@@ -78,7 +81,7 @@
 }
 
 .table__labor-hours-input {
-  text-align: center;
+  text-align: right;
 }
 
 .table__ampm-dropdown {

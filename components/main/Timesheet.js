@@ -716,7 +716,7 @@ const Timesheet = () => {
         for (let i = 0; i < data.length; i++) {
           if (data[i].TimesheetID === 0) {
             promises.push(
-              axios({
+              await axios({
                 method: "post",
                 url: `/api/timesheets`,
                 timeout: 5000, // 5 seconds timeout
@@ -827,9 +827,10 @@ const Timesheet = () => {
                   margin="normal"
                   id="datePickerDialog"
                   label="Date"
-                  format="yyyy-MM-dd"
+                  format="MM/dd/yyyy"
                   value={selectedDate}
                   onChange={handleDateChange}
+                  className={styles["header__left__date-picker"]}
                 />
               </MuiPickersUtilsProvider>
               <h3 className={styles["header__left__project-id"]}>

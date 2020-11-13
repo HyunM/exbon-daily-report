@@ -67,32 +67,27 @@ const Task = () => {
       {
         Header: "Company",
         accessor: "Company",
-        align: "center",
+        width: 50,
       },
       {
         Header: "Task Name",
         accessor: "TaskName",
-        align: "center",
       },
       {
         Header: "Start Date",
         accessor: "StartDate",
-        align: "center",
       },
       {
         Header: "Finish Date",
         accessor: "FinishDate",
-        align: "center",
       },
       {
         Header: "Previous Work %",
         accessor: "PreviousWork",
-        align: "center",
       },
       {
         Header: "Current Work %",
         accessor: "CurrentWork",
-        align: "center",
       },
     ],
     []
@@ -150,19 +145,16 @@ const Task = () => {
     } else if (id === "StartDate") {
       return <div className={styles["table__start-date-wrapper"]}>{value}</div>;
     } else if (id === "FinishDate") {
-      debugger;
       return (
         <div className={styles["table__finish-date-wrapper"]}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <ThemeProvider theme={defaultMaterialTheme}>
               <DatePicker
                 // value={value.length === undefined ? value : value.split("-")}
-                value={
-                  value.length === undefined ? value : value + "T08:00:00.000Z"
-                }
+                value={value}
                 onChange={onChangeDatePicker}
                 onBlur={onBlur}
-                format="yyyy-MM-dd"
+                format="MM/dd/yyyy"
                 className={styles["table__finish-date-wrapper__date-picker"]}
               />
             </ThemeProvider>
@@ -386,7 +378,7 @@ const Task = () => {
                   margin="normal"
                   id="datePickerDialog"
                   label="Date"
-                  format="yyyy-MM-dd"
+                  format="MM/dd/yyyy"
                   value={selectedDate}
                   onChange={handleDateChange}
                   className={styles["header__left__date-picker"]}
@@ -417,16 +409,28 @@ const Task = () => {
                 <TableHead>
                   {headerGroups.map(headerGroup => (
                     <TableRow {...headerGroup.getHeaderGroupProps()}>
-                      {headerGroup.headers.map(column => (
-                        <TableCell
-                          {...column.getHeaderProps()}
-                          style={{
-                            textAlign: "center",
-                          }}
-                        >
-                          {column.render("Header")}
-                        </TableCell>
-                      ))}
+                      {headerGroup.headers.map(column =>
+                        column.Header === "Start Date" ||
+                        column.Header === "Finish Date" ? (
+                          <TableCell
+                            {...column.getHeaderProps()}
+                            style={{
+                              textAlign: "center",
+                            }}
+                          >
+                            {column.render("Header")}
+                          </TableCell>
+                        ) : (
+                          <TableCell
+                            {...column.getHeaderProps()}
+                            style={{
+                              textAlign: "left",
+                            }}
+                          >
+                            {column.render("Header")}
+                          </TableCell>
+                        )
+                      )}
                     </TableRow>
                   ))}
                 </TableHead>
