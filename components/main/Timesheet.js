@@ -1,7 +1,7 @@
 import { Fragment, useState, useMemo, useEffect } from "react";
 import axios from "axios";
 
-import { useTable } from "react-table";
+import { useAbsoluteLayout, useTable, useBlockLayout } from "react-table";
 import TableContainer from "@material-ui/core/TableContainer";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -120,34 +120,42 @@ const Timesheet = () => {
       {
         Header: " ", //Delete Timesheet
         accessor: "TimesheetID",
+        width: 30,
       },
       {
         Header: "Employee Name",
         accessor: "EmployeeName",
+        width: 120,
       },
       {
         Header: "Trade",
         accessor: "Trade",
+        width: 130,
       },
       {
         Header: "Work Start",
         accessor: "WorkStart",
+        width: 120,
       },
       {
         Header: "Meal Start",
         accessor: "MealStart",
+        width: 120,
       },
       {
         Header: "Meal End",
         accessor: "MealEnd",
+        width: 120,
       },
       {
         Header: "Work End",
         accessor: "WorkEnd",
+        width: 120,
       },
       {
         Header: "Labor Hours",
         accessor: "laborHours",
+        width: 40,
       },
     ],
     []
@@ -551,12 +559,15 @@ const Timesheet = () => {
     headerGroups,
     rows,
     prepareRow,
-  } = useTable({
-    columns,
-    data,
-    defaultColumn,
-    updateMyData,
-  });
+  } = useTable(
+    {
+      columns,
+      data,
+      defaultColumn,
+      updateMyData,
+    },
+    useBlockLayout
+  );
   // Render the UI for your table
 
   const now = new Date().toLocaleString({
@@ -876,37 +887,35 @@ const Timesheet = () => {
             )}
           </div>
           <div className={styles["table"]}>
-            <TableContainer component={Paper}>
-              <Table>
-                <TableHead>
-                  {headerGroups.map(headerGroup => (
-                    <TableRow {...headerGroup.getHeaderGroupProps()}>
-                      {headerGroup.headers.map(column => (
-                        <TableCell {...column.getHeaderProps()}>
-                          {column.render("Header")}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))}
-                </TableHead>
-                <TableBody>
-                  {rows.map((row, i) => {
-                    prepareRow(row);
-                    return (
-                      <TableRow {...row.getRowProps()}>
-                        {row.cells.map(cell => {
-                          return (
-                            <TableCell {...cell.getCellProps()}>
-                              {cell.render("Cell")}
-                            </TableCell>
-                          );
-                        })}
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <table>
+              <thead>
+                {headerGroups.map(headerGroup => (
+                  <tr {...headerGroup.getHeaderGroupProps()}>
+                    {headerGroup.headers.map(column => (
+                      <td {...column.getHeaderProps()}>
+                        {column.render("Header")}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </thead>
+              <tbody>
+                {rows.map((row, i) => {
+                  prepareRow(row);
+                  return (
+                    <tr {...row.getRowProps()}>
+                      {row.cells.map(cell => {
+                        return (
+                          <td {...cell.getCellProps()}>
+                            {cell.render("Cell")}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         </>
       )}
