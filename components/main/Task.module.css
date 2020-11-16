@@ -92,8 +92,7 @@
   width: 100%;
 }
 
-.table td,
-.table thead {
+.table td {
   border: 1px solid #ddd;
 }
 
@@ -109,14 +108,16 @@
   background-color: #ffffff;
 }
 
-/* .table tr:hover {
-  background-color: #ddd;
-} */
+.table tbody tr:hover {
+  /* background-color: #ddd; */
+  background-color: #e6e8f3;
+  border: 1px solid #647be2;
+  cursor: pointer;
+}
 
 .table thead td {
   padding-top: 13px;
   padding-bottom: 3px;
-  text-align: left;
   background-color: #647be2;
   color: white;
 }
@@ -126,13 +127,13 @@
   padding-top: 6px;
 }
 
-.table__task-wrapper {
+.table__trade-wrapper {
   display: table;
   height: 100%;
   margin-top: auto;
 }
 
-.table__task-wrapper__data {
+.table__trade-wrapper__data {
   vertical-align: middle;
   text-align: left;
   display: table-cell;
@@ -148,6 +149,8 @@
   vertical-align: middle;
   text-align: left;
   display: table-cell;
+  color: rgb(116, 100, 110);
+  font-size: 0.95rem;
 }
 
 .table__task-name-wrapper {
@@ -160,6 +163,8 @@
   vertical-align: middle;
   text-align: left;
   display: table-cell;
+  color: rgb(116, 100, 110);
+  font-size: 0.95rem;
 }
 
 .table__start-date-wrapper {
@@ -169,10 +174,11 @@
 }
 
 .table__start-date-wrapper__data {
-  font-size: small;
+  font-size: 0.85rem;
   text-align: center;
   vertical-align: middle;
   display: table-cell;
+  color: rgb(116, 100, 110);
 }
 .table__finish-date-wrapper {
   display: table;
@@ -181,7 +187,6 @@
 }
 
 .table__finish-date-wrapper__data {
-  font-size: small;
   text-align: center;
   vertical-align: middle;
   display: table-cell;
@@ -193,6 +198,7 @@
 
 .table__finish-date-wrapper__date-picker input {
   text-align: center;
+  color: rgb(116, 100, 110);
 }
 
 .table__previous-work-wrapper {
@@ -206,6 +212,8 @@
   text-align: right;
   vertical-align: middle;
   display: table-cell;
+  color: rgb(116, 100, 110);
+  font-size: 0.95rem;
 }
 
 .table__current-work-wrapper {
@@ -219,6 +227,7 @@
   text-align: right;
   vertical-align: middle;
   display: table-cell;
+  color: rgb(116, 100, 110);
 }
 
 .table__current-work-wrapper__input {

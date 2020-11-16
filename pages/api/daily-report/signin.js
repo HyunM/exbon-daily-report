@@ -14,7 +14,7 @@ const signinHandler = (req, res) => {
           const request = new mssql.Request();
 
           const query = `EXEC [Hammer].[dbo].[DailyReport_SignIn]
-          "${body.Username}", "${body.Password}"`;
+          "${body.Username}", ${body.Password}`;
           /* --Params--
           	@username varchar(50),
 	        @password varchar(20)
