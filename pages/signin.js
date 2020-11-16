@@ -56,7 +56,6 @@ const signin = () => {
   const handleSignIn = async () => {
     const password =
       "0x" + sha256(document.getElementById("password").value).toUpperCase();
-    console.log(password);
     await axios({
       method: "post",
       url: `/api/daily-report/signin`,
