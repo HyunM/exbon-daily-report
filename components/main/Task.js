@@ -67,38 +67,38 @@ const Task = () => {
       {
         Header: "Company",
         accessor: "Company",
-        width: 150,
+        width: 160,
       },
       {
         Header: "Task Name",
         accessor: "TaskName",
-        width: 150,
+        width: 140,
       },
       {
         Header: "Start Date",
         accessor: "StartDate",
-        width: 100,
+        width: 90,
       },
       {
         Header: "Finish Date",
         accessor: "FinishDate",
-        width: 120,
+        width: 90,
       },
       {
         Header: "Previous Work %",
         accessor: "PreviousWork",
-        width: 75,
+        width: 65,
       },
       {
         Header: "Current Work %",
         accessor: "CurrentWork",
-        width: 75,
+        width: 65,
       },
       {
         Header: "Message",
         accessor: "Trade",
         align: "center",
-        width: 328,
+        width: 388,
       },
     ],
     []
@@ -148,45 +148,75 @@ const Task = () => {
     //     </>
     //   );
     if (id === "Trade") {
-      return <div className={styles["table__trade-wrapper"]}>{value}</div>;
+      return (
+        <div className={styles["table__trade-wrapper"]}>
+          <span className={styles["table__trade-wrapper__data"]}>{value}</span>
+        </div>
+      );
     } else if (id === "Company") {
-      return <div className={styles["table__company-wrapper"]}>{value}</div>;
+      return (
+        <div className={styles["table__company-wrapper"]}>
+          <span className={styles["table__company-wrapper__data"]}>
+            {value}
+          </span>
+        </div>
+      );
     } else if (id === "TaskName") {
-      return <div className={styles["table__task-name-wrapper"]}>{value}</div>;
+      return (
+        <div className={styles["table__task-name-wrapper"]}>
+          <span className={styles["table__task-name-wrapper__data"]}>
+            {value}
+          </span>
+        </div>
+      );
     } else if (id === "StartDate") {
-      return <div className={styles["table__start-date-wrapper"]}>{value}</div>;
+      return (
+        <div className={styles["table__start-date-wrapper"]}>
+          <span className={styles["table__start-date-wrapper__data"]}>
+            {value}
+          </span>
+        </div>
+      );
     } else if (id === "FinishDate") {
       return (
         <div className={styles["table__finish-date-wrapper"]}>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <ThemeProvider theme={defaultMaterialTheme}>
-              <DatePicker
-                // value={value.length === undefined ? value : value.split("-")}
-                value={value}
-                onChange={onChangeDatePicker}
-                onBlur={onBlur}
-                format="MM/dd/yyyy"
-                className={styles["table__finish-date-wrapper__date-picker"]}
-              />
-            </ThemeProvider>
-          </MuiPickersUtilsProvider>
+          <span className={styles["table__finish-date-wrapper__data"]}>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <ThemeProvider theme={defaultMaterialTheme}>
+                <DatePicker
+                  // value={value.length === undefined ? value : value.split("-")}
+                  value={value}
+                  onChange={onChangeDatePicker}
+                  onBlur={onBlur}
+                  format="MM/dd/yyyy"
+                  className={styles["table__finish-date-wrapper__date-picker"]}
+                />
+              </ThemeProvider>
+            </MuiPickersUtilsProvider>
+          </span>
         </div>
       );
     } else if (id === "PreviousWork") {
       return (
-        <div className={styles["table__previous-work-wrapper"]}>{value} %</div>
+        <div className={styles["table__previous-work-wrapper"]}>
+          <span className={styles["table__previous-work-wrapper__data"]}>
+            {value} %
+          </span>
+        </div>
       );
     } else if (id === "CurrentWork") {
       return (
         <div className={styles["table__current-work-wrapper"]}>
-          <input
-            className={styles["table__current-work-wrapper__input"]}
-            value={value || ""}
-            type="text"
-            onChange={onChange}
-            onBlur={onBlurForCurrentWork}
-          />
-          &nbsp; %
+          <span className={styles["table__current-work-wrapper__data"]}>
+            <input
+              className={styles["table__current-work-wrapper__input"]}
+              value={value === 0 ? value : value || ""}
+              type="number"
+              onChange={onChange}
+              onBlur={onBlurForCurrentWork}
+            />
+            %
+          </span>
         </div>
       );
     }
@@ -434,7 +464,7 @@ const Task = () => {
                 {rows.map((row, i) => {
                   prepareRow(row);
                   return (
-                    <tr {...row.getRowProps()}>
+                    <tr {...row.getRowProps()} className={styles["table__row"]}>
                       {row.cells.map(cell => {
                         return (
                           <td {...cell.getCellProps()}>

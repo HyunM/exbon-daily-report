@@ -95,7 +95,6 @@
 .table td,
 .table thead {
   border: 1px solid #ddd;
-  padding: 8px;
 }
 
 .table thead tr td {
@@ -110,15 +109,15 @@
   background-color: #ffffff;
 }
 
-.table tr:hover {
+/* .table tr:hover {
   background-color: #ddd;
-}
+} */
 
 .table thead td {
   padding-top: 13px;
   padding-bottom: 3px;
   text-align: left;
-  background-color: #2699e6;
+  background-color: #647be2;
   color: white;
 }
 
@@ -128,25 +127,68 @@
 }
 
 .table__task-wrapper {
-  text-align: center;
+  display: table;
+  height: 100%;
+  margin-top: auto;
+}
+
+.table__task-wrapper__data {
+  vertical-align: middle;
+  text-align: left;
+  display: table-cell;
 }
 
 .table__company-wrapper {
-  text-align: left;
+  display: table;
+  height: 100%;
+  margin-top: auto;
 }
+
+.table__company-wrapper__data {
+  vertical-align: middle;
+  text-align: left;
+  display: table-cell;
+}
+
 .table__task-name-wrapper {
-  text-align: left;
+  display: table;
+  height: 100%;
+  margin-top: auto;
 }
+
+.table__task-name-wrapper__data {
+  vertical-align: middle;
+  text-align: left;
+  display: table-cell;
+}
+
 .table__start-date-wrapper {
+  display: table;
+  height: 100%;
+  margin: auto;
+}
+
+.table__start-date-wrapper__data {
   font-size: small;
   text-align: center;
+  vertical-align: middle;
+  display: table-cell;
 }
 .table__finish-date-wrapper {
-  text-align: left;
+  display: table;
+  height: 100%;
+  margin: auto;
+}
+
+.table__finish-date-wrapper__data {
+  font-size: small;
+  text-align: center;
+  vertical-align: middle;
+  display: table-cell;
 }
 
 .table__finish-date-wrapper__date-picker {
-  width: 100px;
+  width: 80px;
 }
 
 .table__finish-date-wrapper__date-picker input {
@@ -154,16 +196,47 @@
 }
 
 .table__previous-work-wrapper {
-  text-align: right;
+  display: table;
+  height: 100%;
+  margin-top: auto;
+  margin-left: auto;
 }
-.table__current-work-wrapper {
+
+.table__previous-work-wrapper__data {
   text-align: right;
+  vertical-align: middle;
+  display: table-cell;
+}
+
+.table__current-work-wrapper {
+  display: table;
+  height: 100%;
+  margin-top: auto;
+  margin-left: auto;
+}
+
+.table__current-work-wrapper__data {
+  text-align: right;
+  vertical-align: middle;
+  display: table-cell;
 }
 
 .table__current-work-wrapper__input {
   text-align: center;
-  width: 25px !important;
+  width: 38px !important;
+  color: rgb(116, 100, 110);
+  border: 1px solid rgb(200, 191, 196);
+  border-radius: 4px;
+  box-shadow: rgb(221, 216, 220) 1px 1px 2px inset;
+  background: rgb(255, 255, 255);
+  padding: 4px;
 }
+
+/* .table__current-work-wrapper__input::-webkit-outer-spin-button,
+.table__current-work-wrapper__input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+} */
 
 .alert__table__current-work-wrapper__input {
   text-align: center;
@@ -177,6 +250,6 @@
   cursor: pointer;
 }
 
-.table__report-icon:hover {
+/* .table__report-icon:hover {
   color: gray;
-}
+} */
