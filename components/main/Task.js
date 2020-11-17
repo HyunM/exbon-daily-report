@@ -432,20 +432,20 @@ const Task = () => {
                 Project ID : 6130
               </h3>
             </div>
-            {dateCheckEditable(selectedDate) && (
-              <div className={styles["header__right"]}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="small"
-                  className={styles["header__right__save-btn"]}
-                  startIcon={<SaveIcon />}
-                  onClick={handleSaveBtn}
-                >
-                  Save
-                </Button>
-              </div>
-            )}
+            {/* {dateCheckEditable(selectedDate) && ( */}
+            <div className={styles["header__right"]}>
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                className={styles["header__right__save-btn"]}
+                startIcon={<SaveIcon />}
+                onClick={handleSaveBtn}
+              >
+                Save
+              </Button>
+            </div>
+            {/* )} */}
           </div>
           <div className={styles["table"]}>
             <table {...getTableProps()}>

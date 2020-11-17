@@ -848,43 +848,43 @@ const Timesheet = () => {
                 Project ID : 6130
               </h3>
             </div>
-            {dateCheckEditable(selectedDate) && (
-              <div className={styles["header__right"]}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={checkState}
-                      onChange={checkChange}
-                      name="checkbox"
-                      color="secondary"
-                      id="checkboxForSetSameTime"
-                    />
-                  }
-                  label="Set Same Time of All"
-                  className={styles["header__right__checkbox"]}
-                />
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  size="small"
-                  className={styles["header__right__add-btn"]}
-                  onClick={addTimesheetRow}
-                  startIcon={<AddIcon />}
-                >
-                  Add&nbsp;Row
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="small"
-                  className={styles["header__right__save-btn"]}
-                  onClick={handleSaveTimesheetBtn}
-                  startIcon={<SaveIcon />}
-                >
-                  Save
-                </Button>
-              </div>
-            )}
+            {/* {dateCheckEditable(selectedDate) && ( */}
+            <div className={styles["header__right"]}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={checkState}
+                    onChange={checkChange}
+                    name="checkbox"
+                    color="secondary"
+                    id="checkboxForSetSameTime"
+                  />
+                }
+                label="Set Same Time of All"
+                className={styles["header__right__checkbox"]}
+              />
+              <Button
+                variant="contained"
+                color="secondary"
+                size="small"
+                className={styles["header__right__add-btn"]}
+                onClick={addTimesheetRow}
+                startIcon={<AddIcon />}
+              >
+                Add&nbsp;Row
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                className={styles["header__right__save-btn"]}
+                onClick={handleSaveTimesheetBtn}
+                startIcon={<SaveIcon />}
+              >
+                Save
+              </Button>
+            </div>
+            {/* )} */}
           </div>
           <div className={styles["table"]}>
             <TableContainer component={Paper}>
