@@ -87,18 +87,18 @@ const Task = () => {
       {
         Header: "Previous Work %",
         accessor: "PreviousWork",
-        width: 65,
+        width: 70,
       },
       {
         Header: "Current Work %",
         accessor: "CurrentWork",
-        width: 65,
+        width: 70,
       },
       {
         Header: "Message",
         accessor: "Trade",
         align: "center",
-        width: 387,
+        width: 377,
       },
     ],
     []

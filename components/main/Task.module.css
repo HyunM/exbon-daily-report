@@ -127,6 +127,10 @@
   padding-top: 6px;
 }
 
+.table tbody td {
+  padding: 4px;
+}
+
 .table__trade-wrapper {
   display: table;
   height: 100%;
