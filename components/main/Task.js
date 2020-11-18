@@ -331,7 +331,7 @@ const Task = () => {
       toast.error(
         <div className={styles["alert__table__current-work-input"]}>
           <strong>Unable to save.</strong> <br /> Current Work cannnot be the
-          same with Previous Work.
+          same as Previous Work.
         </div>,
         {
           position: toast.POSITION.BOTTOM_CENTER,
