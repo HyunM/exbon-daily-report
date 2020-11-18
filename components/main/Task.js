@@ -110,6 +110,7 @@ const Task = () => {
     value: initialValue,
     row: { index },
     column: { id },
+    row,
     updateMyData, // This is a custom function that we supplied to our table instance
   }) => {
     // We need to keep and update the state of the cell normally
@@ -208,13 +209,27 @@ const Task = () => {
       return (
         <div className={styles["table__current-work-wrapper"]}>
           <span className={styles["table__current-work-wrapper__data"]}>
-            <input
-              className={styles["table__current-work-wrapper__input"]}
-              value={value === 0 ? value : value || ""}
-              type="number"
-              onChange={onChange}
-              onBlur={onBlurForCurrentWork}
-            />
+            {value === null ? (
+              <input
+                className={
+                  styles["table__current-work-wrapper__input__previous-work"]
+                }
+                value={row.allCells[4].value}
+                type="number"
+                onChange={onChange}
+                onBlur={onBlurForCurrentWork}
+              ></input>
+            ) : (
+              <input
+                className={
+                  styles["table__current-work-wrapper__input__current-work"]
+                }
+                value={value}
+                type="number"
+                onChange={onChange}
+                onBlur={onBlurForCurrentWork}
+              ></input>
+            )}
             %
           </span>
         </div>
@@ -302,6 +317,31 @@ const Task = () => {
   };
 
   const handleSaveBtn = () => {
+    let checkSaveEnable = 0;
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].CurrentWork !== null) {
+        if (
+          data[i].CurrentWork.toString() === data[i].PreviousWork.toString()
+        ) {
+          checkSaveEnable++;
+        }
+      }
+    }
+    if (checkSaveEnable > 0) {
+      toast.error(
+        <div className={styles["alert__table__current-work-input"]}>
+          <strong>Unable to save.</strong> <br /> Current Work cannnot be the
+          same with Previous Work.
+        </div>,
+        {
+          position: toast.POSITION.BOTTOM_CENTER,
+          hideProgressBar: true,
+        }
+      );
+
+      return null;
+    }
+
     let promises = [];
     const fetchData = async () => {
       for (let i = 0; i < data.length; i++) {
