@@ -317,35 +317,14 @@ const Task = () => {
   };
 
   const handleSaveBtn = () => {
-    let checkSaveEnable = 0;
-    for (let i = 0; i < data.length; i++) {
-      if (data[i].CurrentWork !== null) {
-        if (
-          data[i].CurrentWork.toString() === data[i].PreviousWork.toString()
-        ) {
-          checkSaveEnable++;
-        }
-      }
-    }
-    if (checkSaveEnable > 0) {
-      toast.error(
-        <div className={styles["alert__table__current-work-input"]}>
-          <strong>Unable to save.</strong> <br /> Current Work cannnot be the
-          same as Previous Work.
-        </div>,
-        {
-          position: toast.POSITION.BOTTOM_CENTER,
-          hideProgressBar: true,
-        }
-      );
-
-      return null;
-    }
-
     let promises = [];
     const fetchData = async () => {
       for (let i = 0; i < data.length; i++) {
-        if (data[i].CurrentWork === null || data[i].CurrentWork === "") {
+        if (
+          data[i].CurrentWork === null ||
+          data[i].CurrentWork === "" ||
+          data[i].CurrentWork.toString() === data[i].PreviousWork.toString()
+        ) {
           promises.push(
             axios({
               method: "put",
