@@ -1,10 +1,14 @@
 import "../styles.css";
+
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { useEffect } from "react";
 import { Provider } from "react-redux";
 import { useStore } from "../store";
 import theme from "../src/theme";
+
+import "@fullcalendar/common/main.css";
+import "@fullcalendar/daygrid/main.css";
 
 // This default export is required in a new `pages/_app.js` file.
 export default function MyApp({ Component, pageProps }) {
