@@ -99,18 +99,14 @@ const Schedule = () => {
             plugins={[dayGridPlugin]}
             height="750px"
             initialView="dayGridMonth"
-            eventColor="#3f83c2"
+            eventColor="#7ebdf8"
             events={data}
             dayMaxEventRows={3}
             eventTextColor="white"
             displayEventTime={false}
             eventDidMount={handleEventPositioned}
           />
-          <ReactTooltip
-            multiline={true}
-            type="warning"
-            offset={{ right: 50 }}
-          />
+          <ReactTooltip multiline={true} type="info" offset={{ right: 50 }} />
         </>
       )}
     </div>
