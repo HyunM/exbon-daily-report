@@ -15,10 +15,11 @@ const dispatchEmployeeAssignmentHandler = (req, res) => {
 
           const query = `SELECT DEA.[EmployeeID]
                         ,E.LastName + ' ' + E.FirstName as 'title'
-                        ,DEA.[ProjectID] as 'id'
+                        ,DEA.[ProjectID]
                         ,DP.Name as 'ProjectName'
-                        ,DATEADD(hour, 12, CONVERT(datetime, DEA.[StartDate])) as 'start'
-                        ,DATEADD(hour, 12, CONVERT(datetime, DEA.[EndDate])) as 'end'
+                        ,DATEADD(hour, 23, CONVERT(datetime, DEA.[StartDate])) as 'start'
+                        ,DATEADD(hour, 23, CONVERT(datetime, DEA.[EndDate])) as 'end'
+                        ,DEA.Position as 'EmployeePosition'
 
                         FROM [Exbon].[dbo].[DispatchEmployeeAssignment] DEA with(nolock)
                         

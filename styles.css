@@ -29,3 +29,8 @@ body {
 .MuiDropzoneArea-root {
   min-height: 160px !important;
 }
+
+.fc-more-popover {
+  max-height: 95%;
+  overflow-y: auto;
+}

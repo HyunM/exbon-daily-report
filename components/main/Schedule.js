@@ -6,7 +6,31 @@ import ReactTooltip from "react-tooltip";
 import { usePromiseTracker, trackPromise } from "react-promise-tracker";
 import Loader from "react-loader-spinner";
 import axios from "axios";
+import { formatDate } from "./formatDate";
 const Schedule = () => {
+  const handleEventPositioned = info => {
+    debugger;
+    info.el.setAttribute(
+      "data-tip",
+      "Project ID : " +
+        info.event._def.extendedProps.ProjectID +
+        "<br/>" +
+        "Project Name : " +
+        info.event._def.extendedProps.ProjectName +
+        "<br/>" +
+        "Position : " +
+        info.event._def.extendedProps.EmployeePosition +
+        "<br/>" +
+        "Start Date : " +
+        formatDate(info.event._instance.range.start) +
+        "<br/>" +
+        "End Date : " +
+        formatDate(info.event._instance.range.end)
+    );
+
+    ReactTooltip.rebuild();
+  };
+
   const [data, setData] = useState(() => [
     // {
     //   title: "1",
@@ -80,8 +104,13 @@ const Schedule = () => {
             dayMaxEventRows={3}
             eventTextColor="white"
             displayEventTime={false}
+            eventDidMount={handleEventPositioned}
           />
-          {/* <ReactTooltip multiline={true} type="info" offset={{ right: 150 }} /> */}
+          <ReactTooltip
+            multiline={true}
+            type="warning"
+            offset={{ right: 50 }}
+          />
         </>
       )}
     </div>
