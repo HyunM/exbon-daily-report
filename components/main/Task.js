@@ -174,7 +174,18 @@ const Task = () => {
       return (
         <div className={styles["table__start-date-wrapper"]}>
           <span className={styles["table__start-date-wrapper__data"]}>
-            {value}
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <ThemeProvider theme={defaultMaterialTheme}>
+                <DatePicker
+                  // value={value.length === undefined ? value : value.split("-")}
+                  value={value}
+                  onChange={onChangeDatePicker}
+                  onBlur={onBlur}
+                  format="MM/dd/yyyy"
+                  className={styles["table__start-date-wrapper__date-picker"]}
+                />
+              </ThemeProvider>
+            </MuiPickersUtilsProvider>
           </span>
         </div>
       );
@@ -332,6 +343,7 @@ const Task = () => {
               timeout: 5000,
               headers: {},
               data: {
+                StartDate: data[i].StartDate,
                 FinishDate: data[i].FinishDate,
               },
             })
@@ -344,6 +356,7 @@ const Task = () => {
               timeout: 5000,
               headers: {},
               data: {
+                StartDate: data[i].StartDate,
                 FinishDate: data[i].FinishDate,
               },
             })

@@ -14,22 +14,25 @@ const calendarHandler = (req, res) => {
           const request = new mssql.Request();
 
           const sqlQuery = `SELECT DE.[ID]
-                        ,(DE.LastName + ' ' + DE.FirstName) as 'title'
-                        ,DEA.[ProjectID]
-                        ,DP.Name as 'ProjectName'
-                        ,DATEADD(hour, 23, CONVERT(datetime, DEA.[StartDate])) as 'start'
-                        ,DATEADD(hour, 23, CONVERT(datetime, DEA.[EndDate])) as 'end'
-                        ,DEA.Position as 'EmployeePosition'
+                          ,(DE.LastName + ' ' + DE.FirstName) as 'EmployeeName'
+                          ,CONVERT(nvarchar(10),DEA.[ProjectID])  + ' - ' + DP.Name as 'title'
+                          ,DEA.[ProjectID]
+                          ,DP.Name as 'ProjectName'
+                          ,DATEADD(hour, 23, CONVERT(datetime, DEA.[StartDate])) as 'start'
+                          ,DATEADD(hour, 23, CONVERT(datetime, DEA.[EndDate])) as 'end'
+                          ,DEA.Position as 'EmployeePosition'
+                          
+                          FROM [Exbon].[dbo].[DispatchEmployeeAssignment] DEA with(nolock)
 
-                        FROM [Exbon].[dbo].[DispatchEmployeeAssignment] DEA with(nolock)
+                          INNER JOIN [Exbon].[dbo].[DispatchProject] DP with(nolock) 
+                                  ON DEA.ProjectID = DP.ID
 
-                        INNER JOIN [Exbon].[dbo].[DispatchProject] DP with(nolock) 
-                                ON DEA.ProjectID = DP.ID
-
-                        INNER JOIN [Exbon].[dbo].[DispatchEmployee] DE with(nolock)
-                                ON DEA.EmployeeID = DE.ID
-                                
-                        WHERE DE.ID = ${query.id}`;
+                          INNER JOIN [Exbon].[dbo].[DispatchEmployee] DE with(nolock)
+                                  ON DEA.EmployeeID = DE.ID
+                                  
+                          WHERE DE.ID = ${query.id}
+                          
+                          ORDER BY DEA.StartDate`;
 
           request.query(sqlQuery, (err, recordset) => {
             if (err) {

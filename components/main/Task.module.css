@@ -184,6 +184,10 @@
   display: table-cell;
   color: rgb(116, 100, 110);
 }
+
+.table__start-date-wrapper__date-picker {
+  width: 80px;
+}
 .table__finish-date-wrapper {
   display: table;
   height: 100%;

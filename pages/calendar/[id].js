@@ -30,6 +30,8 @@ const calendar = () => {
         formatDate(info.event._instance.range.end)
     );
 
+    info.el.setAttribute("backgroundColor", "red");
+
     ReactTooltip.rebuild();
   };
   const [data, setData] = useState(() => []);
@@ -74,7 +76,7 @@ const calendar = () => {
             initialView="dayGridMonth"
             eventColor="#1dd369"
             events={data}
-            dayMaxEventRows={3}
+            dayMaxEventRows={5}
             eventTextColor="white"
             displayEventTime={false}
             eventDidMount={handleEventPositioned}
