@@ -9,7 +9,10 @@ import { usePromiseTracker, trackPromise } from "react-promise-tracker";
 import Loader from "react-loader-spinner";
 import axios from "axios";
 import { formatDate } from "../../components/main/formatDate";
-
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import AccountCircle from "@material-ui/icons/AccountCircle";
 const calendar = () => {
   const handleEventPositioned = info => {
     info.el.setAttribute(
@@ -29,8 +32,6 @@ const calendar = () => {
         "End Date : " +
         formatDate(info.event._instance.range.end)
     );
-
-    info.el.setAttribute("backgroundColor", "red");
 
     ReactTooltip.rebuild();
   };
@@ -53,38 +54,59 @@ const calendar = () => {
   }, [id]);
 
   const { promiseInProgress } = usePromiseTracker();
+
   return (
-    <div className={styles["frame"]}>
-      {console.log(data)}
-      {promiseInProgress || id === 0 ? (
-        <div
-          style={{
-            width: "100%",
-            height: "100",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Loader type="ThreeDots" color="#2BAD60" height="100" width="100" />
-        </div>
-      ) : (
-        <>
-          <FullCalendar
-            plugins={[dayGridPlugin]}
-            height="750px"
-            initialView="dayGridMonth"
-            eventColor="#1dd369"
-            events={data}
-            dayMaxEventRows={5}
-            eventTextColor="white"
-            displayEventTime={false}
-            eventDidMount={handleEventPositioned}
-          />
-          <ReactTooltip multiline={true} type="info" offset={{ right: 50 }} />
-        </>
-      )}
-    </div>
+    <>
+      <AppBar position="static">
+        <Toolbar>
+          <div className={styles["toolbar__wrapper"]}>
+            <div className={styles["toolbar__wrapper__left"]}>
+              <Typography variant="h5">Schedule</Typography>
+            </div>
+            <div className={styles["toolbar__wrapper__right"]}>
+              <Typography variant="h6">
+                {typeof data[0] === "object" ? data[0].EmployeeName : ""}
+              </Typography>
+              <AccountCircle
+                className={styles["toolbar__wrapper__right__account-icon"]}
+              />
+            </div>
+          </div>
+        </Toolbar>
+      </AppBar>
+      <div className={styles["frame"]}>
+        {console.log(data)}
+
+        {promiseInProgress || id === 0 ? (
+          <div
+            style={{
+              width: "100%",
+              height: "100",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Loader type="ThreeDots" color="#2BAD60" height="100" width="100" />
+          </div>
+        ) : (
+          <>
+            <FullCalendar
+              plugins={[dayGridPlugin]}
+              height="750px"
+              initialView="dayGridMonth"
+              eventColor="#1dd369"
+              events={data}
+              dayMaxEventRows={5}
+              eventTextColor="white"
+              displayEventTime={false}
+              eventDidMount={handleEventPositioned}
+            />
+            <ReactTooltip multiline={true} type="info" offset={{ right: 50 }} />
+          </>
+        )}
+      </div>
+    </>
   );
 };
 
