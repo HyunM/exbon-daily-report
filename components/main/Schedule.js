@@ -99,7 +99,7 @@ const Schedule = () => {
             plugins={[dayGridPlugin]}
             height="750px"
             initialView="dayGridMonth"
-            eventColor="#7ebdf8"
+            eventColor="#1dd369"
             events={data}
             dayMaxEventRows={3}
             eventTextColor="white"

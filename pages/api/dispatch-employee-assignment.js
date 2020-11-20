@@ -14,7 +14,7 @@ const dispatchEmployeeAssignmentHandler = (req, res) => {
           const request = new mssql.Request();
 
           const query = `SELECT DEA.[EmployeeID]
-                        ,E.LastName + ' ' + E.FirstName as 'title'
+                        ,(E.LastName + ' ' + E.FirstName) as 'title'
                         ,DEA.[ProjectID]
                         ,DP.Name as 'ProjectName'
                         ,DATEADD(hour, 23, CONVERT(datetime, DEA.[StartDate])) as 'start'
