@@ -1,13 +1,16 @@
+import React from "react";
+import { useRouter } from "next/router";
 import { useState, useMemo, useEffect } from "react";
-import styles from "./Schedule.module.css";
+import styles from "../calendar.module.css";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import ReactTooltip from "react-tooltip";
 import { usePromiseTracker, trackPromise } from "react-promise-tracker";
 import Loader from "react-loader-spinner";
 import axios from "axios";
-import { formatDate } from "./formatDate";
-const Schedule = () => {
+import { formatDate } from "../../components/main/formatDate";
+
+const calendar = () => {
   const handleEventPositioned = info => {
     info.el.setAttribute(
       "data-tip",
@@ -29,27 +32,29 @@ const Schedule = () => {
 
     ReactTooltip.rebuild();
   };
-
   const [data, setData] = useState(() => []);
+  const router = useRouter();
+  const { query = {} } = router || {};
+  const { id = 0 } = query || {};
 
   useEffect(() => {
     const fetchData = async () => {
       let result = await axios({
         method: "get",
-        url: `/api/dispatch-employee-assignment`,
+        url: `/api/calendar/${id}`,
         timeout: 15000, // 15 seconds timeout
         headers: {},
       });
       setData(result.data);
     };
     trackPromise(fetchData());
-  }, []);
+  }, [id]);
 
   const { promiseInProgress } = usePromiseTracker();
   return (
     <div className={styles["frame"]}>
       {console.log(data)}
-      {promiseInProgress ? (
+      {promiseInProgress || id === 0 ? (
         <div
           style={{
             width: "100%",
@@ -81,4 +86,43 @@ const Schedule = () => {
   );
 };
 
-export default Schedule;
+// export async function getStaticPaths() {
+//   return {
+//     paths: [{ params: { id: "*" } }],
+//     fallback: true,
+//   };
+// }
+
+// export async function getStaticProps(context) {
+//   // const res = await fetch("https://.../posts");
+//   // const posts = await res.json();
+
+//   const res = await fetch(
+//     `http://localhost:3001/api/calendar/${context.params.id}`
+//   );
+//   const result = await res.json();
+
+//   // let res;
+//   // const fetchData = async () => {
+//   //   let result = await axios({
+//   //     method: "get",
+//   //     url: `/api/calendar/${context.params.id}`,
+//   //     timeout: 15000, // 15 seconds timeout
+//   //     headers: {},
+//   //   });
+//   //   res = result.data;
+//   // };
+//   // fetchData();
+
+//   return {
+//     props: {
+//       result,
+//     },
+//     // Next.js will attempt to re-generate the page:
+//     // - When a request comes in
+//     // - At most once every second
+//     revalidate: 1, // In seconds
+//   };
+// }
+
+export default calendar;
