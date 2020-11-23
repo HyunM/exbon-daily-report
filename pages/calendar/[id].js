@@ -95,7 +95,7 @@ const calendar = () => {
               plugins={[dayGridPlugin]}
               height="750px"
               initialView="dayGridMonth"
-              eventColor="#1dd369"
+              eventColor="#ffffff"
               events={data}
               dayMaxEventRows={5}
               eventTextColor="white"

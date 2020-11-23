@@ -34,3 +34,38 @@ body {
   max-height: 95%;
   overflow-y: auto;
 }
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
+
+.fc-event-title.fc-sticky {
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+}
+
+.fc-toolbar-title {
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+}
+
+.fc-col-header-cell-cushion {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  color: rgb(90, 89, 117);
+}
+.fc-button {
+  font-family: "Roboto", sans-serif !important;
+  font-weight: 500 !important;
+}
+.fc-popover-title {
+  font-family: "Roboto", sans-serif !important;
+  font-weight: 500 !important;
+}
+
+.fc-daygrid-more-link {
+  font-family: "Roboto", sans-serif !important;
+  color: grey;
+}
+
+.fc-daygrid-more-link:hover {
+  font-weight: 500 !important;
+}
