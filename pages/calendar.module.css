@@ -5,9 +5,10 @@
   width: 50%;
   height: 750px;
   background-color: white;
-  border-radius: 3%;
+  border-top: #fac863 5px solid;
+  border-radius: 1%;
   padding: 25px;
-  box-shadow: 12px 12px 2px 1px rgba(145, 145, 148, 0.2);
+  box-shadow: 15px 15px 2px 1px rgba(145, 145, 148, 0.2);
 }
 
 .toolbar__wrapper {
