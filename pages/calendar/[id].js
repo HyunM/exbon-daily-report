@@ -13,6 +13,8 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import AccountCircle from "@material-ui/icons/AccountCircle";
+import Head from "next/head";
+
 const calendar = () => {
   const handleEventPositioned = info => {
     info.el.setAttribute(
@@ -57,11 +59,19 @@ const calendar = () => {
 
   return (
     <>
+      <Head>
+        <title>Schedule Calendar</title>
+        <link rel="icon" href="/calendar.ico" />
+        <meta
+          name="viewport"
+          content="minimum-scale=1, initial-scale=1, width=device-width"
+        />
+      </Head>
       <AppBar position="static">
         <Toolbar>
           <div className={styles["toolbar__wrapper"]}>
             <div className={styles["toolbar__wrapper__left"]}>
-              <Typography variant="h5">Schedule</Typography>
+              <Typography variant="h5">Schedule Calendar</Typography>
             </div>
             <div className={styles["toolbar__wrapper__right"]}>
               <Typography variant="h6">
