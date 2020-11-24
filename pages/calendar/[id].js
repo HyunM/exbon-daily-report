@@ -97,7 +97,7 @@ const calendar = () => {
               alignItems: "center",
             }}
           >
-            <Loader type="Rings" color="#FAC863" height="100" width="100" />
+            <Loader type="Oval" color="#FAC863" height="100" width="100" />
           </div>
         ) : (
           <>
@@ -105,14 +105,14 @@ const calendar = () => {
               plugins={[dayGridPlugin]}
               height="750px"
               initialView="dayGridMonth"
-              eventColor="#ffffff"
               events={data}
               dayMaxEventRows={100}
+              eventColor="white"
               eventTextColor="white"
               displayEventTime={false}
               eventDidMount={handleEventPositioned}
             />
-            <ReactTooltip multiline={true} type="info" offset={{ right: 50 }} />
+            <ReactTooltip multiline={true} type="info" offset={{ top: 10 }} />
           </>
         )}
       </div>
