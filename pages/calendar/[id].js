@@ -107,7 +107,7 @@ const calendar = () => {
               initialView="dayGridMonth"
               eventColor="#ffffff"
               events={data}
-              dayMaxEventRows={5}
+              dayMaxEventRows={100}
               eventTextColor="white"
               displayEventTime={false}
               eventDidMount={handleEventPositioned}
