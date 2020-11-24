@@ -69,3 +69,10 @@ body {
 .fc-daygrid-more-link:hover {
   font-weight: 500 !important;
 }
+
+.fc-event-title-container {
+  cursor: pointer;
+}
+.fc-event-title-container:hover {
+  color: black;
+}
