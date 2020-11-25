@@ -117,19 +117,30 @@
   /* background-color: #ddd; */
   background-color: #e6e8f3;
   border: 1px solid #647be2;
-  cursor: pointer;
+  cursor: default;
 }
 
 .table thead td {
-  padding-top: 13px;
-  padding-bottom: 3px;
   background-color: #647be2;
   color: white;
 }
-
-.table thead td:nth-child(5),
+.table thead td:nth-child(1) {
+  padding-top: 10px;
+}
+.table thead td:nth-child(2) {
+  padding-top: 10px;
+}
+.table thead td:nth-child(3) {
+  padding-top: 10px;
+}
+.table thead td:nth-child(4) {
+  padding-top: 5px;
+}
+.table thead td:nth-child(5) {
+  padding-top: 5px;
+}
 .table thead td:nth-child(6) {
-  padding-top: 6px;
+  padding-top: 10px;
 }
 
 .table tbody td {
@@ -176,42 +187,26 @@
   font-size: 0.95rem;
 }
 
-.table__start-date-wrapper {
+.table__date-wrapper {
   display: table;
   height: 100%;
   margin: auto;
 }
 
-.table__start-date-wrapper__data {
+.table__date-wrapper__data {
   font-size: 0.85rem;
   text-align: center;
   vertical-align: middle;
   display: table-cell;
   color: rgb(116, 100, 110);
+  transition: all 0.1s linear;
 }
 
-.table__start-date-wrapper__date-picker {
-  width: 80px;
-}
-.table__finish-date-wrapper {
-  display: table;
-  height: 100%;
-  margin: auto;
-}
-
-.table__finish-date-wrapper__data {
-  text-align: center;
-  vertical-align: middle;
-  display: table-cell;
-}
-
-.table__finish-date-wrapper__date-picker {
-  width: 80px;
-}
-
-.table__finish-date-wrapper__date-picker input {
-  text-align: center;
-  color: rgb(116, 100, 110);
+.table__date-wrapper__data:hover {
+  transform: scale(1.1);
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 .table__previous-work-wrapper {

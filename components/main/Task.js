@@ -94,15 +94,15 @@ const Task = () => {
         width: 140,
       },
       {
-        Header: "Start Date",
+        Header: "Work Date",
         accessor: "StartDate",
-        width: 90,
+        width: 180,
       },
-      {
-        Header: "Finish Date",
-        accessor: "FinishDate",
-        width: 90,
-      },
+      // {
+      //   Header: "Finish Date",
+      //   accessor: "FinishDate",
+      //   width: 90,
+      // },
       {
         Header: "Previous Work %",
         accessor: "PreviousWork",
@@ -191,20 +191,9 @@ const Task = () => {
       );
     } else if (id === "StartDate") {
       return (
-        <div className={styles["table__start-date-wrapper"]}>
-          <span className={styles["table__start-date-wrapper__data"]}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <ThemeProvider theme={themeForTaskDate}>
-                <DatePicker
-                  // value={value.length === undefined ? value : value.split("-")}
-                  value={value}
-                  onChange={onChangeDatePicker}
-                  onBlur={onBlur}
-                  format="MM/dd/yyyy"
-                  className={styles["table__start-date-wrapper__date-picker"]}
-                />
-              </ThemeProvider>
-            </MuiPickersUtilsProvider>
+        <div className={styles["table__date-wrapper"]}>
+          <span className={styles["table__date-wrapper__data"]}>
+            {value} ~ {row.original.FinishDate}
           </span>
         </div>
       );
@@ -212,18 +201,7 @@ const Task = () => {
       return (
         <div className={styles["table__finish-date-wrapper"]}>
           <span className={styles["table__finish-date-wrapper__data"]}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <ThemeProvider theme={themeForTaskDate}>
-                <DatePicker
-                  // value={value.length === undefined ? value : value.split("-")}
-                  value={value}
-                  onChange={onChangeDatePicker}
-                  onBlur={onBlur}
-                  format="MM/dd/yyyy"
-                  className={styles["table__finish-date-wrapper__date-picker"]}
-                />
-              </ThemeProvider>
-            </MuiPickersUtilsProvider>
+            {value}
           </span>
         </div>
       );
