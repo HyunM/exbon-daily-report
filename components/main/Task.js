@@ -32,7 +32,7 @@ import Modal from "react-modal";
 Modal.setAppElement("#modalForTasksTab");
 
 toast.configure();
-const themeForTaskDate = createMuiTheme({
+const themeForWorkDate = createMuiTheme({
   palette: {
     primary: deepOrange,
   },
@@ -43,7 +43,7 @@ const themeForTaskDate = createMuiTheme({
   },
 });
 
-const themeForSetNoWorkDays = createMuiTheme({
+const themeForNoWork = createMuiTheme({
   palette: {
     primary: {
       main: blue["300"],
@@ -192,16 +192,11 @@ const Task = () => {
     } else if (id === "StartDate") {
       return (
         <div className={styles["table__date-wrapper"]}>
-          <span className={styles["table__date-wrapper__data"]}>
+          <span
+            className={styles["table__date-wrapper__data"]}
+            onClick={openModalWorkDate}
+          >
             {value} ~ {row.original.FinishDate}
-          </span>
-        </div>
-      );
-    } else if (id === "FinishDate") {
-      return (
-        <div className={styles["table__finish-date-wrapper"]}>
-          <span className={styles["table__finish-date-wrapper__data"]}>
-            {value}
           </span>
         </div>
       );
@@ -437,33 +432,62 @@ const Task = () => {
     },
   };
 
-  const [modalIsOpen, setIsOpen] = React.useState(false);
+  const [modalNoWorkIsOpen, setModalNoWorkIsOpen] = React.useState(false);
 
-  const afterOpenModal = () => {
+  const afterOpenModalNoWork = () => {
     // references are now sync'd and can be accessed.
   };
 
-  const openModal = () => {
-    setIsOpen(true);
+  const openModalNoWork = () => {
+    setModalNoWorkIsOpen(true);
   };
 
-  const closeModal = () => {
-    setIsOpen(false);
+  const closeModalNoWork = () => {
+    setModalNoWorkIsOpen(false);
   };
 
-  const [startDateOfNoWorkDays, setStartDateOfNoWorkDays] = useState(
+  const [startDateOfNoWork, setStartDateOfNoWork] = useState(
     new Date("2014/02/08")
   );
-  const [endDateOfNoWorkDays, setEndDateOfNoWorkDays] = useState(
+  const [endDateOfNoWork, setEndDateOfNoWork] = useState(
     new Date("2014/02/10")
   );
 
-  const handleStartDateOfNoWorkDays = date => {
-    setStartDateOfNoWorkDays(date);
+  const handleStartDateOfNoWork = date => {
+    setStartDateOfNoWork(date);
   };
 
-  const handleEndDateOfNoWorkDays = date => {
-    setEndDateOfNoWorkDays(date);
+  const handleEndDateOfNoWork = date => {
+    setEndDateOfNoWork(date);
+  };
+
+  const [modalWorkDateIsOpen, setModalWorkDateIsOpen] = React.useState(false);
+
+  const afterOpenModalWorkDate = () => {
+    // references are now sync'd and can be accessed.
+  };
+
+  const openModalWorkDate = () => {
+    setModalWorkDateIsOpen(true);
+  };
+
+  const closeModalWorkDate = () => {
+    setModalWorkDateIsOpen(false);
+  };
+
+  const [startDateOfWorkDate, setStartDateOfWorkDate] = useState(
+    new Date("2014/02/08")
+  );
+  const [endDateOfWorkDate, setEndDateOfWorkDate] = useState(
+    new Date("2014/02/10")
+  );
+
+  const handleStartDateOfWorkDate = date => {
+    setStartDateOfWorkDate(date);
+  };
+
+  const handleEndDateOfWorkDate = date => {
+    setEndDateOfWorkDate(date);
   };
 
   return (
@@ -519,14 +543,14 @@ const Task = () => {
                 size="small"
                 startIcon={<EventBusyIcon />}
                 className={styles["header__right__set-no-work-days-btn"]}
-                onClick={openModal}
+                onClick={openModalNoWork}
               >
                 Set No Work Days
               </Button>
               <Modal
-                isOpen={modalIsOpen}
-                onAfterOpen={afterOpenModal}
-                onRequestClose={closeModal}
+                isOpen={modalNoWorkIsOpen}
+                onAfterOpen={afterOpenModalNoWork}
+                onRequestClose={closeModalNoWork}
                 style={customStyles}
                 contentLabel="Example Modal"
                 className={styles["modal-set-no-work-days"]}
@@ -548,11 +572,11 @@ const Task = () => {
                   }
                 >
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <ThemeProvider theme={themeForSetNoWorkDays}>
+                    <ThemeProvider theme={themeForNoWork}>
                       <DatePicker
                         // value={value.length === undefined ? value : value.split("-")}
-                        value={startDateOfNoWorkDays}
-                        onChange={handleStartDateOfNoWorkDays}
+                        value={startDateOfNoWork}
+                        onChange={handleStartDateOfNoWork}
                         format="MM/dd/yyyy"
                         label="Start Date"
                         className={
@@ -563,8 +587,8 @@ const Task = () => {
                       />
                       <DatePicker
                         // value={value.length === undefined ? value : value.split("-")}
-                        value={endDateOfNoWorkDays}
-                        onChange={handleEndDateOfNoWorkDays}
+                        value={endDateOfNoWork}
+                        onChange={handleEndDateOfNoWork}
                         format="MM/dd/yyyy"
                         label="End Date"
                         className={
@@ -580,7 +604,7 @@ const Task = () => {
                   <Button
                     variant="contained"
                     size="small"
-                    onClick={closeModal}
+                    onClick={closeModalNoWork}
                     className={
                       styles["modal-set-no-work-days__wrapper-btn__btn-save"]
                     }
@@ -590,7 +614,7 @@ const Task = () => {
                   <Button
                     variant="contained"
                     size="small"
-                    onClick={closeModal}
+                    onClick={closeModalNoWork}
                     className={
                       styles["modal-set-no-work-days__wrapper-btn__btn-cancel"]
                     }
@@ -639,6 +663,66 @@ const Task = () => {
           </div>
         </>
       )}
+
+      <Modal
+        isOpen={modalWorkDateIsOpen}
+        onAfterOpen={afterOpenModalWorkDate}
+        onRequestClose={closeModalWorkDate}
+        style={customStyles}
+        contentLabel="Example Modal"
+        className={styles["modal-work-date"]}
+      >
+        <div className={styles["modal-work-date__wrapper-title"]}>
+          <h4 className={styles["modal-work-date__wrapper-title__title"]}>
+            Work Date
+          </h4>
+        </div>
+        <div className={styles["modal-work-date__wrapper-date-picker"]}>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <ThemeProvider theme={themeForWorkDate}>
+              <DatePicker
+                // value={value.length === undefined ? value : value.split("-")}
+                value={startDateOfWorkDate}
+                onChange={handleStartDateOfWorkDate}
+                format="MM/dd/yyyy"
+                label="Start Date"
+                className={
+                  styles["modal-work-date__wrapper-date-picker__start-date"]
+                }
+              />
+              <DatePicker
+                // value={value.length === undefined ? value : value.split("-")}
+                value={endDateOfWorkDate}
+                onChange={handleEndDateOfWorkDate}
+                format="MM/dd/yyyy"
+                label="End Date"
+                className={
+                  styles["modal-work-date__wrapper-date-picker__end-date"]
+                }
+              />
+            </ThemeProvider>
+          </MuiPickersUtilsProvider>
+        </div>
+        <div className={styles["modal-work-date__wrapper-btn"]}>
+          <Button
+            variant="contained"
+            size="small"
+            onClick={closeModalWorkDate}
+            className={styles["modal-work-date__wrapper-btn__btn-save"]}
+          >
+            Save
+          </Button>
+          <Button
+            variant="contained"
+            size="small"
+            onClick={closeModalWorkDate}
+            className={styles["modal-work-date__wrapper-btn__btn-cancel"]}
+          >
+            Cancel
+          </Button>
+        </div>
+        <p className={styles["test"]}>(This is a test, so NOT working yet. )</p>
+      </Modal>
     </div>
   );
 };
