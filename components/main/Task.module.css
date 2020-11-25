@@ -74,13 +74,18 @@
   align-items: center;
   flex: 1 1 auto;
   flex-direction: row-reverse;
-  margin-bottom: 0rem;
+  margin-bottom: 1%;
 }
 
 .header__right__save-btn {
   padding: 0.5em !important;
   height: auto;
-  margin-bottom: 2em !important;
+}
+
+.header__right__set-no-work-days-btn {
+  padding: 0.5em !important;
+  height: auto;
+  margin-right: 10% !important;
 }
 
 .table {
@@ -283,6 +288,41 @@
   cursor: pointer;
 }
 
-/* .table__report-icon:hover {
+.modal-set-no-work-days__wrapper-title {
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.modal-set-no-work-days__wrapper-title__title {
+  color: grey;
+  margin-top: 0;
+}
+.modal-set-no-work-days__wrapper-date-picker__start-date {
+  margin-left: 16% !important;
+  width: 30% !important;
+}
+
+.modal-set-no-work-days__wrapper-date-picker__end-date {
+  margin-left: 10% !important;
+  width: 30% !important;
+}
+
+.modal-set-no-work-days__wrapper-btn {
+  margin-top: 10%;
+}
+
+.modal-set-no-work-days__wrapper-btn__btn-save {
+  background-color: #1cd3a2 !important;
+  color: white !important;
+  margin-left: 28% !important;
+}
+
+.modal-set-no-work-days__wrapper-btn__btn-cancel {
+  background-color: #fd7c6e !important;
+  color: white !important;
+  margin-left: 5% !important;
+}
+
+.test {
+  text-align: center;
   color: gray;
-} */
+}

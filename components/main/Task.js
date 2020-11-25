@@ -16,7 +16,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
-import { deepOrange } from "@material-ui/core/colors";
+import { deepOrange, blue } from "@material-ui/core/colors";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
@@ -27,16 +27,35 @@ import ReportIcon from "@material-ui/icons/Report";
 import ReactTooltip from "react-tooltip";
 import { usePromiseTracker, trackPromise } from "react-promise-tracker";
 import Loader from "react-loader-spinner";
+import EventBusyIcon from "@material-ui/icons/EventBusy";
+import Modal from "react-modal";
+Modal.setAppElement("#modalForTasksTab");
+
 toast.configure();
-const defaultMaterialTheme = createMuiTheme({
+const themeForTaskDate = createMuiTheme({
   palette: {
     primary: deepOrange,
   },
+
   typography: {
     fontSize: 12,
     textAlign: "center",
   },
 });
+
+const themeForSetNoWorkDays = createMuiTheme({
+  palette: {
+    primary: {
+      main: blue["300"],
+    },
+  },
+
+  typography: {
+    fontSize: 12,
+    textAlign: "center",
+  },
+});
+
 const Task = () => {
   const deleteQueue = useSelector(state => state.deleteQueue);
   const dispatch = useDispatch();
@@ -175,7 +194,7 @@ const Task = () => {
         <div className={styles["table__start-date-wrapper"]}>
           <span className={styles["table__start-date-wrapper__data"]}>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <ThemeProvider theme={defaultMaterialTheme}>
+              <ThemeProvider theme={themeForTaskDate}>
                 <DatePicker
                   // value={value.length === undefined ? value : value.split("-")}
                   value={value}
@@ -194,7 +213,7 @@ const Task = () => {
         <div className={styles["table__finish-date-wrapper"]}>
           <span className={styles["table__finish-date-wrapper__data"]}>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <ThemeProvider theme={defaultMaterialTheme}>
+              <ThemeProvider theme={themeForTaskDate}>
                 <DatePicker
                   // value={value.length === undefined ? value : value.split("-")}
                   value={value}
@@ -429,6 +448,46 @@ const Task = () => {
 
   const { promiseInProgress } = usePromiseTracker();
 
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+    },
+  };
+
+  const [modalIsOpen, setIsOpen] = React.useState(false);
+
+  const afterOpenModal = () => {
+    // references are now sync'd and can be accessed.
+  };
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+
+  const [startDateOfNoWorkDays, setStartDateOfNoWorkDays] = useState(
+    new Date("2014/02/08")
+  );
+  const [endDateOfNoWorkDays, setEndDateOfNoWorkDays] = useState(
+    new Date("2014/02/10")
+  );
+
+  const handleStartDateOfNoWorkDays = date => {
+    setStartDateOfNoWorkDays(date);
+  };
+
+  const handleEndDateOfNoWorkDays = date => {
+    setEndDateOfNoWorkDays(date);
+  };
+
   return (
     <div id={styles.mainDiv}>
       {promiseInProgress ? (
@@ -476,9 +535,99 @@ const Task = () => {
               >
                 Save
               </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                size="small"
+                startIcon={<EventBusyIcon />}
+                className={styles["header__right__set-no-work-days-btn"]}
+                onClick={openModal}
+              >
+                Set No Work Days
+              </Button>
+              <Modal
+                isOpen={modalIsOpen}
+                onAfterOpen={afterOpenModal}
+                onRequestClose={closeModal}
+                style={customStyles}
+                contentLabel="Example Modal"
+                className={styles["modal-set-no-work-days"]}
+              >
+                <div
+                  className={styles["modal-set-no-work-days__wrapper-title"]}
+                >
+                  <h4
+                    className={
+                      styles["modal-set-no-work-days__wrapper-title__title"]
+                    }
+                  >
+                    Set No Work Days
+                  </h4>
+                </div>
+                <div
+                  className={
+                    styles["modal-set-no-work-days__wrapper-date-picker"]
+                  }
+                >
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <ThemeProvider theme={themeForSetNoWorkDays}>
+                      <DatePicker
+                        // value={value.length === undefined ? value : value.split("-")}
+                        value={startDateOfNoWorkDays}
+                        onChange={handleStartDateOfNoWorkDays}
+                        format="MM/dd/yyyy"
+                        label="Start Date"
+                        className={
+                          styles[
+                            "modal-set-no-work-days__wrapper-date-picker__start-date"
+                          ]
+                        }
+                      />
+                      <DatePicker
+                        // value={value.length === undefined ? value : value.split("-")}
+                        value={endDateOfNoWorkDays}
+                        onChange={handleEndDateOfNoWorkDays}
+                        format="MM/dd/yyyy"
+                        label="End Date"
+                        className={
+                          styles[
+                            "modal-set-no-work-days__wrapper-date-picker__end-date"
+                          ]
+                        }
+                      />
+                    </ThemeProvider>
+                  </MuiPickersUtilsProvider>
+                </div>
+                <div className={styles["modal-set-no-work-days__wrapper-btn"]}>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    onClick={closeModal}
+                    className={
+                      styles["modal-set-no-work-days__wrapper-btn__btn-save"]
+                    }
+                  >
+                    Save
+                  </Button>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    onClick={closeModal}
+                    className={
+                      styles["modal-set-no-work-days__wrapper-btn__btn-cancel"]
+                    }
+                  >
+                    Cancel
+                  </Button>
+                </div>
+                <p className={styles["test"]}>
+                  (This is a test, so NOT working yet. )
+                </p>
+              </Modal>
             </div>
             {/* )} */}
           </div>
+
           <div className={styles["table"]}>
             <table {...getTableProps()}>
               <thead>
