@@ -152,6 +152,10 @@ const Task = () => {
       updateMyData(index, id, value);
     };
 
+    const handleModalWorkDate = value => {
+      updateModalWorkDate(value);
+    };
+
     // If the initialValue is changed external, sync it up with our state
     React.useEffect(() => {
       setValue(initialValue);
@@ -194,7 +198,7 @@ const Task = () => {
         <div className={styles["table__date-wrapper"]}>
           <span
             className={styles["table__date-wrapper__data"]}
-            onClick={openModalWorkDate}
+            onClick={() => handleModalWorkDate(value)}
           >
             {value} ~ {row.original.FinishDate}
           </span>
@@ -432,7 +436,8 @@ const Task = () => {
     },
   };
 
-  const [modalNoWorkIsOpen, setModalNoWorkIsOpen] = React.useState(false);
+  // const [modalNoWorkIsOpen, setModalNoWorkIsOpen] = useState(false);
+  const [modalNoWorkIsOpen, setModalNoWorkIsOpen] = useState(false);
 
   const afterOpenModalNoWork = () => {
     // references are now sync'd and can be accessed.
@@ -461,18 +466,21 @@ const Task = () => {
     setEndDateOfNoWork(date);
   };
 
-  const [modalWorkDateIsOpen, setModalWorkDateIsOpen] = React.useState(false);
+  const [modalWorkDate, setModalWorkDate] = useState({
+    isOpen: false,
+    title: "title",
+  });
 
   const afterOpenModalWorkDate = () => {
     // references are now sync'd and can be accessed.
   };
 
   const openModalWorkDate = () => {
-    setModalWorkDateIsOpen(true);
+    setModalWorkDate(prevState => ({ ...prevState, isOpen: true }));
   };
 
   const closeModalWorkDate = () => {
-    setModalWorkDateIsOpen(false);
+    setModalWorkDate(prevState => ({ ...prevState, isOpen: false }));
   };
 
   const [startDateOfWorkDate, setStartDateOfWorkDate] = useState(
@@ -488,6 +496,10 @@ const Task = () => {
 
   const handleEndDateOfWorkDate = date => {
     setEndDateOfWorkDate(date);
+  };
+
+  const updateModalWorkDate = title => {
+    setModalWorkDate({ isOpen: true, title });
   };
 
   return (
@@ -665,7 +677,7 @@ const Task = () => {
       )}
 
       <Modal
-        isOpen={modalWorkDateIsOpen}
+        isOpen={modalWorkDate.isOpen}
         onAfterOpen={afterOpenModalWorkDate}
         onRequestClose={closeModalWorkDate}
         style={customStyles}
@@ -674,7 +686,7 @@ const Task = () => {
       >
         <div className={styles["modal-work-date__wrapper-title"]}>
           <h4 className={styles["modal-work-date__wrapper-title__title"]}>
-            Work Date
+            {modalWorkDate.title}
           </h4>
         </div>
         <div className={styles["modal-work-date__wrapper-date-picker"]}>
