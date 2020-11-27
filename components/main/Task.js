@@ -227,6 +227,12 @@ const Task = () => {
         </div>
       );
     } else if (id === "CurrentWork") {
+      let previousWork;
+      row.allCells.forEach(horizontalLine => {
+        if (horizontalLine.column.Header === "Previous Work %") {
+          previousWork = horizontalLine.value;
+        }
+      });
       return (
         <div className={styles["table__current-work-wrapper"]}>
           <span className={styles["table__current-work-wrapper__data"]}>
@@ -235,7 +241,7 @@ const Task = () => {
                 className={
                   styles["table__current-work-wrapper__input__previous-work"]
                 }
-                value={row.allCells[4].value}
+                value={previousWork}
                 type="number"
                 onChange={onChange}
                 onBlur={onBlurForCurrentWork}
@@ -342,35 +348,12 @@ const Task = () => {
     const fetchData = async () => {
       for (let i = 0; i < data.length; i++) {
         if (
-          data[i].CurrentWork === null ||
-          data[i].CurrentWork === "" ||
-          data[i].CurrentWork.toString() === data[i].PreviousWork.toString()
+          !(
+            data[i].CurrentWork === null ||
+            data[i].CurrentWork === "" ||
+            data[i].CurrentWork.toString() === data[i].PreviousWork.toString()
+          )
         ) {
-          promises.push(
-            axios({
-              method: "put",
-              url: `/api/project-tasks/${data[i].TaskID}`,
-              timeout: 5000,
-              headers: {},
-              data: {
-                StartDate: data[i].StartDate,
-                FinishDate: data[i].FinishDate,
-              },
-            })
-          );
-        } else {
-          promises.push(
-            axios({
-              method: "put",
-              url: `/api/project-tasks/${data[i].TaskID}`,
-              timeout: 5000,
-              headers: {},
-              data: {
-                StartDate: data[i].StartDate,
-                FinishDate: data[i].FinishDate,
-              },
-            })
-          );
           promises.push(
             axios({
               method: "put",
@@ -485,28 +468,17 @@ const Task = () => {
     Company: "",
     TaskID: "",
     TaskName: "",
-    StartDate: new Date("2014/02/08"),
-    FinishDate: new Date("2014/02/08"),
+    StartDate: new Date("2010/01/01"),
+    FinishDate: new Date("2010/01/01"),
   });
 
   const afterOpenModalWorkDate = () => {
     // references are now sync'd and can be accessed.
   };
 
-  const openModalWorkDate = () => {
-    setModalWorkDate(prevState => ({ ...prevState, isOpen: true }));
-  };
-
   const closeModalWorkDate = () => {
     setModalWorkDate(prevState => ({ ...prevState, isOpen: false }));
   };
-
-  const [startDateOfWorkDate, setStartDateOfWorkDate] = useState(
-    new Date("2014/02/08")
-  );
-  const [endDateOfWorkDate, setEndDateOfWorkDate] = useState(
-    new Date("2014/02/10")
-  );
 
   const handleStartDateOfWorkDate = StartDate => {
     setModalWorkDate(prevState => ({ ...prevState, StartDate }));
@@ -531,6 +503,37 @@ const Task = () => {
       StartDate,
       FinishDate,
     });
+  };
+
+  const requestModalWorkDate = () => {
+    const fetchData = async () => {
+      let result = await axios({
+        method: "POST",
+        url: `/api/project-date-change-request`,
+        timeout: 5000, // 5 seconds timeout
+        headers: {},
+        data: {
+          EmployeeID: 1,
+          ProjectID: 6130,
+          TaskID: modalWorkDate.TaskID,
+          RequestType: "Task",
+          StartDate: modalWorkDate.StartDate,
+          EndDate: modalWorkDate.FinishDate,
+        },
+      });
+    };
+
+    trackPromise(fetchData());
+    closeModalWorkDate();
+    toast.info(
+      <div className={styles["alert__complete"]}>
+        <strong>Request has been submitted.</strong>
+      </div>,
+      {
+        position: toast.POSITION.BOTTOM_CENTER,
+        hideProgressBar: true,
+      }
+    );
   };
 
   return (
@@ -750,7 +753,7 @@ const Task = () => {
           <Button
             variant="contained"
             size="small"
-            onClick={closeModalWorkDate}
+            onClick={requestModalWorkDate}
             className={styles["modal-work-date__wrapper-btn__btn-request"]}
           >
             Request
