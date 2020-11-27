@@ -351,6 +351,15 @@
   margin-left: 5% !important;
 }
 
+.modal-work-date__wrapper-title__sub-title-task-name {
+  margin-bottom: 0px;
+  font-family: "Roboto";
+}
+
+.modal-work-date__wrapper-title__sub-title-company-name {
+  margin-top: 5px;
+  font-family: "Roboto";
+}
 .test {
   text-align: center;
   color: gray;

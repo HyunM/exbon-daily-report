@@ -152,8 +152,14 @@ const Task = () => {
       updateMyData(index, id, value);
     };
 
-    const handleModalWorkDate = (TaskID, TaskName, StartDate, FinishDate) => {
-      updateModalWorkDate(TaskID, TaskName, StartDate, FinishDate);
+    const handleModalWorkDate = (
+      Company,
+      TaskID,
+      TaskName,
+      StartDate,
+      FinishDate
+    ) => {
+      updateModalWorkDate(Company, TaskID, TaskName, StartDate, FinishDate);
     };
 
     // If the initialValue is changed external, sync it up with our state
@@ -200,6 +206,7 @@ const Task = () => {
             className={styles["table__date-wrapper__data"]}
             onClick={() =>
               handleModalWorkDate(
+                row.original.Company,
                 row.original.TaskID,
                 row.original.TaskName,
                 row.original.StartDate,
@@ -475,10 +482,11 @@ const Task = () => {
 
   const [modalWorkDate, setModalWorkDate] = useState({
     isOpen: false,
+    Company: "",
     TaskID: "",
     TaskName: "",
-    StartDate: "",
-    FinishDate: "",
+    StartDate: new Date("2014/02/08"),
+    FinishDate: new Date("2014/02/08"),
   });
 
   const afterOpenModalWorkDate = () => {
@@ -500,16 +508,29 @@ const Task = () => {
     new Date("2014/02/10")
   );
 
-  const handleStartDateOfWorkDate = date => {
-    setStartDateOfWorkDate(date);
+  const handleStartDateOfWorkDate = StartDate => {
+    setModalWorkDate(prevState => ({ ...prevState, StartDate }));
   };
 
-  const handleEndDateOfWorkDate = date => {
-    setEndDateOfWorkDate(date);
+  const handleEndDateOfWorkDate = FinishDate => {
+    setModalWorkDate(prevState => ({ ...prevState, FinishDate }));
   };
 
-  const updateModalWorkDate = (TaskID, TaskName, StartDate, FinishDate) => {
-    setModalWorkDate({ isOpen: true, TaskID, TaskName, StartDate, FinishDate });
+  const updateModalWorkDate = (
+    Company,
+    TaskID,
+    TaskName,
+    StartDate,
+    FinishDate
+  ) => {
+    setModalWorkDate({
+      isOpen: true,
+      Company,
+      TaskID,
+      TaskName,
+      StartDate,
+      FinishDate,
+    });
   };
 
   return (
@@ -682,18 +703,29 @@ const Task = () => {
       >
         <div className={styles["modal-work-date__wrapper-title"]}>
           <h4 className={styles["modal-work-date__wrapper-title__title"]}>
-            Change Task Work Date
+            Change Task Date
           </h4>
-          <h5 className={styles["modal-work-date__wrapper-title__sub-title"]}>
+          <h4
+            className={
+              styles["modal-work-date__wrapper-title__sub-title-task-name"]
+            }
+          >
             {modalWorkDate.TaskName}
-          </h5>
+          </h4>
+          <h6
+            className={
+              styles["modal-work-date__wrapper-title__sub-title-company-name"]
+            }
+          >
+            by {modalWorkDate.Company}
+          </h6>
         </div>
         <div className={styles["modal-work-date__wrapper-date-picker"]}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <ThemeProvider theme={themeForWorkDate}>
               <DatePicker
                 // value={value.length === undefined ? value : value.split("-")}
-                value={startDateOfWorkDate}
+                value={modalWorkDate.StartDate}
                 onChange={handleStartDateOfWorkDate}
                 format="MM/dd/yyyy"
                 label="Start Date"
@@ -703,7 +735,7 @@ const Task = () => {
               />
               <DatePicker
                 // value={value.length === undefined ? value : value.split("-")}
-                value={endDateOfWorkDate}
+                value={modalWorkDate.FinishDate}
                 onChange={handleEndDateOfWorkDate}
                 format="MM/dd/yyyy"
                 label="End Date"
