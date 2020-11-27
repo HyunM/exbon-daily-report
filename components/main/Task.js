@@ -715,13 +715,13 @@ const Task = () => {
           >
             {modalWorkDate.TaskName}
           </h4>
-          <h6
+          <h5
             className={
               styles["modal-work-date__wrapper-title__sub-title-company-name"]
             }
           >
             by {modalWorkDate.Company}
-          </h6>
+          </h5>
         </div>
         <div className={styles["modal-work-date__wrapper-date-picker"]}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -767,7 +767,7 @@ const Task = () => {
             Cancel
           </Button>
         </div>
-        <p className={styles["test"]}>(This is a test, so NOT working yet. )</p>
+        {/* <p className={styles["test"]}>(This is a test, so NOT working yet. )</p> */}
       </Modal>
     </div>
   );

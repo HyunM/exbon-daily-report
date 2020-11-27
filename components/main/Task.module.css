@@ -288,7 +288,7 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 .modal-no-work__wrapper-title__title {
-  color: grey;
+  color: #f60057;
   margin-top: 0;
 }
 .modal-no-work__wrapper-date-picker__start-date {
@@ -322,7 +322,7 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 .modal-work-date__wrapper-title__title {
-  color: grey;
+  color: #647be2;
   margin-top: 0;
 }
 .modal-work-date__wrapper-date-picker__start-date {
@@ -359,7 +359,9 @@
 .modal-work-date__wrapper-title__sub-title-company-name {
   margin-top: 5px;
   font-family: "Roboto";
+  color: grey;
 }
+
 .test {
   text-align: center;
   color: gray;
