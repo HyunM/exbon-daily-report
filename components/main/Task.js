@@ -152,8 +152,8 @@ const Task = () => {
       updateMyData(index, id, value);
     };
 
-    const handleModalWorkDate = value => {
-      updateModalWorkDate(value);
+    const handleModalWorkDate = (TaskID, TaskName, StartDate, FinishDate) => {
+      updateModalWorkDate(TaskID, TaskName, StartDate, FinishDate);
     };
 
     // If the initialValue is changed external, sync it up with our state
@@ -198,7 +198,14 @@ const Task = () => {
         <div className={styles["table__date-wrapper"]}>
           <span
             className={styles["table__date-wrapper__data"]}
-            onClick={() => handleModalWorkDate(value)}
+            onClick={() =>
+              handleModalWorkDate(
+                row.original.TaskID,
+                row.original.TaskName,
+                row.original.StartDate,
+                row.original.FinishDate
+              )
+            }
           >
             {value} ~ {row.original.FinishDate}
           </span>
@@ -468,7 +475,10 @@ const Task = () => {
 
   const [modalWorkDate, setModalWorkDate] = useState({
     isOpen: false,
-    title: "title",
+    TaskID: "",
+    TaskName: "",
+    StartDate: "",
+    FinishDate: "",
   });
 
   const afterOpenModalWorkDate = () => {
@@ -498,8 +508,8 @@ const Task = () => {
     setEndDateOfWorkDate(date);
   };
 
-  const updateModalWorkDate = title => {
-    setModalWorkDate({ isOpen: true, title });
+  const updateModalWorkDate = (TaskID, TaskName, StartDate, FinishDate) => {
+    setModalWorkDate({ isOpen: true, TaskID, TaskName, StartDate, FinishDate });
   };
 
   return (
@@ -554,7 +564,7 @@ const Task = () => {
                 color="secondary"
                 size="small"
                 startIcon={<EventBusyIcon />}
-                className={styles["header__right__set-no-work-days-btn"]}
+                className={styles["header__right__no-work-btn"]}
                 onClick={openModalNoWork}
               >
                 Set No Work Days
@@ -565,24 +575,14 @@ const Task = () => {
                 onRequestClose={closeModalNoWork}
                 style={customStyles}
                 contentLabel="Example Modal"
-                className={styles["modal-set-no-work-days"]}
+                className={styles["modal-no-work"]}
               >
-                <div
-                  className={styles["modal-set-no-work-days__wrapper-title"]}
-                >
-                  <h4
-                    className={
-                      styles["modal-set-no-work-days__wrapper-title__title"]
-                    }
-                  >
+                <div className={styles["modal-no-work__wrapper-title"]}>
+                  <h4 className={styles["modal-no-work__wrapper-title__title"]}>
                     Set No Work Days
                   </h4>
                 </div>
-                <div
-                  className={
-                    styles["modal-set-no-work-days__wrapper-date-picker"]
-                  }
-                >
+                <div className={styles["modal-no-work__wrapper-date-picker"]}>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <ThemeProvider theme={themeForNoWork}>
                       <DatePicker
@@ -593,7 +593,7 @@ const Task = () => {
                         label="Start Date"
                         className={
                           styles[
-                            "modal-set-no-work-days__wrapper-date-picker__start-date"
+                            "modal-no-work__wrapper-date-picker__start-date"
                           ]
                         }
                       />
@@ -604,32 +604,28 @@ const Task = () => {
                         format="MM/dd/yyyy"
                         label="End Date"
                         className={
-                          styles[
-                            "modal-set-no-work-days__wrapper-date-picker__end-date"
-                          ]
+                          styles["modal-no-work__wrapper-date-picker__end-date"]
                         }
                       />
                     </ThemeProvider>
                   </MuiPickersUtilsProvider>
                 </div>
-                <div className={styles["modal-set-no-work-days__wrapper-btn"]}>
+                <div className={styles["modal-no-work__wrapper-btn"]}>
                   <Button
                     variant="contained"
                     size="small"
                     onClick={closeModalNoWork}
                     className={
-                      styles["modal-set-no-work-days__wrapper-btn__btn-save"]
+                      styles["modal-no-work__wrapper-btn__btn-request"]
                     }
                   >
-                    Save
+                    Request
                   </Button>
                   <Button
                     variant="contained"
                     size="small"
                     onClick={closeModalNoWork}
-                    className={
-                      styles["modal-set-no-work-days__wrapper-btn__btn-cancel"]
-                    }
+                    className={styles["modal-no-work__wrapper-btn__btn-cancel"]}
                   >
                     Cancel
                   </Button>
@@ -686,8 +682,11 @@ const Task = () => {
       >
         <div className={styles["modal-work-date__wrapper-title"]}>
           <h4 className={styles["modal-work-date__wrapper-title__title"]}>
-            {modalWorkDate.title}
+            Change Task Work Date
           </h4>
+          <h5 className={styles["modal-work-date__wrapper-title__sub-title"]}>
+            {modalWorkDate.TaskName}
+          </h5>
         </div>
         <div className={styles["modal-work-date__wrapper-date-picker"]}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -720,9 +719,9 @@ const Task = () => {
             variant="contained"
             size="small"
             onClick={closeModalWorkDate}
-            className={styles["modal-work-date__wrapper-btn__btn-save"]}
+            className={styles["modal-work-date__wrapper-btn__btn-request"]}
           >
-            Save
+            Request
           </Button>
           <Button
             variant="contained"

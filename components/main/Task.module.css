@@ -82,7 +82,7 @@
   height: auto;
 }
 
-.header__right__set-no-work-days-btn {
+.header__right__no-work-btn {
   padding: 0.5em !important;
   height: auto;
   margin-right: 10% !important;
@@ -283,35 +283,69 @@
   cursor: pointer;
 }
 
-.modal-set-no-work-days__wrapper-title {
+.modal-no-work__wrapper-title {
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
 }
-.modal-set-no-work-days__wrapper-title__title {
+.modal-no-work__wrapper-title__title {
   color: grey;
   margin-top: 0;
 }
-.modal-set-no-work-days__wrapper-date-picker__start-date {
+.modal-no-work__wrapper-date-picker__start-date {
   margin-left: 16% !important;
   width: 30% !important;
 }
 
-.modal-set-no-work-days__wrapper-date-picker__end-date {
+.modal-no-work__wrapper-date-picker__end-date {
   margin-left: 10% !important;
   width: 30% !important;
 }
 
-.modal-set-no-work-days__wrapper-btn {
+.modal-no-work__wrapper-btn {
   margin-top: 10%;
 }
 
-.modal-set-no-work-days__wrapper-btn__btn-save {
+.modal-no-work__wrapper-btn__btn-request {
   background-color: #1cd3a2 !important;
   color: white !important;
-  margin-left: 28% !important;
+  margin-left: 25% !important;
 }
 
-.modal-set-no-work-days__wrapper-btn__btn-cancel {
+.modal-no-work__wrapper-btn__btn-cancel {
+  background-color: #fd7c6e !important;
+  color: white !important;
+  margin-left: 5% !important;
+}
+
+.modal-work-date__wrapper-title {
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.modal-work-date__wrapper-title__title {
+  color: grey;
+  margin-top: 0;
+}
+.modal-work-date__wrapper-date-picker__start-date {
+  margin-left: 16% !important;
+  width: 30% !important;
+}
+
+.modal-work-date__wrapper-date-picker__end-date {
+  margin-left: 10% !important;
+  width: 30% !important;
+}
+
+.modal-work-date__wrapper-btn {
+  margin-top: 10%;
+}
+
+.modal-work-date__wrapper-btn__btn-request {
+  background-color: #1cd3a2 !important;
+  color: white !important;
+  margin-left: 25% !important;
+}
+
+.modal-work-date__wrapper-btn__btn-cancel {
   background-color: #fd7c6e !important;
   color: white !important;
   margin-left: 5% !important;
