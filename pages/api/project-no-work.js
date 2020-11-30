@@ -1,11 +1,11 @@
 const mssql = require("mssql");
 const dbserver = require("../../dbConfig.js");
 
-const projectDateChangeRequestHandler = (req, res) => {
+const projectNoWorkHandler = (req, res) => {
   const { method, body } = req;
   return new Promise(resolve => {
     switch (method) {
-      case "POST":
+      case "GET":
         mssql.connect(dbserver.dbConfig, err => {
           if (err) {
             console.error(err);
@@ -13,32 +13,25 @@ const projectDateChangeRequestHandler = (req, res) => {
           }
           const request = new mssql.Request();
 
-          const query = `EXEC [Hammer].[dbo].[ProjectDateChangeRequest_Insert]
-          ${body.EmployeeID}, ${body.ProjectID}, "${body.RequestType}", ${body.TaskID}, "${body.StartDate}", "${body.EndDate}"`;
-          /* --Params--
-          	@employeeID int,
-            @projectID int,
-            @requestType nvarchar(50),
-            @taskID int,
-            @startDate date,
-            @endDate nchar(10) -- will be modified
-          */
+          const projectID = req.query.projectID;
+
+          const query = `EXEC [Hammer].[dbo].[ProjectNoWork_SelectByProjectID]
+          ${projectID} `;
 
           request.query(query, (err, recordset) => {
             if (err) {
               console.error(err);
               return resolve();
             }
-            res.status(200).json({
-              message: "Success, the request has been submitted.",
-            });
+            const response = recordset.recordset;
+            res.status(200).json(response);
             return resolve();
           });
         });
         break;
 
       default:
-        res.setHeader("Allow", ["POST"]);
+        res.setHeader("Allow", ["GET"]);
         res.status(405).end(`Method ${method} Not Allowed`);
         res.status(404).end(`Failed`);
         resolve();
@@ -46,4 +39,4 @@ const projectDateChangeRequestHandler = (req, res) => {
   });
 };
 
-export default projectDateChangeRequestHandler;
+export default projectNoWorkHandler;

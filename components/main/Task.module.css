@@ -291,6 +291,25 @@
   color: #f60057;
   margin-top: 0;
 }
+
+.modal-no-work__wrapper-fixed-date {
+  margin-left: auto;
+  margin-right: auto;
+  width: 65%;
+  border-left: 1px solid rgb(226, 150, 150);
+  border-right: 1px solid rgb(226, 150, 150);
+  border-radius: 5%;
+  text-align: center;
+  margin-bottom: 10%;
+  padding: 3%;
+}
+
+.modal-no-work__wrapper-fixed-date__fixed-date {
+  font-family: "Roboto";
+  color: rgb(102, 98, 98);
+  margin-bottom: 3%;
+}
+
 .modal-no-work__wrapper-date-picker__start-date {
   margin-left: 16% !important;
   width: 30% !important;
