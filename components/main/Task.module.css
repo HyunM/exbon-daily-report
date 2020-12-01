@@ -295,6 +295,7 @@
 .modal-no-work__wrapper-content {
   width: 600px;
   display: flex;
+  align-content: center;
 }
 
 .modal-no-work__wrapper-content__left {
@@ -368,7 +369,7 @@
   font-family: "Roboto";
 }
 
-.modal-no-work__wrapper-content__right__wrapper-btn__btn-update {
+.modal-no-work__wrapper-content__right__wrapper-btn__btn-modify {
   color: rgb(0, 110, 255) !important;
   margin-left: 30% !important;
 }

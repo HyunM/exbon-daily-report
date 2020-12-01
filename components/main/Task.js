@@ -525,12 +525,16 @@ const Task = () => {
     let StartDate;
     let FinishDate;
     if (RecordID === "NEW") {
-      StartDate = new Date().toLocaleString({
-        timeZone: "America/Los_Angeles",
-      });
-      FinishDate = new Date().toLocaleString({
-        timeZone: "America/Los_Angeles",
-      });
+      StartDate = formatDate(
+        new Date().toLocaleString({
+          timeZone: "America/Los_Angeles",
+        })
+      );
+      FinishDate = formatDate(
+        new Date().toLocaleString({
+          timeZone: "America/Los_Angeles",
+        })
+      );
       setModalNoWork(prevState => ({
         ...prevState,
         RecordID,
@@ -628,6 +632,96 @@ const Task = () => {
     );
   };
 
+  const addRequestModalNoWork = () => {
+    const fetchData = async () => {
+      let result = await axios({
+        method: "POST",
+        url: `/api/project-date-change-request`,
+        timeout: 5000, // 5 seconds timeout
+        headers: {},
+        data: {
+          EmployeeID: 1,
+          ProjectID: 6130,
+          RequestType: "No Work",
+          RequestID: null,
+          StartDate: modalNoWork.StartDate,
+          EndDate: modalNoWork.FinishDate,
+        },
+      });
+    };
+
+    trackPromise(fetchData());
+    toast.info(
+      <div className={styles["alert__complete"]}>
+        <strong>Add Request has been submitted.</strong>
+      </div>,
+      {
+        position: toast.POSITION.BOTTOM_CENTER,
+        hideProgressBar: true,
+      }
+    );
+  };
+
+  const modifyRequestModalNoWork = () => {
+    const fetchData = async () => {
+      let result = await axios({
+        method: "POST",
+        url: `/api/project-date-change-request`,
+        timeout: 5000, // 5 seconds timeout
+        headers: {},
+        data: {
+          EmployeeID: 1,
+          ProjectID: 6130,
+          RequestType: "No Work Modify",
+          RequestID: modalNoWork.RecordID,
+          StartDate: modalNoWork.StartDate,
+          EndDate: modalNoWork.FinishDate,
+        },
+      });
+    };
+
+    trackPromise(fetchData());
+    toast.info(
+      <div className={styles["alert__complete"]}>
+        <strong>Modify Request has been submitted.</strong>
+      </div>,
+      {
+        position: toast.POSITION.BOTTOM_CENTER,
+        hideProgressBar: true,
+      }
+    );
+  };
+
+  const deleteRequestModalNoWork = () => {
+    const fetchData = async () => {
+      let result = await axios({
+        method: "POST",
+        url: `/api/project-date-change-request`,
+        timeout: 5000, // 5 seconds timeout
+        headers: {},
+        data: {
+          EmployeeID: 1,
+          ProjectID: 6130,
+          RequestType: "No Work Delete",
+          RequestID: modalNoWork.RecordID,
+          StartDate: modalNoWork.StartDate,
+          EndDate: modalNoWork.FinishDate,
+        },
+      });
+    };
+
+    trackPromise(fetchData());
+    toast.info(
+      <div className={styles["alert__complete"]}>
+        <strong>Delete Request has been submitted.</strong>
+      </div>,
+      {
+        position: toast.POSITION.BOTTOM_CENTER,
+        hideProgressBar: true,
+      }
+    );
+  };
+
   return (
     <div id={styles.mainDiv}>
       {promiseInProgress ? (
@@ -644,7 +738,6 @@ const Task = () => {
         </div>
       ) : (
         <>
-          {console.log(data)}
           {console.log(modalNoWork)}
           <div className={styles["header"]}>
             <div className={styles["header__left"]}>
@@ -820,6 +913,7 @@ const Task = () => {
                                     "modal-no-work__wrapper-content__right__wrapper-btn__btn-add"
                                   ]
                                 }
+                                onClick={addRequestModalNoWork}
                               >
                                 Add
                               </Button>
@@ -831,11 +925,12 @@ const Task = () => {
                                 size="small"
                                 className={
                                   styles[
-                                    "modal-no-work__wrapper-content__right__wrapper-btn__btn-update"
+                                    "modal-no-work__wrapper-content__right__wrapper-btn__btn-modify"
                                   ]
                                 }
+                                onClick={modifyRequestModalNoWork}
                               >
-                                Update
+                                Modify
                               </Button>
                               <Button
                                 variant="outlined"
@@ -845,6 +940,7 @@ const Task = () => {
                                     "modal-no-work__wrapper-content__right__wrapper-btn__btn-delete"
                                   ]
                                 }
+                                onClick={deleteRequestModalNoWork}
                               >
                                 Delete
                               </Button>
