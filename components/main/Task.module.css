@@ -336,6 +336,15 @@
   color: #fd7c6e;
 }
 
+.modal-no-work__wrapper-content__right__RecordID-0 {
+  margin-top: 25%;
+  margin-left: auto;
+  text-align: center;
+  font-family: "Roboto";
+  font-weight: 800;
+  color: #909de9;
+}
+
 .modal-no-work__wrapper-content__right__wrapper-date-picker {
   margin-top: 10%;
 }
@@ -368,7 +377,10 @@
   color: rgb(224, 44, 44) !important;
   margin-left: 5% !important;
 }
-
+.modal-no-work__wrapper-content__right__wrapper-btn__btn-add {
+  color: rgb(16, 207, 182) !important;
+  margin-left: 43% !important;
+}
 .modal-no-work__wrapper-content__right__wrapper-btn__btn-cancel {
   background-color: #fd7c6e !important;
   color: white !important;

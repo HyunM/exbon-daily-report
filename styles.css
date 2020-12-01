@@ -78,6 +78,6 @@ body {
 }
 
 .modal-no-work__wrapper-content__left__fixed-date__click {
-  background-color: #f5f5f5;
+  background-color: #f5f5f5 !important;
   color: #fd7c6e !important;
 }
