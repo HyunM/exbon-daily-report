@@ -458,6 +458,13 @@ const Task = () => {
 
   const afterOpenModalNoWork = () => {
     // references are now sync'd and can be accessed.
+    if (noWork.length === 0) {
+      document
+        .getElementById("NoWorkRecordID-NEW")
+        .classList.add(
+          "modal-no-work__wrapper-content__left__fixed-date__click"
+        );
+    }
   };
 
   const [modalNoWork, setModalNoWork] = useState({
@@ -468,10 +475,16 @@ const Task = () => {
   });
 
   const openModalNoWork = () => {
+    let RecordID;
+    if (noWork.length === 0) {
+      RecordID = "NEW";
+    } else {
+      RecordID = 0;
+    }
     setModalNoWork({
-      RecordID: 0,
-      StartDate: new Date("2010/01/01"),
-      FinishDate: new Date("2010/01/01"),
+      RecordID,
+      StartDate: now,
+      FinishDate: now,
       isOpen: true,
     });
   };
@@ -594,8 +607,8 @@ const Task = () => {
         data: {
           EmployeeID: 1,
           ProjectID: 6130,
-          TaskID: modalWorkDate.TaskID,
           RequestType: "Task",
+          RequestID: modalWorkDate.TaskID,
           StartDate: modalWorkDate.StartDate,
           EndDate: modalWorkDate.FinishDate,
         },
@@ -632,6 +645,7 @@ const Task = () => {
       ) : (
         <>
           {console.log(data)}
+          {console.log(modalNoWork)}
           <div className={styles["header"]}>
             <div className={styles["header__left"]}>
               <h1 className={styles["header__left__title"]}>Tasks</h1>

@@ -14,12 +14,12 @@ const projectDateChangeRequestHandler = (req, res) => {
           const request = new mssql.Request();
 
           const query = `EXEC [Hammer].[dbo].[ProjectDateChangeRequest_Insert]
-          ${body.EmployeeID}, ${body.ProjectID}, "${body.RequestType}", ${body.TaskID}, "${body.StartDate}", "${body.EndDate}"`;
+          ${body.EmployeeID}, ${body.ProjectID}, "${body.RequestType}", ${body.RequestID}, "${body.StartDate}", "${body.EndDate}"`;
           /* --Params--
           	@employeeID int,
             @projectID int,
             @requestType nvarchar(50),
-            @taskID int,
+            @requestID int,
             @startDate date,
             @endDate nchar(10) -- will be modified
           */
