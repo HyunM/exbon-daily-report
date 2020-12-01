@@ -468,12 +468,12 @@ const Task = () => {
   });
 
   const openModalNoWork = () => {
-    setModalNoWork(prevState => ({
+    setModalNoWork({
       RecordID: 0,
       StartDate: new Date("2010/01/01"),
       FinishDate: new Date("2010/01/01"),
       isOpen: true,
-    }));
+    });
   };
 
   const closeModalNoWork = () => {
