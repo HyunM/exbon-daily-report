@@ -76,3 +76,8 @@ body {
 .fc-event-title-container:hover {
   color: black;
 }
+
+.modal-no-work__wrapper-content__left__fixed-date__click {
+  background-color: #f5f5f5;
+  color: #fd7c6e !important;
+}

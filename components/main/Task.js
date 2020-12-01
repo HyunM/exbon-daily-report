@@ -432,10 +432,21 @@ const Task = () => {
 
   const { promiseInProgress } = usePromiseTracker();
 
+  const customStylesNoWork = {
+    content: {
+      top: "40%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+    },
+  };
+
   const customStyles = {
     content: {
       top: "50%",
-      left: "30%",
+      left: "50%",
       right: "auto",
       bottom: "auto",
       marginRight: "-50%",
@@ -458,23 +469,52 @@ const Task = () => {
     setModalNoWorkIsOpen(false);
   };
 
-  const [startDateOfNoWork, setStartDateOfNoWork] = useState(
-    new Date().toLocaleString({
-      timeZone: "America/Los_Angeles",
-    })
-  );
-  const [endDateOfNoWork, setEndDateOfNoWork] = useState(
-    new Date().toLocaleString({
-      timeZone: "America/Los_Angeles",
-    })
-  );
+  const [modalNoWork, setModalNoWork] = useState({
+    RecordID: 0,
+    StartDate: new Date("2010/01/01"),
+    FinishDate: new Date("2010/01/01"),
+  });
 
-  const handleStartDateOfNoWork = date => {
-    setStartDateOfNoWork(date);
+  const handleStartDateOfNoWork = StartDate => {
+    setModalNoWork(prevState => ({ ...prevState, StartDate }));
   };
 
-  const handleEndDateOfNoWork = date => {
-    setEndDateOfNoWork(date);
+  const handleEndDateOfNoWork = FinishDate => {
+    setModalNoWork(prevState => ({ ...prevState, FinishDate }));
+  };
+
+  const handleClickDateOfNoWork = RecordID => {
+    // css
+    if (
+      document.getElementsByClassName(
+        "modal-no-work__wrapper-content__left__fixed-date__click"
+      ).length !== 0
+    ) {
+      document
+        .getElementsByClassName(
+          "modal-no-work__wrapper-content__left__fixed-date__click"
+        )[0]
+        .classList.remove(
+          "modal-no-work__wrapper-content__left__fixed-date__click"
+        );
+    }
+
+    document
+      .getElementById(`NoWorkRecordID-${RecordID}`)
+      .classList.add("modal-no-work__wrapper-content__left__fixed-date__click");
+
+    // logic
+    let StartDate;
+    let FinishDate;
+    for (let i = 0; i < noWork.length; i++) {
+      if (noWork[i].RecordID === RecordID) {
+        StartDate = noWork[i].StartDate;
+        FinishDate = noWork[i].FinishDate;
+        break;
+      }
+    }
+
+    setModalNoWork({ RecordID, StartDate, FinishDate });
   };
 
   const [modalWorkDate, setModalWorkDate] = useState({
@@ -607,96 +647,12 @@ const Task = () => {
               >
                 Set No Work Days
               </Button>
-              <Modal
-                isOpen={modalNoWorkIsOpen}
-                onAfterOpen={afterOpenModalNoWork}
-                onRequestClose={closeModalNoWork}
-                style={customStyles}
-                contentLabel="Example Modal"
-                className={styles["modal-no-work"]}
-              >
-                <div className={styles["modal-no-work__wrapper-title"]}>
-                  <h4 className={styles["modal-no-work__wrapper-title__title"]}>
-                    Set No Work Days
-                  </h4>
-                </div>
-                {console.log(noWork)}
-                <div className={styles["modal-no-work__wrapper-fixed-date"]}>
-                  {noWork.map(item => {
-                    return (
-                      <div
-                        className={
-                          styles[
-                            "modal-no-work__wrapper-fixed-date__fixed-date"
-                          ]
-                        }
-                        key={item.RecordID}
-                      >
-                        {formatDate(item.StartDate) +
-                          " ~ " +
-                          formatDate(item.FinishDate)}
-                      </div>
-                    );
-                  })}
-                </div>
-                <div className={styles["modal-no-work__wrapper-date-picker"]}>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <ThemeProvider theme={themeForNoWork}>
-                      <DatePicker
-                        // value={value.length === undefined ? value : value.split("-")}
-                        value={startDateOfNoWork}
-                        onChange={handleStartDateOfNoWork}
-                        format="MM/dd/yyyy"
-                        label="Start Date"
-                        className={
-                          styles[
-                            "modal-no-work__wrapper-date-picker__start-date"
-                          ]
-                        }
-                      />
-                      <DatePicker
-                        // value={value.length === undefined ? value : value.split("-")}
-                        value={endDateOfNoWork}
-                        onChange={handleEndDateOfNoWork}
-                        format="MM/dd/yyyy"
-                        label="End Date"
-                        className={
-                          styles["modal-no-work__wrapper-date-picker__end-date"]
-                        }
-                      />
-                    </ThemeProvider>
-                  </MuiPickersUtilsProvider>
-                </div>
-                <div className={styles["modal-no-work__wrapper-btn"]}>
-                  <Button
-                    variant="contained"
-                    size="small"
-                    onClick={closeModalNoWork}
-                    className={
-                      styles["modal-no-work__wrapper-btn__btn-request"]
-                    }
-                  >
-                    Request
-                  </Button>
-                  <Button
-                    variant="contained"
-                    size="small"
-                    onClick={closeModalNoWork}
-                    className={styles["modal-no-work__wrapper-btn__btn-cancel"]}
-                  >
-                    Cancel
-                  </Button>
-                </div>
-                {/* <p className={styles["test"]}>
-                  (This is a test, so NOT working yet. )
-                </p> */}
-              </Modal>
 
               <Modal
-                isOpen={modalNoWorkIsOpen}
+                isOpen={!modalNoWorkIsOpen}
                 onAfterOpen={afterOpenModalNoWork}
                 onRequestClose={closeModalNoWork}
-                style={customStyles}
+                style={customStylesNoWork}
                 contentLabel="Example Modal"
                 className={styles["modal-no-work"]}
               >
@@ -705,76 +661,132 @@ const Task = () => {
                     Set No Work Days
                   </h4>
                 </div>
-                {console.log(noWork)}
-                <div className={styles["modal-no-work__wrapper-fixed-date"]}>
-                  {noWork.map(item => {
-                    return (
-                      <div
+                <div className={styles["modal-no-work__wrapper-content"]}>
+                  <div
+                    className={styles["modal-no-work__wrapper-content__left"]}
+                  >
+                    {noWork.map(item => {
+                      return (
+                        <div
+                          className={
+                            styles[
+                              "modal-no-work__wrapper-content__left__fixed-date"
+                            ]
+                          }
+                          key={item.RecordID}
+                          id={`NoWorkRecordID-${item.RecordID}`}
+                          onClick={() => handleClickDateOfNoWork(item.RecordID)}
+                        >
+                          {formatDate(item.StartDate) +
+                            " ~ " +
+                            formatDate(item.FinishDate)}
+                        </div>
+                      );
+                    })}
+                    <div
+                      className={
+                        styles[
+                          "modal-no-work__wrapper-content__left__wrapper-btn-new"
+                        ]
+                      }
+                    >
+                      <Button
                         className={
                           styles[
-                            "modal-no-work__wrapper-fixed-date__fixed-date"
+                            "modal-no-work__wrapper-content__left__wrapper-btn-new__btn-new"
                           ]
                         }
-                        key={item.RecordID}
                       >
-                        {formatDate(item.StartDate) +
-                          " ~ " +
-                          formatDate(item.FinishDate)}
-                      </div>
-                    );
-                  })}
-                </div>
-                <div className={styles["modal-no-work__wrapper-date-picker"]}>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <ThemeProvider theme={themeForNoWork}>
-                      <DatePicker
-                        // value={value.length === undefined ? value : value.split("-")}
-                        value={startDateOfNoWork}
-                        onChange={handleStartDateOfNoWork}
-                        format="MM/dd/yyyy"
-                        label="Start Date"
+                        NEW
+                      </Button>
+                    </div>
+                  </div>
+                  <div
+                    className={styles["modal-no-work__wrapper-content__right"]}
+                  >
+                    <div
+                      className={
+                        styles[
+                          "modal-no-work__wrapper-content__right__wrapper-date-picker"
+                        ]
+                      }
+                    >
+                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <ThemeProvider theme={themeForNoWork}>
+                          <DatePicker
+                            // value={value.length === undefined ? value : value.split("-")}
+                            value={modalNoWork.StartDate}
+                            onChange={handleStartDateOfNoWork}
+                            format="MM/dd/yyyy"
+                            label="Start Date"
+                            className={
+                              styles[
+                                "modal-no-work__wrapper-content__right__wrapper-date-picker__start-date"
+                              ]
+                            }
+                          />
+                          <DatePicker
+                            // value={value.length === undefined ? value : value.split("-")}
+                            value={modalNoWork.FinishDate}
+                            onChange={handleEndDateOfNoWork}
+                            format="MM/dd/yyyy"
+                            label="End Date"
+                            className={
+                              styles[
+                                "modal-no-work__wrapper-content__right__wrapper-date-picker__end-date"
+                              ]
+                            }
+                          />
+                        </ThemeProvider>
+                      </MuiPickersUtilsProvider>
+                    </div>
+                    <div
+                      className={
+                        styles[
+                          "modal-no-work__wrapper-content__right__wrapper-btn"
+                        ]
+                      }
+                    >
+                      <p
+                        className={
+                          styles["modal-no-work__wrapper-content__right__text"]
+                        }
+                      >
+                        Request For
+                      </p>
+                      <Button
+                        variant="outlined"
+                        size="small"
                         className={
                           styles[
-                            "modal-no-work__wrapper-date-picker__start-date"
+                            "modal-no-work__wrapper-content__right__wrapper-btn__btn-update"
                           ]
                         }
-                      />
-                      <DatePicker
-                        // value={value.length === undefined ? value : value.split("-")}
-                        value={endDateOfNoWork}
-                        onChange={handleEndDateOfNoWork}
-                        format="MM/dd/yyyy"
-                        label="End Date"
+                      >
+                        Update
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        size="small"
                         className={
-                          styles["modal-no-work__wrapper-date-picker__end-date"]
+                          styles[
+                            "modal-no-work__wrapper-content__right__wrapper-btn__btn-delete"
+                          ]
                         }
-                      />
-                    </ThemeProvider>
-                  </MuiPickersUtilsProvider>
+                      >
+                        Delete
+                      </Button>
+                    </div>
+                  </div>
                 </div>
-                <div className={styles["modal-no-work__wrapper-btn"]}>
+                <div className={styles["modal-no-work__footer"]}>
                   <Button
                     variant="contained"
-                    size="small"
-                    onClick={closeModalNoWork}
-                    className={
-                      styles["modal-no-work__wrapper-btn__btn-request"]
-                    }
+                    className={styles["modal-no-work__footer__btn-close"]}
                   >
-                    Request
-                  </Button>
-                  <Button
-                    variant="contained"
-                    size="small"
-                    onClick={closeModalNoWork}
-                    className={styles["modal-no-work__wrapper-btn__btn-cancel"]}
-                  >
-                    Cancel
+                    Close
                   </Button>
                 </div>
-                {/* <p className={styles["test"]}>
-                  (This is a test, so NOT working yet. )
-                </p> */}
               </Modal>
             </div>
             {/* )} */}
