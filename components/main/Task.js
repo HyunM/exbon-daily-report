@@ -394,7 +394,7 @@ const Task = () => {
       headers: {},
       data: {
         EmployeeID: 1,
-        ProjectID: 6130,
+        ProjectID: 6074,
         Date: formatDate(selectedDate),
         Category: "Tasks",
         Action: "update",
@@ -417,7 +417,7 @@ const Task = () => {
 
       let result2 = await axios({
         method: "get",
-        url: `/api/project-no-work?projectID=6130`,
+        url: `/api/project-no-work?projectID=6074`,
         timeout: 5000, // 5 seconds timeout
         headers: {},
       });
@@ -610,7 +610,7 @@ const Task = () => {
         headers: {},
         data: {
           EmployeeID: 1,
-          ProjectID: 6130,
+          ProjectID: 6074,
           RequestType: "Task",
           RequestID: modalWorkDate.TaskID,
           StartDate: modalWorkDate.StartDate,
@@ -641,7 +641,7 @@ const Task = () => {
         headers: {},
         data: {
           EmployeeID: 1,
-          ProjectID: 6130,
+          ProjectID: 6074,
           RequestType: "No Work",
           RequestID: null,
           StartDate: modalNoWork.StartDate,
@@ -671,7 +671,7 @@ const Task = () => {
         headers: {},
         data: {
           EmployeeID: 1,
-          ProjectID: 6130,
+          ProjectID: 6074,
           RequestType: "No Work Modify",
           RequestID: modalNoWork.RecordID,
           StartDate: modalNoWork.StartDate,
@@ -701,7 +701,7 @@ const Task = () => {
         headers: {},
         data: {
           EmployeeID: 1,
-          ProjectID: 6130,
+          ProjectID: 6074,
           RequestType: "No Work Delete",
           RequestID: modalNoWork.RecordID,
           StartDate: modalNoWork.StartDate,
@@ -754,7 +754,7 @@ const Task = () => {
                 />
               </MuiPickersUtilsProvider>
               <h3 className={styles["header__left__project-id"]}>
-                Project ID : 6130
+                Project ID : 6074
               </h3>
             </div>
             {/* {dateCheckEditable(selectedDate) && ( */}
