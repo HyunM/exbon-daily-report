@@ -86,17 +86,17 @@ const Task = () => {
       {
         Header: "Company",
         accessor: "Company",
-        width: 160,
+        width: 250,
       },
       {
         Header: "Task Name",
         accessor: "TaskName",
-        width: 140,
+        width: 350,
       },
       {
         Header: "Work Date",
         accessor: "StartDate",
-        width: 180,
+        width: 205,
       },
       // {
       //   Header: "Finish Date",
