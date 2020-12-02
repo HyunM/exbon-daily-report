@@ -113,12 +113,12 @@ const Task = () => {
         accessor: "CurrentWork",
         width: 70,
       },
-      {
-        Header: "Message",
-        accessor: "Trade",
-        align: "center",
-        width: 377,
-      },
+      // {
+      //   Header: "Message",
+      //   accessor: "Trade",
+      //   align: "center",
+      //   width: 377,
+      // },
     ],
     []
   );
