@@ -8,6 +8,8 @@ import TabPanel from "./Tab/TabPanel";
 import a11yProps from "./Tab/a11yProps";
 import Miscellaneous from "./main/Miscellaneous";
 
+import styles from "./TabsOfBoth.module.css";
+
 const TabsOfBoth = ({ tapNumber, handleChangeTabs }) => {
   return (
     <>
@@ -22,6 +24,7 @@ const TabsOfBoth = ({ tapNumber, handleChangeTabs }) => {
           <Tab label="Timesheet" {...a11yProps(0)} />
           <Tab label="Tasks" {...a11yProps(1)} />
           <Tab label="Miscellaneous" {...a11yProps(2)} />
+          <Tab label="User" disabled className={styles["test"]} />
         </Tabs>
       </AppBar>
       <TabPanel tapNumber={tapNumber} index={0}>

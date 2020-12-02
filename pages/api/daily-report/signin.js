@@ -25,8 +25,9 @@ const signinHandler = (req, res) => {
               console.error(err);
               return resolve();
             }
+            console.log(recordset);
             res.status(200).json({
-              Employee: recordset.recordset[0],
+              result: recordset,
             });
             return resolve();
           });

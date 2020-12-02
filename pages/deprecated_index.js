@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Container from "../components/container";
-import SignIn from "./signin";
+import SignIn from ".";
 import useSwr from "swr";
 import Link from "next/link";
 

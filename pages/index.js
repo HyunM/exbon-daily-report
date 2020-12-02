@@ -66,7 +66,7 @@ const index = () => {
         Password: password,
       },
     }).then(response => {
-      if (response.data.Employee === undefined) {
+      if (response.data.result.recordsets[0] === undefined) {
         alert("Login failed.");
       } else {
         setLogin(true);
