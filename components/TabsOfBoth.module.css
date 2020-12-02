@@ -1,3 +1,17 @@
-.test {
+.right-tab {
   margin-left: auto !important;
+}
+
+.wrapper-right-tab {
+  display: flex;
+}
+
+.wrapper-right-tab__employee-name {
+  margin-top: 0;
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.wrapper-right-tab__account-icon {
+  margin-left: 20% !important;
 }

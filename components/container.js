@@ -4,7 +4,7 @@ import TabsOfDesktop from "./TabsOfDesktop";
 import TabsOfTablet from "./TabsOfTablet";
 import TabsOfBoth from "./TabsOfBoth";
 
-const Container = () => {
+const Container = ({ employeeInfo, assignedProject }) => {
   // const isTabletOrMobileDevice = useMediaQuery({
   //   query: "(max-device-width: 1224px)",
   // });
@@ -31,6 +31,8 @@ const Container = () => {
       <TabsOfBoth
         tapNumber={tapNumber}
         handleChangeTabs={handleChangeTabs}
+        employeeInfo={employeeInfo}
+        assignedProject={assignedProject}
       ></TabsOfBoth>
     </>
   );

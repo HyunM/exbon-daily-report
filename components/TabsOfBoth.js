@@ -7,10 +7,15 @@ import Tab from "@material-ui/core/Tab";
 import TabPanel from "./Tab/TabPanel";
 import a11yProps from "./Tab/a11yProps";
 import Miscellaneous from "./main/Miscellaneous";
-
+import AccountCircle from "@material-ui/icons/AccountCircle";
 import styles from "./TabsOfBoth.module.css";
 
-const TabsOfBoth = ({ tapNumber, handleChangeTabs }) => {
+const TabsOfBoth = ({
+  tapNumber,
+  handleChangeTabs,
+  employeeInfo,
+  assignedProject,
+}) => {
   return (
     <>
       <AppBar position="static">
@@ -24,7 +29,20 @@ const TabsOfBoth = ({ tapNumber, handleChangeTabs }) => {
           <Tab label="Timesheet" {...a11yProps(0)} />
           <Tab label="Tasks" {...a11yProps(1)} />
           <Tab label="Miscellaneous" {...a11yProps(2)} />
-          <Tab label="User" disabled className={styles["test"]} />
+          <Tab
+            icon={
+              <div className={styles["wrapper-right-tab"]}>
+                <p className={styles["wrapper-right-tab__employee-name"]}>
+                  {employeeInfo[0].FullName}
+                </p>
+                <AccountCircle
+                  className={styles["wrapper-right-tab__account-icon"]}
+                />
+              </div>
+            }
+            disabled
+            className={styles["right-tab"]}
+          />
         </Tabs>
       </AppBar>
       <TabPanel tapNumber={tapNumber} index={0}>

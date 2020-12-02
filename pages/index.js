@@ -51,7 +51,11 @@ const useStyles = makeStyles(theme => ({
 
 const index = () => {
   const classes = useStyles();
-  const [login, setLogin] = useState(false);
+  const [login, setLogin] = useState({
+    isLogin: false,
+    employeeInfo: [],
+    assignedProject: [],
+  });
 
   const handleSignIn = async () => {
     const password =
@@ -66,18 +70,25 @@ const index = () => {
         Password: password,
       },
     }).then(response => {
-      if (response.data.result.recordsets[0] === undefined) {
+      if (response.data.result.recordsets[0].length === 0) {
         alert("Login failed.");
       } else {
-        setLogin(true);
+        setLogin({
+          isLogin: true,
+          employeeInfo: response.data.result.recordsets[0],
+          assignedProject: response.data.result.recordsets[1],
+        });
       }
     });
   };
 
   return (
     <>
-      {login ? (
-        <ContainerMain />
+      {login.isLogin ? (
+        <ContainerMain
+          employeeInfo={login.employeeInfo}
+          assignedProject={login.assignedProject}
+        />
       ) : (
         <Container component="main" maxWidth="xs">
           <CssBaseline />
