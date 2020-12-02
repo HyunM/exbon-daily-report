@@ -1,17 +1,21 @@
 .right-tab {
   margin-left: auto !important;
+  max-width: 250px !important;
+  width: 100%;
 }
 
 .wrapper-right-tab {
   display: flex;
+  width: 100% !important;
 }
 
 .wrapper-right-tab__employee-name {
   margin-top: 0;
   margin-bottom: 0;
   width: 100%;
+  text-align: right;
 }
 
 .wrapper-right-tab__account-icon {
-  margin-left: 20% !important;
+  margin-left: 5% !important;
 }

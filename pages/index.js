@@ -16,6 +16,8 @@ import ContainerMain from "../components/container";
 import axios from "axios";
 import { sha256, sha224 } from "js-sha256";
 
+import Head from "next/head";
+
 const Copyright = () => {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -84,6 +86,14 @@ const index = () => {
 
   return (
     <>
+      <Head>
+        <title>Daily Report</title>
+        <link rel="icon" href="/favicon.ico" />
+        <meta
+          name="viewport"
+          content="minimum-scale=1, initial-scale=1, width=device-width"
+        />
+      </Head>
       {login.isLogin ? (
         <ContainerMain
           employeeInfo={login.employeeInfo}
