@@ -17,13 +17,13 @@ const TabsOfBoth = ({
   employeeInfo,
   assignedProject,
 }) => {
-  const [projectState, setProjectState] = useState(6074);
+  const [projectState, setProjectState] = useState(0);
   const handleProjectState = () => {
     setProjectState(document.getElementById("select-project").value);
   };
 
   const toZeroProjectState = () => {
-    // setProjectState(0);
+    setProjectState(0);
   };
   return (
     <>

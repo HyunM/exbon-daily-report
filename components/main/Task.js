@@ -10,7 +10,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import DateFnsUtils from "@date-io/date-fns";
 import { formatDate } from "./formatDate";
-
+import TextField from "@material-ui/core/TextField";
 import {
   DatePicker,
   MuiPickersUtilsProvider,
@@ -483,8 +483,8 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
     }
     setModalNoWork({
       RecordID,
-      StartDate: now,
-      FinishDate: now,
+      StartDate: formatDate(now),
+      FinishDate: formatDate(now),
       isOpen: true,
     });
   };
@@ -615,6 +615,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
           RequestID: modalWorkDate.TaskID,
           StartDate: modalWorkDate.StartDate,
           EndDate: modalWorkDate.FinishDate,
+          Note: null,
         },
       });
     };
@@ -633,6 +634,10 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
   };
 
   const addRequestModalNoWork = () => {
+    let note = document.getElementById("noteForNoWorkDays").value;
+    if (note === "") {
+      note = null;
+    }
     const fetchData = async () => {
       let result = await axios({
         method: "POST",
@@ -646,11 +651,12 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
           RequestID: null,
           StartDate: modalNoWork.StartDate,
           EndDate: modalNoWork.FinishDate,
+          Note: note,
         },
       });
     };
 
-    trackPromise(fetchData());
+    fetchData();
     toast.info(
       <div className={styles["alert__complete"]}>
         <strong>Add Request has been submitted.</strong>
@@ -663,6 +669,10 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
   };
 
   const modifyRequestModalNoWork = () => {
+    let note = document.getElementById("noteForNoWorkDays").value;
+    if (note === "") {
+      note = null;
+    }
     const fetchData = async () => {
       let result = await axios({
         method: "POST",
@@ -676,11 +686,12 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
           RequestID: modalNoWork.RecordID,
           StartDate: modalNoWork.StartDate,
           EndDate: modalNoWork.FinishDate,
+          Note: note,
         },
       });
     };
 
-    trackPromise(fetchData());
+    fetchData();
     toast.info(
       <div className={styles["alert__complete"]}>
         <strong>Modify Request has been submitted.</strong>
@@ -693,6 +704,10 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
   };
 
   const deleteRequestModalNoWork = () => {
+    let note = document.getElementById("noteForNoWorkDays").value;
+    if (note === "") {
+      note = null;
+    }
     const fetchData = async () => {
       let result = await axios({
         method: "POST",
@@ -706,11 +721,12 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
           RequestID: modalNoWork.RecordID,
           StartDate: modalNoWork.StartDate,
           EndDate: modalNoWork.FinishDate,
+          Note: note,
         },
       });
     };
 
-    trackPromise(fetchData());
+    fetchData();
     toast.info(
       <div className={styles["alert__complete"]}>
         <strong>Delete Request has been submitted.</strong>
@@ -901,16 +917,26 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
                             ]
                           }
                         >
-                          {/* <p
+                          <div
                             className={
                               styles[
-                                "modal-no-work__wrapper-content__right__text"
+                                "modal-no-work__wrapper-content__right__wrapper-note"
                               ]
                             }
                           >
-                            Request For
-                          </p> */}
-
+                            <TextField
+                              id="noteForNoWorkDays"
+                              label="Reason"
+                              multiline
+                              rows={2}
+                              defaultValue=""
+                              variant="outlined"
+                              fullWidth
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                            />
+                          </div>
                           {modalNoWork.RecordID === "NEW" ? (
                             <>
                               <Button
