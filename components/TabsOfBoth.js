@@ -37,7 +37,7 @@ const TabsOfBoth = ({
                 icon={
                   <div className={styles["wrapper-right-tab"]}>
                     <p className={styles["wrapper-right-tab__employee-name"]}>
-                      {employeeInfo[0].FullName}
+                      {employeeInfo.FullName}
                     </p>
                     <AccountCircle
                       className={styles["wrapper-right-tab__account-icon"]}
@@ -52,7 +52,7 @@ const TabsOfBoth = ({
           <div>
             <select id="select-project">
               {assignedProject.map(item => {
-                return <option>{item.ProjectID}</option>;
+                return <option key={item.ProjectID}>{item.ProjectID}</option>;
               })}
             </select>
             <button onClick={handleProjectState}>Go</button>
@@ -75,7 +75,7 @@ const TabsOfBoth = ({
                 icon={
                   <div className={styles["wrapper-right-tab"]}>
                     <p className={styles["wrapper-right-tab__employee-name"]}>
-                      {employeeInfo[0].FullName}
+                      {employeeInfo.FullName}
                     </p>
                     <AccountCircle
                       className={styles["wrapper-right-tab__account-icon"]}
@@ -88,13 +88,25 @@ const TabsOfBoth = ({
             </Tabs>
           </AppBar>
           <TabPanel tapNumber={tapNumber} index={0}>
-            <Timesheet projectState={projectState} />
+            <Timesheet
+              projectState={projectState}
+              setProjectState={setProjectState}
+              employeeInfo={employeeInfo}
+            />
           </TabPanel>
           <TabPanel tapNumber={tapNumber} index={1}>
-            <Task projectState={projectState} />
+            <Task
+              projectState={projectState}
+              setProjectState={setProjectState}
+              employeeInfo={employeeInfo}
+            />
           </TabPanel>
           <TabPanel tapNumber={tapNumber} index={2}>
-            <Miscellaneous projectState={projectState} />
+            <Miscellaneous
+              projectState={projectState}
+              setProjectState={setProjectState}
+              employeeInfo={employeeInfo}
+            />
           </TabPanel>
         </>
       )}

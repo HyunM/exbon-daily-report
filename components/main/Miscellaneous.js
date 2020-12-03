@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme =>
   })
 );
 
-const Miscellaneous = ({ projectState }) => {
+const Miscellaneous = ({ projectState, setProjectState, employeeInfo }) => {
   const [data, setData] = useState(() => []);
 
   const classes = useStyles();
@@ -92,7 +92,7 @@ const Miscellaneous = ({ projectState }) => {
       timeout: 5000, // 5 seconds timeout
       headers: {},
       data: {
-        EmployeeID: 1,
+        EmployeeID: employeeInfo.EmployeeID,
         ProjectID: projectState,
         Date: today,
         Category: "Miscellaneous_InspectionRecord",
@@ -134,7 +134,7 @@ const Miscellaneous = ({ projectState }) => {
       timeout: 5000, // 5 seconds timeout
       headers: {},
       data: {
-        EmployeeID: 1,
+        EmployeeID: employeeInfo.EmployeeID,
         ProjectID: projectState,
         Date: today,
         Category: "Miscellaneous_Memo",

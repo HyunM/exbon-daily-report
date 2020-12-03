@@ -1,4 +1,4 @@
-export const employeeInfo = [
+export const employeeAll = [
   { EmployeeID: 7265, EmployeeTitle: "", LastName: "Cruz", FirstName: "Aaron" },
   {
     EmployeeID: 7652,

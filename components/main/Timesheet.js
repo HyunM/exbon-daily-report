@@ -26,7 +26,7 @@ import InputMask from "react-input-mask";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { formatDate } from "./formatDate";
-import { employeeInfo } from "./Employee";
+import { employeeAll } from "./Employee";
 import Autocomplete from "react-autocomplete";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -48,7 +48,8 @@ const convertInputToTime = time => {
   return match[0].time;
 };
 
-const Timesheet = ({ projectState }) => {
+const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
+  debugger;
   const deleteQueue = useSelector(state => state.deleteQueue);
   const updateQueue = useSelector(state => state.updateQueue);
 
@@ -253,7 +254,7 @@ const Timesheet = ({ projectState }) => {
     };
 
     const onBlurForEmployee = e => {
-      let employee = employeeInfo.find(
+      let employee = employeeAll.find(
         employee => value === employee.FirstName + " " + employee.LastName
       );
       if (employee) {
@@ -377,7 +378,7 @@ const Timesheet = ({ projectState }) => {
         // />
         <Autocomplete
           getItemValue={item => item.FirstName + " " + item.LastName}
-          items={employeeInfo}
+          items={employeeAll}
           renderItem={(item, isHighlighted) => (
             <div
               key={item.EmployeeID}
@@ -492,7 +493,7 @@ const Timesheet = ({ projectState }) => {
   };
 
   const convertEmployeeNameToID = name => {
-    let employee = employeeInfo.find(
+    let employee = employeeAll.find(
       employee => name === employee.FirstName + " " + employee.LastName
     );
     if (employee) {
@@ -806,7 +807,7 @@ const Timesheet = ({ projectState }) => {
       timeout: 5000, // 5 seconds timeout
       headers: {},
       data: {
-        EmployeeID: 1,
+        EmployeeID: employeeInfo.EmployeeID,
         ProjectID: projectState,
         Date: formatDate(selectedDate),
         Category: "Timesheet",

@@ -56,7 +56,7 @@ const themeForNoWork = createMuiTheme({
   },
 });
 
-const Task = ({ projectState }) => {
+const Task = ({ projectState, setProjectState, employeeInfo }) => {
   const deleteQueue = useSelector(state => state.deleteQueue);
   const dispatch = useDispatch();
 
@@ -393,7 +393,7 @@ const Task = ({ projectState }) => {
       timeout: 5000, // 5 seconds timeout
       headers: {},
       data: {
-        EmployeeID: 1,
+        EmployeeID: employeeInfo.EmployeeID,
         ProjectID: projectState,
         Date: formatDate(selectedDate),
         Category: "Tasks",
@@ -609,7 +609,7 @@ const Task = ({ projectState }) => {
         timeout: 5000, // 5 seconds timeout
         headers: {},
         data: {
-          EmployeeID: 1,
+          EmployeeID: employeeInfo.EmployeeID,
           ProjectID: projectState,
           RequestType: "Task",
           RequestID: modalWorkDate.TaskID,
@@ -640,7 +640,7 @@ const Task = ({ projectState }) => {
         timeout: 5000, // 5 seconds timeout
         headers: {},
         data: {
-          EmployeeID: 1,
+          EmployeeID: employeeInfo.EmployeeID,
           ProjectID: projectState,
           RequestType: "No Work",
           RequestID: null,
@@ -670,7 +670,7 @@ const Task = ({ projectState }) => {
         timeout: 5000, // 5 seconds timeout
         headers: {},
         data: {
-          EmployeeID: 1,
+          EmployeeID: employeeInfo.EmployeeID,
           ProjectID: projectState,
           RequestType: "No Work Modify",
           RequestID: modalNoWork.RecordID,
@@ -700,7 +700,7 @@ const Task = ({ projectState }) => {
         timeout: 5000, // 5 seconds timeout
         headers: {},
         data: {
-          EmployeeID: 1,
+          EmployeeID: employeeInfo.EmployeeID,
           ProjectID: projectState,
           RequestType: "No Work Delete",
           RequestID: modalNoWork.RecordID,

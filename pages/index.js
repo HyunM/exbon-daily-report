@@ -104,7 +104,7 @@ const index = () => {
       </Head>
       {login.isLogin ? (
         <ContainerMain
-          employeeInfo={login.employeeInfo}
+          employeeInfo={login.employeeInfo[0]}
           assignedProject={login.assignedProject}
         />
       ) : (
