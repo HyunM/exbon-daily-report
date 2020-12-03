@@ -161,7 +161,16 @@ const Miscellaneous = ({ projectState, setProjectState, employeeInfo }) => {
         </div>
       ) : (
         <>
-          <h3 className={styles["project-id"]}>Project ID : {projectState}</h3>
+          <h3 className={styles["project-id"]}>
+            Project ID :{" "}
+            <span
+              onClick={() => {
+                setProjectState(0);
+              }}
+            >
+              {projectState}
+            </span>
+          </h3>
           <Accordion defaultExpanded={false}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}

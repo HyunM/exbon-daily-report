@@ -848,7 +848,14 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
                 />
               </MuiPickersUtilsProvider>
               <h3 className={styles["header__left__project-id"]}>
-                Project ID : {projectState}
+                Project ID :{" "}
+                <span
+                  onClick={() => {
+                    setProjectState(0);
+                  }}
+                >
+                  {projectState}
+                </span>
               </h3>
             </div>
             {/* {dateCheckEditable(selectedDate) && ( */}
