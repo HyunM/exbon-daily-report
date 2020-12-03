@@ -19,3 +19,9 @@
 .wrapper-right-tab__account-icon {
   margin-left: 5% !important;
 }
+
+.wrapper-select-project {
+  width: 50%;
+  margin-left: auto;
+  margin-top: 10%;
+}

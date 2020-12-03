@@ -49,7 +49,7 @@ const TabsOfBoth = ({
               />
             </Tabs>
           </AppBar>
-          <div>
+          <div className={styles["wrapper-select-project"]}>
             <select id="select-project">
               {assignedProject.map(item => {
                 return <option key={item.ProjectID}>{item.ProjectID}</option>;
