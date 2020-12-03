@@ -14,9 +14,10 @@ const timesheetHandler = (req, res) => {
           const request = new mssql.Request();
 
           const selectedDate = req.query.selectedDate;
+          const projectID = req.query.projectID;
 
           const query = `EXEC [Hammer].[dbo].[Timesheet_SelectByDate]
-          '${selectedDate}' `;
+          '${selectedDate}',  ${projectID}`;
 
           request.query(query, (err, recordset) => {
             if (err) {
@@ -39,8 +40,9 @@ const timesheetHandler = (req, res) => {
           const request = new mssql.Request();
 
           const query = `EXEC [Hammer].[dbo].[Timesheet_Insert]
-          ${body.EmployeeID}, "${body.Trade}", "${body.Date}", "${body.WorkStart}", "${body.WorkEnd}", "${body.MealStart}", "${body.MealEnd}" `;
+          ${body.ProjectID}, ${body.EmployeeID}, "${body.Trade}", "${body.Date}", "${body.WorkStart}", "${body.WorkEnd}", "${body.MealStart}", "${body.MealEnd}" `;
           /* --Params--
+          @projectID int,
           @employeeID int,
           @trade nvarchar(100),
           @date date,

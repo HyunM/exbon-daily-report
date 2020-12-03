@@ -1,7 +1,7 @@
 #mainDiv {
   width: 700px;
   margin: auto;
-  margin-top: 5%;
+  margin-top: 3%;
 }
 @media screen and (max-width: 750px) {
   #mainDiv {
@@ -37,4 +37,9 @@
 
 .alert__complete {
   text-align: center;
+}
+
+.project-id {
+  font-family: monospace;
+  margin-bottom: 3% !important;
 }

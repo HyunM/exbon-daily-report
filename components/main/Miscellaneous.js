@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme =>
   })
 );
 
-const Miscellaneous = () => {
+const Miscellaneous = ({ projectState }) => {
   const [data, setData] = useState(() => []);
 
   const classes = useStyles();
@@ -35,7 +35,7 @@ const Miscellaneous = () => {
     const fetchData = async () => {
       let result = await axios({
         method: "get",
-        url: `/api/project-daily-report-misc?projectID=6074`,
+        url: `/api/project-daily-report-misc?projectID=${projectState}`,
         timeout: 5000, // 5 seconds timeout
         headers: {},
         // data: {
@@ -68,7 +68,7 @@ const Miscellaneous = () => {
         timeout: 5000, // 5 seconds timeout
         headers: {},
         data: {
-          ProjectID: 6074,
+          ProjectID: projectState,
           Date: today,
           InspectionDescription: description,
           InspectionResolution: resolution,
@@ -93,7 +93,7 @@ const Miscellaneous = () => {
       headers: {},
       data: {
         EmployeeID: 1,
-        ProjectID: 6074,
+        ProjectID: projectState,
         Date: today,
         Category: "Miscellaneous_InspectionRecord",
         Action: "update",
@@ -111,7 +111,7 @@ const Miscellaneous = () => {
         timeout: 5000, // 5 seconds timeout
         headers: {},
         data: {
-          ProjectID: 6074,
+          ProjectID: projectState,
           Date: today,
           Memo: memo,
         },
@@ -135,7 +135,7 @@ const Miscellaneous = () => {
       headers: {},
       data: {
         EmployeeID: 1,
-        ProjectID: 6074,
+        ProjectID: projectState,
         Date: today,
         Category: "Miscellaneous_Memo",
         Action: "update",
@@ -161,6 +161,7 @@ const Miscellaneous = () => {
         </div>
       ) : (
         <>
+          <h3 className={styles["project-id"]}>Project ID : {projectState}</h3>
           <Accordion defaultExpanded={false}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}

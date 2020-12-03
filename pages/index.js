@@ -23,11 +23,11 @@ import Head from "next/head";
 const Copyright = () => {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://www.exbon.com/">
+      {"Copyright © Exbon Development, Inc. "}
+      {/* <Link color="inherit" href="https://www.exbon.com/">
         Exbon Development, Inc.
-      </Link>{" "}
-      {new Date().getFullYear()}
+      </Link>{" "} */}
+      &nbsp;{new Date().getFullYear()}
       {"."}
     </Typography>
   );
@@ -86,6 +86,12 @@ const index = () => {
     });
   };
 
+  const handleKeyPress = event => {
+    if (event.key === "Enter") {
+      handleSignIn();
+    }
+  };
+
   return (
     <>
       <Head>
@@ -137,6 +143,7 @@ const index = () => {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onKeyPress={handleKeyPress}
               />
               {/* <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}

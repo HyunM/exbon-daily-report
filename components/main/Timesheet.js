@@ -48,7 +48,7 @@ const convertInputToTime = time => {
   return match[0].time;
 };
 
-const Timesheet = () => {
+const Timesheet = ({ projectState }) => {
   const deleteQueue = useSelector(state => state.deleteQueue);
   const updateQueue = useSelector(state => state.updateQueue);
 
@@ -619,7 +619,9 @@ const Timesheet = () => {
     const fetchData = async () => {
       let result = await axios({
         method: "get",
-        url: `/api/timesheets?selectedDate=${formatDate(selectedDate)}`,
+        url: `/api/timesheets?selectedDate=${formatDate(
+          selectedDate
+        )}&projectID=${projectState}`,
         timeout: 5000, // 5 seconds timeout
         headers: {},
         // data: {
@@ -733,6 +735,7 @@ const Timesheet = () => {
                 timeout: 5000, // 5 seconds timeout
                 headers: {},
                 data: {
+                  ProjectID: projectState,
                   EmployeeID: data[i].EmployeeID,
                   Trade: data[i].Trade,
                   Date: data[i].Date,
@@ -804,7 +807,7 @@ const Timesheet = () => {
       headers: {},
       data: {
         EmployeeID: 1,
-        ProjectID: 6074,
+        ProjectID: projectState,
         Date: formatDate(selectedDate),
         Category: "Timesheet",
         Action: "update",
@@ -845,7 +848,7 @@ const Timesheet = () => {
                 />
               </MuiPickersUtilsProvider>
               <h3 className={styles["header__left__project-id"]}>
-                Project ID : 6074
+                Project ID : {projectState}
               </h3>
             </div>
             {/* {dateCheckEditable(selectedDate) && ( */}

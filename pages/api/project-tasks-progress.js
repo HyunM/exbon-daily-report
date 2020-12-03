@@ -14,9 +14,10 @@ const projectTasksProgressHandler = (req, res) => {
           const request = new mssql.Request();
 
           const selectedDate = req.query.selectedDate;
+          const projectID = req.query.projectID;
 
           const query = `EXEC [Hammer].[dbo].[ProjectTaskProgress_SelectByDate]
-          '${selectedDate}' `;
+          '${selectedDate}', ${projectID} `;
 
           request.query(query, (err, recordset) => {
             if (err) {
