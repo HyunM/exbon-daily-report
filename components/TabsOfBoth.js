@@ -17,9 +17,13 @@ const TabsOfBoth = ({
   employeeInfo,
   assignedProject,
 }) => {
-  const [projectState, setProjectState] = useState(0);
+  const [projectState, setProjectState] = useState(6074);
   const handleProjectState = () => {
     setProjectState(document.getElementById("select-project").value);
+  };
+
+  const toZeroProjectState = () => {
+    // setProjectState(0);
   };
   return (
     <>
@@ -27,7 +31,7 @@ const TabsOfBoth = ({
         <>
           <AppBar position="static">
             <Tabs
-              value={tapNumber}
+              value={0}
               onChange={handleChangeTabs}
               aria-label="tabs"
               variant="scrollable"
@@ -100,21 +104,21 @@ const TabsOfBoth = ({
           <TabPanel tapNumber={tapNumber} index={0}>
             <Timesheet
               projectState={projectState}
-              setProjectState={setProjectState}
+              setProjectState={toZeroProjectState}
               employeeInfo={employeeInfo}
             />
           </TabPanel>
           <TabPanel tapNumber={tapNumber} index={1}>
             <Task
               projectState={projectState}
-              setProjectState={setProjectState}
+              setProjectState={toZeroProjectState}
               employeeInfo={employeeInfo}
             />
           </TabPanel>
           <TabPanel tapNumber={tapNumber} index={2}>
             <Miscellaneous
               projectState={projectState}
-              setProjectState={setProjectState}
+              setProjectState={toZeroProjectState}
               employeeInfo={employeeInfo}
             />
           </TabPanel>

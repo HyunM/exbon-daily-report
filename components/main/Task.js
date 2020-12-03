@@ -84,7 +84,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
       //   align: "center",
       // },
       {
-        Header: "Company",
+        Header: "Resource",
         accessor: "Company",
         width: 250,
       },
@@ -901,7 +901,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
                             ]
                           }
                         >
-                          <p
+                          {/* <p
                             className={
                               styles[
                                 "modal-no-work__wrapper-content__right__text"
@@ -909,7 +909,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
                             }
                           >
                             Request For
-                          </p>
+                          </p> */}
 
                           {modalNoWork.RecordID === "NEW" ? (
                             <>
