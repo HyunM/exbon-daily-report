@@ -9,6 +9,7 @@ import a11yProps from "./Tab/a11yProps";
 import Miscellaneous from "./main/Miscellaneous";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import styles from "./TabsOfBoth.module.css";
+import { Button } from "@material-ui/core";
 
 const TabsOfBoth = ({
   tapNumber,
@@ -16,7 +17,7 @@ const TabsOfBoth = ({
   employeeInfo,
   assignedProject,
 }) => {
-  const [projectState, setProjectState] = useState(6074);
+  const [projectState, setProjectState] = useState(0);
   const handleProjectState = () => {
     setProjectState(document.getElementById("select-project").value);
   };
@@ -50,12 +51,21 @@ const TabsOfBoth = ({
             </Tabs>
           </AppBar>
           <div className={styles["wrapper-select-project"]}>
-            <select id="select-project">
+            <select
+              id="select-project"
+              className={styles["wrapper-select-project__select-project"]}
+            >
               {assignedProject.map(item => {
                 return <option key={item.ProjectID}>{item.ProjectID}</option>;
               })}
             </select>
-            <button onClick={handleProjectState}>Go</button>
+            <Button
+              onClick={handleProjectState}
+              color="primary"
+              className={styles["wrapper-select-project__btn-go"]}
+            >
+              Go
+            </Button>
           </div>
         </>
       ) : (

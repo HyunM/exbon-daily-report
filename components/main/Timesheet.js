@@ -49,7 +49,6 @@ const convertInputToTime = time => {
 };
 
 const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
-  debugger;
   const deleteQueue = useSelector(state => state.deleteQueue);
   const updateQueue = useSelector(state => state.updateQueue);
 
