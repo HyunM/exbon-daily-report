@@ -853,6 +853,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
                   onClick={() => {
                     setProjectState(0);
                   }}
+                  className={styles["header__left__project-id__value"]}
                 >
                   {projectState}
                 </span>

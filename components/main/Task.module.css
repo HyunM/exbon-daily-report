@@ -68,6 +68,11 @@
   margin-left: 3% !important;
 }
 
+.header__left__project-id__value:hover {
+  color: #74646e;
+  cursor: pointer;
+}
+
 .header__right {
   display: flex;
   align-items: center;

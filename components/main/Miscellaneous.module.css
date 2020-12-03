@@ -43,3 +43,8 @@
   font-family: monospace;
   margin-bottom: 3% !important;
 }
+
+.project-id__value:hover {
+  color: #74646e;
+  cursor: pointer;
+}

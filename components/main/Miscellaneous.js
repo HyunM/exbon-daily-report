@@ -167,6 +167,7 @@ const Miscellaneous = ({ projectState, setProjectState, employeeInfo }) => {
               onClick={() => {
                 setProjectState(0);
               }}
+              className={styles["project-id__value"]}
             >
               {projectState}
             </span>
