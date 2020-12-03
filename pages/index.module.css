@@ -1,0 +1,17 @@
+.mainDiv {
+  margin-top: 20% !important;
+  background-color: white;
+  padding: 15%;
+  border-radius: 10px;
+  box-shadow: 5px 5px 10px 10px rgb(221, 217, 217);
+}
+
+.wrapper-upper {
+  display: flex;
+  justify-content: center;
+}
+
+.wrapper-upper__title {
+  color: rgb(114, 109, 109) !important;
+  align-self: center;
+}

@@ -9,12 +9,14 @@ import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import ScheduleIcon from "@material-ui/icons/Schedule";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import ContainerMain from "../components/container";
 import axios from "axios";
 import { sha256, sha224 } from "js-sha256";
+import styles from "./index.module.css";
 
 import Head from "next/head";
 
@@ -22,8 +24,8 @@ const Copyright = () => {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+      <Link color="inherit" href="https://www.exbon.com/">
+        Exbon Development, Inc.
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -40,7 +42,7 @@ const useStyles = makeStyles(theme => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: "#fa7000",
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -101,14 +103,19 @@ const index = () => {
         />
       ) : (
         <Container component="main" maxWidth="xs">
-          <CssBaseline />
-          <div className={classes.paper}>
-            <Avatar className={classes.avatar}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign in
-            </Typography>
+          <div className={styles["mainDiv"]}>
+            <div className={styles["wrapper-upper"]}>
+              <Avatar className={classes.avatar}>
+                <ScheduleIcon />
+              </Avatar>
+              <Typography
+                component="h1"
+                variant="h4"
+                className={styles["wrapper-upper__title"]}
+              >
+                Daily Report
+              </Typography>
+            </div>
             <div className={classes.form}>
               <TextField
                 variant="outlined"
@@ -159,11 +166,12 @@ const index = () => {
           </Grid> */}
             </div>
           </div>
-          {/* <Box mt={8}>
-        <Copyright />
-      </Box> */}
+          <Box mt={8}>
+            <Copyright />
+          </Box>
         </Container>
       )}
+
       <div id="modalForTasksTab"></div>
     </>
   );
