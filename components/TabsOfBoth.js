@@ -55,6 +55,7 @@ const TabsOfBoth = ({
             </Tabs>
           </AppBar>
           <div className={styles["wrapper-select-project"]}>
+            <h3 className={styles["projectID-text"]}>Project ID</h3>
             <select
               id="select-project"
               className={styles["wrapper-select-project__select-project"]}
