@@ -63,9 +63,14 @@
 }
 
 .header__left__project-id {
-  font-family: monospace;
+  flex-basis: 50%;
+  font-family: "Roboto";
   margin-bottom: 0 !important;
   margin-left: 3% !important;
+}
+
+.header__left__project-id__value {
+  text-decoration: underline;
 }
 
 .header__left__project-id__value:hover {
