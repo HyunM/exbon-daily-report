@@ -86,12 +86,12 @@ const TabsOfBoth = ({
                   horizontal: "center",
                 }}
               >
-                <div className={styles["wrapper-logout"]}>
+                <div
+                  className={styles["wrapper-logout"]}
+                  onClick={handleLogout}
+                >
                   <ExitToAppIcon />
-                  <Button
-                    className={styles["wrapper-logout__btn"]}
-                    onClick={handleLogout}
-                  >
+                  <Button className={styles["wrapper-logout__btn"]}>
                     Logout
                   </Button>
                 </div>
@@ -159,12 +159,12 @@ const TabsOfBoth = ({
                   horizontal: "center",
                 }}
               >
-                <div className={styles["wrapper-logout"]}>
+                <div
+                  className={styles["wrapper-logout"]}
+                  onClick={handleLogout}
+                >
                   <ExitToAppIcon />
-                  <Button
-                    className={styles["wrapper-logout__btn"]}
-                    onClick={handleLogout}
-                  >
+                  <Button className={styles["wrapper-logout__btn"]}>
                     Logout
                   </Button>
                 </div>
