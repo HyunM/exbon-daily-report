@@ -65,12 +65,13 @@
   font-family: "Roboto";
   margin-bottom: 0 !important;
   margin-left: 5% !important;
+  color: #50474c;
 }
 .header__left__project-id__value {
   text-decoration: underline;
 }
 .header__left__project-id__value:hover {
-  color: #74646e;
+  color: #a79da3;
   cursor: pointer;
 }
 .header__right {
