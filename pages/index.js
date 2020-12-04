@@ -53,7 +53,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const index = () => {
-  const [cookies, setCookie] = useCookies();
+  const [cookies, setCookie] = useCookies("username");
+  const [openLoginFormstate, setOpenLoginFormstate] = useState(false);
   const classes = useStyles();
   const [login, setLogin] = useState({
     isLogin: false,
@@ -117,6 +118,8 @@ const index = () => {
   useEffect(() => {
     if (cookies.username) {
       handleSignInUsingCookie();
+    } else {
+      setOpenLoginFormstate(true);
     }
   }, []);
 
@@ -125,7 +128,6 @@ const index = () => {
       handleSignIn();
     }
   };
-  let test = cookies.username;
   return (
     <>
       <CookiesProvider>
@@ -143,10 +145,10 @@ const index = () => {
             employeeInfo={login.employeeInfo[0]}
             assignedProject={login.assignedProject}
           ></ContainerMain>
-        ) : test ? (
-          <div></div>
+        ) : !openLoginFormstate ? (
+          <></>
         ) : (
-          <div>
+          <>
             <div className={styles["mainDiv"]}>
               <div className={styles["wrapper-upper"]}>
                 <Avatar className={classes.avatar}>
@@ -198,7 +200,7 @@ const index = () => {
             <Box mt={8}>
               <Copyright />
             </Box>
-          </div>
+          </>
         )}
       </CookiesProvider>
     </>
