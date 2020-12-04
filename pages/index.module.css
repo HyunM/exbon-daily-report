@@ -1,7 +1,10 @@
 .mainDiv {
-  margin-top: 20% !important;
+  width: 250px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5% !important;
   background-color: white;
-  padding: 15%;
+  padding: 5%;
   border-radius: 10px;
   box-shadow: 5px 5px 10px 10px rgb(221, 217, 217);
 }

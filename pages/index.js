@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -12,13 +12,12 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import ScheduleIcon from "@material-ui/icons/Schedule";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
 import ContainerMain from "../components/container";
 import axios from "axios";
 import { sha256, sha224 } from "js-sha256";
 import styles from "./index.module.css";
-
 import Head from "next/head";
+import { CookiesProvider, useCookies } from "react-cookie";
 
 const Copyright = () => {
   return (
@@ -54,6 +53,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const index = () => {
+  const [cookies, setCookie] = useCookies();
   const classes = useStyles();
   const [login, setLogin] = useState({
     isLogin: false,
@@ -62,21 +62,25 @@ const index = () => {
   });
 
   const handleSignIn = async () => {
+    const username = document.getElementById("username").value;
     const password =
       "0x" + sha256(document.getElementById("password").value).toUpperCase();
+
     await axios({
       method: "post",
       url: `/api/daily-report/signin`,
       timeout: 5000, // 5 seconds timeout
       headers: {},
       data: {
-        Username: document.getElementById("username").value,
+        Username: username,
         Password: password,
       },
     }).then(response => {
       if (response.data.result.recordsets[0].length === 0) {
         alert("Login failed.");
       } else {
+        setCookie("username", username, { path: "/", maxAge: 3600 * 12 });
+        setCookie("password", password, { path: "/", maxAge: 3600 * 12 });
         setLogin({
           isLogin: true,
           employeeInfo: response.data.result.recordsets[0],
@@ -86,100 +90,115 @@ const index = () => {
     });
   };
 
+  const handleSignInUsingCookie = async () => {
+    const username = cookies.username;
+    const password = cookies.password;
+
+    await axios({
+      method: "post",
+      url: `/api/daily-report/signin`,
+      timeout: 5000, // 5 seconds timeout
+      headers: {},
+      data: {
+        Username: username,
+        Password: password,
+      },
+    }).then(response => {
+      setCookie("username", username, { path: "/", maxAge: 3600 * 12 });
+      setCookie("password", password, { path: "/", maxAge: 3600 * 12 });
+      setLogin({
+        isLogin: true,
+        employeeInfo: response.data.result.recordsets[0],
+        assignedProject: response.data.result.recordsets[1],
+      });
+    });
+  };
+
+  useEffect(() => {
+    if (cookies.username) {
+      handleSignInUsingCookie();
+    }
+  }, []);
+
   const handleKeyPress = event => {
     if (event.key === "Enter") {
       handleSignIn();
     }
   };
-
+  let test = cookies.username;
   return (
     <>
-      <Head>
-        <title>Daily Report</title>
-        <link rel="icon" href="/favicon.ico" />
-        <meta
-          name="viewport"
-          content="minimum-scale=1, initial-scale=1, width=device-width"
-        />
-      </Head>
-      {login.isLogin ? (
-        <ContainerMain
-          employeeInfo={login.employeeInfo[0]}
-          assignedProject={login.assignedProject}
-        />
-      ) : (
-        <Container component="main" maxWidth="xs">
-          <div className={styles["mainDiv"]}>
-            <div className={styles["wrapper-upper"]}>
-              <Avatar className={classes.avatar}>
-                <ScheduleIcon />
-              </Avatar>
-              <Typography
-                component="h1"
-                variant="h4"
-                className={styles["wrapper-upper__title"]}
-              >
-                Daily Report
-              </Typography>
-            </div>
-            <div className={classes.form}>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="username"
-                label="Username"
-                name="username"
-                autoFocus
-              />
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                onKeyPress={handleKeyPress}
-              />
-              {/* <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          /> */}
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={handleSignIn}
-              >
-                Sign In
-              </Button>
-              {/* <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid> */}
-            </div>
-          </div>
-          <Box mt={8}>
-            <Copyright />
-          </Box>
-        </Container>
-      )}
+      <CookiesProvider>
+        <Head>
+          <title>Daily Report</title>
+          <link rel="icon" href="/favicon.ico" />
+          <meta
+            name="viewport"
+            content="minimum-scale=1, initial-scale=1, width=device-width"
+          />
+        </Head>
 
-      <div id="modalForTasksTab"></div>
+        {login.isLogin ? (
+          <ContainerMain
+            employeeInfo={login.employeeInfo[0]}
+            assignedProject={login.assignedProject}
+          ></ContainerMain>
+        ) : (
+          <>
+            <div className={styles["mainDiv"]}>
+              <div className={styles["wrapper-upper"]}>
+                <Avatar className={classes.avatar}>
+                  <ScheduleIcon />
+                </Avatar>
+                <Typography
+                  component="h1"
+                  variant="h4"
+                  className={styles["wrapper-upper__title"]}
+                >
+                  Daily Report
+                </Typography>
+              </div>
+              <div className={classes.form}>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="username"
+                  label="Username"
+                  name="username"
+                  autoFocus
+                />
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  onKeyPress={handleKeyPress}
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  onClick={handleSignIn}
+                >
+                  Sign In
+                </Button>
+              </div>
+            </div>
+            <Box mt={8}>
+              <Copyright />
+            </Box>
+          </>
+        )}
+      </CookiesProvider>
     </>
   );
 };

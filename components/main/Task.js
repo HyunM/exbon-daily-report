@@ -29,7 +29,6 @@ import { usePromiseTracker, trackPromise } from "react-promise-tracker";
 import Loader from "react-loader-spinner";
 import EventBusyIcon from "@material-ui/icons/EventBusy";
 import Modal from "react-modal";
-Modal.setAppElement("#modalForTasksTab");
 
 toast.configure();
 const themeForWorkDate = createMuiTheme({
