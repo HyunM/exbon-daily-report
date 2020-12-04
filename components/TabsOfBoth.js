@@ -10,12 +10,15 @@ import Miscellaneous from "./main/Miscellaneous";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import styles from "./TabsOfBoth.module.css";
 import { Button } from "@material-ui/core";
+import Popover from "@material-ui/core/Popover";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 const TabsOfBoth = ({
   tapNumber,
   handleChangeTabs,
   employeeInfo,
   assignedProject,
+  handleLogout,
 }) => {
   const [projectState, setProjectState] = useState(0);
   const handleProjectState = () => {
@@ -25,6 +28,19 @@ const TabsOfBoth = ({
   const toZeroProjectState = () => {
     setProjectState(0);
   };
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
   return (
     <>
       {!projectState ? (
@@ -38,6 +54,9 @@ const TabsOfBoth = ({
               scrollButtons="auto"
               indicatorColor="primary"
             >
+              <Tab label="" disabled {...a11yProps(0)} />
+              <Tab label="" disabled {...a11yProps(1)} />
+              <Tab label="" disabled {...a11yProps(2)} />
               <Tab
                 icon={
                   <div className={styles["wrapper-right-tab"]}>
@@ -49,9 +68,34 @@ const TabsOfBoth = ({
                     />
                   </div>
                 }
-                disabled
                 className={styles["right-tab"]}
+                aria-describedby={id}
+                onClick={handleClick}
               />
+              <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "center",
+                }}
+              >
+                <div className={styles["wrapper-logout"]}>
+                  <ExitToAppIcon />
+                  <Button
+                    className={styles["wrapper-logout__btn"]}
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </Button>
+                </div>
+              </Popover>
             </Tabs>
           </AppBar>
           <div className={styles["wrapper-select-project"]}>
@@ -97,9 +141,34 @@ const TabsOfBoth = ({
                     />
                   </div>
                 }
-                disabled
                 className={styles["right-tab"]}
+                aria-describedby={id}
+                onClick={handleClick}
               />
+              <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "center",
+                }}
+              >
+                <div className={styles["wrapper-logout"]}>
+                  <ExitToAppIcon />
+                  <Button
+                    className={styles["wrapper-logout__btn"]}
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </Button>
+                </div>
+              </Popover>
             </Tabs>
           </AppBar>
           <TabPanel tapNumber={tapNumber} index={0}>

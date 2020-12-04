@@ -46,3 +46,11 @@
 .wrapper-select-project__btn-go {
   color: blueviolet;
 }
+.wrapper-logout {
+  display: flex;
+  color: cornflowerblue;
+}
+
+.wrapper-logout__btn {
+  padding: 0 !important;
+}

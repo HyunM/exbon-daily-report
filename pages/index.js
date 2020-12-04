@@ -53,7 +53,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const index = () => {
-  const [cookies, setCookie] = useCookies("username");
+  const [cookies, setCookie, removeCookie] = useCookies("username");
   const [openLoginFormstate, setOpenLoginFormstate] = useState(false);
   const classes = useStyles();
   const [login, setLogin] = useState({
@@ -89,6 +89,17 @@ const index = () => {
         });
       }
     });
+  };
+
+  const handleLogout = () => {
+    removeCookie("username", { path: "/" });
+    removeCookie("password", { path: "/" });
+    setLogin({
+      isLogin: false,
+      employeeInfo: [],
+      assignedProject: [],
+    });
+    setOpenLoginFormstate(true);
   };
 
   const handleSignInUsingCookie = async () => {
@@ -144,6 +155,7 @@ const index = () => {
           <ContainerMain
             employeeInfo={login.employeeInfo[0]}
             assignedProject={login.assignedProject}
+            handleLogout={handleLogout}
           ></ContainerMain>
         ) : !openLoginFormstate ? (
           <></>
