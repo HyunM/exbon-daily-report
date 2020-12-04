@@ -143,8 +143,10 @@ const index = () => {
             employeeInfo={login.employeeInfo[0]}
             assignedProject={login.assignedProject}
           ></ContainerMain>
+        ) : test ? (
+          <div></div>
         ) : (
-          <>
+          <div>
             <div className={styles["mainDiv"]}>
               <div className={styles["wrapper-upper"]}>
                 <Avatar className={classes.avatar}>
@@ -196,7 +198,7 @@ const index = () => {
             <Box mt={8}>
               <Copyright />
             </Box>
-          </>
+          </div>
         )}
       </CookiesProvider>
     </>
