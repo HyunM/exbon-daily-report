@@ -11,12 +11,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 
 import DateFnsUtils from "@date-io/date-fns";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-  DatePicker,
-} from "@material-ui/pickers";
-import { toDate } from "date-fns";
+import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
 import inputTime from "./inputTime";
 import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
@@ -28,7 +23,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { formatDate } from "./formatDate";
 import { employeeAll } from "./Employee";
 import Autocomplete from "react-autocomplete";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./Timesheet.module.css";

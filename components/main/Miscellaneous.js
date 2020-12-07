@@ -12,7 +12,7 @@ import Button from "@material-ui/core/Button";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 import { DropzoneArea } from "material-ui-dropzone";
 import TextField from "@material-ui/core/TextField";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { usePromiseTracker, trackPromise } from "react-promise-tracker";
 import Loader from "react-loader-spinner";
 

@@ -1,30 +1,17 @@
 import { useState, useMemo, useEffect } from "react";
 import axios from "axios";
 import { useTable, useBlockLayout } from "react-table";
-import TableContainer from "@material-ui/core/TableContainer";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
 import DateFnsUtils from "@date-io/date-fns";
 import { formatDate } from "./formatDate";
 import TextField from "@material-ui/core/TextField";
-import {
-  DatePicker,
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
+import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { deepOrange, blue } from "@material-ui/core/colors";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import styles from "./Task.module.css";
 import { useSelector, useDispatch } from "react-redux";
-import ReportIcon from "@material-ui/icons/Report";
-import ReactTooltip from "react-tooltip";
 import { usePromiseTracker, trackPromise } from "react-promise-tracker";
 import Loader from "react-loader-spinner";
 import EventBusyIcon from "@material-ui/icons/EventBusy";

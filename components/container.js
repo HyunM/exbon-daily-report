@@ -1,9 +1,5 @@
 import { useState } from "react";
-import { useMediaQuery } from "react-responsive";
-import TabsOfDesktop from "./TabsOfDesktop";
-import TabsOfTablet from "./TabsOfTablet";
 import TabsOfBoth from "./TabsOfBoth";
-import { withCookies, Cookies } from "react-cookie";
 
 const Container = ({ employeeInfo, assignedProject, handleLogout }) => {
   // const isTabletOrMobileDevice = useMediaQuery({
@@ -18,27 +14,13 @@ const Container = ({ employeeInfo, assignedProject, handleLogout }) => {
   };
 
   return (
-    <>
-      {/* {!isTabletOrMobileDevice && (
-        <TabsOfDesktop
-          tapNumber={tapNumber}
-          handleChangeTabs={handleChangeTabs}
-        ></TabsOfDesktop>
-      )}
-      {isTabletOrMobileDevice && (
-        <TabsOfTablet
-          tapNumber={tapNumber}
-          handleChangeTabs={handleChangeTabs}
-        ></TabsOfTablet>
-      )} */}
-      <TabsOfBoth
-        tapNumber={tapNumber}
-        handleChangeTabs={handleChangeTabs}
-        employeeInfo={employeeInfo}
-        assignedProject={assignedProject}
-        handleLogout={handleLogout}
-      ></TabsOfBoth>
-    </>
+    <TabsOfBoth
+      tapNumber={tapNumber}
+      handleChangeTabs={handleChangeTabs}
+      employeeInfo={employeeInfo}
+      assignedProject={assignedProject}
+      handleLogout={handleLogout}
+    ></TabsOfBoth>
   );
 };
 
