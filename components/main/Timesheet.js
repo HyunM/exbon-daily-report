@@ -1,7 +1,7 @@
-import { Fragment, useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect } from "react";
 import axios from "axios";
 
-import { useAbsoluteLayout, useTable, useBlockLayout } from "react-table";
+import { useTable } from "react-table";
 import TableContainer from "@material-ui/core/TableContainer";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
