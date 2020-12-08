@@ -65,20 +65,25 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
   const columns = useMemo(
     () => [
       {
+        Header: "Section",
+        accessor: "Section",
+        width: 70,
+      },
+      {
         Header: "Summary Task",
         accessor: "Trade",
-        align: "center",
+        width: 160,
       },
 
       {
         Header: "Task",
         accessor: "TaskName",
-        width: 350,
+        width: 360,
       },
       {
         Header: "Resource",
         accessor: "Company",
-        width: 250,
+        width: 260,
       },
       {
         Header: "Work Date",
@@ -127,6 +132,70 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
       setValue(e.target.value);
     };
 
+    const onChangePercent = e => {
+      console.log(e.nativeEvent.data);
+      if (e.nativeEvent.data) {
+        if (
+          e.nativeEvent.data !== "0" &&
+          e.nativeEvent.data !== "1" &&
+          e.nativeEvent.data !== "2" &&
+          e.nativeEvent.data !== "3" &&
+          e.nativeEvent.data !== "4" &&
+          e.nativeEvent.data !== "5" &&
+          e.nativeEvent.data !== "6" &&
+          e.nativeEvent.data !== "7" &&
+          e.nativeEvent.data !== "8" &&
+          e.nativeEvent.data !== "9"
+        ) {
+          setValue("0");
+        } else if (e.nativeEvent.data === "0") {
+          if (e.target.value === "100") {
+            setValue("100");
+          } else if (e.target.value.includes("2")) {
+            setValue("20");
+          } else if (e.target.value.includes("3")) {
+            setValue("30");
+          } else if (e.target.value.includes("4")) {
+            setValue("40");
+          } else if (e.target.value.includes("5")) {
+            setValue("50");
+          } else if (e.target.value.includes("6")) {
+            setValue("60");
+          } else if (e.target.value.includes("7")) {
+            setValue("70");
+          } else if (e.target.value.includes("8")) {
+            setValue("80");
+          } else if (e.target.value.includes("9")) {
+            setValue("90");
+          } else {
+            setValue("0");
+          }
+        } else if (e.nativeEvent.data === "1") {
+          setValue("10");
+        } else if (e.nativeEvent.data === "2") {
+          setValue("20");
+        } else if (e.nativeEvent.data === "3") {
+          setValue("30");
+        } else if (e.nativeEvent.data === "4") {
+          setValue("40");
+        } else if (e.nativeEvent.data === "5") {
+          setValue("50");
+        } else if (e.nativeEvent.data === "6") {
+          setValue("60");
+        } else if (e.nativeEvent.data === "7") {
+          setValue("70");
+        } else if (e.nativeEvent.data === "8") {
+          setValue("80");
+        } else if (e.nativeEvent.data === "9") {
+          setValue("90");
+        } else {
+          setValue(e.target.value);
+        }
+      } else {
+        setValue(e.target.value);
+      }
+    };
+
     const onChangeDatePicker = e => {
       setValue(e);
     };
@@ -150,6 +219,12 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
       updateModalWorkDate(Company, TaskID, TaskName, StartDate, FinishDate);
     };
 
+    const preventNegativeNumber = e => {
+      if (e.key === "-" || e.key === "+") {
+        setValue("0");
+      }
+    };
+
     // If the initialValue is changed external, sync it up with our state
     React.useEffect(() => {
       setValue(initialValue);
@@ -169,6 +244,14 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
       return (
         <div className={styles["table__trade-wrapper"]}>
           <span className={styles["table__trade-wrapper__data"]}>{value}</span>
+        </div>
+      );
+    } else if (id === "Section") {
+      return (
+        <div className={styles["table__section-wrapper"]}>
+          <span className={styles["table__section-wrapper__data"]}>
+            {value}
+          </span>
         </div>
       );
     } else if (id === "Company") {
@@ -231,8 +314,12 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
                 }
                 value={previousWork}
                 type="number"
-                onChange={onChange}
+                onChange={onChangePercent}
                 onBlur={onBlurForCurrentWork}
+                min="0"
+                max="100"
+                step="10"
+                onKeyDown={preventNegativeNumber}
               ></input>
             ) : (
               <input
@@ -241,8 +328,12 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
                 }
                 value={value}
                 type="number"
-                onChange={onChange}
+                onChange={onChangePercent}
                 onBlur={onBlurForCurrentWork}
+                min="0"
+                max="100"
+                step="10"
+                onKeyDown={preventNegativeNumber}
               ></input>
             )}
             %
@@ -459,6 +550,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
     RecordID: 0,
     StartDate: new Date("2010/01/01"),
     FinishDate: new Date("2010/01/01"),
+    Note: "",
   });
 
   const openModalNoWork = () => {
@@ -473,6 +565,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
       StartDate: formatDate(now),
       FinishDate: formatDate(now),
       isOpen: true,
+      Note: "",
     });
   };
 
@@ -511,6 +604,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
     // logic
     let StartDate;
     let FinishDate;
+    let Note;
     if (RecordID === "NEW") {
       StartDate = formatDate(
         new Date().toLocaleString({
@@ -527,12 +621,14 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
         RecordID,
         StartDate,
         FinishDate,
+        Note: "",
       }));
     } else {
       for (let i = 0; i < noWork.length; i++) {
         if (noWork[i].RecordID === RecordID) {
           StartDate = noWork[i].StartDate;
           FinishDate = noWork[i].FinishDate;
+          Note = noWork[i].Note;
           break;
         }
       }
@@ -542,6 +638,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
         RecordID,
         StartDate,
         FinishDate,
+        Note,
       }));
     }
   };
@@ -621,7 +718,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
   };
 
   const addRequestModalNoWork = () => {
-    let note = document.getElementById("noteForNoWorkDays").value;
+    let note = modalNoWork.Note;
     if (note === "") {
       note = null;
     }
@@ -656,7 +753,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
   };
 
   const modifyRequestModalNoWork = () => {
-    let note = document.getElementById("noteForNoWorkDays").value;
+    let note = modalNoWork.Note;
     if (note === "") {
       note = null;
     }
@@ -691,7 +788,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
   };
 
   const deleteRequestModalNoWork = () => {
-    let note = document.getElementById("noteForNoWorkDays").value;
+    let note = modalNoWork.Note;
     if (note === "") {
       note = null;
     }
@@ -725,6 +822,11 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
     );
   };
 
+  const handleChangeReason = e => {
+    debugger;
+    setModalNoWork(prevState => ({ ...prevState, Note: e.target.value }));
+  };
+
   return (
     <div id={styles.mainDiv}>
       {promiseInProgress ? (
@@ -741,6 +843,8 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
         </div>
       ) : (
         <>
+          {console.log(data)}
+          {console.log(noWork)}
           {console.log(modalNoWork)}
           <div className={styles["header"]}>
             <div className={styles["header__left"]}>
@@ -912,11 +1016,11 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
                             }
                           >
                             <TextField
-                              id="noteForNoWorkDays"
                               label="Reason"
                               multiline
                               rows={2}
-                              defaultValue=""
+                              onChange={handleChangeReason}
+                              value={modalNoWork.Note || ""}
                               variant="outlined"
                               fullWidth
                               InputLabelProps={{
