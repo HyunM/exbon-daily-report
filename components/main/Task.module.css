@@ -2,7 +2,7 @@
 
 @media screen and (min-width: 900px) {
   #mainDiv {
-    width: 950px;
+    width: 1100px;
     margin: auto;
   }
   .header {
@@ -19,7 +19,7 @@
 
 @media screen and (max-width: 1420px) {
   #mainDiv {
-    width: 950px;
+    width: 1100px;
     margin: auto;
   }
   .header__right__save-btn {
@@ -145,13 +145,13 @@
   padding-top: 10px;
 }
 .table thead td:nth-child(4) {
-  padding-top: 5px;
+  padding-top: 10px;
 }
 .table thead td:nth-child(5) {
   padding-top: 5px;
 }
 .table thead td:nth-child(6) {
-  padding-top: 10px;
+  padding-top: 5px;
 }
 
 .table tbody td {
@@ -168,6 +168,8 @@
   vertical-align: middle;
   text-align: left;
   display: table-cell;
+  color: rgb(116, 100, 110);
+  font-size: 0.95rem;
 }
 
 .table__company-wrapper {

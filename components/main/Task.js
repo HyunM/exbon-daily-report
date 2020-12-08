@@ -64,20 +64,21 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
 
   const columns = useMemo(
     () => [
-      // {
-      //   Header: "Trade",
-      //   accessor: "Trade",
-      //   align: "center",
-      // },
+      {
+        Header: "Summary Task",
+        accessor: "Trade",
+        align: "center",
+      },
+
+      {
+        Header: "Task",
+        accessor: "TaskName",
+        width: 350,
+      },
       {
         Header: "Resource",
         accessor: "Company",
         width: 250,
-      },
-      {
-        Header: "Task Name",
-        accessor: "TaskName",
-        width: 350,
       },
       {
         Header: "Work Date",
