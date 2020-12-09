@@ -42,11 +42,11 @@ const TimesheetIDHandler = (req, res) => {
           const request = new mssql.Request();
 
           const query = `EXEC [Hammer].[dbo].[Timesheet_UpdateByTimesheetID]
-          ${TimesheetID}, ${body.EmployeeID}, "${body.Trade}", "${body.WorkStart}",  "${body.WorkEnd}", "${body.MealStart}", "${body.MealEnd}"`;
+          ${TimesheetID}, ${body.EmployeeID}, "${body.Position}", "${body.WorkStart}",  "${body.WorkEnd}", "${body.MealStart}", "${body.MealEnd}"`;
           /* --Params--
           @timesheetID int,
           @employeeID int,
-          @trade nvarchar(100),
+          @position nvarchar(100),
           @workStart time(0),
           @workEnd time(0),
           @mealStart time(0),

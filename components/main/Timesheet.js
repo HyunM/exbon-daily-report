@@ -123,8 +123,8 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
         width: 120,
       },
       {
-        Header: "Trade",
-        accessor: "Trade",
+        Header: "Position",
+        accessor: "Position",
         width: 130,
       },
       {
@@ -213,7 +213,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
       }
     };
 
-    const onChangeTrade = e => {
+    const onChangePosition = e => {
       const TimesheetID = e.target.parentElement.parentElement.children[0].children[0].getAttribute(
         "value"
       );
@@ -297,17 +297,17 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
           ></DeleteForeverIcon>
         );
       } else return <></>;
-    } else if (id === "Trade") {
+    } else if (id === "Position") {
       return (
         <select
           value={value}
-          onChange={onChangeTrade}
+          onChange={onChangePosition}
           onBlur={onBlur}
-          className={styles["table__trade-dropdown"]}
+          className={styles["table__position-dropdown"]}
         >
-          <option value={"Project Manager"}>Project Manager</option>
-          <option value={"Roofer"}>Roofer</option>
-          <option value={"Sheet Metal"}>Sheet Metal</option>
+          <option value={"Director"}>Director</option>
+          <option value={"PIC"}>PIC</option>
+          <option value={"Associate"}>Associate</option>
         </select>
       );
     } else if (
@@ -525,7 +525,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
         EmployeeID: 0,
         EmployeeName: "",
         Date: formatDate(selectedDate),
-        Trade: "Project Manager",
+        Position: "Project Manager",
         WorkStart: data[0] !== undefined ? data[0].WorkStart : "07:00AM",
         MealStart: data[0] !== undefined ? data[0].MealStart : "12:00PM",
         MealEnd: data[0] !== undefined ? data[0].MealEnd : "01:00PM",
@@ -732,7 +732,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
                 data: {
                   ProjectID: projectState,
                   EmployeeID: data[i].EmployeeID,
-                  Trade: data[i].Trade,
+                  Position: data[i].Position,
                   Date: data[i].Date,
                   WorkStart: data[i].WorkStart,
                   WorkEnd: data[i].WorkEnd,
@@ -755,7 +755,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
                 headers: {},
                 data: {
                   EmployeeID: data[i].EmployeeID,
-                  Trade: data[i].Trade,
+                  Position: data[i].Position,
                   WorkStart: data[i].WorkStart,
                   WorkEnd: data[i].WorkEnd,
                   MealStart: data[i].MealStart,
