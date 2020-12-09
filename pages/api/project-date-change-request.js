@@ -14,7 +14,7 @@ const projectDateChangeRequestHandler = (req, res) => {
           const request = new mssql.Request();
 
           const query = `EXEC [Hammer].[dbo].[ProjectDateChangeRequest_Insert]
-          ${body.EmployeeID}, ${body.ProjectID}, "${body.RequestType}", ${body.RequestID}, '${body.StartDate}', '${body.EndDate}', '${body.Note}'`;
+          ${body.EmployeeID}, ${body.ProjectID}, "${body.RequestType}", ${body.RequestID}, '${body.StartDate}', '${body.EndDate}', '${body.Reason}'`;
           /* --Params--
           	@employeeID int,
             @projectID int,
@@ -22,7 +22,7 @@ const projectDateChangeRequestHandler = (req, res) => {
             @requestID int,
             @startDate date,
             @endDate date,
-            @note    nvarhcar(1000)
+            @reason    nvarhcar(1000)
           */
 
           request.query(query, (err, recordset) => {

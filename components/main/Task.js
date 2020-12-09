@@ -16,7 +16,7 @@ import { usePromiseTracker, trackPromise } from "react-promise-tracker";
 import Loader from "react-loader-spinner";
 import EventBusyIcon from "@material-ui/icons/EventBusy";
 import Modal from "react-modal";
-
+import ReactTooltip from "react-tooltip";
 toast.configure();
 const themeForWorkDate = createMuiTheme({
   palette: {
@@ -554,6 +554,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
     RecordID: 0,
     StartDate: new Date("2010/01/01"),
     FinishDate: new Date("2010/01/01"),
+    Reason: "",
     Note: "",
   });
 
@@ -569,6 +570,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
       StartDate: formatDate(now),
       FinishDate: formatDate(now),
       isOpen: true,
+      Reason: "",
       Note: "",
     });
   };
@@ -608,7 +610,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
     // logic
     let StartDate;
     let FinishDate;
-    let Note;
+    let Reason;
     if (RecordID === "NEW") {
       StartDate = formatDate(
         new Date().toLocaleString({
@@ -625,14 +627,13 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
         RecordID,
         StartDate,
         FinishDate,
-        Note: "",
+        Reason: "",
       }));
     } else {
       for (let i = 0; i < noWork.length; i++) {
         if (noWork[i].RecordID === RecordID) {
           StartDate = noWork[i].StartDate;
           FinishDate = noWork[i].FinishDate;
-          Note = noWork[i].Note;
           break;
         }
       }
@@ -642,7 +643,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
         RecordID,
         StartDate,
         FinishDate,
-        Note,
+        Reason: "",
       }));
     }
   };
@@ -722,9 +723,9 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
   };
 
   const addRequestModalNoWork = () => {
-    let note = modalNoWork.Note;
-    if (note === "") {
-      note = null;
+    let reason = modalNoWork.Reason;
+    if (reason === "") {
+      reason = null;
     }
     const fetchData = async () => {
       let result = await axios({
@@ -739,7 +740,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
           RequestID: null,
           StartDate: modalNoWork.StartDate,
           EndDate: modalNoWork.FinishDate,
-          Note: note,
+          Reason: reason,
         },
       });
     };
@@ -757,9 +758,9 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
   };
 
   const modifyRequestModalNoWork = () => {
-    let note = modalNoWork.Note;
-    if (note === "") {
-      note = null;
+    let reason = modalNoWork.Reason;
+    if (reason === "") {
+      reason = null;
     }
     const fetchData = async () => {
       let result = await axios({
@@ -774,7 +775,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
           RequestID: modalNoWork.RecordID,
           StartDate: modalNoWork.StartDate,
           EndDate: modalNoWork.FinishDate,
-          Note: note,
+          Reason: reason,
         },
       });
     };
@@ -792,9 +793,9 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
   };
 
   const deleteRequestModalNoWork = () => {
-    let note = modalNoWork.Note;
-    if (note === "") {
-      note = null;
+    let reason = modalNoWork.Reason;
+    if (reason === "") {
+      reason = null;
     }
     const fetchData = async () => {
       let result = await axios({
@@ -809,7 +810,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
           RequestID: modalNoWork.RecordID,
           StartDate: modalNoWork.StartDate,
           EndDate: modalNoWork.FinishDate,
-          Note: note,
+          Reason: reason,
         },
       });
     };
@@ -827,8 +828,8 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
   };
 
   const handleChangeReason = event => {
-    const note = event.target.value;
-    setModalNoWork(prevState => ({ ...prevState, Note: note }));
+    const reason = event.target.value;
+    setModalNoWork(prevState => ({ ...prevState, Reason: reason }));
   };
 
   return (
@@ -918,20 +919,36 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
                   >
                     {noWork.map(item => {
                       return (
-                        <div
-                          className={
-                            styles[
-                              "modal-no-work__wrapper-content__left__fixed-date"
-                            ]
-                          }
-                          key={item.RecordID}
-                          id={`NoWorkRecordID-${item.RecordID}`}
-                          onClick={() => handleClickDateOfNoWork(item.RecordID)}
-                        >
-                          {formatDate(item.StartDate) +
-                            " ~ " +
-                            formatDate(item.FinishDate)}
-                        </div>
+                        <>
+                          <div
+                            className={
+                              styles[
+                                "modal-no-work__wrapper-content__left__fixed-date"
+                              ]
+                            }
+                            key={item.RecordID}
+                            id={`NoWorkRecordID-${item.RecordID}`}
+                            onClick={() =>
+                              handleClickDateOfNoWork(item.RecordID)
+                            }
+                            data-tip={item.Note}
+                            data-for="NoWorkNote"
+                          >
+                            {formatDate(item.StartDate) +
+                              " ~ " +
+                              formatDate(item.FinishDate)}
+                          </div>
+                          <ReactTooltip
+                            id="NoWorkNote"
+                            multiline={true}
+                            effect="solid"
+                            border={true}
+                            type={"light"}
+                            place="left"
+                            textColor="#8b8585"
+                            borderColor="#948f97"
+                          />
+                        </>
                       );
                     })}
                     <div
@@ -1024,7 +1041,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
                               multiline
                               rows={2}
                               onChange={handleChangeReason}
-                              value={modalNoWork.Note || ""}
+                              value={modalNoWork.Reason || ""}
                               variant="outlined"
                               fullWidth
                               InputLabelProps={{
