@@ -822,7 +822,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
         <>
           <div className={styles["header"]}>
             <div className={styles["header__left"]}>
-              <h1 className={styles["header__left__title"]}>Timesheet</h1>
+              <h2 className={styles["header__left__title"]}>Timesheet</h2>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <DatePicker
                   margin="normal"

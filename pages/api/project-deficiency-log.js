@@ -1,7 +1,7 @@
 const mssql = require("mssql");
 const dbserver = require("../../dbConfig.js");
 
-const projectDailyReportMiscHandler = (req, res) => {
+const projectDeficiencyLogHandler = (req, res) => {
   const { method, body } = req;
   return new Promise(resolve => {
     switch (method) {
@@ -15,7 +15,7 @@ const projectDailyReportMiscHandler = (req, res) => {
 
           const projectID = req.query.projectID;
 
-          const query = `EXEC [Hammer].[dbo].[ProjectDailyReportMisc_SelectByProjectID]
+          const query = `EXEC [Hammer].[dbo].[ProjectDeficiencyLog_SelectByProjectID]
           ${projectID} `;
 
           request.query(query, (err, recordset) => {
@@ -39,4 +39,4 @@ const projectDailyReportMiscHandler = (req, res) => {
   });
 };
 
-export default projectDailyReportMiscHandler;
+export default projectDeficiencyLogHandler;

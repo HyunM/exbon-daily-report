@@ -6,7 +6,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import TabPanel from "./Tab/TabPanel";
 import a11yProps from "./Tab/a11yProps";
-import Miscellaneous from "./main/Miscellaneous";
+import DeficiencyLog from "./main/DeficiencyLog";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import styles from "./TabsOfBoth.module.css";
 import { Button } from "@material-ui/core";
@@ -128,8 +128,8 @@ const TabsOfBoth = ({
               scrollButtons="auto"
             >
               <Tab label="Timesheet" {...a11yProps(0)} />
-              <Tab label="Tasks" {...a11yProps(1)} />
-              <Tab label="Miscellaneous" {...a11yProps(2)} />
+              <Tab label="Task Completion" {...a11yProps(1)} />
+              <Tab label="Deficiency Log" {...a11yProps(2)} />
               <Tab
                 icon={
                   <div className={styles["wrapper-right-tab"]}>
@@ -186,7 +186,7 @@ const TabsOfBoth = ({
             />
           </TabPanel>
           <TabPanel tapNumber={tapNumber} index={2}>
-            <Miscellaneous
+            <DeficiencyLog
               projectState={projectState}
               setProjectState={toZeroProjectState}
               employeeInfo={employeeInfo}

@@ -1,7 +1,7 @@
 const mssql = require("mssql");
 const dbserver = require("../../../dbConfig.js");
 
-const descriptionAndResolutionHandler = (req, res) => {
+const problemAndActionTakenHandler = (req, res) => {
   const { method, body } = req;
   return new Promise(resolve => {
     switch (method) {
@@ -13,13 +13,13 @@ const descriptionAndResolutionHandler = (req, res) => {
           }
           const request = new mssql.Request();
 
-          const query = `EXEC [Hammer].[dbo].[ProjectDailyReportMisc_DescriptionAndResolution_Insert]
-          ${body.ProjectID}, '${body.Date}', '${body.InspectionDescription}', '${body.InspectionResolution}'`;
+          const query = `EXEC [Hammer].[dbo].[ProjectDeficiencyLog_ProblemAndActionTaken_Insert]
+          ${body.ProjectID}, '${body.Date}', '${body.Problem}', '${body.ActionTaken}'`;
           /* --Params--
           	@projectID	int,
             @date	date,
-            @inspectionDescription nvarchar(1000),
-            @inspectionResolution nvarchar(1000)
+            @problem nvarchar(1000),
+            @actionTaken nvarchar(1000)
           */
 
           request.query(query, (err, recordset) => {
@@ -28,7 +28,7 @@ const descriptionAndResolutionHandler = (req, res) => {
               return resolve();
             }
             res.status(200).json({
-              message: "Success, the record of Miscellaneous has been created.",
+              message: "Success, the record of DeficiencyLog has been created.",
             });
             return resolve();
           });
@@ -44,4 +44,4 @@ const descriptionAndResolutionHandler = (req, res) => {
   });
 };
 
-export default descriptionAndResolutionHandler;
+export default problemAndActionTakenHandler;

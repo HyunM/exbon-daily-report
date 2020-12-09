@@ -52,6 +52,7 @@
 
 .header__left__title {
   margin-right: 5%;
+  margin-bottom: 1%;
   font-family: system-ui;
   color: darkblue;
   flex: 0 1 auto;

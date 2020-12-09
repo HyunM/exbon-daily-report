@@ -24,7 +24,6 @@ const timesheetHandler = (req, res) => {
               console.error(err);
               return resolve();
             }
-            console.log(recordset);
             res.status(200).json({
               result: recordset.recordsets,
             });

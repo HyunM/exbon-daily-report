@@ -133,7 +133,6 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
     };
 
     const onChangePercent = e => {
-      console.log(e.nativeEvent.data);
       if (e.nativeEvent.data) {
         if (
           e.nativeEvent.data !== "0" &&
@@ -848,12 +847,9 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
         </div>
       ) : (
         <>
-          {console.log(data)}
-          {console.log(noWork)}
-          {console.log(modalNoWork)}
           <div className={styles["header"]}>
             <div className={styles["header__left"]}>
-              <h1 className={styles["header__left__title"]}>Tasks</h1>
+              <h2 className={styles["header__left__title"]}>Task Completion</h2>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <DatePicker
                   margin="normal"

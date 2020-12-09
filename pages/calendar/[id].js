@@ -85,8 +85,6 @@ const calendar = () => {
         </Toolbar>
       </AppBar>
       <div className={styles["frame"]}>
-        {console.log(data)}
-
         {promiseInProgress || id === 0 ? (
           <div
             style={{

@@ -6,7 +6,7 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionActions from "@material-ui/core/AccordionActions";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import styles from "./Miscellaneous.module.css";
+import styles from "./DeficiencyLog.module.css";
 import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
@@ -18,30 +18,16 @@ import Loader from "react-loader-spinner";
 
 toast.configure();
 
-const useStyles = makeStyles(theme =>
-  createStyles({
-    previewChip: {
-      minWidth: 160,
-      maxWidth: 210,
-    },
-  })
-);
-
-const Miscellaneous = ({ projectState, setProjectState, employeeInfo }) => {
+const DeficiencyLog = ({ projectState, setProjectState, employeeInfo }) => {
   const [data, setData] = useState(() => []);
 
-  const classes = useStyles();
   useEffect(() => {
     const fetchData = async () => {
       let result = await axios({
         method: "get",
-        url: `/api/project-daily-report-misc?projectID=${projectState}`,
+        url: `/api/project-deficiency-log?projectID=${projectState}`,
         timeout: 5000, // 5 seconds timeout
         headers: {},
-        // data: {
-        //   firstName: "David",
-        //   lastName: "Pollock",
-        // },
       });
 
       setData(result.data);
@@ -57,21 +43,21 @@ const Miscellaneous = ({ projectState, setProjectState, employeeInfo }) => {
     .split(",")[0];
 
   const saveInspectionRecord = () => {
-    const description = document.getElementById("TextFieldForDescription")
+    const problem = document.getElementById("TextFieldForProblem").value;
+    const actionTaken = document.getElementById("TextFieldForActionTaken")
       .value;
-    const resolution = document.getElementById("TextFieldForResolution").value;
 
     const fetchData = async () => {
       axios({
         method: "post",
-        url: `/api/project-daily-report-misc/description-and-resolution`,
+        url: `/api/project-deficiency-log/problem-and-action-taken`,
         timeout: 5000, // 5 seconds timeout
         headers: {},
         data: {
           ProjectID: projectState,
           Date: today,
-          InspectionDescription: description,
-          InspectionResolution: resolution,
+          Problem: problem,
+          ActionTaken: actionTaken,
         },
       });
     };
@@ -95,49 +81,7 @@ const Miscellaneous = ({ projectState, setProjectState, employeeInfo }) => {
         EmployeeID: employeeInfo.EmployeeID,
         ProjectID: projectState,
         Date: today,
-        Category: "Miscellaneous_InspectionRecord",
-        Action: "update",
-      },
-    });
-  };
-
-  const saveMemo = () => {
-    const memo = document.getElementById("TextFieldForMemo").value;
-
-    const fetchData = async () => {
-      axios({
-        method: "post",
-        url: `/api/project-daily-report-misc/memo`,
-        timeout: 5000, // 5 seconds timeout
-        headers: {},
-        data: {
-          ProjectID: projectState,
-          Date: today,
-          Memo: memo,
-        },
-      });
-    };
-    fetchData();
-    toast.success(
-      <div className={styles["alert__complete"]}>
-        <strong>Save Complete</strong>
-      </div>,
-      {
-        position: toast.POSITION.BOTTOM_CENTER,
-        hideProgressBar: true,
-      }
-    );
-
-    axios({
-      method: "post",
-      url: `/api/log-daily-reports`,
-      timeout: 5000, // 5 seconds timeout
-      headers: {},
-      data: {
-        EmployeeID: employeeInfo.EmployeeID,
-        ProjectID: projectState,
-        Date: today,
-        Category: "Miscellaneous_Memo",
+        Category: "DeficiencyLog",
         Action: "update",
       },
     });
@@ -172,7 +116,7 @@ const Miscellaneous = ({ projectState, setProjectState, employeeInfo }) => {
               {projectState}
             </span>
           </h3>
-          <Accordion defaultExpanded={false}>
+          {/* <Accordion defaultExpanded={false}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
@@ -199,14 +143,14 @@ const Miscellaneous = ({ projectState, setProjectState, employeeInfo }) => {
                 Upload
               </Button>
             </AccordionActions>
-          </Accordion>
+          </Accordion> */}
           <Accordion defaultExpanded={true}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel2a-content"
             >
               <Typography variant="h5" color="primary">
-                Inspection Record
+                Deficiency Log
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
@@ -215,13 +159,11 @@ const Miscellaneous = ({ projectState, setProjectState, employeeInfo }) => {
                   className={styles["inspection-record__wrapper__description"]}
                 >
                   <TextField
-                    id="TextFieldForDescription"
-                    label="Description"
+                    id="TextFieldForProblem"
+                    label="Problem"
                     multiline
                     rows={6}
-                    defaultValue={
-                      data[0] === undefined ? "" : data[0].InspectionDescription
-                    }
+                    defaultValue={data[0] === undefined ? "" : data[0].Problem}
                     variant="outlined"
                     fullWidth
                     InputLabelProps={{
@@ -236,12 +178,12 @@ const Miscellaneous = ({ projectState, setProjectState, employeeInfo }) => {
                   className={styles["inspection-record__wrapper__resolution"]}
                 >
                   <TextField
-                    id="TextFieldForResolution"
-                    label="Resolution"
+                    id="TextFieldForActionTaken"
+                    label="Action Taken"
                     multiline
                     rows={6}
                     defaultValue={
-                      data[0] === undefined ? "" : data[0].InspectionResolution
+                      data[0] === undefined ? "" : data[0].ActionTaken
                     }
                     variant="outlined"
                     fullWidth
@@ -263,7 +205,7 @@ const Miscellaneous = ({ projectState, setProjectState, employeeInfo }) => {
               </Button>
             </AccordionActions>
           </Accordion>
-          <Accordion defaultExpanded={true}>
+          {/* <Accordion defaultExpanded={true}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel3a-content"
@@ -290,11 +232,11 @@ const Miscellaneous = ({ projectState, setProjectState, employeeInfo }) => {
                 Save
               </Button>
             </AccordionActions>
-          </Accordion>
+          </Accordion> */}
         </>
       )}
     </div>
   );
 };
 
-export default Miscellaneous;
+export default DeficiencyLog;
