@@ -24,8 +24,10 @@ const timesheetHandler = (req, res) => {
               console.error(err);
               return resolve();
             }
-            const response = recordset.recordset;
-            res.status(200).json(response);
+            console.log(recordset);
+            res.status(200).json({
+              result: recordset.recordsets,
+            });
             return resolve();
           });
         });

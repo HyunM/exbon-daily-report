@@ -157,6 +157,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
   );
 
   const [data, setData] = useState(() => []);
+  const [dataEmployees, setDataEmployees] = useState(() => []);
 
   // Create an editable cell renderer
   const EditableCell = ({
@@ -619,23 +620,14 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
         )}&projectID=${projectState}`,
         timeout: 5000, // 5 seconds timeout
         headers: {},
-        // data: {
-        //   firstName: "David",
-        //   lastName: "Pollock",
-        // },
       });
-      // if (now.split(",")[0] === selectedDate.toLocaleString().split(",")[0]) {
-      //   setCheckState(true);
-      // } else {
-      //   setCheckState(false);
-      // }
       if (result.data.length === 0) {
         setCheckState(true);
       } else {
         setCheckState(false);
       }
-
-      setData(result.data);
+      setData(result.data.result[0]);
+      setDataEmployees(result.data.result[1]);
     };
 
     trackPromise(fetchData());
