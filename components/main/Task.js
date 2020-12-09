@@ -67,7 +67,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
       {
         Header: "Section",
         accessor: "Section",
-        width: 70,
+        width: 65,
       },
       {
         Header: "Summary Task",

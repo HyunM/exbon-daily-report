@@ -165,7 +165,8 @@
   height: 100%;
   margin-top: auto;
   margin-left: auto;
-  text-align: right;
+  margin-right: auto;
+  text-align: center;
 }
 
 .table__section-wrapper__data {
