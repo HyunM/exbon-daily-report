@@ -11,7 +11,6 @@
   .header__right__save-btn {
     height: 50%;
     margin-top: auto !important;
-    margin-bottom: auto !important;
     padding: 1rem !important;
     align-self: flex-end;
   }
@@ -25,7 +24,6 @@
   .header__right__save-btn {
     height: 50%;
     margin-top: auto !important;
-    margin-bottom: auto !important;
   }
 }
 
@@ -38,7 +36,7 @@
 
 .header {
   justify-content: space-between;
-  margin-top: 7%;
+  margin-top: 3%;
 }
 
 .header__left {
@@ -97,6 +95,7 @@
   padding: 0.5em !important;
   height: auto;
   margin-right: 10% !important;
+  align-self: flex-end;
 }
 
 .table {

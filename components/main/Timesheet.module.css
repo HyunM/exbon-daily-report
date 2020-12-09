@@ -9,15 +9,15 @@
   .header__right__add-btn {
     height: 50%;
     margin-top: auto !important;
-    margin-bottom: auto !important;
     margin-right: 5% !important;
+    margin-bottom: 3% !important;
     padding: 1rem !important;
   }
   .header__right__save-btn {
     height: 50%;
     margin-top: auto !important;
-    margin-bottom: auto !important;
     padding: 1rem !important;
+    margin-bottom: 3% !important;
     align-self: flex-end;
   }
 }
@@ -30,19 +30,19 @@
   .header__right__add-btn {
     height: 50%;
     margin-top: auto !important;
-    margin-bottom: auto !important;
+    margin-bottom: 3% !important;
     margin-right: 5% !important;
   }
   .header__right__save-btn {
     height: 50%;
+    margin-bottom: 3% !important;
     margin-top: auto !important;
-    margin-bottom: auto !important;
   }
 }
 
 .header {
   justify-content: space-between;
-  margin-top: 5%;
+  margin-top: 3%;
 }
 
 .header__left {
@@ -82,6 +82,8 @@
 
 .header__right__checkbox {
   flex-shrink: 0;
+  align-self: flex-end;
+  margin-bottom: 2%;
 }
 
 .table {

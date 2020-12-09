@@ -30,7 +30,6 @@ import styles from "./Timesheet.module.css";
 import classNames from "classnames/bind";
 import { usePromiseTracker, trackPromise } from "react-promise-tracker";
 import Loader from "react-loader-spinner";
-// let deleteQueue = []; //must be modified
 
 toast.configure();
 let afterSundayCheck = true;
@@ -281,13 +280,6 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
     }, [initialValue]);
 
     if (id === "TimesheetID") {
-      // let check = true;
-      // if (document.getElementById("datePickerDialog") !== null) {
-      //   check = dateCheckEditable(
-      //     new Date(document.getElementById("datePickerDialog").value)
-      //   );
-      // }
-      // check = dateCheckEditable(selecte
       if (afterSundayCheck === true) {
         return (
           <DeleteForeverIcon
@@ -365,12 +357,6 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
       );
     } else if (id === "EmployeeName") {
       return (
-        // <input
-        //   className="tableInput employeeInput"
-        //   value={value}
-        //   onChange={onChange}
-        //   onBlur={onBlurForEmployee}
-        // />
         <Autocomplete
           getItemValue={item => item.FirstName + " " + item.LastName}
           items={employeeAll}
@@ -414,12 +400,6 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
       if (parseFloat(laborDate) < 0) {
         laborDate = (parseFloat(laborDate) + 24).toFixed(2);
       }
-      // let laborDate = (
-      //   (new Date(row.values.WorkEnd) -
-      //     new Date(row.values.WorkStart) -
-      //     (new Date(row.values.MealStart) - new Date(row.values.MealEnd))) /
-      //   3600000
-      // ).toFixed(2);
 
       return (
         <div
@@ -532,10 +512,6 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
         MealEnd: data[0] !== undefined ? data[0].MealEnd : "01:00PM",
         WorkEnd: data[0] !== undefined ? data[0].WorkEnd : "05:00PM",
         InsertID: getRandomIntInclusive(1, 10000000),
-        // WorkStart: "07:00AM",
-        // MealStart: "12:00PM",
-        // MealEnd: "01:00PM",
-        // WorkEnd: "05:00PM",
       },
     ]);
   };
@@ -571,41 +547,6 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
   });
 
   const [selectedDate, setSelectedDate] = useState(now);
-
-  const getSunday = d => {
-    d = new Date(d);
-    let day = d.getDay(),
-      diff = d.getDate() - day;
-    return new Date(d.setDate(diff));
-  };
-
-  const date_diff_indays = (date1, date2) => {
-    return Math.floor(
-      (Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate()) -
-        Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate())) /
-        (1000 * 60 * 60 * 24)
-    );
-  };
-
-  const dateCheckEditable = str => {
-    const toStr = str.toLocaleString();
-    const newStr =
-      toStr.split("/")[0] +
-      "/" +
-      toStr.split("/")[1] +
-      "/" +
-      toStr.split("/")[2].slice(0, 4);
-    const dateFromStr = new Date(newStr);
-    const sundayOfSelected = getSunday(dateFromStr);
-    const sundayOfToday = getSunday(now);
-    if (date_diff_indays(sundayOfToday, sundayOfSelected) >= 0) {
-      afterSundayCheck = true;
-      return true;
-    } else {
-      afterSundayCheck = false;
-      return false;
-    }
-  };
 
   const handleDateChange = date => {
     setSelectedDate(date);
@@ -846,7 +787,6 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
                 </span>
               </h3>
             </div>
-            {/* {dateCheckEditable(selectedDate) && ( */}
             <div className={styles["header__right"]}>
               <FormControlLabel
                 control={
@@ -882,7 +822,6 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
                 Save
               </Button>
             </div>
-            {/* )} */}
           </div>
           <div className={styles["table"]}>
             <TableContainer component={Paper}>
