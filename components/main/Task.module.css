@@ -160,6 +160,22 @@
   padding: 4px;
 }
 
+.table__section-wrapper {
+  display: table;
+  height: 100%;
+  margin-top: auto;
+  margin-left: auto;
+  text-align: right;
+}
+
+.table__section-wrapper__data {
+  vertical-align: middle;
+  text-align: right;
+  display: table-cell;
+  color: rgb(116, 100, 110);
+  font-size: 0.95rem;
+}
+
 .table__trade-wrapper {
   display: table;
   height: 100%;

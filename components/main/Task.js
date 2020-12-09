@@ -188,8 +188,8 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
           setValue("80");
         } else if (e.nativeEvent.data === "9") {
           setValue("90");
-        } else {
-          setValue(e.target.value);
+        } else if (e.nativeEvent.data === ".") {
+          setValue("0");
         }
       } else {
         setValue("0");
@@ -220,7 +220,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
     };
 
     const preventNegativeNumber = e => {
-      if (e.key === "-" || e.key === "+") {
+      if (e.key === "-" || e.key === "+" || e.key === ".") {
         setValue("0");
       }
     };
