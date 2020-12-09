@@ -822,9 +822,9 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
     );
   };
 
-  const handleChangeReason = e => {
-    debugger;
-    setModalNoWork(prevState => ({ ...prevState, Note: e.target.value }));
+  const handleChangeReason = event => {
+    const note = event.target.value;
+    setModalNoWork(prevState => ({ ...prevState, Note: note }));
   };
 
   return (
