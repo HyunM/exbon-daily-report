@@ -2,7 +2,7 @@
 
 @media screen and (min-width: 900px) {
   #mainDiv {
-    width: 1200px;
+    width: 1190px;
     margin: auto;
   }
   .header {
@@ -18,19 +18,12 @@
 
 @media screen and (max-width: 1420px) {
   #mainDiv {
-    width: 1200px;
+    width: 1190;
     margin: auto;
   }
   .header__right__save-btn {
     height: 50%;
     margin-top: auto !important;
-  }
-}
-
-@media screen and (max-width: 750px) {
-  #mainDiv {
-    width: 100%;
-    margin: auto;
   }
 }
 
