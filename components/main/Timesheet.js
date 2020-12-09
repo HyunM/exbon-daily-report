@@ -621,7 +621,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
         timeout: 5000, // 5 seconds timeout
         headers: {},
       });
-      if (result.data.length === 0) {
+      if (result.data.result[0].length === 0) {
         setCheckState(true);
       } else {
         setCheckState(false);
