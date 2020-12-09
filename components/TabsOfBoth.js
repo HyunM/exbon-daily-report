@@ -20,7 +20,7 @@ const TabsOfBoth = ({
   assignedProject,
   handleLogout,
 }) => {
-  const [projectState, setProjectState] = useState(0);
+  const [projectState, setProjectState] = useState(6131);
   const handleProjectState = () => {
     setProjectState(document.getElementById("select-project").value);
   };

@@ -192,7 +192,11 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
           setValue("0");
         }
       } else {
-        setValue("0");
+        if (e.nativeEvent.data === undefined) {
+          setValue(e.target.value);
+        } else {
+          setValue("0");
+        }
       }
     };
 
