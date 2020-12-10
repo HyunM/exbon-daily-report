@@ -29,12 +29,12 @@
   font-family: "Roboto";
   color: darkblue;
   margin-right: 20px;
-  margin-bottom: 1%;
+  margin-bottom: 10px;
 }
 
 .header__left__project-id {
   font-family: "Roboto";
-  margin-bottom: 0 !important;
+  margin-bottom: 6px !important;
   color: #50474c;
 }
 
@@ -57,7 +57,7 @@
 
 .header__right__date-picker {
   width: 120px;
-  margin-bottom: 0 !important;
+  margin-bottom: 0px !important;
   margin-right: 20px !important;
 }
 
@@ -75,6 +75,12 @@
   height: auto;
   margin-right: 20px !important;
   align-self: flex-end;
+}
+
+.header__right__label-date-picker {
+  margin-bottom: 1px;
+  font-family: "Roboto";
+  color: #534f51;
 }
 
 .table {
@@ -385,6 +391,16 @@
 .modal-no-work__wrapper-table__table tbody td:nth-child(5) {
   width: 50px;
   text-align: center;
+}
+.modal-no-work__wrapper-btn-close {
+  margin-top: 20px;
+  text-align: center;
+}
+.modal-no-work__wrapper-table__wrapper-icon-edit__icon-edit:hover {
+  color: black;
+}
+.modal-no-work__wrapper-table__wrapper-icon-edit__icon-delete:hover {
+  color: black;
 }
 /* work-date */
 

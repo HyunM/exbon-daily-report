@@ -57,22 +57,31 @@
   flex-direction: row-reverse;
   align-items: center;
   flex-grow: 1;
+  font-family: "Roboto";
 }
 
 .header__right__date-picker {
   width: 120px;
   margin-right: 20px !important;
-  margin-bottom: 13px !important;
+  margin-bottom: 3px !important;
 }
 
 .header__right__date-picker input {
   text-align: center;
+  font-family: "Roboto";
 }
 
 .header__right__checkbox {
   flex-shrink: 0;
   align-self: flex-end;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
+  font-family: "Roboto";
+}
+
+.header__right__label-date-picker {
+  margin-bottom: 3px;
+  font-family: "Roboto";
+  color: #534f51;
 }
 
 .table {

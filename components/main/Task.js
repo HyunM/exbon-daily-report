@@ -16,7 +16,8 @@ import { usePromiseTracker, trackPromise } from "react-promise-tracker";
 import Loader from "react-loader-spinner";
 import EventBusyIcon from "@material-ui/icons/EventBusy";
 import Modal from "react-modal";
-import ReactTooltip from "react-tooltip";
+import EditTwoToneIcon from "@material-ui/icons/EditTwoTone";
+import DeleteTwoToneIcon from "@material-ui/icons/DeleteTwoTone";
 toast.configure();
 const themeForWorkDate = createMuiTheme({
   palette: {
@@ -957,20 +958,22 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
                 <DatePicker
                   margin="normal"
                   id="datePickerDialog"
-                  label="Date"
                   format="MM/dd/yyyy"
                   value={selectedDate}
                   onChange={handleDateChange}
                   className={styles["header__right__date-picker"]}
                 />
               </MuiPickersUtilsProvider>
-
+              <p className={styles["header__right__label-date-picker"]}>Date</p>
               <Modal
                 isOpen={modalNoWork.isOpen}
                 onRequestClose={closeModalNoWork}
                 style={customStylesNoWork}
                 className={styles["modal-no-work"]}
               >
+                <p className={styles["test"]}>
+                  (This is a test, so NOT working yet. )
+                </p>
                 <div className={styles["modal-no-work__wrapper-title"]}>
                   <h4 className={styles["modal-no-work__wrapper-title__title"]}>
                     Set No Work Days
@@ -1007,7 +1010,13 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
                               }
                               onClick={() => editNoWork(item.RecordID)}
                             >
-                              icon
+                              <EditTwoToneIcon
+                                className={
+                                  styles[
+                                    "modal-no-work__wrapper-table__wrapper-icon-edit__icon-edit"
+                                  ]
+                                }
+                              />
                             </td>
                             <td
                               className={
@@ -1017,7 +1026,13 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
                               }
                               onClick={() => deleteNoWork(item.RecordID)}
                             >
-                              icon
+                              <DeleteTwoToneIcon
+                                className={
+                                  styles[
+                                    "modal-no-work__wrapper-table__wrapper-icon-edit__icon-delete"
+                                  ]
+                                }
+                              />
                             </td>
                           </tr>
                         );
@@ -1033,7 +1048,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
                             }
                             onClick={addNoWork}
                           >
-                            (+) New
+                            <Button>(+) NEW</Button>
                           </div>
                         </td>
                         <td></td>
@@ -1044,7 +1059,14 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
                     </tbody>
                   </table>
                   <div className={styles["modal-no-work__wrapper-btn-close"]}>
-                    <Button onClick={closeModalNoWork}>Close</Button>
+                    <Button
+                      className={
+                        styles["modal-no-work__wrapper-btn-close__btn-close"]
+                      }
+                      onClick={closeModalNoWork}
+                    >
+                      Close
+                    </Button>
                   </div>
                 </div>
               </Modal>
