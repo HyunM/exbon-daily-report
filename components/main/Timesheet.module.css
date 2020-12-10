@@ -71,7 +71,7 @@
 .header__right__checkbox {
   flex-shrink: 0;
   align-self: flex-end;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   font-family: "Roboto";
 }
 
