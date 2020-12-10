@@ -764,17 +764,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
           <div className={styles["header"]}>
             <div className={styles["header__left"]}>
               <h2 className={styles["header__left__title"]}>Timesheet</h2>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <DatePicker
-                  margin="normal"
-                  id="datePickerDialog"
-                  label="Date"
-                  format="MM/dd/yyyy"
-                  value={selectedDate}
-                  onChange={handleDateChange}
-                  className={styles["header__left__date-picker"]}
-                />
-              </MuiPickersUtilsProvider>
+
               <h3 className={styles["header__left__project-id"]}>
                 Project ID :{" "}
                 <span
@@ -788,6 +778,26 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
               </h3>
             </div>
             <div className={styles["header__right"]}>
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                className={styles["header__right__save-btn"]}
+                onClick={handleSaveTimesheetBtn}
+                startIcon={<SaveIcon />}
+              >
+                Save
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                size="small"
+                className={styles["header__right__add-btn"]}
+                onClick={addTimesheetRow}
+                startIcon={<AddIcon />}
+              >
+                Add&nbsp;Row
+              </Button>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -801,26 +811,18 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
                 label="Set Same Time of All"
                 className={styles["header__right__checkbox"]}
               />
-              <Button
-                variant="contained"
-                color="secondary"
-                size="small"
-                className={styles["header__right__add-btn"]}
-                onClick={addTimesheetRow}
-                startIcon={<AddIcon />}
-              >
-                Add&nbsp;Row
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                size="small"
-                className={styles["header__right__save-btn"]}
-                onClick={handleSaveTimesheetBtn}
-                startIcon={<SaveIcon />}
-              >
-                Save
-              </Button>
+
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <DatePicker
+                  margin="normal"
+                  id="datePickerDialog"
+                  label="Date"
+                  format="MM/dd/yyyy"
+                  value={selectedDate}
+                  onChange={handleDateChange}
+                  className={styles["header__right__date-picker"]}
+                />
+              </MuiPickersUtilsProvider>
             </div>
           </div>
           <div className={styles["table"]}>

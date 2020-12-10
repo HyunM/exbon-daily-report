@@ -1,30 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 
-@media screen and (min-width: 900px) {
-  #mainDiv {
-    width: 1192px;
-    margin: auto;
-  }
-  .header {
-    display: flex;
-  }
-  .header__right__save-btn {
-    height: 50%;
-    margin-top: auto !important;
-    padding: 1rem !important;
-    align-self: flex-end;
-  }
+#mainDiv {
+  width: 1192px;
+  margin: auto;
 }
-
-@media screen and (max-width: 1420px) {
-  #mainDiv {
-    width: 1192px;
-    margin: auto;
-  }
-  .header__right__save-btn {
-    height: 50%;
-    margin-top: auto !important;
-  }
+.header {
+  display: flex;
+}
+.header__right__save-btn {
+  height: 50%;
+  margin-top: auto !important;
+  padding: 1rem !important;
+  align-self: flex-end;
 }
 
 .header {
@@ -35,30 +22,19 @@
 .header__left {
   display: flex;
   align-items: center;
-  flex: 1 1 auto;
+  flex-grow: 1;
 }
 
 .header__left__title {
-  font-family: system-ui;
+  font-family: "Roboto";
   color: darkblue;
-  flex: 0 1 auto;
-  margin-right: 3%;
+  margin-right: 20px;
   margin-bottom: 1%;
 }
 
-.header__left__date-picker {
-  width: 120px;
-}
-
-.header__left__date-picker input {
-  text-align: center;
-}
-
 .header__left__project-id {
-  flex-basis: 50%;
   font-family: "Roboto";
   margin-bottom: 0 !important;
-  margin-left: 3% !important;
   color: #50474c;
 }
 
@@ -74,9 +50,19 @@
 .header__right {
   display: flex;
   align-items: center;
-  flex: 1 1 auto;
+  flex-grow: 1;
   flex-direction: row-reverse;
   margin-bottom: 1%;
+}
+
+.header__right__date-picker {
+  width: 120px;
+  margin-bottom: 0 !important;
+  margin-right: 20px !important;
+}
+
+.header__right__date-picker input {
+  text-align: center;
 }
 
 .header__right__save-btn {
@@ -87,7 +73,7 @@
 .header__right__no-work-btn {
   padding: 0.5em !important;
   height: auto;
-  margin-right: 10% !important;
+  margin-right: 20px !important;
   align-self: flex-end;
 }
 

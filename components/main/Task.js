@@ -850,17 +850,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
           <div className={styles["header"]}>
             <div className={styles["header__left"]}>
               <h2 className={styles["header__left__title"]}>Task Completion</h2>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <DatePicker
-                  margin="normal"
-                  id="datePickerDialog"
-                  label="Date"
-                  format="MM/dd/yyyy"
-                  value={selectedDate}
-                  onChange={handleDateChange}
-                  className={styles["header__left__date-picker"]}
-                />
-              </MuiPickersUtilsProvider>
+
               <h3 className={styles["header__left__project-id"]}>
                 Project ID :{" "}
                 <span
@@ -895,7 +885,17 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
               >
                 Set No Work Days
               </Button>
-
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <DatePicker
+                  margin="normal"
+                  id="datePickerDialog"
+                  label="Date"
+                  format="MM/dd/yyyy"
+                  value={selectedDate}
+                  onChange={handleDateChange}
+                  className={styles["header__right__date-picker"]}
+                />
+              </MuiPickersUtilsProvider>
               <Modal
                 isOpen={modalNoWork.isOpen}
                 onAfterOpen={afterOpenModalNoWork}

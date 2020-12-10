@@ -1,43 +1,23 @@
-@media screen and (min-width: 900px) {
-  #mainDiv {
-    width: 60%;
-    margin: auto;
-  }
-  .header {
-    display: flex;
-  }
-  .header__right__add-btn {
-    height: 50%;
-    margin-top: auto !important;
-    margin-right: 5% !important;
-    margin-bottom: 3% !important;
-    padding: 1rem !important;
-  }
-  .header__right__save-btn {
-    height: 50%;
-    margin-top: auto !important;
-    padding: 1rem !important;
-    margin-bottom: 3% !important;
-    align-self: flex-end;
-  }
+#mainDiv {
+  width: 60%;
+  margin: auto;
 }
-
-@media screen and (max-width: 1420px) {
-  #mainDiv {
-    width: 100%;
-    margin: auto;
-  }
-  .header__right__add-btn {
-    height: 50%;
-    margin-top: auto !important;
-    margin-bottom: 3% !important;
-    margin-right: 5% !important;
-  }
-  .header__right__save-btn {
-    height: 50%;
-    margin-bottom: 3% !important;
-    margin-top: auto !important;
-  }
+.header {
+  display: flex;
+}
+.header__right__add-btn {
+  height: 50%;
+  margin-top: auto !important;
+  margin-right: 20px !important;
+  margin-bottom: 12px !important;
+  padding: 1rem !important;
+}
+.header__right__save-btn {
+  height: 50%;
+  margin-top: auto !important;
+  padding: 1rem !important;
+  margin-bottom: 12px !important;
+  align-self: flex-end;
 }
 
 .header {
@@ -48,24 +28,21 @@
 .header__left {
   display: flex;
   align-items: center;
+  flex-grow: 1;
 }
 
 .header__left__title {
-  margin-right: 5%;
-  margin-bottom: 1%;
-  font-family: system-ui;
+  margin-right: 20px;
+  margin-bottom: 3px;
+  font-family: "Roboto";
   color: darkblue;
   flex: 0 1 auto;
 }
 
-.header__left__date-picker input {
-  text-align: center;
-}
 .header__left__project-id {
   flex-basis: 50%;
   font-family: "Roboto";
   margin-bottom: 0 !important;
-  margin-left: 5% !important;
   color: #50474c;
 }
 .header__left__project-id__value {
@@ -77,13 +54,25 @@
 }
 .header__right {
   display: flex;
+  flex-direction: row-reverse;
   align-items: center;
+  flex-grow: 1;
+}
+
+.header__right__date-picker {
+  width: 120px;
+  margin-right: 20px !important;
+  margin-bottom: 13px !important;
+}
+
+.header__right__date-picker input {
+  text-align: center;
 }
 
 .header__right__checkbox {
   flex-shrink: 0;
   align-self: flex-end;
-  margin-bottom: 2%;
+  margin-bottom: 10px;
 }
 
 .table {
