@@ -635,7 +635,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
 
     setModalSaveNoWork({
       isOpen: true,
-      type: "add",
+      type: "new",
       RecordID: 0,
       StartDate,
       FinishDate,
@@ -1077,9 +1077,19 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
                 style={customStylesSaveNoWork}
               >
                 <div className={styles["modal-save-no-work__wrapper-content"]}>
+                  <h4
+                    className={
+                      styles["modal-save-no-work__wrapper-content__title"]
+                    }
+                  >
+                    {modalSaveNoWork.type}
+                  </h4>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <ThemeProvider theme={themeForNoWork}>
                       <DatePicker
+                        disabled={
+                          modalSaveNoWork.type === "delete" ? true : false
+                        }
                         value={modalSaveNoWork.StartDate}
                         // onChange={handleStartDateOfNoWork}
                         format="MM/dd/yyyy"
@@ -1091,6 +1101,9 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
                         }
                       />
                       <DatePicker
+                        disabled={
+                          modalSaveNoWork.type === "delete" ? true : false
+                        }
                         value={modalSaveNoWork.FinishDate}
                         // onChange={handleEndDateOfNoWork}
                         format="MM/dd/yyyy"
