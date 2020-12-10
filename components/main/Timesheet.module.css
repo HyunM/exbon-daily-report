@@ -33,7 +33,7 @@
 
 .header__left__title {
   margin-right: 20px;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
   font-family: "Roboto";
   color: darkblue;
   flex: 0 1 auto;
@@ -42,7 +42,7 @@
 .header__left__project-id {
   flex-basis: 50%;
   font-family: "Roboto";
-  margin-bottom: 2px !important;
+  margin-bottom: 5px !important;
   color: #50474c;
 }
 .header__left__project-id__value {
