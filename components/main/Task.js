@@ -524,6 +524,17 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
     },
   };
 
+  const customStylesSaveNoWork = {
+    content: {
+      top: "40%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+    },
+  };
+
   const customStyles = {
     content: {
       top: "50%",
@@ -548,104 +559,161 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
     }
   };
 
-  const [modalNoWork, setModalNoWork] = useState({
+  const [modalNoWork, setModalNoWork] = useState({ isOpen: false });
+
+  const [modalSaveNoWork, setModalSaveNoWork] = useState({
     isOpen: false,
+    type: "",
     RecordID: 0,
     StartDate: new Date("2010/01/01"),
     FinishDate: new Date("2010/01/01"),
     Reason: "",
-    Note: "",
   });
 
   const openModalNoWork = () => {
-    let RecordID;
-    if (noWork.length === 0) {
-      RecordID = "NEW";
-    } else {
-      RecordID = 0;
-    }
-    setModalNoWork({
-      RecordID,
-      StartDate: formatDate(now),
-      FinishDate: formatDate(now),
-      isOpen: true,
-      Reason: "",
-      Note: "",
-    });
+    setModalNoWork({ isOpen: true });
   };
 
   const closeModalNoWork = () => {
-    setModalNoWork(prevState => ({ ...prevState, isOpen: false }));
+    setModalNoWork({ isOpen: false });
   };
 
-  const handleStartDateOfNoWork = StartDate => {
-    setModalNoWork(prevState => ({ ...prevState, StartDate }));
-  };
-
-  const handleEndDateOfNoWork = FinishDate => {
-    setModalNoWork(prevState => ({ ...prevState, FinishDate }));
-  };
-
-  const handleClickDateOfNoWork = RecordID => {
-    // css
-    if (
-      document.getElementsByClassName(
-        "modal-no-work__wrapper-content__left__fixed-date__click"
-      ).length !== 0
-    ) {
-      document
-        .getElementsByClassName(
-          "modal-no-work__wrapper-content__left__fixed-date__click"
-        )[0]
-        .classList.remove(
-          "modal-no-work__wrapper-content__left__fixed-date__click"
-        );
-    }
-
-    document
-      .getElementById(`NoWorkRecordID-${RecordID}`)
-      .classList.add("modal-no-work__wrapper-content__left__fixed-date__click");
-
-    // logic
+  const editNoWork = recordID => {
     let StartDate;
     let FinishDate;
-    let Reason;
-    if (RecordID === "NEW") {
-      StartDate = formatDate(
-        new Date().toLocaleString({
-          timeZone: "America/Los_Angeles",
-        })
-      );
-      FinishDate = formatDate(
-        new Date().toLocaleString({
-          timeZone: "America/Los_Angeles",
-        })
-      );
-      setModalNoWork(prevState => ({
-        ...prevState,
-        RecordID,
-        StartDate,
-        FinishDate,
-        Reason: "",
-      }));
-    } else {
-      for (let i = 0; i < noWork.length; i++) {
-        if (noWork[i].RecordID === RecordID) {
-          StartDate = noWork[i].StartDate;
-          FinishDate = noWork[i].FinishDate;
-          break;
-        }
+    for (let i = 0; i < noWork.length; i++) {
+      if (noWork[i].RecordID === recordID) {
+        StartDate = noWork[i].StartDate;
+        FinishDate = noWork[i].FinishDate;
+        break;
       }
-
-      setModalNoWork(prevState => ({
-        ...prevState,
-        RecordID,
-        StartDate,
-        FinishDate,
-        Reason: "",
-      }));
     }
+    setModalSaveNoWork({
+      isOpen: true,
+      type: "edit",
+      RecordID: recordID,
+      StartDate,
+      FinishDate,
+      Reason: "",
+    });
   };
+
+  const deleteNoWork = recordID => {
+    let StartDate;
+    let FinishDate;
+    for (let i = 0; i < noWork.length; i++) {
+      if (noWork[i].RecordID === recordID) {
+        StartDate = noWork[i].StartDate;
+        FinishDate = noWork[i].FinishDate;
+        break;
+      }
+    }
+    setModalSaveNoWork({
+      isOpen: true,
+      type: "delete",
+      RecordID: recordID,
+      StartDate,
+      FinishDate,
+      Reason: "",
+    });
+  };
+
+  const addNoWork = () => {
+    let StartDate;
+    let FinishDate;
+    StartDate = formatDate(
+      new Date().toLocaleString({
+        timeZone: "America/Los_Angeles",
+      })
+    );
+    FinishDate = formatDate(
+      new Date().toLocaleString({
+        timeZone: "America/Los_Angeles",
+      })
+    );
+
+    setModalSaveNoWork({
+      isOpen: true,
+      type: "add",
+      RecordID: 0,
+      StartDate,
+      FinishDate,
+      Reason: "",
+    });
+  };
+
+  const closeModalSaveNoWork = () => {
+    setModalSaveNoWork(prevState => ({ ...prevState, isOpen: false }));
+  };
+
+  // const handleStartDateOfNoWork = StartDate => {
+  //   setModalNoWork(prevState => ({ ...prevState, StartDate }));
+  // };
+
+  // const handleEndDateOfNoWork = FinishDate => {
+  //   setModalNoWork(prevState => ({ ...prevState, FinishDate }));
+  // };
+
+  // const handleClickDateOfNoWork = RecordID => {
+  //   // css
+  //   if (
+  //     document.getElementsByClassName(
+  //       "modal-no-work__wrapper-content__left__fixed-date__click"
+  //     ).length !== 0
+  //   ) {
+  //     document
+  //       .getElementsByClassName(
+  //         "modal-no-work__wrapper-content__left__fixed-date__click"
+  //       )[0]
+  //       .classList.remove(
+  //         "modal-no-work__wrapper-content__left__fixed-date__click"
+  //       );
+  //   }
+
+  //   document
+  //     .getElementById(`NoWorkRecordID-${RecordID}`)
+  //     .classList.add("modal-no-work__wrapper-content__left__fixed-date__click");
+
+  //   // logic
+  //   let StartDate;
+  //   let FinishDate;
+  //   let Reason;
+  //   if (RecordID === "NEW") {
+  //     StartDate = formatDate(
+  //       new Date().toLocaleString({
+  //         timeZone: "America/Los_Angeles",
+  //       })
+  //     );
+  //     FinishDate = formatDate(
+  //       new Date().toLocaleString({
+  //         timeZone: "America/Los_Angeles",
+  //       })
+  //     );
+  //     setModalNoWork(prevState => ({
+  //       ...prevState,
+  //       RecordID,
+  //       StartDate,
+  //       FinishDate,
+  //       Reason: "",
+  //     }));
+  //   } else {
+  //     for (let i = 0; i < noWork.length; i++) {
+  //       if (noWork[i].RecordID === RecordID) {
+  //         StartDate = noWork[i].StartDate;
+  //         FinishDate = noWork[i].FinishDate;
+  //         break;
+  //       }
+  //     }
+
+  //     setModalNoWork(prevState => ({
+  //       ...prevState,
+  //       RecordID,
+  //       StartDate,
+  //       FinishDate,
+  //       Reason: "",
+  //     }));
+  //   }
+  // };
 
   const [modalWorkDate, setModalWorkDate] = useState({
     isOpen: false,
@@ -721,115 +789,115 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
     );
   };
 
-  const addRequestModalNoWork = () => {
-    let reason = modalNoWork.Reason;
-    if (reason === "") {
-      reason = null;
-    }
-    const fetchData = async () => {
-      let result = await axios({
-        method: "POST",
-        url: `/api/project-date-change-request`,
-        timeout: 5000, // 5 seconds timeout
-        headers: {},
-        data: {
-          EmployeeID: employeeInfo.EmployeeID,
-          ProjectID: projectState,
-          RequestType: "No Work",
-          RequestID: null,
-          StartDate: modalNoWork.StartDate,
-          EndDate: modalNoWork.FinishDate,
-          Reason: reason,
-        },
-      });
-    };
+  // const addRequestModalNoWork = () => {
+  //   let reason = modalNoWork.Reason;
+  //   if (reason === "") {
+  //     reason = null;
+  //   }
+  //   const fetchData = async () => {
+  //     let result = await axios({
+  //       method: "POST",
+  //       url: `/api/project-date-change-request`,
+  //       timeout: 5000, // 5 seconds timeout
+  //       headers: {},
+  //       data: {
+  //         EmployeeID: employeeInfo.EmployeeID,
+  //         ProjectID: projectState,
+  //         RequestType: "No Work",
+  //         RequestID: null,
+  //         StartDate: modalNoWork.StartDate,
+  //         EndDate: modalNoWork.FinishDate,
+  //         Reason: reason,
+  //       },
+  //     });
+  //   };
 
-    fetchData();
-    toast.info(
-      <div className={styles["alert__complete"]}>
-        <strong>Add Request has been submitted.</strong>
-      </div>,
-      {
-        position: toast.POSITION.BOTTOM_CENTER,
-        hideProgressBar: true,
-      }
-    );
-  };
+  //   fetchData();
+  //   toast.info(
+  //     <div className={styles["alert__complete"]}>
+  //       <strong>Add Request has been submitted.</strong>
+  //     </div>,
+  //     {
+  //       position: toast.POSITION.BOTTOM_CENTER,
+  //       hideProgressBar: true,
+  //     }
+  //   );
+  // };
 
-  const modifyRequestModalNoWork = () => {
-    let reason = modalNoWork.Reason;
-    if (reason === "") {
-      reason = null;
-    }
-    const fetchData = async () => {
-      let result = await axios({
-        method: "POST",
-        url: `/api/project-date-change-request`,
-        timeout: 5000, // 5 seconds timeout
-        headers: {},
-        data: {
-          EmployeeID: employeeInfo.EmployeeID,
-          ProjectID: projectState,
-          RequestType: "No Work Modify",
-          RequestID: modalNoWork.RecordID,
-          StartDate: modalNoWork.StartDate,
-          EndDate: modalNoWork.FinishDate,
-          Reason: reason,
-        },
-      });
-    };
+  // const modifyRequestModalNoWork = () => {
+  //   let reason = modalNoWork.Reason;
+  //   if (reason === "") {
+  //     reason = null;
+  //   }
+  //   const fetchData = async () => {
+  //     let result = await axios({
+  //       method: "POST",
+  //       url: `/api/project-date-change-request`,
+  //       timeout: 5000, // 5 seconds timeout
+  //       headers: {},
+  //       data: {
+  //         EmployeeID: employeeInfo.EmployeeID,
+  //         ProjectID: projectState,
+  //         RequestType: "No Work Modify",
+  //         RequestID: modalNoWork.RecordID,
+  //         StartDate: modalNoWork.StartDate,
+  //         EndDate: modalNoWork.FinishDate,
+  //         Reason: reason,
+  //       },
+  //     });
+  //   };
 
-    fetchData();
-    toast.info(
-      <div className={styles["alert__complete"]}>
-        <strong>Modify Request has been submitted.</strong>
-      </div>,
-      {
-        position: toast.POSITION.BOTTOM_CENTER,
-        hideProgressBar: true,
-      }
-    );
-  };
+  //   fetchData();
+  //   toast.info(
+  //     <div className={styles["alert__complete"]}>
+  //       <strong>Modify Request has been submitted.</strong>
+  //     </div>,
+  //     {
+  //       position: toast.POSITION.BOTTOM_CENTER,
+  //       hideProgressBar: true,
+  //     }
+  //   );
+  // };
 
-  const deleteRequestModalNoWork = () => {
-    let reason = modalNoWork.Reason;
-    if (reason === "") {
-      reason = null;
-    }
-    const fetchData = async () => {
-      let result = await axios({
-        method: "POST",
-        url: `/api/project-date-change-request`,
-        timeout: 5000, // 5 seconds timeout
-        headers: {},
-        data: {
-          EmployeeID: employeeInfo.EmployeeID,
-          ProjectID: projectState,
-          RequestType: "No Work Delete",
-          RequestID: modalNoWork.RecordID,
-          StartDate: modalNoWork.StartDate,
-          EndDate: modalNoWork.FinishDate,
-          Reason: reason,
-        },
-      });
-    };
+  // const deleteRequestModalNoWork = () => {
+  //   let reason = modalNoWork.Reason;
+  //   if (reason === "") {
+  //     reason = null;
+  //   }
+  //   const fetchData = async () => {
+  //     let result = await axios({
+  //       method: "POST",
+  //       url: `/api/project-date-change-request`,
+  //       timeout: 5000, // 5 seconds timeout
+  //       headers: {},
+  //       data: {
+  //         EmployeeID: employeeInfo.EmployeeID,
+  //         ProjectID: projectState,
+  //         RequestType: "No Work Delete",
+  //         RequestID: modalNoWork.RecordID,
+  //         StartDate: modalNoWork.StartDate,
+  //         EndDate: modalNoWork.FinishDate,
+  //         Reason: reason,
+  //       },
+  //     });
+  //   };
 
-    fetchData();
-    toast.info(
-      <div className={styles["alert__complete"]}>
-        <strong>Delete Request has been submitted.</strong>
-      </div>,
-      {
-        position: toast.POSITION.BOTTOM_CENTER,
-        hideProgressBar: true,
-      }
-    );
-  };
+  //   fetchData();
+  //   toast.info(
+  //     <div className={styles["alert__complete"]}>
+  //       <strong>Delete Request has been submitted.</strong>
+  //     </div>,
+  //     {
+  //       position: toast.POSITION.BOTTOM_CENTER,
+  //       hideProgressBar: true,
+  //     }
+  //   );
+  // };
 
-  const handleChangeReason = event => {
-    const reason = event.target.value;
-    setModalNoWork(prevState => ({ ...prevState, Reason: reason }));
-  };
+  // const handleChangeReason = event => {
+  //   const reason = event.target.value;
+  //   setModalNoWork(prevState => ({ ...prevState, Reason: reason }));
+  // };
 
   return (
     <div id={styles.mainDiv}>
@@ -896,7 +964,176 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
                   className={styles["header__right__date-picker"]}
                 />
               </MuiPickersUtilsProvider>
+
               <Modal
+                isOpen={modalNoWork.isOpen}
+                onRequestClose={closeModalNoWork}
+                style={customStylesNoWork}
+                className={styles["modal-no-work"]}
+              >
+                <div className={styles["modal-no-work__wrapper-title"]}>
+                  <h4 className={styles["modal-no-work__wrapper-title__title"]}>
+                    Set No Work Days
+                  </h4>
+                </div>
+                <div className={styles["modal-no-work__wrapper-table"]}>
+                  <table
+                    className={styles["modal-no-work__wrapper-table__table"]}
+                  >
+                    <thead>
+                      <tr>
+                        <td>Dates</td>
+                        <td>Request By</td>
+                        <td>Reason</td>
+                        <td>Edit</td>
+                        <td>Delete</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {noWork.map(item => {
+                        return (
+                          <tr key={item.RecordID}>
+                            <td>
+                              {formatDate(item.StartDate)} ~{" "}
+                              {formatDate(item.FinishDate)}
+                            </td>
+                            <td>{item.EmployeeName}</td>
+                            <td>{item.Note}</td>
+                            <td
+                              className={
+                                styles[
+                                  "modal-no-work__wrapper-table__wrapper-icon-edit"
+                                ]
+                              }
+                              onClick={() => editNoWork(item.RecordID)}
+                            >
+                              icon
+                            </td>
+                            <td
+                              className={
+                                styles[
+                                  "modal-no-work__wrapper-table__wrapper-icon-delete"
+                                ]
+                              }
+                              onClick={() => deleteNoWork(item.RecordID)}
+                            >
+                              icon
+                            </td>
+                          </tr>
+                        );
+                      })}
+
+                      <tr>
+                        <td>
+                          <div
+                            className={
+                              styles[
+                                "modal-no-work__wrapper-table__wrapper-btn-new"
+                              ]
+                            }
+                            onClick={addNoWork}
+                          >
+                            (+) New
+                          </div>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div className={styles["modal-no-work__wrapper-btn-close"]}>
+                    <Button onClick={closeModalNoWork}>Close</Button>
+                  </div>
+                </div>
+              </Modal>
+
+              <Modal
+                isOpen={modalSaveNoWork.isOpen}
+                onRequesClose={closeModalSaveNoWork}
+                style={customStylesSaveNoWork}
+              >
+                <div className={styles["modal-save-no-work__wrapper-content"]}>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <ThemeProvider theme={themeForNoWork}>
+                      <DatePicker
+                        value={modalSaveNoWork.StartDate}
+                        // onChange={handleStartDateOfNoWork}
+                        format="MM/dd/yyyy"
+                        label="Start Date"
+                        className={
+                          styles[
+                            "modal-save-no-work__wrapper-content__start-date"
+                          ]
+                        }
+                      />
+                      <DatePicker
+                        value={modalSaveNoWork.FinishDate}
+                        // onChange={handleEndDateOfNoWork}
+                        format="MM/dd/yyyy"
+                        label="End Date"
+                        className={
+                          styles[
+                            "modal-save-no-work__wrapper-content__end-date"
+                          ]
+                        }
+                      />
+                    </ThemeProvider>
+                  </MuiPickersUtilsProvider>
+                </div>
+                <div
+                  className={
+                    styles["modal-save-no-work__wrapper-content__bottom"]
+                  }
+                >
+                  <div
+                    className={
+                      styles[
+                        "modal-save-no-work__wrapper-content__bottom__wrapper-note"
+                      ]
+                    }
+                  >
+                    <TextField
+                      label="Reason"
+                      multiline
+                      rows={2}
+                      // onChange={handleChangeReason}
+                      value={modalNoWork.Reason || ""}
+                      variant="outlined"
+                      fullWidth
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                  </div>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    className={
+                      styles[
+                        "modal-save-no-work__wrapper-content__bottom__btn-save"
+                      ]
+                    }
+                  >
+                    SAVE
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    className={
+                      styles[
+                        "modal-save-no-work__wrapper-content__bottom__btn-cancel"
+                      ]
+                    }
+                    onClick={closeModalSaveNoWork}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </Modal>
+
+              {/* <Modal
                 isOpen={modalNoWork.isOpen}
                 onAfterOpen={afterOpenModalNoWork}
                 onRequestClose={closeModalNoWork}
@@ -1102,7 +1339,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
                     Close
                   </Button>
                 </div>
-              </Modal>
+              </Modal> */}
             </div>
             {/* )} */}
           </div>
