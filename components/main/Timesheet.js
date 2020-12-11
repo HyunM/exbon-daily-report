@@ -34,8 +34,8 @@ import Loader from "react-loader-spinner";
 toast.configure();
 let afterSundayCheck = true;
 
-const convertInputToTime = time => {
-  let match = inputTime.filter(data => data.input === time);
+const convertInputToTime = (time) => {
+  let match = inputTime.filter((data) => data.input === time);
   if (match[0] === undefined) {
     return "error";
   }
@@ -43,18 +43,53 @@ const convertInputToTime = time => {
 };
 
 const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
-  const deleteQueue = useSelector(state => state.deleteQueue);
-  const updateQueue = useSelector(state => state.updateQueue);
+  const getSunday = (d) => {
+    d = new Date(d);
+    let day = d.getDay(),
+      diff = d.getDate() - day;
+    return new Date(d.setDate(diff));
+  };
+
+  const date_diff_indays = (date1, date2) => {
+    return Math.floor(
+      (Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate()) -
+        Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate())) /
+        (1000 * 60 * 60 * 24)
+    );
+  };
+
+  const dateCheckEditable = (str) => {
+    const toStr = str.toLocaleString();
+    const newStr =
+      toStr.split("/")[0] +
+      "/" +
+      toStr.split("/")[1] +
+      "/" +
+      toStr.split("/")[2].slice(0, 4);
+    const dateFromStr = new Date(newStr);
+    const sundayOfSelected = getSunday(dateFromStr);
+    const sundayOfToday = getSunday(now);
+    if (date_diff_indays(sundayOfToday, sundayOfSelected) >= 0) {
+      afterSundayCheck = true;
+      return true;
+    } else {
+      afterSundayCheck = false;
+      return false;
+    }
+  };
+
+  const deleteQueue = useSelector((state) => state.deleteQueue);
+  const updateQueue = useSelector((state) => state.updateQueue);
 
   const dispatch = useDispatch();
 
-  const addUpdateQueue = value =>
+  const addUpdateQueue = (value) =>
     dispatch({
       type: "ADDUPDATEQUEUE",
       addUpdateQueue: value,
     });
 
-  const addDeleteQueue = value =>
+  const addDeleteQueue = (value) =>
     dispatch({
       type: "ADDDELETEQUEUE",
       addDeleteQueue: value,
@@ -71,7 +106,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
     });
 
   const [checkState, setCheckState] = useState(true);
-  const checkChange = event => {
+  const checkChange = (event) => {
     if (event.target.checked) {
       for (
         let i = 12;
@@ -169,7 +204,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
     // We need to keep and update the state of the cell normally
     const [value, setValue] = React.useState(initialValue);
 
-    const onCheckHour = e => {
+    const onCheckHour = (e) => {
       const TimesheetID = e.target.parentElement.parentElement.parentElement.children[0].children[0].getAttribute(
         "value"
       );
@@ -191,7 +226,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
       }
     };
 
-    const onCheckMin = e => {
+    const onCheckMin = (e) => {
       const TimesheetID = e.target.parentElement.parentElement.parentElement.children[0].children[0].getAttribute(
         "value"
       );
@@ -199,7 +234,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
       setValue(value.slice(0, 2) + ":" + e.target.value + value.slice(5, 7));
     };
 
-    const onCheckAmPm = e => {
+    const onCheckAmPm = (e) => {
       const TimesheetID = e.target.parentElement.parentElement.parentElement.children[0].children[0].getAttribute(
         "value"
       );
@@ -213,7 +248,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
       }
     };
 
-    const onChangePosition = e => {
+    const onChangePosition = (e) => {
       const TimesheetID = e.target.parentElement.parentElement.children[0].children[0].getAttribute(
         "value"
       );
@@ -221,7 +256,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
       setValue(e.target.value);
     };
 
-    const onChange = e => {
+    const onChange = (e) => {
       const TimesheetID = e.target.parentElement.parentElement.parentElement.children[0].children[0].getAttribute(
         "value"
       );
@@ -229,12 +264,12 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
       setValue(e.target.value);
     };
 
-    const onChangeSelect = value => {
+    const onChangeSelect = (value) => {
       setValue(value);
     };
 
     // We'll only update the external data when the input is blurred
-    const onBlur = e => {
+    const onBlur = (e) => {
       if (document.getElementById("checkboxForSetSameTime")) {
         if (document.getElementById("checkboxForSetSameTime").checked) {
           updateMyData(index, id, value);
@@ -247,9 +282,9 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
       }
     };
 
-    const onBlurForEmployee = e => {
+    const onBlurForEmployee = (e) => {
       let employee = employeeAll.find(
-        employee => value === employee.FirstName + " " + employee.LastName
+        (employee) => value === employee.FirstName + " " + employee.LastName
       );
       if (employee) {
         updateEmployeeData(index, id, value);
@@ -267,7 +302,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
       }
     };
 
-    const clickDeleteTimesheet = value => {
+    const clickDeleteTimesheet = (value) => {
       //value = TimesheetID
       deleteTimesheetRow(index, id);
       addDeleteQueue(value);
@@ -297,6 +332,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
           onChange={onChangePosition}
           onBlur={onBlur}
           className={styles["table__position-dropdown"]}
+          disabled={afterSundayCheck ? false : true}
         >
           <option value={"Director"}>Director</option>
           <option value={"PIC"}>PIC</option>
@@ -315,31 +351,47 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
             value={value.slice(0, 2)}
             onChange={onCheckHour}
             onBlur={onBlur}
-            className={classNames(
-              "table__time-wrapper__target-disabled",
-              styles["table__time-wrapper__hour-input"]
-            )}
+            className={
+              afterSundayCheck
+                ? classNames(
+                    "table__time-wrapper__target-disabled",
+                    styles["table__time-wrapper__hour-input"]
+                  )
+                : classNames(
+                    "table__time-wrapper__target-disabled",
+                    styles["table__time-wrapper__hour-input-before-sunday"]
+                  )
+            }
             mask="29"
             placeholder="01~12"
             formatChars={{
               2: "[0-1]",
               9: "[0-9]",
             }}
+            disabled={afterSundayCheck ? false : true}
           />
           :
           <InputMask
             value={value.slice(3, 5)}
             onChange={onCheckMin}
             onBlur={onBlur}
-            className={classNames(
-              "table__time-wrapper__target-disabled",
-              styles["table__time-wrapper__min-input"]
-            )}
+            className={
+              afterSundayCheck
+                ? classNames(
+                    "table__time-wrapper__target-disabled",
+                    styles["table__time-wrapper__min-input"]
+                  )
+                : classNames(
+                    "table__time-wrapper__target-disabled",
+                    styles["table__time-wrapper__min-input-before-sunday"]
+                  )
+            }
             placeholder="00~50"
             mask="50"
             formatChars={{
               5: "[0-5]",
             }}
+            disabled={afterSundayCheck ? false : true}
           />
           <select
             value={value.slice(5, 7)}
@@ -349,6 +401,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
               "table__time-wrapper__target-disabled",
               styles["table__ampm-dropdown"]
             )}
+            disabled={afterSundayCheck ? false : true}
           >
             <option value="AM">AM</option>
             <option value="PM">PM</option>
@@ -358,7 +411,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
     } else if (id === "EmployeeName") {
       return (
         <Autocomplete
-          getItemValue={item => item.FirstName + " " + item.LastName}
+          getItemValue={(item) => item.FirstName + " " + item.LastName}
           items={employeeAll}
           renderItem={(item, isHighlighted) => (
             <div
@@ -376,11 +429,16 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
           value={value}
           onChange={onChange}
           inputProps={{ onBlur: onBlurForEmployee }}
-          onSelect={val => onChangeSelect(val)}
-          renderInput={props => {
+          onSelect={(val) => onChangeSelect(val)}
+          renderInput={(props) => {
             return (
               <input
-                className={styles["table__employee-input"]}
+                className={
+                  afterSundayCheck
+                    ? styles["table__employee-input"]
+                    : styles["table__employee-input-before-sunday"]
+                }
+                disabled={afterSundayCheck ? false : true}
                 {...props}
               ></input>
             );
@@ -424,7 +482,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
   // original data
   const updateMyData = (rowIndex, columnId, value) => {
     // We also turn on the flag to not reset the page
-    setData(old =>
+    setData((old) =>
       old.map((row, index) => {
         if (index === rowIndex) {
           return {
@@ -439,7 +497,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
 
   const updateEmployeeData = (rowIndex, columnId, value) => {
     // We also turn on the flag to not reset the page
-    setData(old =>
+    setData((old) =>
       old.map((row, index) => {
         if (index === rowIndex) {
           return {
@@ -454,7 +512,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
   };
 
   const updateTimesheetIDData = (InsertID, TimesheetID) => {
-    setData(old =>
+    setData((old) =>
       old.map((row, index) => {
         if (row.InsertID === InsertID) {
           return {
@@ -467,9 +525,9 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
     );
   };
 
-  const convertEmployeeNameToID = name => {
+  const convertEmployeeNameToID = (name) => {
     let employee = employeeAll.find(
-      employee => name === employee.FirstName + " " + employee.LastName
+      (employee) => name === employee.FirstName + " " + employee.LastName
     );
     if (employee) {
       return employee.EmployeeID;
@@ -479,7 +537,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
   };
 
   const setSameTime = () => {
-    setData(old =>
+    setData((old) =>
       old.map((row, index) => {
         return {
           ...old[index],
@@ -517,7 +575,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
   };
 
   const deleteTimesheetRow = (rowIndex, columnId) => {
-    setData(old =>
+    setData((old) =>
       old.filter((row, index) => {
         return index !== rowIndex;
       })
@@ -548,7 +606,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
 
   const [selectedDate, setSelectedDate] = useState(now);
 
-  const handleDateChange = date => {
+  const handleDateChange = (date) => {
     setSelectedDate(date);
   };
 
@@ -613,7 +671,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
   }, [data]);
 
   const handleSaveTimesheetBtn = () => {
-    let checkEmployeeName = data.find(employee => employee.EmployeeID === 0);
+    let checkEmployeeName = data.find((employee) => employee.EmployeeID === 0);
     let checkTime = 0;
     for (
       let i = 0;
@@ -672,7 +730,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
                   MealStart: data[i].MealStart,
                   MealEnd: data[i].MealEnd,
                 },
-              }).then(response => {
+              }).then((response) => {
                 updateTimesheetIDData(
                   data[i].InsertID,
                   response.data.TimesheetID
@@ -714,7 +772,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
 
       trackPromise(fetchData());
       trackPromise(
-        Promise.all(promises).then(result => {
+        Promise.all(promises).then((result) => {
           toast.success(
             <div className={styles["alert__complete"]}>
               <strong>Save Complete</strong>
@@ -778,40 +836,55 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
               </h3>
             </div>
             <div className={styles["header__right"]}>
-              <Button
-                variant="contained"
-                color="primary"
-                size="small"
-                className={styles["header__right__save-btn"]}
-                onClick={handleSaveTimesheetBtn}
-                startIcon={<SaveIcon />}
-              >
-                Save
-              </Button>
-              <Button
-                variant="contained"
-                color="secondary"
-                size="small"
-                className={styles["header__right__add-btn"]}
-                onClick={addTimesheetRow}
-                startIcon={<AddIcon />}
-              >
-                Add&nbsp;Row
-              </Button>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={checkState}
-                    onChange={checkChange}
-                    name="checkbox"
-                    color="secondary"
-                    id="checkboxForSetSameTime"
-                  />
-                }
-                label="Set Same Time of All"
-                className={styles["header__right__checkbox"]}
-              />
-
+              {/* {dateCheckEditable(selectedDate) && ( */}
+              <>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  className={
+                    dateCheckEditable(selectedDate)
+                      ? styles["header__right__save-btn"]
+                      : styles["header__right__save-btn-before-sunday"]
+                  }
+                  onClick={handleSaveTimesheetBtn}
+                  startIcon={<SaveIcon />}
+                >
+                  Save
+                </Button>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  size="small"
+                  className={
+                    dateCheckEditable(selectedDate)
+                      ? styles["header__right__add-btn"]
+                      : styles["header__right__add-btn-before-sunday"]
+                  }
+                  onClick={addTimesheetRow}
+                  startIcon={<AddIcon />}
+                >
+                  Add&nbsp;Row
+                </Button>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={checkState}
+                      onChange={checkChange}
+                      name="checkbox"
+                      color="secondary"
+                      id="checkboxForSetSameTime"
+                    />
+                  }
+                  label="Set Same Time of All"
+                  className={
+                    dateCheckEditable(selectedDate)
+                      ? styles["header__right__checkbox"]
+                      : styles["header__right__checkbox-before-sunday"]
+                  }
+                />
+              </>
+              {/* )} */}
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <DatePicker
                   margin="normal"
@@ -829,9 +902,9 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
             <TableContainer component={Paper}>
               <Table>
                 <TableHead>
-                  {headerGroups.map(headerGroup => (
+                  {headerGroups.map((headerGroup) => (
                     <TableRow {...headerGroup.getHeaderGroupProps()}>
-                      {headerGroup.headers.map(column => (
+                      {headerGroup.headers.map((column) => (
                         <TableCell {...column.getHeaderProps()}>
                           {column.render("Header")}
                         </TableCell>
@@ -844,7 +917,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
                     prepareRow(row);
                     return (
                       <TableRow {...row.getRowProps()}>
-                        {row.cells.map(cell => {
+                        {row.cells.map((cell) => {
                           return (
                             <TableCell {...cell.getCellProps()}>
                               {cell.render("Cell")}
