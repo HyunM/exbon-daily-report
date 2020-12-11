@@ -1087,6 +1087,8 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <ThemeProvider theme={themeForNoWork}>
                       <DatePicker
+                        disableToolbar
+                        variant="inline"
                         disabled={
                           modalSaveNoWork.type === "delete" ? true : false
                         }
@@ -1101,6 +1103,8 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
                         }
                       />
                       <DatePicker
+                        disableToolbar
+                        variant="inline"
                         disabled={
                           modalSaveNoWork.type === "delete" ? true : false
                         }
@@ -1444,7 +1448,8 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <ThemeProvider theme={themeForWorkDate}>
               <DatePicker
-                // value={value.length === undefined ? value : value.split("-")}
+                disableToolbar
+                variant="inline"
                 value={modalWorkDate.StartDate}
                 onChange={handleStartDateOfWorkDate}
                 format="MM/dd/yyyy"
@@ -1454,7 +1459,8 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
                 }
               />
               <DatePicker
-                // value={value.length === undefined ? value : value.split("-")}
+                disableToolbar
+                variant="inline"
                 value={modalWorkDate.FinishDate}
                 onChange={handleEndDateOfWorkDate}
                 format="MM/dd/yyyy"
