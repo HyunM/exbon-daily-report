@@ -20,7 +20,7 @@ const TabsOfBoth = ({
   assignedProject,
   handleLogout,
 }) => {
-  const [projectState, setProjectState] = useState(6130);
+  const [projectState, setProjectState] = useState(0);
   const handleProjectState = () => {
     setProjectState(document.getElementById("select-project").value);
   };
@@ -31,7 +31,7 @@ const TabsOfBoth = ({
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const handleClick = event => {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -104,7 +104,7 @@ const TabsOfBoth = ({
               id="select-project"
               className={styles["wrapper-select-project__select-project"]}
             >
-              {assignedProject.map(item => {
+              {assignedProject.map((item) => {
                 return <option key={item.ProjectID}>{item.ProjectID}</option>;
               })}
             </select>

@@ -45,7 +45,7 @@
   display: flex;
   align-items: center;
   flex-direction: row-reverse;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .header__right__date-picker {
@@ -59,13 +59,11 @@
 }
 
 .header__right__save-btn {
-  padding: 0.5em !important;
   margin-top: auto !important;
   align-self: flex-end;
 }
 
 .header__right__no-work-btn {
-  padding: 0.5em !important;
   margin-right: 20px !important;
   align-self: flex-end;
 }

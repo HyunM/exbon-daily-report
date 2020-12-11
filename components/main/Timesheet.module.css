@@ -8,13 +8,11 @@
 .header__right__add-btn {
   margin-top: auto !important;
   margin-right: 20px !important;
-  margin-bottom: 12px !important;
-  padding: 0.5em !important;
+  margin-bottom: 18px !important;
 }
 .header__right__save-btn {
   margin-top: auto !important;
-  padding: 0.5em !important;
-  margin-bottom: 12px !important;
+  margin-bottom: 18px !important;
   align-self: flex-end;
 }
 
