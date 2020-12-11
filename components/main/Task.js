@@ -514,6 +514,18 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
 
   const { promiseInProgress } = usePromiseTracker();
 
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+    },
+  };
+
+  // Set No Work
   const customStylesNoWork = {
     content: {
       top: "40%",
@@ -536,35 +548,11 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
     },
   };
 
-  const customStyles = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-    },
-  };
-
-  // const [modalNoWorkIsOpen, setModalNoWorkIsOpen] = useState(false);
-
-  const afterOpenModalNoWork = () => {
-    // references are now sync'd and can be accessed.
-    if (noWork.length === 0) {
-      document
-        .getElementById("NoWorkRecordID-NEW")
-        .classList.add(
-          "modal-no-work__wrapper-content__left__fixed-date__click"
-        );
-    }
-  };
-
   const [modalNoWork, setModalNoWork] = useState({ isOpen: false });
 
   const [modalSaveNoWork, setModalSaveNoWork] = useState({
     isOpen: false,
-    type: "",
+    Type: "",
     RecordID: 0,
     StartDate: new Date("2010/01/01"),
     FinishDate: new Date("2010/01/01"),
@@ -591,7 +579,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
     }
     setModalSaveNoWork({
       isOpen: true,
-      type: "edit",
+      Type: "edit",
       RecordID: recordID,
       StartDate,
       FinishDate,
@@ -611,7 +599,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
     }
     setModalSaveNoWork({
       isOpen: true,
-      type: "delete",
+      Type: "delete",
       RecordID: recordID,
       StartDate,
       FinishDate,
@@ -635,7 +623,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
 
     setModalSaveNoWork({
       isOpen: true,
-      type: "new",
+      Type: "new",
       RecordID: 0,
       StartDate,
       FinishDate,
@@ -647,75 +635,41 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
     setModalSaveNoWork(prevState => ({ ...prevState, isOpen: false }));
   };
 
-  // const handleStartDateOfNoWork = StartDate => {
-  //   setModalNoWork(prevState => ({ ...prevState, StartDate }));
-  // };
+  const handleStartDateOfSaveNoWork = StartDate => {
+    setModalSaveNoWork(prevState => ({ ...prevState, StartDate }));
+  };
 
-  // const handleEndDateOfNoWork = FinishDate => {
-  //   setModalNoWork(prevState => ({ ...prevState, FinishDate }));
-  // };
+  const handleEndDateOfSaveNoWork = FinishDate => {
+    setModalSaveNoWork(prevState => ({ ...prevState, FinishDate }));
+  };
 
-  // const handleClickDateOfNoWork = RecordID => {
-  //   // css
-  //   if (
-  //     document.getElementsByClassName(
-  //       "modal-no-work__wrapper-content__left__fixed-date__click"
-  //     ).length !== 0
-  //   ) {
-  //     document
-  //       .getElementsByClassName(
-  //         "modal-no-work__wrapper-content__left__fixed-date__click"
-  //       )[0]
-  //       .classList.remove(
-  //         "modal-no-work__wrapper-content__left__fixed-date__click"
-  //       );
-  //   }
+  const handleReasonOfSaveNoWork = event => {
+    const reason = event.target.value;
+    setModalSaveNoWork(prevState => ({ ...prevState, Reason: reason }));
+  };
 
-  //   document
-  //     .getElementById(`NoWorkRecordID-${RecordID}`)
-  //     .classList.add("modal-no-work__wrapper-content__left__fixed-date__click");
+  const saveNoWorkDays = type => {
+    let reason = modalSaveNoWork.Reason;
+    if (reason === "") {
+      reason = null;
+    }
 
-  //   // logic
-  //   let StartDate;
-  //   let FinishDate;
-  //   let Reason;
-  //   if (RecordID === "NEW") {
-  //     StartDate = formatDate(
-  //       new Date().toLocaleString({
-  //         timeZone: "America/Los_Angeles",
-  //       })
-  //     );
-  //     FinishDate = formatDate(
-  //       new Date().toLocaleString({
-  //         timeZone: "America/Los_Angeles",
-  //       })
-  //     );
-  //     setModalNoWork(prevState => ({
-  //       ...prevState,
-  //       RecordID,
-  //       StartDate,
-  //       FinishDate,
-  //       Reason: "",
-  //     }));
-  //   } else {
-  //     for (let i = 0; i < noWork.length; i++) {
-  //       if (noWork[i].RecordID === RecordID) {
-  //         StartDate = noWork[i].StartDate;
-  //         FinishDate = noWork[i].FinishDate;
-  //         break;
-  //       }
-  //     }
+    if (type === "new") {
+    } else if (type === "edit") {
+    } else if (type === "delete") {
+    }
+    toast.info(
+      <div className={styles["alert__complete"]}>
+        <strong>Request has been submitted.</strong>
+      </div>,
+      {
+        position: toast.POSITION.BOTTOM_CENTER,
+        hideProgressBar: true,
+      }
+    );
+  };
 
-  //     setModalNoWork(prevState => ({
-  //       ...prevState,
-  //       RecordID,
-  //       StartDate,
-  //       FinishDate,
-  //       Reason: "",
-  //     }));
-  //   }
-  // };
-
+  // Work Date
   const [modalWorkDate, setModalWorkDate] = useState({
     isOpen: false,
     Company: "",
@@ -893,11 +847,6 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
   //       hideProgressBar: true,
   //     }
   //   );
-  // };
-
-  // const handleChangeReason = event => {
-  //   const reason = event.target.value;
-  //   setModalNoWork(prevState => ({ ...prevState, Reason: reason }));
   // };
 
   return (
@@ -1082,7 +1031,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
                       styles["modal-save-no-work__wrapper-content__title"]
                     }
                   >
-                    {modalSaveNoWork.type}
+                    {modalSaveNoWork.Type}
                   </h4>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <ThemeProvider theme={themeForNoWork}>
@@ -1090,10 +1039,10 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
                         disableToolbar
                         variant="inline"
                         disabled={
-                          modalSaveNoWork.type === "delete" ? true : false
+                          modalSaveNoWork.Type === "delete" ? true : false
                         }
                         value={modalSaveNoWork.StartDate}
-                        // onChange={handleStartDateOfNoWork}
+                        onChange={handleStartDateOfSaveNoWork}
                         format="MM/dd/yyyy"
                         label="Start Date"
                         className={
@@ -1106,10 +1055,10 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
                         disableToolbar
                         variant="inline"
                         disabled={
-                          modalSaveNoWork.type === "delete" ? true : false
+                          modalSaveNoWork.Type === "delete" ? true : false
                         }
                         value={modalSaveNoWork.FinishDate}
-                        // onChange={handleEndDateOfNoWork}
+                        onChange={handleEndDateOfSaveNoWork}
                         format="MM/dd/yyyy"
                         label="End Date"
                         className={
@@ -1137,8 +1086,8 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
                       label="Reason"
                       multiline
                       rows={2}
-                      // onChange={handleChangeReason}
-                      value={modalNoWork.Reason || ""}
+                      onChange={handleReasonOfSaveNoWork}
+                      value={modalSaveNoWork.Reason || ""}
                       variant="outlined"
                       fullWidth
                       InputLabelProps={{
@@ -1154,6 +1103,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
                         "modal-save-no-work__wrapper-content__bottom__btn-save"
                       ]
                     }
+                    onClick={() => saveNoWorkDays(modalSaveNoWork.Type)}
                   >
                     SAVE
                   </Button>

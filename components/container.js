@@ -5,7 +5,7 @@ const Container = ({ employeeInfo, assignedProject, handleLogout }) => {
   // const isTabletOrMobileDevice = useMediaQuery({
   //   query: "(max-device-width: 1224px)",
   // });
-  const [tapNumber, setTapNumber] = useState(0);
+  const [tapNumber, setTapNumber] = useState(1);
   const handleChangeTabs = (event, newValue) => {
     if (newValue !== 3) {
       setTapNumber(newValue);
