@@ -993,7 +993,6 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
                     <thead>
                       <tr>
                         <td>Dates</td>
-                        <td>Request By</td>
                         <td>Reason</td>
                         <td>Edit</td>
                         <td>Delete</td>
@@ -1007,7 +1006,6 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
                               {formatDate(item.StartDate)} ~{" "}
                               {formatDate(item.FinishDate)}
                             </td>
-                            <td>{item.EmployeeName}</td>
                             <td>{item.Note}</td>
                             <td
                               className={
@@ -1058,7 +1056,6 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
                             <Button>(+) NEW</Button>
                           </div>
                         </td>
-                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>

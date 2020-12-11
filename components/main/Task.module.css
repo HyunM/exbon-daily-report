@@ -342,22 +342,19 @@
 }
 
 .modal-no-work__wrapper-table__table tbody td:nth-child(2) {
-  width: 150px;
+  width: 300px;
   text-align: left;
 }
 
 .modal-no-work__wrapper-table__table tbody td:nth-child(3) {
-  width: 300px;
-  text-align: left;
+  width: 50px;
+  text-align: center;
 }
 .modal-no-work__wrapper-table__table tbody td:nth-child(4) {
   width: 50px;
   text-align: center;
 }
-.modal-no-work__wrapper-table__table tbody td:nth-child(5) {
-  width: 50px;
-  text-align: center;
-}
+
 .modal-no-work__wrapper-btn-close {
   margin-top: 20px;
   text-align: center;
