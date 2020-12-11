@@ -44,10 +44,10 @@ const themeForNoWork = createMuiTheme({
 });
 
 const Task = ({ projectState, setProjectState, employeeInfo }) => {
-  const deleteQueue = useSelector(state => state.deleteQueue);
+  const deleteQueue = useSelector((state) => state.deleteQueue);
   const dispatch = useDispatch();
 
-  const addUpdateQueue = value =>
+  const addUpdateQueue = (value) =>
     dispatch({
       type: "ADDUPDATEQUEUE",
       addUpdateQueue: value,
@@ -129,11 +129,11 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
     // We need to keep and update the state of the cell normally
     const [value, setValue] = React.useState(initialValue);
 
-    const onChange = e => {
+    const onChange = (e) => {
       setValue(e.target.value);
     };
 
-    const onChangePercent = e => {
+    const onChangePercent = (e) => {
       if (e.nativeEvent.data) {
         if (
           e.nativeEvent.data !== "0" &&
@@ -200,7 +200,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
       }
     };
 
-    const onChangeDatePicker = e => {
+    const onChangeDatePicker = (e) => {
       setValue(e);
     };
 
@@ -209,7 +209,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
       updateMyData(index, id, value);
     };
 
-    const onBlurForCurrentWork = e => {
+    const onBlurForCurrentWork = (e) => {
       updateMyData(index, id, value);
     };
 
@@ -223,7 +223,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
       updateModalWorkDate(Company, TaskID, TaskName, StartDate, FinishDate);
     };
 
-    const preventNegativeNumber = e => {
+    const preventNegativeNumber = (e) => {
       if (e.key === "-" || e.key === "+" || e.key === ".") {
         setValue("0");
       }
@@ -303,7 +303,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
       );
     } else if (id === "CurrentWork") {
       let previousWork;
-      row.allCells.forEach(horizontalLine => {
+      row.allCells.forEach((horizontalLine) => {
         if (horizontalLine.column.Header === "Previous Work %") {
           previousWork = horizontalLine.value;
         }
@@ -354,7 +354,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
 
   const updateMyData = (rowIndex, columnId, value) => {
     // We also turn on the flag to not reset the page
-    setData(old =>
+    setData((old) =>
       old.map((row, index) => {
         if (index === rowIndex) {
           return {
@@ -389,8 +389,8 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
 
   const [selectedDate, setSelectedDate] = useState(now);
 
-  const dateCheckEditable = str => {
-    const getSunday = d => {
+  const dateCheckEditable = (str) => {
+    const getSunday = (d) => {
       d = new Date(d);
       let day = d.getDay(),
         diff = d.getDate() - day;
@@ -422,7 +422,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
     else return false;
   };
 
-  const handleDateChange = date => {
+  const handleDateChange = (date) => {
     setSelectedDate(date);
   };
 
@@ -567,7 +567,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
     setModalNoWork({ isOpen: false });
   };
 
-  const editNoWork = recordID => {
+  const editNoWork = (recordID) => {
     let StartDate;
     let FinishDate;
     for (let i = 0; i < noWork.length; i++) {
@@ -587,7 +587,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
     });
   };
 
-  const deleteNoWork = recordID => {
+  const deleteNoWork = (recordID) => {
     let StartDate;
     let FinishDate;
     for (let i = 0; i < noWork.length; i++) {
@@ -632,31 +632,88 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
   };
 
   const closeModalSaveNoWork = () => {
-    setModalSaveNoWork(prevState => ({ ...prevState, isOpen: false }));
+    setModalSaveNoWork((prevState) => ({ ...prevState, isOpen: false }));
   };
 
-  const handleStartDateOfSaveNoWork = StartDate => {
-    setModalSaveNoWork(prevState => ({ ...prevState, StartDate }));
+  const handleStartDateOfSaveNoWork = (StartDate) => {
+    setModalSaveNoWork((prevState) => ({ ...prevState, StartDate }));
   };
 
-  const handleEndDateOfSaveNoWork = FinishDate => {
-    setModalSaveNoWork(prevState => ({ ...prevState, FinishDate }));
+  const handleEndDateOfSaveNoWork = (FinishDate) => {
+    setModalSaveNoWork((prevState) => ({ ...prevState, FinishDate }));
   };
 
-  const handleReasonOfSaveNoWork = event => {
+  const handleReasonOfSaveNoWork = (event) => {
     const reason = event.target.value;
-    setModalSaveNoWork(prevState => ({ ...prevState, Reason: reason }));
+    setModalSaveNoWork((prevState) => ({ ...prevState, Reason: reason }));
   };
 
-  const saveNoWorkDays = type => {
+  const saveNoWorkDays = (type) => {
     let reason = modalSaveNoWork.Reason;
     if (reason === "") {
       reason = null;
     }
 
     if (type === "new") {
+      const fetchData = async () => {
+        let result = await axios({
+          method: "POST",
+          url: `/api/project-date-change-request`,
+          timeout: 5000, // 5 seconds timeout
+          headers: {},
+          data: {
+            EmployeeID: employeeInfo.EmployeeID,
+            ProjectID: projectState,
+            RequestType: "No Work",
+            RequestID: null,
+            StartDate: modalSaveNoWork.StartDate,
+            EndDate: modalSaveNoWork.FinishDate,
+            Reason: reason,
+          },
+        });
+      };
+
+      fetchData();
     } else if (type === "edit") {
+      const fetchData = async () => {
+        let result = await axios({
+          method: "POST",
+          url: `/api/project-date-change-request`,
+          timeout: 5000, // 5 seconds timeout
+          headers: {},
+          data: {
+            EmployeeID: employeeInfo.EmployeeID,
+            ProjectID: projectState,
+            RequestType: "No Work Modify",
+            RequestID: modalSaveNoWork.RecordID,
+            StartDate: modalSaveNoWork.StartDate,
+            EndDate: modalSaveNoWork.FinishDate,
+            Reason: reason,
+          },
+        });
+      };
+
+      fetchData();
     } else if (type === "delete") {
+      const fetchData = async () => {
+        let result = await axios({
+          method: "POST",
+          url: `/api/project-date-change-request`,
+          timeout: 5000, // 5 seconds timeout
+          headers: {},
+          data: {
+            EmployeeID: employeeInfo.EmployeeID,
+            ProjectID: projectState,
+            RequestType: "No Work Delete",
+            RequestID: modalSaveNoWork.RecordID,
+            StartDate: modalSaveNoWork.StartDate,
+            EndDate: modalSaveNoWork.FinishDate,
+            Reason: reason,
+          },
+        });
+      };
+
+      fetchData();
     }
     toast.info(
       <div className={styles["alert__complete"]}>
@@ -667,6 +724,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
         hideProgressBar: true,
       }
     );
+    setModalSaveNoWork((prevState) => ({ ...prevState, isOpen: false }));
   };
 
   // Work Date
@@ -684,15 +742,15 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
   };
 
   const closeModalWorkDate = () => {
-    setModalWorkDate(prevState => ({ ...prevState, isOpen: false }));
+    setModalWorkDate((prevState) => ({ ...prevState, isOpen: false }));
   };
 
-  const handleStartDateOfWorkDate = StartDate => {
-    setModalWorkDate(prevState => ({ ...prevState, StartDate }));
+  const handleStartDateOfWorkDate = (StartDate) => {
+    setModalWorkDate((prevState) => ({ ...prevState, StartDate }));
   };
 
-  const handleEndDateOfWorkDate = FinishDate => {
-    setModalWorkDate(prevState => ({ ...prevState, FinishDate }));
+  const handleEndDateOfWorkDate = (FinishDate) => {
+    setModalWorkDate((prevState) => ({ ...prevState, FinishDate }));
   };
 
   const updateModalWorkDate = (
@@ -920,9 +978,9 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
                 style={customStylesNoWork}
                 className={styles["modal-no-work"]}
               >
-                <p className={styles["test"]}>
+                {/* <p className={styles["test"]}>
                   (This is a test, so NOT working yet. )
-                </p>
+                </p> */}
                 <div className={styles["modal-no-work__wrapper-title"]}>
                   <h4 className={styles["modal-no-work__wrapper-title__title"]}>
                     Set No Work Days
@@ -942,7 +1000,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
                       </tr>
                     </thead>
                     <tbody>
-                      {noWork.map(item => {
+                      {noWork.map((item) => {
                         return (
                           <tr key={item.RecordID}>
                             <td>
@@ -1336,9 +1394,9 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
           <div className={styles["table"]}>
             <table {...getTableProps()}>
               <thead>
-                {headerGroups.map(headerGroup => (
+                {headerGroups.map((headerGroup) => (
                   <tr {...headerGroup.getHeaderGroupProps()}>
-                    {headerGroup.headers.map(column => (
+                    {headerGroup.headers.map((column) => (
                       <td {...column.getHeaderProps()}>
                         {column.render("Header")}
                       </td>
@@ -1351,7 +1409,7 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
                   prepareRow(row);
                   return (
                     <tr {...row.getRowProps()} className={styles["table__row"]}>
-                      {row.cells.map(cell => {
+                      {row.cells.map((cell) => {
                         return (
                           <td {...cell.getCellProps()}>
                             {cell.render("Cell")}
