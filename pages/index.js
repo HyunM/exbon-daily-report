@@ -177,6 +177,7 @@ const index = () => {
                   id="username"
                   label="Username"
                   name="username"
+                  onKeyPress={handleKeyPress}
                   autoFocus
                 />
                 <TextField
