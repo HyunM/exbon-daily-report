@@ -21,7 +21,6 @@ import InputMask from "react-input-mask";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { formatDate } from "./formatDate";
-import { employeeAll } from "./Employee";
 import Autocomplete from "react-autocomplete";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -33,6 +32,8 @@ import Loader from "react-loader-spinner";
 
 toast.configure();
 let afterSundayCheck = true;
+
+let dataEmployees;
 
 const convertInputToTime = (time) => {
   let match = inputTime.filter((data) => data.input === time);
@@ -191,7 +192,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
   );
 
   const [data, setData] = useState(() => []);
-  const [dataEmployees, setDataEmployees] = useState(() => []);
+  // const [dataEmployees, setDataEmployees] = useState(() => []);
 
   // Create an editable cell renderer
   const EditableCell = ({
@@ -283,8 +284,8 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
     };
 
     const onBlurForEmployee = (e) => {
-      let employee = employeeAll.find(
-        (employee) => value === employee.FirstName + " " + employee.LastName
+      let employee = dataEmployees.find(
+        (employee) => value === employee.EmployeeName
       );
       if (employee) {
         updateEmployeeData(index, id, value);
@@ -411,20 +412,18 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
     } else if (id === "EmployeeName") {
       return (
         <Autocomplete
-          getItemValue={(item) => item.FirstName + " " + item.LastName}
-          items={employeeAll}
+          getItemValue={(item) => item.EmployeeName}
+          items={dataEmployees}
           renderItem={(item, isHighlighted) => (
             <div
               key={item.EmployeeID}
               style={{ background: isHighlighted ? "lightgray" : "white" }}
             >
-              {item.FirstName + " " + item.LastName}
+              {item.EmployeeName}
             </div>
           )}
           shouldItemRender={(item, value) =>
-            (item.FirstName + " " + item.LastName)
-              .toLowerCase()
-              .indexOf(value.toLowerCase()) > -1
+            item.EmployeeName.toLowerCase().indexOf(value.toLowerCase()) > -1
           }
           value={value}
           onChange={onChange}
@@ -526,8 +525,8 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
   };
 
   const convertEmployeeNameToID = (name) => {
-    let employee = employeeAll.find(
-      (employee) => name === employee.FirstName + " " + employee.LastName
+    let employee = dataEmployees.find(
+      (employee) => name === employee.EmployeeName
     );
     if (employee) {
       return employee.EmployeeID;
@@ -564,7 +563,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
         EmployeeID: 0,
         EmployeeName: "",
         Date: formatDate(selectedDate),
-        Position: "Project Manager",
+        Position: "Director",
         WorkStart: data[0] !== undefined ? data[0].WorkStart : "07:00AM",
         MealStart: data[0] !== undefined ? data[0].MealStart : "12:00PM",
         MealEnd: data[0] !== undefined ? data[0].MealEnd : "01:00PM",
@@ -626,7 +625,7 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
         setCheckState(false);
       }
       setData(result.data.result[0]);
-      setDataEmployees(result.data.result[1]);
+      dataEmployees = result.data.result[1];
     };
 
     trackPromise(fetchData());
