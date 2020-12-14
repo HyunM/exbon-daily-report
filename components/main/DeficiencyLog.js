@@ -18,7 +18,12 @@ import Loader from "react-loader-spinner";
 
 toast.configure();
 
-const DeficiencyLog = ({ projectState, setProjectState, employeeInfo }) => {
+const DeficiencyLog = ({
+  projectState,
+  setProjectState,
+  employeeInfo,
+  setPreviousProject,
+}) => {
   const [data, setData] = useState(() => []);
 
   useEffect(() => {
@@ -34,6 +39,8 @@ const DeficiencyLog = ({ projectState, setProjectState, employeeInfo }) => {
     };
 
     trackPromise(fetchData());
+
+    setPreviousProject(projectState);
   }, []);
 
   const today = new Date()

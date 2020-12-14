@@ -43,7 +43,12 @@ const themeForNoWork = createMuiTheme({
   },
 });
 
-const Task = ({ projectState, setProjectState, employeeInfo }) => {
+const Task = ({
+  projectState,
+  setProjectState,
+  employeeInfo,
+  setPreviousProject,
+}) => {
   const deleteQueue = useSelector((state) => state.deleteQueue);
   const dispatch = useDispatch();
 
@@ -505,6 +510,8 @@ const Task = ({ projectState, setProjectState, employeeInfo }) => {
       });
 
       setNoWork(result2.data);
+
+      setPreviousProject(projectState);
     };
 
     trackPromise(fetchData());

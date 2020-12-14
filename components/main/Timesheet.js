@@ -43,7 +43,12 @@ const convertInputToTime = (time) => {
   return match[0].time;
 };
 
-const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
+const Timesheet = ({
+  projectState,
+  setProjectState,
+  employeeInfo,
+  setPreviousProject,
+}) => {
   const getSunday = (d) => {
     d = new Date(d);
     let day = d.getDay(),
@@ -631,6 +636,8 @@ const Timesheet = ({ projectState, setProjectState, employeeInfo }) => {
     trackPromise(fetchData());
     initializeDeleteQueue();
     initializeUpdateQueue();
+
+    setPreviousProject(projectState);
   }, [selectedDate]);
 
   useEffect(() => {

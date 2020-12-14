@@ -21,6 +21,9 @@ const TabsOfBoth = ({
   handleLogout,
 }) => {
   const [projectState, setProjectState] = useState(0);
+  const [previousProject, setPreviousProject] = useState(
+    assignedProject[0].ProjectID
+  );
   const handleProjectState = () => {
     setProjectState(document.getElementById("select-project").value);
   };
@@ -103,6 +106,7 @@ const TabsOfBoth = ({
             <select
               id="select-project"
               className={styles["wrapper-select-project__select-project"]}
+              defaultValue={previousProject}
             >
               {assignedProject.map((item) => {
                 return <option key={item.ProjectID}>{item.ProjectID}</option>;
@@ -176,6 +180,7 @@ const TabsOfBoth = ({
               projectState={projectState}
               setProjectState={toZeroProjectState}
               employeeInfo={employeeInfo}
+              setPreviousProject={setPreviousProject}
             />
           </TabPanel>
           <TabPanel tapNumber={tapNumber} index={1}>
@@ -183,6 +188,7 @@ const TabsOfBoth = ({
               projectState={projectState}
               setProjectState={toZeroProjectState}
               employeeInfo={employeeInfo}
+              setPreviousProject={setPreviousProject}
             />
           </TabPanel>
           <TabPanel tapNumber={tapNumber} index={2}>
@@ -190,6 +196,7 @@ const TabsOfBoth = ({
               projectState={projectState}
               setProjectState={toZeroProjectState}
               employeeInfo={employeeInfo}
+              setPreviousProject={setPreviousProject}
             />
           </TabPanel>
         </>
