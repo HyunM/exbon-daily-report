@@ -22,7 +22,7 @@ const TabsOfBoth = ({
 }) => {
   const [projectState, setProjectState] = useState(0);
   const [previousProject, setPreviousProject] = useState(
-    assignedProject[0].ProjectID
+    assignedProject[0] ? assignedProject[0].ProjectID : ""
   );
   const handleProjectState = () => {
     setProjectState(document.getElementById("select-project").value);
