@@ -12,7 +12,7 @@ import styles from "./TabsOfBoth.module.css";
 import { Button } from "@material-ui/core";
 import Popover from "@material-ui/core/Popover";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-
+import EventIcon from "@material-ui/icons/Event";
 const TabsOfBoth = ({
   tapNumber,
   handleChangeTabs,
@@ -89,6 +89,12 @@ const TabsOfBoth = ({
                   horizontal: "center",
                 }}
               >
+                <div className={styles["wrapper-schedule"]}>
+                  <EventIcon />
+                  <Button className={styles["wrapper-schedule__btn"]}>
+                    Schedule
+                  </Button>
+                </div>
                 <div
                   className={styles["wrapper-logout"]}
                   onClick={handleLogout}

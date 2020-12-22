@@ -50,8 +50,23 @@
   display: flex;
   cursor: pointer;
   color: cornflowerblue;
+  padding: 0.2rem;
 }
-
+.wrapper-logout:hover {
+  background-color: #e0d4dc;
+}
+.wrapper-schedule {
+  display: flex;
+  cursor: pointer;
+  color: cornflowerblue;
+  padding: 0.2rem;
+}
+.wrapper-schedule:hover {
+  background-color: #e0d4dc;
+}
+.wrapper-schedule__btn {
+  padding: 0 !important;
+}
 .wrapper-logout__btn {
   padding: 0 !important;
 }
