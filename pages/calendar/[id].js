@@ -32,7 +32,13 @@ const calendar = () => {
         formatDate(info.event._instance.range.start) +
         "<br/>" +
         "End Date : " +
-        formatDate(info.event._instance.range.end)
+        formatDate(info.event._instance.range.end) +
+        "<br/>" +
+        "Project Start Date : " +
+        formatDate(info.event.extendedProps.projectStart) +
+        "<br/>" +
+        "Project End Date : " +
+        formatDate(info.event.extendedProps.projectEnd)
     );
 
     ReactTooltip.rebuild();
