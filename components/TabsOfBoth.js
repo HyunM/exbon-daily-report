@@ -42,6 +42,12 @@ const TabsOfBoth = ({
     setAnchorEl(null);
   };
 
+  const handleSchedule = () => {
+    window.open(
+      `https://dailyreport.exbon.com/calendar/${employeeInfo.EmployeeID}`
+    );
+  };
+
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
   return (
@@ -89,7 +95,10 @@ const TabsOfBoth = ({
                   horizontal: "center",
                 }}
               >
-                <div className={styles["wrapper-schedule"]}>
+                <div
+                  className={styles["wrapper-schedule"]}
+                  onClick={handleSchedule}
+                >
                   <EventIcon />
                   &emsp;
                   <Button className={styles["wrapper-schedule__btn"]}>
