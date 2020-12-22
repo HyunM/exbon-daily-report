@@ -16,7 +16,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import Head from "next/head";
 
 const calendar = () => {
-  const handleEventPositioned = info => {
+  const handleEventPositioned = (info) => {
     info.el.setAttribute(
       "data-tip",
       "Project ID : " +
@@ -89,7 +89,7 @@ const calendar = () => {
           <div
             style={{
               width: "100%",
-              height: "100",
+              height: "100%",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
@@ -101,7 +101,7 @@ const calendar = () => {
           <>
             <FullCalendar
               plugins={[dayGridPlugin]}
-              height="750px"
+              height="950px"
               initialView="dayGridMonth"
               events={data}
               dayMaxEventRows={100}

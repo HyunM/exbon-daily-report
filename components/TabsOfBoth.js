@@ -44,7 +44,7 @@ const TabsOfBoth = ({
 
   const handleSchedule = () => {
     window.open(
-      `https://dailyreport.exbon.com/calendar/${employeeInfo.EmployeeID}`
+      `${location.protocol}//${location.host}/calendar/${employeeInfo.EmployeeID}`
     );
   };
 
@@ -181,10 +181,21 @@ const TabsOfBoth = ({
                 }}
               >
                 <div
+                  className={styles["wrapper-schedule"]}
+                  onClick={handleSchedule}
+                >
+                  <EventIcon />
+                  &emsp;
+                  <Button className={styles["wrapper-schedule__btn"]}>
+                    Schedule
+                  </Button>
+                </div>
+                <div
                   className={styles["wrapper-logout"]}
                   onClick={handleLogout}
                 >
                   <ExitToAppIcon />
+                  &emsp;
                   <Button className={styles["wrapper-logout__btn"]}>
                     Logout
                   </Button>
