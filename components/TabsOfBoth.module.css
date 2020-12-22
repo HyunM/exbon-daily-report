@@ -50,7 +50,7 @@
   display: flex;
   cursor: pointer;
   color: cornflowerblue;
-  padding: 0.2rem;
+  padding: 0.5rem;
 }
 .wrapper-logout:hover {
   background-color: #e0d4dc;
@@ -58,8 +58,8 @@
 .wrapper-schedule {
   display: flex;
   cursor: pointer;
-  color: cornflowerblue;
-  padding: 0.2rem;
+  color: rgb(142, 78, 184);
+  padding: 0.5rem;
 }
 .wrapper-schedule:hover {
   background-color: #e0d4dc;

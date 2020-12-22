@@ -91,6 +91,7 @@ const TabsOfBoth = ({
               >
                 <div className={styles["wrapper-schedule"]}>
                   <EventIcon />
+                  &nbsp;&nbsp;&nbsp;
                   <Button className={styles["wrapper-schedule__btn"]}>
                     Schedule
                   </Button>
@@ -100,6 +101,7 @@ const TabsOfBoth = ({
                   onClick={handleLogout}
                 >
                   <ExitToAppIcon />
+                  &nbsp;&nbsp;&nbsp;
                   <Button className={styles["wrapper-logout__btn"]}>
                     Logout
                   </Button>
