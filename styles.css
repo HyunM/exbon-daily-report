@@ -16,7 +16,7 @@
 }
 body {
   /* background-color: rgb(255, 255, 255); */
-  background-color: rgb(240, 240, 245);
+  background-color: rgba(240, 240, 245);
 }
 .table__time-wrapper__target-disabled--disabled {
   opacity: 0.4;

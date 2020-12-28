@@ -1,3 +1,16 @@
+.body {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  /* background: linear-gradient(to top, black, grey); */
+  box-shadow: 0px 0px 30px 10px rgb(163, 165, 180) inset;
+  /* background-color: rgb(217, 215, 228); */
+  background-image: url("./loginBackground.jpg");
+  background-size: 100%;
+}
+
 .mainDiv {
   width: 250px;
   margin-left: auto;
@@ -6,7 +19,7 @@
   background-color: white;
   padding: 5%;
   border-radius: 10px;
-  box-shadow: 5px 5px 10px 10px rgb(221, 217, 217);
+  box-shadow: 3px 3px 20px 10px rgb(221, 217, 217);
 }
 
 .wrapper-upper {

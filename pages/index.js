@@ -26,7 +26,7 @@ const Copyright = () => {
   );
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
     display: "flex",
@@ -70,7 +70,7 @@ const index = () => {
         Username: username,
         Password: password,
       },
-    }).then(response => {
+    }).then((response) => {
       if (response.data.result.recordsets[0].length === 0) {
         alert("Login failed.");
       } else {
@@ -109,7 +109,7 @@ const index = () => {
         Username: username,
         Password: password,
       },
-    }).then(response => {
+    }).then((response) => {
       setCookie("username", username, { path: "/", maxAge: 3600 * 12 });
       setCookie("password", password, { path: "/", maxAge: 3600 * 12 });
       setLogin({
@@ -128,7 +128,7 @@ const index = () => {
     }
   }, []);
 
-  const handleKeyPress = event => {
+  const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       handleSignIn();
     }
@@ -154,7 +154,7 @@ const index = () => {
         ) : !openLoginFormstate ? (
           <></>
         ) : (
-          <>
+          <div className={styles["body"]}>
             <div className={styles["mainDiv"]}>
               <div className={styles["wrapper-upper"]}>
                 <Avatar className={classes.avatar}>
@@ -207,7 +207,7 @@ const index = () => {
             <Box mt={8}>
               <Copyright />
             </Box>
-          </>
+          </div>
         )}
       </CookiesProvider>
     </>
