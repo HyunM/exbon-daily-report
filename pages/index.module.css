@@ -8,7 +8,8 @@
   box-shadow: 0px 0px 30px 10px rgb(163, 165, 180) inset;
   /* background-color: rgb(217, 215, 228); */
   background-image: url("./loginBackground.jpg");
-  background-size: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .mainDiv {
