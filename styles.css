@@ -16,7 +16,9 @@
 }
 body {
   /* background-color: rgb(255, 255, 255); */
-  background-color: rgba(240, 240, 245);
+  background-image: url("./backgroundImage.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 .table__time-wrapper__target-disabled--disabled {
   opacity: 0.4;
@@ -28,6 +30,14 @@ body {
 
 .MuiDropzoneArea-root {
   min-height: 160px !important;
+}
+
+.MuiTableCell-root {
+  border-top: 1px solid rgba(224, 224, 224, 1);
+}
+.MuiPaper-elevation1 {
+  box-shadow: 2px 2px 3px -1px rgba(0, 0, 0, 0.2),
+    1px 2px 5px 5px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
 }
 
 .fc-more-popover {

@@ -110,6 +110,7 @@
 
 .table {
   overflow: auto;
+  border: rgb(139, 94, 9) !important;
 }
 
 /* .table table {
