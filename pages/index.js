@@ -74,8 +74,8 @@ const index = () => {
       if (response.data.result.recordsets[0].length === 0) {
         alert("Login failed.");
       } else {
-        setCookie("username", username, { path: "/", maxAge: 3600 * 12 });
-        setCookie("password", password, { path: "/", maxAge: 3600 * 12 });
+        setCookie("username", username, { path: "/", maxAge: 3600 * 24 * 30 });
+        setCookie("password", password, { path: "/", maxAge: 3600 * 24 * 30 });
         setLogin({
           isLogin: true,
           employeeInfo: response.data.result.recordsets[0],
