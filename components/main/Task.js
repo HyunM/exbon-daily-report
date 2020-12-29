@@ -977,6 +977,7 @@ const Task = ({
                   onChange={handleDateChange}
                   className={styles["header__right__date-picker"]}
                   autoOk={true}
+                  okLabel=""
                 />
               </MuiPickersUtilsProvider>
               <p className={styles["header__right__label-date-picker"]}>Date</p>
