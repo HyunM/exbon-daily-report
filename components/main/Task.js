@@ -976,6 +976,7 @@ const Task = ({
                   value={selectedDate}
                   onChange={handleDateChange}
                   className={styles["header__right__date-picker"]}
+                  autoOk={true}
                 />
               </MuiPickersUtilsProvider>
               <p className={styles["header__right__label-date-picker"]}>Date</p>
@@ -1112,6 +1113,7 @@ const Task = ({
                             "modal-save-no-work__wrapper-content__start-date"
                           ]
                         }
+                        autoOk={true}
                       />
                       <DatePicker
                         disableToolbar
@@ -1128,6 +1130,7 @@ const Task = ({
                             "modal-save-no-work__wrapper-content__end-date"
                           ]
                         }
+                        autoOk={true}
                       />
                     </ThemeProvider>
                   </MuiPickersUtilsProvider>
@@ -1469,6 +1472,7 @@ const Task = ({
                 className={
                   styles["modal-work-date__wrapper-date-picker__start-date"]
                 }
+                autoOk={true}
               />
               <DatePicker
                 disableToolbar
@@ -1480,6 +1484,7 @@ const Task = ({
                 className={
                   styles["modal-work-date__wrapper-date-picker__end-date"]
                 }
+                autoOk={true}
               />
             </ThemeProvider>
           </MuiPickersUtilsProvider>

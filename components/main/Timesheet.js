@@ -899,6 +899,7 @@ const Timesheet = ({
                   value={selectedDate}
                   onChange={handleDateChange}
                   className={styles["header__right__date-picker"]}
+                  autoOk={true}
                 />
               </MuiPickersUtilsProvider>
               <p className={styles["header__right__label-date-picker"]}>Date</p>
