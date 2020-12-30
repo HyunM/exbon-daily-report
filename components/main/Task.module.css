@@ -208,14 +208,15 @@
   font-size: 0.95rem;
 }
 
-.table__date-wrapper {
+.table__start-date-wrapper {
   display: table;
   height: 100%;
   margin: auto;
 }
 
-.table__date-wrapper__data {
+.table__start-date-wrapper__data {
   font-size: 0.85rem;
+  text-decoration: underline;
   text-align: center;
   vertical-align: middle;
   display: table-cell;
@@ -223,11 +224,62 @@
   transition: all 0.1s linear;
 }
 
-.table__date-wrapper__data:hover {
+.table__start-date-wrapper__data:hover {
   transform: scale(1.1);
   color: black;
   font-weight: bold;
   cursor: pointer;
+}
+
+.table__finish-date-wrapper {
+  display: table;
+  height: 100%;
+  margin: auto;
+}
+
+.table__finish-date-wrapper__data {
+  font-size: 0.85rem;
+  text-decoration: underline;
+  text-align: center;
+  vertical-align: middle;
+  display: table-cell;
+  color: rgb(116, 100, 110);
+  transition: all 0.1s linear;
+}
+
+.table__finish-date-wrapper__data:hover {
+  transform: scale(1.1);
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.table__req-start-date-wrapper {
+  display: table;
+  height: 100%;
+  margin: auto;
+}
+
+.table__req-start-date-wrapper__data {
+  font-size: 0.85rem;
+  text-align: center;
+  vertical-align: middle;
+  display: table-cell;
+  color: rgb(116, 100, 110);
+}
+
+.table__req-finish-date-wrapper {
+  display: table;
+  height: 100%;
+  margin: auto;
+}
+
+.table__req-finish-date-wrapper__data {
+  font-size: 0.85rem;
+  text-align: center;
+  vertical-align: middle;
+  display: table-cell;
+  color: rgb(116, 100, 110);
 }
 
 .table__previous-work-wrapper {
@@ -415,6 +467,10 @@
 
 /* work-date */
 
+.modal-start-date__wrapper {
+  padding: 30px;
+}
+
 .modal-start-date__wrapper-title {
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
@@ -423,24 +479,33 @@
   color: #647be2;
   margin-top: 0;
 }
+
+.modal-start-date__wrapper-date-picker__label {
+  text-align: center;
+  font-family: "Roboto";
+  color: #534f51;
+  margin-bottom: 0;
+}
 .modal-start-date__wrapper-date-picker__start-date {
-  margin-left: 16% !important;
-  width: 30% !important;
+  margin-left: 20% !important;
+  width: 120px !important;
+  font-size: large;
+  margin-top: 0;
 }
 
-.modal-start-date__wrapper-date-picker__end-date {
-  margin-left: 10% !important;
-  width: 30% !important;
+.modal-start-date__wrapper-date-picker__start-date input {
+  text-align: center;
 }
 
 .modal-start-date__wrapper-btn {
-  margin-top: 10%;
+  margin-top: 20%;
+  display: flex;
+  justify-content: center;
 }
 
 .modal-start-date__wrapper-btn__btn-request {
   background-color: #1cd3a2 !important;
   color: white !important;
-  margin-left: 25% !important;
 }
 
 .modal-start-date__wrapper-btn__btn-cancel {

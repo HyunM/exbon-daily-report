@@ -296,9 +296,9 @@ const Task = ({
       );
     } else if (id === "StartDate") {
       return (
-        <div className={styles["table__date-wrapper"]}>
+        <div className={styles["table__start-date-wrapper"]}>
           <span
-            className={styles["table__date-wrapper__data"]}
+            className={styles["table__start-date-wrapper__data"]}
             onClick={() =>
               handleModalWorkDate(
                 row.original.Company,
@@ -315,9 +315,9 @@ const Task = ({
       );
     } else if (id === "FinishDate") {
       return (
-        <div className={styles["table__date-wrapper"]}>
+        <div className={styles["table__finish-date-wrapper"]}>
           <span
-            className={styles["table__date-wrapper__data"]}
+            className={styles["table__finish-date-wrapper__data"]}
             onClick={() =>
               handleModalWorkDate(
                 row.original.Company,
@@ -334,38 +334,16 @@ const Task = ({
       );
     } else if (id === "ReqStartDate") {
       return (
-        <div className={styles["table__date-wrapper"]}>
-          <span
-            className={styles["table__date-wrapper__data"]}
-            onClick={() =>
-              handleModalWorkDate(
-                row.original.Company,
-                row.original.TaskID,
-                row.original.TaskName,
-                row.original.StartDate,
-                row.original.FinishDate
-              )
-            }
-          >
+        <div className={styles["table__req-start-date-wrapper"]}>
+          <span className={styles["table__req-start-date-wrapper__data"]}>
             {value}
           </span>
         </div>
       );
     } else if (id === "ReqFinishDate") {
       return (
-        <div className={styles["table__date-wrapper"]}>
-          <span
-            className={styles["table__date-wrapper__data"]}
-            onClick={() =>
-              handleModalWorkDate(
-                row.original.Company,
-                row.original.TaskID,
-                row.original.TaskName,
-                row.original.StartDate,
-                row.original.FinishDate
-              )
-            }
-          >
+        <div className={styles["table__req-finish-date-wrapper"]}>
+          <span className={styles["table__req-finish-date-wrapper__data"]}>
             {value}
           </span>
         </div>
@@ -1513,74 +1491,70 @@ const Task = ({
         contentLabel="Example Modal"
         className={styles["modal-start-date"]}
       >
-        <div className={styles["modal-start-date__wrapper-title"]}>
-          <h4 className={styles["modal-start-date__wrapper-title__title"]}>
-            Change Task Date
-          </h4>
-          <h4
-            className={
-              styles["modal-start-date__wrapper-title__sub-title-task-name"]
-            }
-          >
-            {modalWorkDate.TaskName}
-          </h4>
-          <h5
-            className={
-              styles["modal-start-date__wrapper-title__sub-title-company-name"]
-            }
-          >
-            by {modalWorkDate.Company}
-          </h5>
+        <div className={styles["modal-start-date__wrapper"]}>
+          <div className={styles["modal-start-date__wrapper-title"]}>
+            <h4 className={styles["modal-start-date__wrapper-title__title"]}>
+              Change Task Date
+            </h4>
+            <h4
+              className={
+                styles["modal-start-date__wrapper-title__sub-title-task-name"]
+              }
+            >
+              {modalWorkDate.TaskName}
+            </h4>
+            <h5
+              className={
+                styles[
+                  "modal-start-date__wrapper-title__sub-title-company-name"
+                ]
+              }
+            >
+              by {modalWorkDate.Company}
+            </h5>
+          </div>
+          <div className={styles["modal-start-date__wrapper-date-picker"]}>
+            <h4
+              className={styles["modal-start-date__wrapper-date-picker__label"]}
+            >
+              Start Date
+            </h4>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <ThemeProvider theme={themeForWorkDate}>
+                <DatePicker
+                  disableToolbar
+                  variant="inline"
+                  value={modalWorkDate.StartDate}
+                  onChange={handleStartDateOfWorkDate}
+                  format="MM/dd/yyyy"
+                  className={
+                    styles["modal-start-date__wrapper-date-picker__start-date"]
+                  }
+                  autoOk={true}
+                />
+              </ThemeProvider>
+            </MuiPickersUtilsProvider>
+          </div>
+          <div className={styles["modal-start-date__wrapper-btn"]}>
+            <Button
+              variant="contained"
+              size="small"
+              onClick={requestModalWorkDate}
+              className={styles["modal-start-date__wrapper-btn__btn-request"]}
+            >
+              Request
+            </Button>
+            <Button
+              variant="contained"
+              size="small"
+              onClick={closeModalWorkDate}
+              className={styles["modal-start-date__wrapper-btn__btn-cancel"]}
+            >
+              Cancel
+            </Button>
+          </div>
+          {/* <p className={styles["test"]}>(This is a test, so NOT working yet. )</p> */}
         </div>
-        <div className={styles["modal-start-date__wrapper-date-picker"]}>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <ThemeProvider theme={themeForWorkDate}>
-              <DatePicker
-                disableToolbar
-                variant="inline"
-                value={modalWorkDate.StartDate}
-                onChange={handleStartDateOfWorkDate}
-                format="MM/dd/yyyy"
-                label="Start Date"
-                className={
-                  styles["modal-start-date__wrapper-date-picker__start-date"]
-                }
-                autoOk={true}
-              />
-              <DatePicker
-                disableToolbar
-                variant="inline"
-                value={modalWorkDate.FinishDate}
-                onChange={handleEndDateOfWorkDate}
-                format="MM/dd/yyyy"
-                label="End Date"
-                className={
-                  styles["modal-start-date__wrapper-date-picker__end-date"]
-                }
-                autoOk={true}
-              />
-            </ThemeProvider>
-          </MuiPickersUtilsProvider>
-        </div>
-        <div className={styles["modal-start-date__wrapper-btn"]}>
-          <Button
-            variant="contained"
-            size="small"
-            onClick={requestModalWorkDate}
-            className={styles["modal-start-date__wrapper-btn__btn-request"]}
-          >
-            Request
-          </Button>
-          <Button
-            variant="contained"
-            size="small"
-            onClick={closeModalWorkDate}
-            className={styles["modal-start-date__wrapper-btn__btn-cancel"]}
-          >
-            Cancel
-          </Button>
-        </div>
-        {/* <p className={styles["test"]}>(This is a test, so NOT working yet. )</p> */}
       </Modal>
     </div>
   );
