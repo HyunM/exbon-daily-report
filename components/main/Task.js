@@ -1051,6 +1051,7 @@ const Task = ({
                   >
                     <thead>
                       <tr>
+                        <td>Status</td>
                         <td>Dates</td>
                         <td>Reason</td>
                         <td>Edit</td>
@@ -1061,11 +1062,12 @@ const Task = ({
                       {noWork.map((item) => {
                         return (
                           <tr key={item.RecordID}>
+                            <td className={styles["approval"]}>Approval</td>
                             <td>
                               {formatDate(item.StartDate)} ~{" "}
                               {formatDate(item.FinishDate)}
                             </td>
-                            <td>{item.Note}</td>
+                            <td>&nbsp;{item.Note}</td>
                             <td
                               className={
                                 styles[
@@ -1103,6 +1105,24 @@ const Task = ({
                       })}
 
                       <tr>
+                        <td className={styles["pending"]}>Pending</td>
+                        <td>12/30/2020 ~ 12/31/2020</td>
+                        <td>&nbsp;New year's eve.</td>
+                        <td></td>
+                        <td>
+                          <EditTwoToneIcon className={styles["forPadding"]} />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className={styles["pending"]}>Pending</td>
+                        <td>2/1/2021 ~ 2/3/2021</td>
+                        <td>&nbsp;Business trip</td>
+                        <td></td>
+                        <td>
+                          <EditTwoToneIcon className={styles["forPadding"]} />
+                        </td>
+                      </tr>
+                      <tr>
                         <td>
                           <div
                             className={
@@ -1115,6 +1135,7 @@ const Task = ({
                             <Button>(+) NEW</Button>
                           </div>
                         </td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -1520,19 +1541,29 @@ const Task = ({
               Start Date
             </h4>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <ThemeProvider theme={themeForWorkDate}>
-                <DatePicker
-                  disableToolbar
-                  variant="inline"
-                  value={modalWorkDate.StartDate}
-                  onChange={handleStartDateOfWorkDate}
-                  format="MM/dd/yyyy"
-                  className={
-                    styles["modal-start-date__wrapper-date-picker__start-date"]
-                  }
-                  autoOk={true}
-                />
-              </ThemeProvider>
+              <div
+                className={
+                  styles[
+                    "modal-start-date__wrapper-date-picker__wrapper-start-date"
+                  ]
+                }
+              >
+                <ThemeProvider theme={themeForWorkDate}>
+                  <DatePicker
+                    disableToolbar
+                    variant="inline"
+                    value={modalWorkDate.StartDate}
+                    onChange={handleStartDateOfWorkDate}
+                    format="MM/dd/yyyy"
+                    className={
+                      styles[
+                        "modal-start-date__wrapper-date-picker__start-date"
+                      ]
+                    }
+                    autoOk={true}
+                  />
+                </ThemeProvider>
+              </div>
             </MuiPickersUtilsProvider>
           </div>
           <div className={styles["modal-start-date__wrapper-btn"]}>

@@ -402,20 +402,24 @@
 }
 
 .modal-no-work__wrapper-table__table tbody td:nth-child(1) {
-  width: 200px;
+  width: 100px;
   text-align: center;
 }
 
 .modal-no-work__wrapper-table__table tbody td:nth-child(2) {
-  width: 300px;
-  text-align: left;
+  width: 200px;
+  text-align: center;
 }
 
 .modal-no-work__wrapper-table__table tbody td:nth-child(3) {
+  width: 300px;
+  text-align: left;
+}
+.modal-no-work__wrapper-table__table tbody td:nth-child(4) {
   width: 50px;
   text-align: center;
 }
-.modal-no-work__wrapper-table__table tbody td:nth-child(4) {
+.modal-no-work__wrapper-table__table tbody td:nth-child(5) {
   width: 50px;
   text-align: center;
 }
@@ -431,6 +435,18 @@
   color: black;
 }
 
+.approval {
+  color: rgb(80, 160, 80);
+  font-weight: bold;
+}
+
+.pending {
+  color: rgb(241, 178, 61);
+  font-weight: bold;
+}
+.forPadding {
+  visibility: hidden;
+}
 /* modal-save-no-work */
 .modal-save-no-work__wrapper-content__title {
   color: #3ccea7;
@@ -486,15 +502,19 @@
   color: #534f51;
   margin-bottom: 0;
 }
+.modal-start-date__wrapper-date-picker__wrapper-start-date {
+  display: flex;
+  justify-content: center;
+}
 .modal-start-date__wrapper-date-picker__start-date {
-  margin-left: 20% !important;
   width: 120px !important;
-  font-size: large;
+  font-size: medium;
   margin-top: 0;
 }
 
 .modal-start-date__wrapper-date-picker__start-date input {
   text-align: center;
+  font-size: medium;
 }
 
 .modal-start-date__wrapper-btn {
