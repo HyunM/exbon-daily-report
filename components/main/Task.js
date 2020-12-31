@@ -239,15 +239,20 @@ const Task = ({
       TaskID,
       TaskName,
       StartDate,
-      FinishDate
+      FinishDate,
+      ReqStartDate,
+      ReqFinishDate
     ) => {
       updateModalWorkDate(
+        index,
         type,
         Company,
         TaskID,
         TaskName,
         StartDate,
-        FinishDate
+        FinishDate,
+        ReqStartDate,
+        ReqFinishDate
       );
     };
 
@@ -314,7 +319,9 @@ const Task = ({
                 row.original.TaskID,
                 row.original.TaskName,
                 row.original.StartDate,
-                row.original.FinishDate
+                row.original.FinishDate,
+                row.original.ReqStartDate,
+                row.original.ReqFinishDate
               )
             }
           >
@@ -334,7 +341,9 @@ const Task = ({
                 row.original.TaskID,
                 row.original.TaskName,
                 row.original.StartDate,
-                row.original.FinishDate
+                row.original.FinishDate,
+                row.original.ReqStartDate,
+                row.original.ReqFinishDate
               )
             }
           >
@@ -796,6 +805,7 @@ const Task = ({
 
   // Work Date
   const [modalWorkDate, setModalWorkDate] = useState({
+    rowIndex: 9999,
     type: "",
     isOpen: false,
     Company: "",
@@ -822,48 +832,89 @@ const Task = ({
   };
 
   const updateModalWorkDate = (
+    index,
     type,
     Company,
     TaskID,
     TaskName,
     StartDate,
-    FinishDate
+    FinishDate,
+    ReqStartDate,
+    ReqFinishDate
   ) => {
     setModalWorkDate({
       isOpen: true,
+      rowIndex: index,
       type,
       Company,
       TaskID,
       TaskName,
       StartDate,
       FinishDate,
+      ReqStartDate,
+      ReqFinishDate,
     });
   };
 
   const requestModalWorkDate = () => {
-    const fetchData = async () => {
-      let result = await axios({
-        method: "POST",
-        url: `/api/project-date-change-request`,
-        timeout: 5000, // 5 seconds timeout
-        headers: {},
-        data: {
-          EmployeeID: employeeInfo.EmployeeID,
-          ProjectID: projectState,
-          RequestType: "Task",
-          RequestID: modalWorkDate.TaskID,
-          StartDate: modalWorkDate.StartDate,
-          EndDate: modalWorkDate.FinishDate,
-          Note: null,
-        },
-      });
-    };
+    const StartDate = formatDate(modalWorkDate.StartDate);
+    const FinishDate = formatDate(modalWorkDate.FinishDate);
 
-    trackPromise(fetchData());
+    if (modalWorkDate.type === "Start Date") {
+      setData((old) =>
+        old.map((row, index) => {
+          if (index === modalWorkDate.rowIndex) {
+            return {
+              ...old[modalWorkDate.rowIndex],
+              ReqStartDate: StartDate,
+              ReqFinishDate: modalWorkDate.ReqFinishDate
+                ? modalWorkDate.ReqFinishDate
+                : FinishDate,
+            };
+          }
+          return row;
+        })
+      );
+    } else {
+      setData((old) =>
+        old.map((row, index) => {
+          if (index === modalWorkDate.rowIndex) {
+            return {
+              ...old[modalWorkDate.rowIndex],
+              ReqStartDate: modalWorkDate.ReqStartDate
+                ? modalWorkDate.ReqStartDate
+                : StartDate,
+              ReqFinishDate: FinishDate,
+            };
+          }
+          return row;
+        })
+      );
+    }
+
+    // const fetchData = async () => {
+    //   await axios({
+    //     method: "POST",
+    //     url: `/api/project-date-change-request`,
+    //     timeout: 5000, // 5 seconds timeout
+    //     headers: {},
+    //     data: {
+    //       EmployeeID: employeeInfo.EmployeeID,
+    //       ProjectID: projectState,
+    //       RequestType: "Task",
+    //       RequestID: modalWorkDate.TaskID,
+    //       StartDate: modalWorkDate.StartDate,
+    //       EndDate: modalWorkDate.FinishDate,
+    //       Reason: null,
+    //     },
+    //   });
+    // };
+
+    // trackPromise(fetchData());
     closeModalWorkDate();
     toast.info(
       <div className={styles["alert__complete"]}>
-        <strong>Request has been submitted.</strong>
+        <strong>Request has been added.</strong>
       </div>,
       {
         position: toast.POSITION.BOTTOM_CENTER,
@@ -888,6 +939,7 @@ const Task = ({
         </div>
       ) : (
         <>
+          {console.log(data)}
           <div className={styles["header"]}>
             <div className={styles["header__left"]}>
               <h2 className={styles["header__left__title"]}>Task Completion</h2>
@@ -1227,7 +1279,7 @@ const Task = ({
                 styles["modal-work-date__wrapper-title__sub-title-company-name"]
               }
             >
-              by {modalWorkDate.Company}
+              {modalWorkDate.Company ? "by " + modalWorkDate.Company : ""}
             </h5>
           </div>
           <div className={styles["modal-work-date__wrapper-date-picker"]}>
