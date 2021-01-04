@@ -361,13 +361,13 @@
   margin-top: 0;
 }
 
-.modal-no-work__wrapper-table__wrapper-btn-new {
+.modal-no-work__wrapper-table__table__wrapper-btn-new {
   cursor: pointer;
 }
-.modal-no-work__wrapper-table__wrapper-icon-edit {
+.modal-no-work__wrapper-table__table__wrapper-icon-edit {
   cursor: pointer;
 }
-.modal-no-work__wrapper-table__wrapper-icon-delete {
+.modal-no-work__wrapper-table__table__wrapper-icon-delete {
   cursor: pointer;
 }
 
@@ -432,7 +432,7 @@
   color: rgb(80, 160, 80);
   font-weight: bold;
 }
-.modal-no-work__wrapper-pending {
+.modal-no-work__wrapper-table__table__pending {
   color: rgb(241, 178, 61);
   font-weight: bold;
 }

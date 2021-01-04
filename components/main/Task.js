@@ -1090,7 +1090,15 @@ const Task = ({
                           </tr>
                         ) : (
                           <tr key={item.RecordID}>
-                            <td className={styles["pending"]}>Pending</td>
+                            <td
+                              className={
+                                styles[
+                                  "modal-no-work__wrapper-table__table__pending"
+                                ]
+                              }
+                            >
+                              Pending
+                            </td>
                             <td>
                               {formatDate(item.StartDate)} ~{" "}
                               {formatDate(item.FinishDate)}
@@ -1166,7 +1174,7 @@ const Task = ({
                           <div
                             className={
                               styles[
-                                "modal-no-work__wrapper-table__wrapper-btn-new"
+                                "modal-no-work__wrapper-table__table__wrapper-btn-new"
                               ]
                             }
                             onClick={addNoWork}
