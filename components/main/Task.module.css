@@ -428,25 +428,25 @@
   margin-top: 20px;
   text-align: center;
 }
-.modal-no-work__wrapper-table__wrapper-icon-edit__icon-edit:hover {
-  color: black;
-}
-.modal-no-work__wrapper-table__wrapper-icon-edit__icon-delete:hover {
-  color: black;
-}
-
-.approval {
+.modal-no-work__wrapper-table__table__approval {
   color: rgb(80, 160, 80);
   font-weight: bold;
 }
-
-.pending {
+.modal-no-work__wrapper-pending {
   color: rgb(241, 178, 61);
   font-weight: bold;
 }
-.forPadding {
+
+.modal-no-work__wrapper-table__table__pending-note {
   visibility: hidden;
 }
+.modal-no-work__wrapper-table__table__wrapper-icon-edit__icon-edit:hover {
+  color: black;
+}
+.modal-no-work__wrapper-table__table__wrapper-icon-edit__icon-delete:hover {
+  color: black;
+}
+
 /* modal-save-no-work */
 .modal-save-no-work__wrapper-content__title {
   color: #3ccea7;

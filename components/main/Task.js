@@ -504,6 +504,26 @@ const Task = ({
     let promises = [];
     const fetchData = async () => {
       for (let i = 0; i < data.length; i++) {
+        if (data[i].ReqStartDate !== null) {
+          promises.push(
+            axios({
+              method: "POST",
+              url: `/api/project-date-change-request`,
+              timeout: 5000, // 5 seconds timeout
+              headers: {},
+              data: {
+                EmployeeID: employeeInfo.EmployeeID,
+                ProjectID: projectState,
+                RequestType: "Task",
+                RequestID: data[i].TaskID,
+                StartDate: data[i].ReqStartDate,
+                EndDate: data[i].ReqFinishDate,
+                Reason: null,
+              },
+            })
+          );
+        }
+
         if (
           !(
             data[i].CurrentWork === null ||
@@ -1019,9 +1039,87 @@ const Task = ({
                     </thead>
                     <tbody>
                       {noWork.map((item) => {
-                        return (
+                        return item.Status === "Approval" ? (
                           <tr key={item.RecordID}>
-                            <td className={styles["approval"]}>Approval</td>
+                            <td
+                              className={
+                                styles[
+                                  "modal-no-work__wrapper-table__table__approval"
+                                ]
+                              }
+                            >
+                              Approval
+                            </td>
+                            <td>
+                              {formatDate(item.StartDate)} ~{" "}
+                              {formatDate(item.FinishDate)}
+                            </td>
+                            <td>&nbsp;{item.Note}</td>
+                            <td
+                              className={
+                                styles[
+                                  "modal-no-work__wrapper-table__table__wrapper-icon-edit"
+                                ]
+                              }
+                              onClick={() => editNoWork(item.RecordID)}
+                            >
+                              <EditTwoToneIcon
+                                className={
+                                  styles[
+                                    "modal-no-work__wrapper-table__table__wrapper-icon-edit__icon-edit"
+                                  ]
+                                }
+                              />
+                            </td>
+                            <td
+                              className={
+                                styles[
+                                  "modal-no-work__wrapper-table__table__wrapper-icon-delete"
+                                ]
+                              }
+                              onClick={() => deleteNoWork(item.RecordID)}
+                            >
+                              <DeleteTwoToneIcon
+                                className={
+                                  styles[
+                                    "modal-no-work__wrapper-table__table__wrapper-icon-edit__icon-delete"
+                                  ]
+                                }
+                              />
+                            </td>
+                          </tr>
+                        ) : (
+                          <tr key={item.RecordID}>
+                            <td className={styles["pending"]}>Pending</td>
+                            <td>
+                              {formatDate(item.StartDate)} ~{" "}
+                              {formatDate(item.FinishDate)}
+                            </td>
+                            <td>&nbsp;{item.Note}</td>
+                            <td
+                              className={
+                                styles[
+                                  "modal-no-work__wrapper-table__table__wrapper-icon-edit"
+                                ]
+                              }
+                            >
+                              <EditTwoToneIcon
+                                className={
+                                  styles[
+                                    "modal-no-work__wrapper-table__table__pending-note"
+                                  ]
+                                }
+                              />
+                            </td>
+                            <td></td>
+                          </tr>
+                        );
+                      })}
+
+                      {/* {noWork.map((item) => {
+                        return item.Status === "Pending" ? (
+                          <tr key={item.RecordID}>
+                            <td className={styles["pending"]}>Pending</td>
                             <td>
                               {formatDate(item.StartDate)} ~{" "}
                               {formatDate(item.FinishDate)}
@@ -1033,37 +1131,19 @@ const Task = ({
                                   "modal-no-work__wrapper-table__wrapper-icon-edit"
                                 ]
                               }
-                              onClick={() => editNoWork(item.RecordID)}
                             >
                               <EditTwoToneIcon
-                                className={
-                                  styles[
-                                    "modal-no-work__wrapper-table__wrapper-icon-edit__icon-edit"
-                                  ]
-                                }
+                                className={styles["forPadding"]}
                               />
                             </td>
-                            <td
-                              className={
-                                styles[
-                                  "modal-no-work__wrapper-table__wrapper-icon-delete"
-                                ]
-                              }
-                              onClick={() => deleteNoWork(item.RecordID)}
-                            >
-                              <DeleteTwoToneIcon
-                                className={
-                                  styles[
-                                    "modal-no-work__wrapper-table__wrapper-icon-edit__icon-delete"
-                                  ]
-                                }
-                              />
-                            </td>
+                            <td></td>
                           </tr>
+                        ) : (
+                          <></>
                         );
-                      })}
+                      })} */}
 
-                      <tr>
+                      {/* <tr>
                         <td className={styles["pending"]}>Pending</td>
                         <td>12/30/2020 ~ 12/31/2020</td>
                         <td>&nbsp;New year's eve.</td>
@@ -1080,7 +1160,7 @@ const Task = ({
                         <td>
                           <EditTwoToneIcon className={styles["forPadding"]} />
                         </td>
-                      </tr>
+                      </tr> */}
                       <tr>
                         <td>
                           <div
