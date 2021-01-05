@@ -549,6 +549,7 @@ const Task = ({
     };
 
     trackPromise(fetchData());
+
     trackPromise(
       Promise.all(promises).then(() => {
         toast.success(
@@ -560,6 +561,18 @@ const Task = ({
             hideProgressBar: true,
           }
         );
+
+        let tempData = [];
+
+        data.forEach((item) => {
+          const singleItem = {
+            ...item,
+            NewReqStartDate: null,
+            NewReqFinishDate: null,
+          };
+          tempData = [...tempData, singleItem];
+        });
+        setData(tempData);
       })
     );
 
