@@ -290,24 +290,6 @@ const Timesheet = ({
     };
 
     const onBlurForEmployee = (e) => {
-      // debugger;
-      // let employee = dataEmployees.find(
-      //   (employee) => value === employee.EmployeeName
-      // );
-      // if (employee) {
-      //   updateEmployeeData(index, id, value);
-      // } else {
-      //   toast.warning(
-      //     <div className={styles["alert__table__employee-input"]}>
-      //       <strong>That employee name</strong> does not exist.
-      //     </div>,
-      //     {
-      //       position: toast.POSITION.BOTTOM_CENTER,
-      //       hideProgressBar: true,
-      //     }
-      //   );
-      //   updateEmployeeData(index, id, value);
-      // }
       updateEmployeeData(index, id, value);
     };
 
