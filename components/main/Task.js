@@ -552,6 +552,70 @@ const Task = ({
           );
         }
       }
+
+      noWork.forEach((item) => {
+        let reason = item.Note;
+        if (reason === "") {
+          reason = null;
+        }
+        if (item.OrderStatus === "3") {
+          if (item.Status === "Request For New") {
+            promises.push(
+              axios({
+                method: "POST",
+                url: `/api/project-date-change-request`,
+                timeout: 5000, // 5 seconds timeout
+                headers: {},
+                data: {
+                  EmployeeID: employeeInfo.EmployeeID,
+                  ProjectID: projectState,
+                  RequestType: "No Work",
+                  RequestID: null,
+                  StartDate: item.StartDate,
+                  EndDate: item.FinishDate,
+                  Reason: reason,
+                },
+              })
+            );
+          } else if (item.Status === "Request For Edit") {
+            promises.push(
+              axios({
+                method: "POST",
+                url: `/api/project-date-change-request`,
+                timeout: 5000, // 5 seconds timeout
+                headers: {},
+                data: {
+                  EmployeeID: employeeInfo.EmployeeID,
+                  ProjectID: projectState,
+                  RequestType: "No Work Modify",
+                  RequestID: item.RecordID,
+                  StartDate: item.StartDate,
+                  EndDate: item.FinishDate,
+                  Reason: reason,
+                },
+              })
+            );
+          } else if (item.Status === "Request For Delete") {
+            promises.push(
+              axios({
+                method: "POST",
+                url: `/api/project-date-change-request`,
+                timeout: 5000, // 5 seconds timeout
+                headers: {},
+                data: {
+                  EmployeeID: employeeInfo.EmployeeID,
+                  ProjectID: projectState,
+                  RequestType: "No Work Delete",
+                  RequestID: item.RecordID,
+                  StartDate: item.StartDate,
+                  EndDate: item.FinishDate,
+                  Reason: reason,
+                },
+              })
+            );
+          }
+        }
+      });
     };
 
     trackPromise(fetchData());
@@ -579,6 +643,21 @@ const Task = ({
           tempData = [...tempData, singleItem];
         });
         setData(tempData);
+
+        let tempNoWork = [];
+
+        noWork.forEach((item) => {
+          let singleItem = { ...item };
+          if (item.OrderStatus === "3") {
+            singleItem = {
+              ...item,
+              OrderStatus: "2",
+            };
+          }
+
+          tempNoWork = [...tempNoWork, singleItem];
+        });
+        setNoWork(tempNoWork);
       })
     );
 
