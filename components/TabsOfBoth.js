@@ -13,6 +13,7 @@ import { Button } from "@material-ui/core";
 import Popover from "@material-ui/core/Popover";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import EventIcon from "@material-ui/icons/Event";
+
 const TabsOfBoth = ({
   tapNumber,
   handleChangeTabs,

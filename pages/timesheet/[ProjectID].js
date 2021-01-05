@@ -12,7 +12,7 @@ import Paper from "@material-ui/core/Paper";
 
 import DateFnsUtils from "@date-io/date-fns";
 import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
-import inputTime from "./inputTime";
+import inputTime from "../../components/main/inputTime";
 import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
 import AddIcon from "@material-ui/icons/Add";
@@ -20,7 +20,7 @@ import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import InputMask from "react-input-mask";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import { formatDate } from "./formatDate";
+import { formatDate } from "../../components/main/formatDate";
 import Autocomplete from "react-autocomplete";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -29,6 +29,7 @@ import styles from "./Timesheet.module.css";
 import classNames from "classnames/bind";
 import { usePromiseTracker, trackPromise } from "react-promise-tracker";
 import Loader from "react-loader-spinner";
+import { useRouter } from "next/router";
 
 toast.configure();
 let afterSundayCheck = true;
@@ -43,12 +44,10 @@ const convertInputToTime = (time) => {
   return match[0].time;
 };
 
-const Timesheet = ({
-  projectState,
-  setProjectState,
-  employeeInfo,
-  setPreviousProject,
-}) => {
+const Timesheet = () => {
+  const router = useRouter();
+  const projectState = router.query.id;
+
   const getSunday = (d) => {
     d = new Date(d);
     let day = d.getDay(),
@@ -262,7 +261,7 @@ const Timesheet = ({
       setValue(e.target.value);
     };
 
-    const onChangeEmployee = (e) => {
+    const onChange = (e) => {
       const TimesheetID = e.target.parentElement.parentElement.parentElement.children[0].children[0].getAttribute(
         "value"
       );
@@ -272,7 +271,6 @@ const Timesheet = ({
 
     const onChangeSelect = (value) => {
       setValue(value);
-      updateEmployeeData(index, id, value);
     };
 
     // We'll only update the external data when the input is blurred
@@ -290,25 +288,23 @@ const Timesheet = ({
     };
 
     const onBlurForEmployee = (e) => {
-      // debugger;
-      // let employee = dataEmployees.find(
-      //   (employee) => value === employee.EmployeeName
-      // );
-      // if (employee) {
-      //   updateEmployeeData(index, id, value);
-      // } else {
-      //   toast.warning(
-      //     <div className={styles["alert__table__employee-input"]}>
-      //       <strong>That employee name</strong> does not exist.
-      //     </div>,
-      //     {
-      //       position: toast.POSITION.BOTTOM_CENTER,
-      //       hideProgressBar: true,
-      //     }
-      //   );
-      //   updateEmployeeData(index, id, value);
-      // }
-      updateEmployeeData(index, id, value);
+      let employee = dataEmployees.find(
+        (employee) => value === employee.EmployeeName
+      );
+      if (employee) {
+        updateEmployeeData(index, id, value);
+      } else {
+        toast.warning(
+          <div className={styles["alert__table__employee-input"]}>
+            <strong>That employee name</strong> does not exist.
+          </div>,
+          {
+            position: toast.POSITION.BOTTOM_CENTER,
+            hideProgressBar: true,
+          }
+        );
+        updateEmployeeData(index, id, value);
+      }
     };
 
     const clickDeleteTimesheet = (value) => {
@@ -434,13 +430,9 @@ const Timesheet = ({
             item.EmployeeName.toLowerCase().indexOf(value.toLowerCase()) > -1
           }
           value={value}
-          onChange={onChangeEmployee}
-          inputProps={{
-            onBlur: onBlurForEmployee,
-          }}
-          onSelect={(val) => {
-            onChangeSelect(val);
-          }}
+          onChange={onChange}
+          inputProps={{ onBlur: onBlurForEmployee }}
+          onSelect={(val) => onChangeSelect(val)}
           renderInput={(props) => {
             return (
               <input
@@ -644,7 +636,7 @@ const Timesheet = ({
     initializeDeleteQueue();
     initializeUpdateQueue();
 
-    setPreviousProject(projectState);
+    // setPreviousProject(projectState);
   }, [selectedDate]);
 
   useEffect(() => {
@@ -684,10 +676,7 @@ const Timesheet = ({
   }, [data]);
 
   const handleSaveTimesheetBtn = () => {
-    let checkEmployeeName = 0;
-    data.forEach((person) => {
-      if (person.EmployeeID === 0) checkEmployeeName = 1;
-    });
+    let checkEmployeeName = data.find((employee) => employee.EmployeeID === 0);
     let checkTime = 0;
     for (
       let i = 0;
@@ -700,7 +689,7 @@ const Timesheet = ({
       )
         checkTime++;
     }
-    if (checkEmployeeName === 1) {
+    if (checkEmployeeName) {
       toast.error(
         <div className={styles["alert__table__employee-input"]}>
           Unable to save. <br /> Please check <strong>employee name </strong>
@@ -821,7 +810,6 @@ const Timesheet = ({
 
   return (
     <div id={styles.mainDiv}>
-      {console.log(data)}
       {promiseInProgress ? (
         <div
           style={{
@@ -844,7 +832,7 @@ const Timesheet = ({
                 Project ID :{" "}
                 <span
                   onClick={() => {
-                    setProjectState(0);
+                    // setProjectState(0);
                   }}
                   className={styles["header__left__project-id__value"]}
                 >

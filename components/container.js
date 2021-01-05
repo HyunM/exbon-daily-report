@@ -1,10 +1,8 @@
 import { useState } from "react";
 import TabsOfBoth from "./TabsOfBoth";
+import { useRouter } from "next/router";
 
 const Container = ({ employeeInfo, assignedProject, handleLogout }) => {
-  // const isTabletOrMobileDevice = useMediaQuery({
-  //   query: "(max-device-width: 1224px)",
-  // });
   const [tapNumber, setTapNumber] = useState(0);
   const handleChangeTabs = (event, newValue) => {
     if (newValue !== 3) {
