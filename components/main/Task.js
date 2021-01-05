@@ -18,6 +18,9 @@ import EventBusyIcon from "@material-ui/icons/EventBusy";
 import Modal from "react-modal";
 import EditTwoToneIcon from "@material-ui/icons/EditTwoTone";
 import DeleteTwoToneIcon from "@material-ui/icons/DeleteTwoTone";
+
+let noWorkMapKey = -1;
+
 toast.configure();
 const themeForWorkDate = createMuiTheme({
   palette: {
@@ -691,7 +694,7 @@ const Task = ({
     }
     setModalSaveNoWork({
       isOpen: true,
-      Type: "edit",
+      Type: "Edit",
       RecordID: recordID,
       StartDate,
       FinishDate,
@@ -711,7 +714,7 @@ const Task = ({
     }
     setModalSaveNoWork({
       isOpen: true,
-      Type: "delete",
+      Type: "Delete",
       RecordID: recordID,
       StartDate,
       FinishDate,
@@ -735,7 +738,7 @@ const Task = ({
 
     setModalSaveNoWork({
       isOpen: true,
-      Type: "new",
+      Type: "New",
       RecordID: 0,
       StartDate,
       FinishDate,
@@ -760,82 +763,100 @@ const Task = ({
     setModalSaveNoWork((prevState) => ({ ...prevState, Reason: reason }));
   };
 
-  const saveNoWorkDays = (type) => {
-    let reason = modalSaveNoWork.Reason;
-    if (reason === "") {
-      reason = null;
-    }
+  const requestNoWorkDays = (type) => {
+    let tempNoWork = [];
 
-    if (type === "new") {
-      const fetchData = async () => {
-        let result = await axios({
-          method: "POST",
-          url: `/api/project-date-change-request`,
-          timeout: 5000, // 5 seconds timeout
-          headers: {},
-          data: {
-            EmployeeID: employeeInfo.EmployeeID,
-            ProjectID: projectState,
-            RequestType: "No Work",
-            RequestID: null,
-            StartDate: modalSaveNoWork.StartDate,
-            EndDate: modalSaveNoWork.FinishDate,
-            Reason: reason,
-          },
-        });
-      };
-
-      fetchData();
-    } else if (type === "edit") {
-      const fetchData = async () => {
-        let result = await axios({
-          method: "POST",
-          url: `/api/project-date-change-request`,
-          timeout: 5000, // 5 seconds timeout
-          headers: {},
-          data: {
-            EmployeeID: employeeInfo.EmployeeID,
-            ProjectID: projectState,
-            RequestType: "No Work Modify",
-            RequestID: modalSaveNoWork.RecordID,
-            StartDate: modalSaveNoWork.StartDate,
-            EndDate: modalSaveNoWork.FinishDate,
-            Reason: reason,
-          },
-        });
-      };
-
-      fetchData();
-    } else if (type === "delete") {
-      const fetchData = async () => {
-        let result = await axios({
-          method: "POST",
-          url: `/api/project-date-change-request`,
-          timeout: 5000, // 5 seconds timeout
-          headers: {},
-          data: {
-            EmployeeID: employeeInfo.EmployeeID,
-            ProjectID: projectState,
-            RequestType: "No Work Delete",
-            RequestID: modalSaveNoWork.RecordID,
-            StartDate: modalSaveNoWork.StartDate,
-            EndDate: modalSaveNoWork.FinishDate,
-            Reason: reason,
-          },
-        });
-      };
-
-      fetchData();
-    }
-    toast.info(
-      <div className={styles["alert__complete"]}>
-        <strong>Request has been added.</strong>
-      </div>,
+    tempNoWork = [
+      ...noWork,
       {
-        position: toast.POSITION.BOTTOM_CENTER,
-        hideProgressBar: true,
-      }
-    );
+        OrderStatus: "3",
+        Status: `Pending For ${type}`,
+        RecordID: noWorkMapKey--,
+        ProjectID: projectState,
+        StartDate: modalSaveNoWork.StartDate,
+        FinishDate: modalSaveNoWork.FinishDate,
+        NewReqFinishDate: modalSaveNoWork.StartDate,
+        NewReqStartDate: modalSaveNoWork.FinishDate,
+        Note: modalSaveNoWork.Reason,
+      },
+    ];
+    setNoWork(tempNoWork);
+
+    // let reason = modalSaveNoWork.Reason;
+    // if (reason === "") {
+    //   reason = null;
+    // }
+
+    // if (type === "new") {
+    //   const fetchData = async () => {
+    //     let result = await axios({
+    //       method: "POST",
+    //       url: `/api/project-date-change-request`,
+    //       timeout: 5000, // 5 seconds timeout
+    //       headers: {},
+    //       data: {
+    //         EmployeeID: employeeInfo.EmployeeID,
+    //         ProjectID: projectState,
+    //         RequestType: "No Work",
+    //         RequestID: null,
+    //         StartDate: modalSaveNoWork.StartDate,
+    //         EndDate: modalSaveNoWork.FinishDate,
+    //         Reason: reason,
+    //       },
+    //     });
+    //   };
+
+    //   fetchData();
+    // } else if (type === "edit") {
+    //   const fetchData = async () => {
+    //     let result = await axios({
+    //       method: "POST",
+    //       url: `/api/project-date-change-request`,
+    //       timeout: 5000, // 5 seconds timeout
+    //       headers: {},
+    //       data: {
+    //         EmployeeID: employeeInfo.EmployeeID,
+    //         ProjectID: projectState,
+    //         RequestType: "No Work Modify",
+    //         RequestID: modalSaveNoWork.RecordID,
+    //         StartDate: modalSaveNoWork.StartDate,
+    //         EndDate: modalSaveNoWork.FinishDate,
+    //         Reason: reason,
+    //       },
+    //     });
+    //   };
+
+    //   fetchData();
+    // } else if (type === "delete") {
+    //   const fetchData = async () => {
+    //     let result = await axios({
+    //       method: "POST",
+    //       url: `/api/project-date-change-request`,
+    //       timeout: 5000, // 5 seconds timeout
+    //       headers: {},
+    //       data: {
+    //         EmployeeID: employeeInfo.EmployeeID,
+    //         ProjectID: projectState,
+    //         RequestType: "No Work Delete",
+    //         RequestID: modalSaveNoWork.RecordID,
+    //         StartDate: modalSaveNoWork.StartDate,
+    //         EndDate: modalSaveNoWork.FinishDate,
+    //         Reason: reason,
+    //       },
+    //     });
+    //   };
+
+    //   fetchData();
+    // }
+    // toast.info(
+    //   <div className={styles["alert__complete"]}>
+    //     <strong>Request has been added.</strong>
+    //   </div>,
+    //   {
+    //     position: toast.POSITION.BOTTOM_CENTER,
+    //     hideProgressBar: true,
+    //   }
+    // );
     setModalSaveNoWork((prevState) => ({ ...prevState, isOpen: false }));
   };
 
@@ -983,7 +1004,11 @@ const Task = ({
         </div>
       ) : (
         <>
-          {console.log(data)}
+          {console.log("noWork")}
+          {console.log(noWork)}
+          {console.log("modalSaveNoWork")}
+          {console.log(modalSaveNoWork)}
+
           <div className={styles["header"]}>
             <div className={styles["header__left"]}>
               <h2 className={styles["header__left__title"]}>Task Completion</h2>
@@ -1266,7 +1291,7 @@ const Task = ({
                         "modal-save-no-work__wrapper-content__bottom__btn-save"
                       ]
                     }
-                    onClick={() => saveNoWorkDays(modalSaveNoWork.Type)}
+                    onClick={() => requestNoWorkDays(modalSaveNoWork.Type)}
                   >
                     Request
                   </Button>
