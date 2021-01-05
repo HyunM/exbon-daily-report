@@ -504,7 +504,7 @@ const Task = ({
     let promises = [];
     const fetchData = async () => {
       for (let i = 0; i < data.length; i++) {
-        if (data[i].ReqStartDate !== null) {
+        if (data[i].NewReqStartDate !== null) {
           promises.push(
             axios({
               method: "POST",
@@ -813,7 +813,7 @@ const Task = ({
     }
     toast.info(
       <div className={styles["alert__complete"]}>
-        <strong>Request has been submitted.</strong>
+        <strong>Request has been added.</strong>
       </div>,
       {
         position: toast.POSITION.BOTTOM_CENTER,
@@ -890,6 +890,10 @@ const Task = ({
               ReqFinishDate: modalWorkDate.ReqFinishDate
                 ? modalWorkDate.ReqFinishDate
                 : FinishDate,
+              NewReqStartDate: StartDate,
+              NewReqFinishDate: modalWorkDate.ReqFinishDate
+                ? modalWorkDate.ReqFinishDate
+                : FinishDate,
             };
           }
           return row;
@@ -905,6 +909,10 @@ const Task = ({
                 ? modalWorkDate.ReqStartDate
                 : StartDate,
               ReqFinishDate: FinishDate,
+              NewReqStartDate: modalWorkDate.ReqStartDate
+                ? modalWorkDate.ReqStartDate
+                : StartDate,
+              NewReqFinishDate: FinishDate,
             };
           }
           return row;
@@ -1124,51 +1132,6 @@ const Task = ({
                         );
                       })}
 
-                      {/* {noWork.map((item) => {
-                        return item.Status === "Pending" ? (
-                          <tr key={item.RecordID}>
-                            <td className={styles["pending"]}>Pending</td>
-                            <td>
-                              {formatDate(item.StartDate)} ~{" "}
-                              {formatDate(item.FinishDate)}
-                            </td>
-                            <td>&nbsp;{item.Note}</td>
-                            <td
-                              className={
-                                styles[
-                                  "modal-no-work__wrapper-table__wrapper-icon-edit"
-                                ]
-                              }
-                            >
-                              <EditTwoToneIcon
-                                className={styles["forPadding"]}
-                              />
-                            </td>
-                            <td></td>
-                          </tr>
-                        ) : (
-                          <></>
-                        );
-                      })} */}
-
-                      {/* <tr>
-                        <td className={styles["pending"]}>Pending</td>
-                        <td>12/30/2020 ~ 12/31/2020</td>
-                        <td>&nbsp;New year's eve.</td>
-                        <td></td>
-                        <td>
-                          <EditTwoToneIcon className={styles["forPadding"]} />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className={styles["pending"]}>Pending</td>
-                        <td>2/1/2021 ~ 2/3/2021</td>
-                        <td>&nbsp;Business trip</td>
-                        <td></td>
-                        <td>
-                          <EditTwoToneIcon className={styles["forPadding"]} />
-                        </td>
-                      </tr> */}
                       <tr>
                         <td>
                           <div
@@ -1289,7 +1252,7 @@ const Task = ({
                     }
                     onClick={() => saveNoWorkDays(modalSaveNoWork.Type)}
                   >
-                    SAVE
+                    Request
                   </Button>
                   <Button
                     variant="outlined"
