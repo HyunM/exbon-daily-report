@@ -1089,7 +1089,7 @@ const Task = ({
                     </thead>
                     <tbody>
                       {noWork.map((item) => {
-                        return item.Status === "Completed" ? (
+                        return item.Status === "Complete" ? (
                           <tr key={noWorkMapKey++}>
                             <td>{item.RecordID > 0 ? item.RecordID : ""}</td>
                             <td
@@ -1099,7 +1099,7 @@ const Task = ({
                                 ]
                               }
                             >
-                              Completed
+                              Complete
                             </td>
                             <td>
                               {formatDate(item.StartDate)} ~{" "}
