@@ -771,7 +771,7 @@ const Task = ({
       {
         OrderStatus: "3",
         Status: `Pending For ${type}`,
-        RecordID: noWorkMapKey--,
+        RecordID: modalSaveNoWork.RecordID,
         ProjectID: projectState,
         StartDate: modalSaveNoWork.StartDate,
         FinishDate: modalSaveNoWork.FinishDate,
@@ -1079,6 +1079,7 @@ const Task = ({
                   >
                     <thead>
                       <tr>
+                        <td>ID</td>
                         <td>Status</td>
                         <td>Dates</td>
                         <td>Reason</td>
@@ -1089,7 +1090,8 @@ const Task = ({
                     <tbody>
                       {noWork.map((item) => {
                         return item.Status === "Approval" ? (
-                          <tr key={item.RecordID}>
+                          <tr key={noWorkMapKey++}>
+                            <td>{item.RecordID > 0 ? item.RecordID : ""}</td>
                             <td
                               className={
                                 styles[
@@ -1138,7 +1140,8 @@ const Task = ({
                             </td>
                           </tr>
                         ) : (
-                          <tr key={item.RecordID}>
+                          <tr key={noWorkMapKey++}>
+                            <td></td>
                             <td
                               className={
                                 styles[
@@ -1146,7 +1149,20 @@ const Task = ({
                                 ]
                               }
                             >
-                              {item.Status}
+                              {item.Status}&nbsp;{" "}
+                              {item.RecordID ? (
+                                <div
+                                  className={
+                                    styles[
+                                      "modal-no-work__wrapper-table__table__pending__id"
+                                    ]
+                                  }
+                                >
+                                  # {item.RecordID}{" "}
+                                </div>
+                              ) : (
+                                ""
+                              )}
                             </td>
                             <td>
                               {formatDate(item.StartDate)} ~{" "}
@@ -1186,6 +1202,7 @@ const Task = ({
                             <Button>(+) NEW</Button>
                           </div>
                         </td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
