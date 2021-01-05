@@ -504,7 +504,10 @@ const Task = ({
     let promises = [];
     const fetchData = async () => {
       for (let i = 0; i < data.length; i++) {
-        if (data[i].NewReqStartDate !== null) {
+        if (
+          data[i].NewReqStartDate !== null ||
+          data[i].NewReqFinishDate !== null
+        ) {
           promises.push(
             axios({
               method: "POST",

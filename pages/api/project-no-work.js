@@ -3,10 +3,10 @@ const dbserver = require("../../dbConfig.js");
 
 const projectNoWorkHandler = (req, res) => {
   const { method, body } = req;
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     switch (method) {
       case "GET":
-        mssql.connect(dbserver.dbConfig, err => {
+        mssql.connect(dbserver.dbConfig, (err) => {
           if (err) {
             console.error(err);
             return resolve();
@@ -15,7 +15,7 @@ const projectNoWorkHandler = (req, res) => {
 
           const projectID = req.query.projectID;
 
-          const query = `EXEC [Hammer].[dbo].[ProjectNoWork_SelectByProjectID]
+          const query = `EXEC [Hammer].[dbo].[ProjectNoWork_SelectByProjectID_Test]
           ${projectID} `;
 
           request.query(query, (err, recordset) => {
