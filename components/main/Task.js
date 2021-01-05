@@ -977,15 +977,15 @@ const Task = ({
 
     // trackPromise(fetchData());
     closeModalWorkDate();
-    toast.info(
-      <div className={styles["alert__complete"]}>
-        <strong>Request has been added.</strong>
-      </div>,
-      {
-        position: toast.POSITION.BOTTOM_CENTER,
-        hideProgressBar: true,
-      }
-    );
+    // toast.info(
+    //   <div className={styles["alert__complete"]}>
+    //     <strong>Request has been added.</strong>
+    //   </div>,
+    //   {
+    //     position: toast.POSITION.BOTTOM_CENTER,
+    //     hideProgressBar: true,
+    //   }
+    // );
   };
 
   return (
@@ -1246,7 +1246,7 @@ const Task = ({
                         disableToolbar
                         variant="inline"
                         disabled={
-                          modalSaveNoWork.Type === "delete" ? true : false
+                          modalSaveNoWork.Type === "Delete" ? true : false
                         }
                         value={modalSaveNoWork.StartDate}
                         onChange={handleStartDateOfSaveNoWork}
@@ -1263,7 +1263,7 @@ const Task = ({
                         disableToolbar
                         variant="inline"
                         disabled={
-                          modalSaveNoWork.Type === "delete" ? true : false
+                          modalSaveNoWork.Type === "Delete" ? true : false
                         }
                         value={modalSaveNoWork.FinishDate}
                         onChange={handleEndDateOfSaveNoWork}
