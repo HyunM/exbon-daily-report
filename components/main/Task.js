@@ -1121,7 +1121,7 @@ const Task = ({
                                 ]
                               }
                             >
-                              Pending
+                              {item.Status}
                             </td>
                             <td>
                               {formatDate(item.StartDate)} ~{" "}
