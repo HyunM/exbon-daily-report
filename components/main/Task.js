@@ -770,7 +770,7 @@ const Task = ({
       ...noWork,
       {
         OrderStatus: "3",
-        Status: `Pending For ${type}`,
+        Status: `Request For ${type}`,
         RecordID: modalSaveNoWork.RecordID,
         ProjectID: projectState,
         StartDate: modalSaveNoWork.StartDate,
@@ -1144,9 +1144,13 @@ const Task = ({
                             <td></td>
                             <td
                               className={
-                                styles[
-                                  "modal-no-work__wrapper-table__table__pending"
-                                ]
+                                item.OrderStatus === "2"
+                                  ? styles[
+                                      "modal-no-work__wrapper-table__table__pending"
+                                    ]
+                                  : styles[
+                                      "modal-no-work__wrapper-table__table__request"
+                                    ]
                               }
                             >
                               {item.Status}&nbsp;{" "}

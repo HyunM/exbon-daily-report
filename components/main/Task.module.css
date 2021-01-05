@@ -440,6 +440,10 @@
   color: rgb(241, 178, 61);
   font-weight: bold;
 }
+.modal-no-work__wrapper-table__table__request {
+  color: rgb(48, 20, 204);
+  font-weight: bold;
+}
 .modal-no-work__wrapper-table__table__pending__id {
   color: rgb(116, 100, 110);
 }
