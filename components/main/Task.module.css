@@ -447,9 +447,7 @@
 .modal-no-work__wrapper-table__table__pending__id {
   color: rgb(116, 100, 110);
 }
-.modal-no-work__wrapper-table__table__pending-note {
-  visibility: hidden;
-}
+
 .modal-no-work__wrapper-table__table__wrapper-icon-edit__icon-edit:hover {
   color: black;
 }

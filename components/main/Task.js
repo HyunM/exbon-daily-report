@@ -1177,22 +1177,22 @@ const Task = ({
                               {formatDate(item.FinishDate)}
                             </td>
                             <td>&nbsp;{item.Note}</td>
+                            <td></td>
                             <td
                               className={
                                 styles[
-                                  "modal-no-work__wrapper-table__table__wrapper-icon-edit"
+                                  "modal-no-work__wrapper-table__table__wrapper-icon-delete"
                                 ]
                               }
                             >
-                              <EditTwoToneIcon
+                              <DeleteTwoToneIcon
                                 className={
                                   styles[
-                                    "modal-no-work__wrapper-table__table__pending-note"
+                                    "modal-no-work__wrapper-table__table__wrapper-icon-edit__icon-delete"
                                   ]
                                 }
                               />
                             </td>
-                            <td></td>
                           </tr>
                         );
                       })}
