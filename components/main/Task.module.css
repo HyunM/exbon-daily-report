@@ -371,6 +371,10 @@
   cursor: pointer;
 }
 
+.modal-no-work__wrapper-table__table__wrapper-icon-delete__request {
+  cursor: pointer;
+}
+
 .modal-no-work__wrapper-table__table {
   color: rgb(116, 100, 110);
   font-size: 0.95rem;
@@ -448,6 +452,13 @@
   color: rgb(116, 100, 110);
 }
 
+.modal-no-work__wrapper-table__table__wrapper-icon-edit__icon-delete__pending {
+  visibility: hidden;
+}
+
+.modal-no-work__wrapper-table__table__wrapper-icon-edit__icon-delete__request:hover {
+  color: black;
+}
 .modal-no-work__wrapper-table__table__wrapper-icon-edit__icon-edit:hover {
   color: black;
 }

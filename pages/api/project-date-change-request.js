@@ -3,10 +3,10 @@ const dbserver = require("../../dbConfig.js");
 
 const projectDateChangeRequestHandler = (req, res) => {
   const { method, body } = req;
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     switch (method) {
       case "POST":
-        mssql.connect(dbserver.dbConfig, err => {
+        mssql.connect(dbserver.dbConfig, (err) => {
           if (err) {
             console.error(err);
             return resolve();

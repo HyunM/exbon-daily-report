@@ -801,6 +801,14 @@ const Task = ({
     });
   };
 
+  const deleteRequestNoWork = (deleteForIndex) => {
+    setNoWork((old) =>
+      old.filter((row, index) => {
+        return index !== deleteForIndex;
+      })
+    );
+  };
+
   const addNoWork = () => {
     let StartDate;
     let FinishDate;
@@ -1092,7 +1100,7 @@ const Task = ({
                       </tr>
                     </thead>
                     <tbody>
-                      {noWork.map((item) => {
+                      {noWork.map((item, index) => {
                         return item.Status === "Complete" ? (
                           <tr key={noWorkMapKey++}>
                             <td>{item.RecordID > 0 ? item.RecordID : ""}</td>
@@ -1180,17 +1188,26 @@ const Task = ({
                             <td></td>
                             <td
                               className={
-                                styles[
-                                  "modal-no-work__wrapper-table__table__wrapper-icon-delete"
-                                ]
+                                item.OrderStatus === "2"
+                                  ? styles[
+                                      "modal-no-work__wrapper-table__table__wrapper-icon-delete__pending"
+                                    ]
+                                  : styles[
+                                      "modal-no-work__wrapper-table__table__wrapper-icon-delete__request"
+                                    ]
                               }
                             >
                               <DeleteTwoToneIcon
                                 className={
-                                  styles[
-                                    "modal-no-work__wrapper-table__table__wrapper-icon-edit__icon-delete"
-                                  ]
+                                  item.OrderStatus === "2"
+                                    ? styles[
+                                        "modal-no-work__wrapper-table__table__wrapper-icon-edit__icon-delete__pending"
+                                      ]
+                                    : styles[
+                                        "modal-no-work__wrapper-table__table__wrapper-icon-edit__icon-delete__request"
+                                      ]
                                 }
+                                onClick={() => deleteRequestNoWork(index)}
                               />
                             </td>
                           </tr>
