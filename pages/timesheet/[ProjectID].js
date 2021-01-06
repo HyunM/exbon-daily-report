@@ -46,7 +46,7 @@ const convertInputToTime = (time) => {
 
 const Timesheet = () => {
   const router = useRouter();
-  const projectState = router.query.id;
+  const projectState = router.query.ProjectID;
 
   const getSunday = (d) => {
     d = new Date(d);
@@ -271,6 +271,7 @@ const Timesheet = () => {
 
     const onChangeSelect = (value) => {
       setValue(value);
+      updateEmployeeData(index, id, value);
     };
 
     // We'll only update the external data when the input is blurred
@@ -288,23 +289,7 @@ const Timesheet = () => {
     };
 
     const onBlurForEmployee = (e) => {
-      let employee = dataEmployees.find(
-        (employee) => value === employee.EmployeeName
-      );
-      if (employee) {
-        updateEmployeeData(index, id, value);
-      } else {
-        toast.warning(
-          <div className={styles["alert__table__employee-input"]}>
-            <strong>That employee name</strong> does not exist.
-          </div>,
-          {
-            position: toast.POSITION.BOTTOM_CENTER,
-            hideProgressBar: true,
-          }
-        );
-        updateEmployeeData(index, id, value);
-      }
+      updateEmployeeData(index, id, value);
     };
 
     const clickDeleteTimesheet = (value) => {
@@ -620,7 +605,7 @@ const Timesheet = () => {
         url: `/api/timesheets?selectedDate=${formatDate(
           selectedDate
         )}&projectID=${projectState}`,
-        timeout: 5000, // 5 seconds timeout
+        timeout: 1000, // 5 seconds timeout
         headers: {},
       });
       if (result.data.result[0].length === 0) {
@@ -637,7 +622,7 @@ const Timesheet = () => {
     initializeUpdateQueue();
 
     // setPreviousProject(projectState);
-  }, [selectedDate]);
+  }, [selectedDate, projectState]);
 
   useEffect(() => {
     if (checkState) {
@@ -810,7 +795,7 @@ const Timesheet = () => {
 
   return (
     <div id={styles.mainDiv}>
-      {promiseInProgress ? (
+      {promiseInProgress || !projectState ? (
         <div
           style={{
             width: "100%",

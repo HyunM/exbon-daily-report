@@ -18,6 +18,7 @@ import EventBusyIcon from "@material-ui/icons/EventBusy";
 import Modal from "react-modal";
 import EditTwoToneIcon from "@material-ui/icons/EditTwoTone";
 import DeleteTwoToneIcon from "@material-ui/icons/DeleteTwoTone";
+import { useRouter } from "next/router";
 
 let noWorkMapKey = -1;
 
@@ -46,12 +47,10 @@ const themeForNoWork = createMuiTheme({
   },
 });
 
-const Task = ({
-  projectState,
-  setProjectState,
-  employeeInfo,
-  setPreviousProject,
-}) => {
+const Task = () => {
+  const router = useRouter();
+  const projectState = router.query.ProjectID;
+
   const deleteQueue = useSelector((state) => state.deleteQueue);
   const dispatch = useDispatch();
 
@@ -683,7 +682,7 @@ const Task = ({
         url: `/api/project-tasks-progress?selectedDate=${formatDate(
           selectedDate
         )}&projectID=${projectState}`,
-        timeout: 5000, // 5 seconds timeout
+        timeout: 1000, // 1 seconds timeout
         headers: {},
       });
 
@@ -692,19 +691,19 @@ const Task = ({
       let result2 = await axios({
         method: "get",
         url: `/api/project-no-work?projectID=${projectState}`,
-        timeout: 5000, // 5 seconds timeout
+        timeout: 1000, // 1 seconds timeout
         headers: {},
       });
 
       setNoWork(result2.data);
 
-      setPreviousProject(projectState);
+      // setPreviousProject(projectState);
     };
 
     trackPromise(fetchData());
     initializeDeleteQueue();
     initializeUpdateQueue();
-  }, [selectedDate]);
+  }, [selectedDate, projectState]);
 
   const { promiseInProgress } = usePromiseTracker();
 
@@ -1021,7 +1020,7 @@ const Task = ({
                 Project ID :{" "}
                 <span
                   onClick={() => {
-                    setProjectState(0);
+                    // setProjectState(0);
                   }}
                   className={styles["header__left__project-id__value"]}
                 >
