@@ -358,7 +358,7 @@ const Task = ({
       return (
         <div className={styles["table__req-start-date-wrapper"]}>
           <span className={styles["table__req-start-date-wrapper__data"]}>
-            {value}
+            {value === null ? row.original.StartDate : value}
           </span>
         </div>
       );
@@ -366,7 +366,7 @@ const Task = ({
       return (
         <div className={styles["table__req-finish-date-wrapper"]}>
           <span className={styles["table__req-finish-date-wrapper__data"]}>
-            {value}
+            {value === null ? row.original.FinishDate : value}
           </span>
         </div>
       );
@@ -1016,10 +1016,11 @@ const Task = ({
         </div>
       ) : (
         <>
-          {console.log("noWork")}
+          {/* {console.log("noWork")}
           {console.log(noWork)}
           {console.log("modalSaveNoWork")}
-          {console.log(modalSaveNoWork)}
+          {console.log(modalSaveNoWork)} */}
+          {console.log(data)}
 
           <div className={styles["header"]}>
             <div className={styles["header__left"]}>

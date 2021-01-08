@@ -19,7 +19,6 @@ import Modal from "react-modal";
 import EditTwoToneIcon from "@material-ui/icons/EditTwoTone";
 import DeleteTwoToneIcon from "@material-ui/icons/DeleteTwoTone";
 import { useRouter } from "next/router";
-
 let noWorkMapKey = -1;
 
 toast.configure();
@@ -47,7 +46,14 @@ const themeForNoWork = createMuiTheme({
   },
 });
 
-const Task = () => {
+const Task = (
+  {
+    // projectState,
+    // setProjectState,
+    // employeeInfo,
+    // setPreviousProject,
+  }
+) => {
   const router = useRouter();
   const projectState = router.query.ProjectID;
 
@@ -682,7 +688,7 @@ const Task = () => {
         url: `/api/project-tasks-progress?selectedDate=${formatDate(
           selectedDate
         )}&projectID=${projectState}`,
-        timeout: 1000, // 1 seconds timeout
+        timeout: 1000, // 5 seconds timeout
         headers: {},
       });
 
@@ -691,7 +697,7 @@ const Task = () => {
       let result2 = await axios({
         method: "get",
         url: `/api/project-no-work?projectID=${projectState}`,
-        timeout: 1000, // 1 seconds timeout
+        timeout: 1000, // 5 seconds timeout
         headers: {},
       });
 
@@ -798,6 +804,14 @@ const Task = () => {
       FinishDate,
       Reason: "",
     });
+  };
+
+  const deleteRequestNoWork = (deleteForIndex) => {
+    setNoWork((old) =>
+      old.filter((row, index) => {
+        return index !== deleteForIndex;
+      })
+    );
   };
 
   const addNoWork = () => {
@@ -993,7 +1007,7 @@ const Task = () => {
 
   return (
     <div id={styles.mainDiv}>
-      {promiseInProgress ? (
+      {promiseInProgress || !projectState ? (
         <div
           style={{
             width: "100%",
@@ -1091,7 +1105,7 @@ const Task = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {noWork.map((item) => {
+                      {noWork.map((item, index) => {
                         return item.Status === "Complete" ? (
                           <tr key={noWorkMapKey++}>
                             <td>{item.RecordID > 0 ? item.RecordID : ""}</td>
@@ -1176,22 +1190,31 @@ const Task = () => {
                               {formatDate(item.FinishDate)}
                             </td>
                             <td>&nbsp;{item.Note}</td>
+                            <td></td>
                             <td
                               className={
-                                styles[
-                                  "modal-no-work__wrapper-table__table__wrapper-icon-edit"
-                                ]
+                                item.OrderStatus === "2"
+                                  ? styles[
+                                      "modal-no-work__wrapper-table__table__wrapper-icon-delete__pending"
+                                    ]
+                                  : styles[
+                                      "modal-no-work__wrapper-table__table__wrapper-icon-delete__request"
+                                    ]
                               }
                             >
-                              <EditTwoToneIcon
+                              <DeleteTwoToneIcon
                                 className={
-                                  styles[
-                                    "modal-no-work__wrapper-table__table__pending-note"
-                                  ]
+                                  item.OrderStatus === "2"
+                                    ? styles[
+                                        "modal-no-work__wrapper-table__table__wrapper-icon-edit__icon-delete__pending"
+                                      ]
+                                    : styles[
+                                        "modal-no-work__wrapper-table__table__wrapper-icon-edit__icon-delete__request"
+                                      ]
                                 }
+                                onClick={() => deleteRequestNoWork(index)}
                               />
                             </td>
-                            <td></td>
                           </tr>
                         );
                       })}
