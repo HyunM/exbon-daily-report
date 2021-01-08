@@ -242,6 +242,17 @@
   margin: auto;
 }
 
+.table__req-start-date-wrapper input {
+  text-align: center;
+  color: rgb(116, 100, 110);
+}
+
+.table__req-start-date-wrapper-request input {
+  text-align: center;
+  color: red;
+  font-weight: bold;
+}
+
 .table__req-start-date-wrapper__data {
   font-size: 0.85rem;
   text-align: center;

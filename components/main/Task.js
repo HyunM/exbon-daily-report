@@ -315,18 +315,18 @@ const Task = ({
         <div className={styles["table__start-date-wrapper"]}>
           <span
             className={styles["table__start-date-wrapper__data"]}
-            onClick={() =>
-              handleModalWorkDate(
-                "Start Date",
-                row.original.Company,
-                row.original.TaskID,
-                row.original.TaskName,
-                row.original.StartDate,
-                row.original.FinishDate,
-                row.original.ReqStartDate,
-                row.original.ReqFinishDate
-              )
-            }
+            // onClick={() =>
+            //   handleModalWorkDate(
+            //     "Start Date",
+            //     row.original.Company,
+            //     row.original.TaskID,
+            //     row.original.TaskName,
+            //     row.original.StartDate,
+            //     row.original.FinishDate,
+            //     row.original.ReqStartDate,
+            //     row.original.ReqFinishDate
+            //   )
+            // }
           >
             {value}
           </span>
@@ -337,18 +337,18 @@ const Task = ({
         <div className={styles["table__finish-date-wrapper"]}>
           <span
             className={styles["table__finish-date-wrapper__data"]}
-            onClick={() =>
-              handleModalWorkDate(
-                "Finish Date",
-                row.original.Company,
-                row.original.TaskID,
-                row.original.TaskName,
-                row.original.StartDate,
-                row.original.FinishDate,
-                row.original.ReqStartDate,
-                row.original.ReqFinishDate
-              )
-            }
+            // onClick={() =>
+            //   handleModalWorkDate(
+            //     "Finish Date",
+            //     row.original.Company,
+            //     row.original.TaskID,
+            //     row.original.TaskName,
+            //     row.original.StartDate,
+            //     row.original.FinishDate,
+            //     row.original.ReqStartDate,
+            //     row.original.ReqFinishDate
+            //   )
+            // }
           >
             {value}
           </span>
@@ -356,17 +356,23 @@ const Task = ({
       );
     } else if (id === "ReqStartDate") {
       return (
-        <div className={styles["table__req-start-date-wrapper"]}>
-          <span
-            className={
-              value === null
-                ? styles["table__req-start-date-wrapper__data"]
-                : styles["table__req-start-date-wrapper__data-request"]
-            }
-          >
-            {value === null ? row.original.StartDate : value}
-          </span>
-        </div>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <ThemeProvider theme={themeForWorkDate}>
+            <DatePicker
+              disableToolbar
+              variant="inline"
+              value={value === null ? row.original.StartDate : value}
+              format="MM/dd/yyyy"
+              autoOk={true}
+              className={
+                value === null
+                  ? styles["table__req-start-date-wrapper"]
+                  : styles["table__req-start-date-wrapper-request"]
+              }
+            />
+          </ThemeProvider>
+        </MuiPickersUtilsProvider>
+        /* {value === null ? row.original.StartDate : value} */
       );
     } else if (id === "ReqFinishDate") {
       return (
