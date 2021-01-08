@@ -357,7 +357,13 @@ const Task = ({
     } else if (id === "ReqStartDate") {
       return (
         <div className={styles["table__req-start-date-wrapper"]}>
-          <span className={styles["table__req-start-date-wrapper__data"]}>
+          <span
+            className={
+              value === null
+                ? styles["table__req-start-date-wrapper__data"]
+                : styles["table__req-start-date-wrapper__data-request"]
+            }
+          >
             {value === null ? row.original.StartDate : value}
           </span>
         </div>
@@ -365,7 +371,13 @@ const Task = ({
     } else if (id === "ReqFinishDate") {
       return (
         <div className={styles["table__req-finish-date-wrapper"]}>
-          <span className={styles["table__req-finish-date-wrapper__data"]}>
+          <span
+            className={
+              value === null
+                ? styles["table__req-finish-date-wrapper__data"]
+                : styles["table__req-finish-date-wrapper__data-request"]
+            }
+          >
             {value === null ? row.original.FinishDate : value}
           </span>
         </div>
