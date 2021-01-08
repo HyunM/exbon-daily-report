@@ -320,21 +320,7 @@ const Task = ({
     } else if (id === "StartDate") {
       return (
         <div className={styles["table__start-date-wrapper"]}>
-          <span
-            className={styles["table__start-date-wrapper__data"]}
-            // onClick={() =>
-            //   handleModalWorkDate(
-            //     "Start Date",
-            //     row.original.Company,
-            //     row.original.TaskID,
-            //     row.original.TaskName,
-            //     row.original.StartDate,
-            //     row.original.FinishDate,
-            //     row.original.ReqStartDate,
-            //     row.original.ReqFinishDate
-            //   )
-            // }
-          >
+          <span className={styles["table__start-date-wrapper__data"]}>
             {value}
           </span>
         </div>
@@ -363,44 +349,52 @@ const Task = ({
       );
     } else if (id === "ReqStartDate") {
       return (
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <ThemeProvider theme={themeForWorkDate}>
-            <DatePicker
-              disableToolbar
-              variant="inline"
-              value={value === null ? row.original.StartDate : value}
-              format="MM/dd/yyyy"
-              autoOk={true}
-              className={
-                value === null
-                  ? styles["table__req-start-date-wrapper"]
-                  : styles["table__req-start-date-wrapper-request"]
-              }
-              onChange={selectReqStartDate}
-            />
-          </ThemeProvider>
-        </MuiPickersUtilsProvider>
+        <div className={styles["table__req-start-date-wrapper"]}>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <ThemeProvider theme={themeForWorkDate}>
+              <DatePicker
+                disableToolbar
+                variant="inline"
+                value={value === null ? row.original.StartDate : value}
+                format="MM/dd/yyyy"
+                autoOk={true}
+                className={
+                  value === null
+                    ? styles["table__req-start-date-wrapper__date-picker"]
+                    : styles[
+                        "table__req-start-date-wrapper__date-picker-request"
+                      ]
+                }
+                onChange={selectReqStartDate}
+              />
+            </ThemeProvider>
+          </MuiPickersUtilsProvider>
+        </div>
         /* {value === null ? row.original.StartDate : value} */
       );
     } else if (id === "ReqFinishDate") {
       return (
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <ThemeProvider theme={themeForWorkDate}>
-            <DatePicker
-              disableToolbar
-              variant="inline"
-              value={value === null ? row.original.FinishDate : value}
-              format="MM/dd/yyyy"
-              autoOk={true}
-              className={
-                value === null
-                  ? styles["table__req-finish-date-wrapper"]
-                  : styles["table__req-finish-date-wrapper-request"]
-              }
-              onChange={selectReqFinishDate}
-            />
-          </ThemeProvider>
-        </MuiPickersUtilsProvider>
+        <div className={styles["table__req-finish-date-wrapper"]}>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <ThemeProvider theme={themeForWorkDate}>
+              <DatePicker
+                disableToolbar
+                variant="inline"
+                value={value === null ? row.original.FinishDate : value}
+                format="MM/dd/yyyy"
+                autoOk={true}
+                className={
+                  value === null
+                    ? styles["table__req-finish-date-wrapper__date-picker"]
+                    : styles[
+                        "table__req-finish-date-wrapper__date-picker-request"
+                      ]
+                }
+                onChange={selectReqFinishDate}
+              />
+            </ThemeProvider>
+          </MuiPickersUtilsProvider>
+        </div>
       );
     } else if (id === "PreviousWork") {
       return (

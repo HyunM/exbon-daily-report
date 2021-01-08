@@ -241,16 +241,24 @@
   height: 100%;
   margin: auto;
 }
-
-.table__req-start-date-wrapper input {
-  text-align: center;
-  color: rgb(116, 100, 110);
+.table__req-start-date-wrapper div {
+  vertical-align: middle;
+  display: table-cell;
 }
 
-.table__req-start-date-wrapper-request input {
+.table__req-start-date-wrapper__date-picker input {
+  text-align: center;
+  color: rgb(116, 100, 110);
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.table__req-start-date-wrapper__date-picker-request input {
   text-align: center;
   color: red;
   font-weight: 500;
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 
 .table__req-finish-date-wrapper {
@@ -259,15 +267,24 @@
   margin: auto;
 }
 
-.table__req-finish-date-wrapper input {
-  text-align: center;
-  color: rgb(116, 100, 110);
+.table__req-finish-date-wrapper div {
+  vertical-align: middle;
+  display: table-cell;
 }
 
-.table__req-finish-date-wrapper-request input {
+.table__req-finish-date-wrapper__date-picker input {
+  text-align: center;
+  color: rgb(116, 100, 110);
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.table__req-finish-date-wrapper__date-picker-request input {
   text-align: center;
   color: red;
   font-weight: 500;
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 
 .table__previous-work-wrapper {
