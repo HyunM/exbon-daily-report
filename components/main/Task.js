@@ -227,6 +227,13 @@ const Task = ({
       setValue(e);
     };
 
+    const selectReqStartDate = (e) => {
+      updateReqStartDate(index, id, value, e);
+    };
+
+    const selectReqFinishDate = (e) => {
+      updateReqFinishDate(index, id, value, e);
+    };
     // We'll only update the external data when the input is blurred
     const onBlur = () => {
       updateMyData(index, id, value);
@@ -369,6 +376,7 @@ const Task = ({
                   ? styles["table__req-start-date-wrapper"]
                   : styles["table__req-start-date-wrapper-request"]
               }
+              onChange={selectReqStartDate}
             />
           </ThemeProvider>
         </MuiPickersUtilsProvider>
@@ -376,17 +384,23 @@ const Task = ({
       );
     } else if (id === "ReqFinishDate") {
       return (
-        <div className={styles["table__req-finish-date-wrapper"]}>
-          <span
-            className={
-              value === null
-                ? styles["table__req-finish-date-wrapper__data"]
-                : styles["table__req-finish-date-wrapper__data-request"]
-            }
-          >
-            {value === null ? row.original.FinishDate : value}
-          </span>
-        </div>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <ThemeProvider theme={themeForWorkDate}>
+            <DatePicker
+              disableToolbar
+              variant="inline"
+              value={value === null ? row.original.FinishDate : value}
+              format="MM/dd/yyyy"
+              autoOk={true}
+              className={
+                value === null
+                  ? styles["table__req-finish-date-wrapper"]
+                  : styles["table__req-finish-date-wrapper-request"]
+              }
+              onChange={selectReqFinishDate}
+            />
+          </ThemeProvider>
+        </MuiPickersUtilsProvider>
       );
     } else if (id === "PreviousWork") {
       return (
@@ -455,6 +469,48 @@ const Task = ({
           return {
             ...old[rowIndex],
             [columnId]: value,
+          };
+        }
+        return row;
+      })
+    );
+  };
+
+  const updateReqStartDate = (rowIndex, columnId, value, date) => {
+    setData((old) =>
+      old.map((row, index) => {
+        if (index === rowIndex) {
+          return {
+            ...old[rowIndex],
+            ReqStartDate: formatDate(date),
+            NewReqStartDate: formatDate(date),
+            ReqFinishDate:
+              row.ReqFinishDate === null ? row.FinishDate : row.ReqFinishDate,
+            NewReqFinishDate:
+              row.NewReqFinishDate === null
+                ? row.FinishDate
+                : row.NewReqFinishDate,
+          };
+        }
+        return row;
+      })
+    );
+  };
+
+  const updateReqFinishDate = (rowIndex, columnId, value, date) => {
+    setData((old) =>
+      old.map((row, index) => {
+        if (index === rowIndex) {
+          return {
+            ...old[rowIndex],
+            ReqFinishDate: formatDate(date),
+            NewReqFinishDate: formatDate(date),
+            ReqStartDate:
+              row.ReqStartDate === null ? row.StartDate : row.ReqStartDate,
+            NewReqStartDate:
+              row.NewReqStartDate === null
+                ? row.StartDate
+                : row.NewReqStartDate,
           };
         }
         return row;
