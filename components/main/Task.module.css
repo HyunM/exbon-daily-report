@@ -250,7 +250,7 @@
 .table__req-start-date-wrapper-request input {
   text-align: center;
   color: red;
-  font-weight: bold;
+  font-weight: 500;
 }
 
 .table__req-finish-date-wrapper {
@@ -267,7 +267,7 @@
 .table__req-finish-date-wrapper-request input {
   text-align: center;
   color: red;
-  font-weight: bold;
+  font-weight: 500;
 }
 
 .table__previous-work-wrapper {
