@@ -261,6 +261,7 @@ const Task = ({
         }
       }
 
+      //Step 10
       // if (e.nativeEvent.data) {
       //   if (
       //     e.nativeEvent.data !== "0" &&
@@ -306,27 +307,7 @@ const Task = ({
       //   } else if (e.nativeEvent.data === "4") {
       //     setValue("40");
       //   } else if (e.nativeEvent.data === "5") {
-      //     if (e.target.value === "100") {
-      //       setValue("100");
-      //     } else if (e.target.value.includes("2")) {
-      //       setValue("20");
-      //     } else if (e.target.value.includes("3")) {
-      //       setValue("30");
-      //     } else if (e.target.value.includes("4")) {
-      //       setValue("40");
-      //     } else if (e.target.value.includes("5")) {
-      //       setValue("50");
-      //     } else if (e.target.value.includes("6")) {
-      //       setValue("60");
-      //     } else if (e.target.value.includes("7")) {
-      //       setValue("70");
-      //     } else if (e.target.value.includes("8")) {
-      //       setValue("80");
-      //     } else if (e.target.value.includes("9")) {
-      //       setValue("90");
-      //     } else {
-      //       setValue("0");
-      //     }
+      //     setValue("50");
       //   } else if (e.nativeEvent.data === "6") {
       //     setValue("60");
       //   } else if (e.nativeEvent.data === "7") {

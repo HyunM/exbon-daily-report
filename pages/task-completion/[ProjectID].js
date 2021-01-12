@@ -19,6 +19,7 @@ import Modal from "react-modal";
 import EditTwoToneIcon from "@material-ui/icons/EditTwoTone";
 import DeleteTwoToneIcon from "@material-ui/icons/DeleteTwoTone";
 import { useRouter } from "next/router";
+
 let noWorkMapKey = -1;
 
 toast.configure();
@@ -162,8 +163,13 @@ const Task = (
     };
 
     const onChangePercent = (e) => {
+      //e.nativeEvent.data => User input data (On Firefox, in case of arrow, next value)
+      //e.target.value => future value
       if (e.nativeEvent.data) {
-        if (
+        if (e.nativeEvent.data.length > 1) {
+          //For Firefox
+          setValue(e.target.value);
+        } else if (
           e.nativeEvent.data !== "0" &&
           e.nativeEvent.data !== "1" &&
           e.nativeEvent.data !== "2" &&
@@ -179,6 +185,11 @@ const Task = (
         } else if (e.nativeEvent.data === "0") {
           if (e.target.value === "100") {
             setValue("100");
+          } else if (
+            e.target.value.length > 2 &&
+            e.target.value.includes("50")
+          ) {
+            setValue("0");
           } else if (e.target.value.includes("2")) {
             setValue("20");
           } else if (e.target.value.includes("3")) {
@@ -207,7 +218,36 @@ const Task = (
         } else if (e.nativeEvent.data === "4") {
           setValue("40");
         } else if (e.nativeEvent.data === "5") {
-          setValue("50");
+          if (e.target.value === "5") {
+            setValue("5");
+          } else if (e.target.value === "05") {
+            setValue("5");
+          } else if (e.target.value === "55") {
+            setValue("55");
+          } else if (
+            e.target.value.length > 2 &&
+            e.target.value.includes("55")
+          ) {
+            setValue("5");
+          } else if (e.target.value.includes("1")) {
+            setValue("15");
+          } else if (e.target.value.includes("2")) {
+            setValue("25");
+          } else if (e.target.value.includes("3")) {
+            setValue("35");
+          } else if (e.target.value.includes("4")) {
+            setValue("45");
+          } else if (e.target.value.includes("6")) {
+            setValue("65");
+          } else if (e.target.value.includes("7")) {
+            setValue("75");
+          } else if (e.target.value.includes("8")) {
+            setValue("85");
+          } else if (e.target.value.includes("9")) {
+            setValue("95");
+          } else {
+            setValue("0");
+          }
         } else if (e.nativeEvent.data === "6") {
           setValue("60");
         } else if (e.nativeEvent.data === "7") {
@@ -226,12 +266,85 @@ const Task = (
           setValue("0");
         }
       }
+
+      //Step 10
+      // if (e.nativeEvent.data) {
+      //   if (
+      //     e.nativeEvent.data !== "0" &&
+      //     e.nativeEvent.data !== "1" &&
+      //     e.nativeEvent.data !== "2" &&
+      //     e.nativeEvent.data !== "3" &&
+      //     e.nativeEvent.data !== "4" &&
+      //     e.nativeEvent.data !== "5" &&
+      //     e.nativeEvent.data !== "6" &&
+      //     e.nativeEvent.data !== "7" &&
+      //     e.nativeEvent.data !== "8" &&
+      //     e.nativeEvent.data !== "9"
+      //   ) {
+      //     setValue("0");
+      //   } else if (e.nativeEvent.data === "0") {
+      //     if (e.target.value === "100") {
+      //       setValue("100");
+      //     } else if (e.target.value.includes("2")) {
+      //       setValue("20");
+      //     } else if (e.target.value.includes("3")) {
+      //       setValue("30");
+      //     } else if (e.target.value.includes("4")) {
+      //       setValue("40");
+      //     } else if (e.target.value.includes("5")) {
+      //       setValue("50");
+      //     } else if (e.target.value.includes("6")) {
+      //       setValue("60");
+      //     } else if (e.target.value.includes("7")) {
+      //       setValue("70");
+      //     } else if (e.target.value.includes("8")) {
+      //       setValue("80");
+      //     } else if (e.target.value.includes("9")) {
+      //       setValue("90");
+      //     } else {
+      //       setValue("0");
+      //     }
+      //   } else if (e.nativeEvent.data === "1") {
+      //     setValue("10");
+      //   } else if (e.nativeEvent.data === "2") {
+      //     setValue("20");
+      //   } else if (e.nativeEvent.data === "3") {
+      //     setValue("30");
+      //   } else if (e.nativeEvent.data === "4") {
+      //     setValue("40");
+      //   } else if (e.nativeEvent.data === "5") {
+      //     setValue("50");
+      //   } else if (e.nativeEvent.data === "6") {
+      //     setValue("60");
+      //   } else if (e.nativeEvent.data === "7") {
+      //     setValue("70");
+      //   } else if (e.nativeEvent.data === "8") {
+      //     setValue("80");
+      //   } else if (e.nativeEvent.data === "9") {
+      //     setValue("90");
+      //   } else if (e.nativeEvent.data === ".") {
+      //     setValue("0");
+      //   }
+      // } else {
+      //   if (e.nativeEvent.data === undefined) {
+      //     setValue(e.target.value);
+      //   } else {
+      //     setValue("0");
+      //   }
+      // }
     };
 
     const onChangeDatePicker = (e) => {
       setValue(e);
     };
 
+    const selectReqStartDate = (e) => {
+      updateReqStartDate(index, id, value, e);
+    };
+
+    const selectReqFinishDate = (e) => {
+      updateReqFinishDate(index, id, value, e);
+    };
     // We'll only update the external data when the input is blurred
     const onBlur = () => {
       updateMyData(index, id, value);
@@ -318,21 +431,7 @@ const Task = (
     } else if (id === "StartDate") {
       return (
         <div className={styles["table__start-date-wrapper"]}>
-          <span
-            className={styles["table__start-date-wrapper__data"]}
-            onClick={() =>
-              handleModalWorkDate(
-                "Start Date",
-                row.original.Company,
-                row.original.TaskID,
-                row.original.TaskName,
-                row.original.StartDate,
-                row.original.FinishDate,
-                row.original.ReqStartDate,
-                row.original.ReqFinishDate
-              )
-            }
-          >
+          <span className={styles["table__start-date-wrapper__data"]}>
             {value}
           </span>
         </div>
@@ -342,18 +441,18 @@ const Task = (
         <div className={styles["table__finish-date-wrapper"]}>
           <span
             className={styles["table__finish-date-wrapper__data"]}
-            onClick={() =>
-              handleModalWorkDate(
-                "Finish Date",
-                row.original.Company,
-                row.original.TaskID,
-                row.original.TaskName,
-                row.original.StartDate,
-                row.original.FinishDate,
-                row.original.ReqStartDate,
-                row.original.ReqFinishDate
-              )
-            }
+            // onClick={() =>
+            //   handleModalWorkDate(
+            //     "Finish Date",
+            //     row.original.Company,
+            //     row.original.TaskID,
+            //     row.original.TaskName,
+            //     row.original.StartDate,
+            //     row.original.FinishDate,
+            //     row.original.ReqStartDate,
+            //     row.original.ReqFinishDate
+            //   )
+            // }
           >
             {value}
           </span>
@@ -362,17 +461,50 @@ const Task = (
     } else if (id === "ReqStartDate") {
       return (
         <div className={styles["table__req-start-date-wrapper"]}>
-          <span className={styles["table__req-start-date-wrapper__data"]}>
-            {value}
-          </span>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <ThemeProvider theme={themeForWorkDate}>
+              <DatePicker
+                disableToolbar
+                variant="inline"
+                value={value === null ? row.original.StartDate : value}
+                format="MM/dd/yyyy"
+                autoOk={true}
+                className={
+                  value === null
+                    ? styles["table__req-start-date-wrapper__date-picker"]
+                    : styles[
+                        "table__req-start-date-wrapper__date-picker-request"
+                      ]
+                }
+                onChange={selectReqStartDate}
+              />
+            </ThemeProvider>
+          </MuiPickersUtilsProvider>
         </div>
+        /* {value === null ? row.original.StartDate : value} */
       );
     } else if (id === "ReqFinishDate") {
       return (
         <div className={styles["table__req-finish-date-wrapper"]}>
-          <span className={styles["table__req-finish-date-wrapper__data"]}>
-            {value}
-          </span>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <ThemeProvider theme={themeForWorkDate}>
+              <DatePicker
+                disableToolbar
+                variant="inline"
+                value={value === null ? row.original.FinishDate : value}
+                format="MM/dd/yyyy"
+                autoOk={true}
+                className={
+                  value === null
+                    ? styles["table__req-finish-date-wrapper__date-picker"]
+                    : styles[
+                        "table__req-finish-date-wrapper__date-picker-request"
+                      ]
+                }
+                onChange={selectReqFinishDate}
+              />
+            </ThemeProvider>
+          </MuiPickersUtilsProvider>
         </div>
       );
     } else if (id === "PreviousWork") {
@@ -404,7 +536,7 @@ const Task = (
                 onBlur={onBlurForCurrentWork}
                 min="0"
                 max="100"
-                step="10"
+                step="5"
                 onKeyDown={preventNegativeNumber}
               ></input>
             ) : (
@@ -418,7 +550,7 @@ const Task = (
                 onBlur={onBlurForCurrentWork}
                 min="0"
                 max="100"
-                step="10"
+                step="5"
                 onKeyDown={preventNegativeNumber}
               ></input>
             )}
@@ -442,6 +574,48 @@ const Task = (
           return {
             ...old[rowIndex],
             [columnId]: value,
+          };
+        }
+        return row;
+      })
+    );
+  };
+
+  const updateReqStartDate = (rowIndex, columnId, value, date) => {
+    setData((old) =>
+      old.map((row, index) => {
+        if (index === rowIndex) {
+          return {
+            ...old[rowIndex],
+            ReqStartDate: formatDate(date),
+            NewReqStartDate: formatDate(date),
+            ReqFinishDate:
+              row.ReqFinishDate === null ? row.FinishDate : row.ReqFinishDate,
+            NewReqFinishDate:
+              row.NewReqFinishDate === null
+                ? row.FinishDate
+                : row.NewReqFinishDate,
+          };
+        }
+        return row;
+      })
+    );
+  };
+
+  const updateReqFinishDate = (rowIndex, columnId, value, date) => {
+    setData((old) =>
+      old.map((row, index) => {
+        if (index === rowIndex) {
+          return {
+            ...old[rowIndex],
+            ReqFinishDate: formatDate(date),
+            NewReqFinishDate: formatDate(date),
+            ReqStartDate:
+              row.ReqStartDate === null ? row.StartDate : row.ReqStartDate,
+            NewReqStartDate:
+              row.NewReqStartDate === null
+                ? row.StartDate
+                : row.NewReqStartDate,
           };
         }
         return row;
@@ -520,7 +694,7 @@ const Task = (
             axios({
               method: "POST",
               url: `/api/project-date-change-request`,
-              timeout: 5000, // 5 seconds timeout
+              timeout: 3000, // 5 seconds timeout
               headers: {},
               data: {
                 EmployeeID: employeeInfo.EmployeeID,
@@ -546,7 +720,7 @@ const Task = (
             axios({
               method: "put",
               url: `/api/project-tasks-progress`,
-              timeout: 5000,
+              timeout: 3000,
               headers: {},
               data: {
                 TaskID: data[i].TaskID,
@@ -569,7 +743,7 @@ const Task = (
               axios({
                 method: "POST",
                 url: `/api/project-date-change-request`,
-                timeout: 5000, // 5 seconds timeout
+                timeout: 3000, // 5 seconds timeout
                 headers: {},
                 data: {
                   EmployeeID: employeeInfo.EmployeeID,
@@ -587,7 +761,7 @@ const Task = (
               axios({
                 method: "POST",
                 url: `/api/project-date-change-request`,
-                timeout: 5000, // 5 seconds timeout
+                timeout: 3000, // 5 seconds timeout
                 headers: {},
                 data: {
                   EmployeeID: employeeInfo.EmployeeID,
@@ -605,7 +779,7 @@ const Task = (
               axios({
                 method: "POST",
                 url: `/api/project-date-change-request`,
-                timeout: 5000, // 5 seconds timeout
+                timeout: 3000, // 5 seconds timeout
                 headers: {},
                 data: {
                   EmployeeID: employeeInfo.EmployeeID,
@@ -703,7 +877,7 @@ const Task = (
 
       setNoWork(result2.data);
 
-      // setPreviousProject(projectState);
+      setPreviousProject(projectState);
     };
 
     trackPromise(fetchData());
@@ -1021,10 +1195,11 @@ const Task = (
         </div>
       ) : (
         <>
-          {console.log("noWork")}
+          {/* {console.log("noWork")}
           {console.log(noWork)}
           {console.log("modalSaveNoWork")}
-          {console.log(modalSaveNoWork)}
+          {console.log(modalSaveNoWork)} */}
+          {console.log(data)}
 
           <div className={styles["header"]}>
             <div className={styles["header__left"]}>
