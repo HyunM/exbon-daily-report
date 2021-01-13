@@ -31,6 +31,8 @@ import { usePromiseTracker, trackPromise } from "react-promise-tracker";
 import Loader from "react-loader-spinner";
 import { useRouter } from "next/router";
 
+import SimpleTabs from "../../components/MainTab/demo";
+
 toast.configure();
 let afterSundayCheck = true;
 
@@ -794,138 +796,143 @@ const Timesheet = () => {
   const { promiseInProgress } = usePromiseTracker();
 
   return (
-    <div id={styles.mainDiv}>
-      {promiseInProgress || !projectState ? (
-        <div
-          style={{
-            width: "100%",
-            height: "100",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Loader type="ThreeDots" color="#2BAD60" height="100" width="100" />
-        </div>
-      ) : (
-        <>
-          <div className={styles["header"]}>
-            <div className={styles["header__left"]}>
-              <h2 className={styles["header__left__title"]}>Timesheet</h2>
+    <>
+      <SimpleTabs tapNo={0} projectState={projectState} />
+      <div id={styles.mainDiv}>
+        {promiseInProgress || !projectState ? (
+          <div
+            style={{
+              width: "100%",
+              height: "100",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Loader type="ThreeDots" color="#2BAD60" height="100" width="100" />
+          </div>
+        ) : (
+          <>
+            <div className={styles["header"]}>
+              <div className={styles["header__left"]}>
+                <h2 className={styles["header__left__title"]}>Timesheet</h2>
 
-              <h3 className={styles["header__left__project-id"]}>
-                Project ID :{" "}
-                <span
-                  onClick={() => {
-                    // setProjectState(0);
-                  }}
-                  className={styles["header__left__project-id__value"]}
-                >
-                  {projectState}
-                </span>
-              </h3>
+                <h3 className={styles["header__left__project-id"]}>
+                  Project ID :{" "}
+                  <span
+                    onClick={() => {
+                      // setProjectState(0);
+                    }}
+                    className={styles["header__left__project-id__value"]}
+                  >
+                    {projectState}
+                  </span>
+                </h3>
+              </div>
+              <div className={styles["header__right"]}>
+                {/* {dateCheckEditable(selectedDate) && ( */}
+                <>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    className={
+                      dateCheckEditable(selectedDate)
+                        ? styles["header__right__save-btn"]
+                        : styles["header__right__save-btn-before-sunday"]
+                    }
+                    onClick={handleSaveTimesheetBtn}
+                    startIcon={<SaveIcon />}
+                  >
+                    Save
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    size="small"
+                    className={
+                      dateCheckEditable(selectedDate)
+                        ? styles["header__right__add-btn"]
+                        : styles["header__right__add-btn-before-sunday"]
+                    }
+                    onClick={addTimesheetRow}
+                    startIcon={<AddIcon />}
+                  >
+                    Add&nbsp;Row
+                  </Button>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={checkState}
+                        onChange={checkChange}
+                        name="checkbox"
+                        color="secondary"
+                        id="checkboxForSetSameTime"
+                      />
+                    }
+                    label="Set Same Time of All"
+                    className={
+                      dateCheckEditable(selectedDate)
+                        ? styles["header__right__checkbox"]
+                        : styles["header__right__checkbox-before-sunday"]
+                    }
+                  />
+                </>
+                {/* )} */}
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <DatePicker
+                    margin="normal"
+                    id="datePickerDialog"
+                    format="MM/dd/yyyy"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                    className={styles["header__right__date-picker"]}
+                    autoOk={true}
+                    okLabel=""
+                  />
+                </MuiPickersUtilsProvider>
+                <p className={styles["header__right__label-date-picker"]}>
+                  Date
+                </p>
+              </div>
             </div>
-            <div className={styles["header__right"]}>
-              {/* {dateCheckEditable(selectedDate) && ( */}
-              <>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="small"
-                  className={
-                    dateCheckEditable(selectedDate)
-                      ? styles["header__right__save-btn"]
-                      : styles["header__right__save-btn-before-sunday"]
-                  }
-                  onClick={handleSaveTimesheetBtn}
-                  startIcon={<SaveIcon />}
-                >
-                  Save
-                </Button>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  size="small"
-                  className={
-                    dateCheckEditable(selectedDate)
-                      ? styles["header__right__add-btn"]
-                      : styles["header__right__add-btn-before-sunday"]
-                  }
-                  onClick={addTimesheetRow}
-                  startIcon={<AddIcon />}
-                >
-                  Add&nbsp;Row
-                </Button>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={checkState}
-                      onChange={checkChange}
-                      name="checkbox"
-                      color="secondary"
-                      id="checkboxForSetSameTime"
-                    />
-                  }
-                  label="Set Same Time of All"
-                  className={
-                    dateCheckEditable(selectedDate)
-                      ? styles["header__right__checkbox"]
-                      : styles["header__right__checkbox-before-sunday"]
-                  }
-                />
-              </>
-              {/* )} */}
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <DatePicker
-                  margin="normal"
-                  id="datePickerDialog"
-                  format="MM/dd/yyyy"
-                  value={selectedDate}
-                  onChange={handleDateChange}
-                  className={styles["header__right__date-picker"]}
-                  autoOk={true}
-                  okLabel=""
-                />
-              </MuiPickersUtilsProvider>
-              <p className={styles["header__right__label-date-picker"]}>Date</p>
-            </div>
-          </div>
-          <div className={styles["table"]}>
-            <TableContainer component={Paper}>
-              <Table>
-                <TableHead>
-                  {headerGroups.map((headerGroup) => (
-                    <TableRow {...headerGroup.getHeaderGroupProps()}>
-                      {headerGroup.headers.map((column) => (
-                        <TableCell {...column.getHeaderProps()}>
-                          {column.render("Header")}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))}
-                </TableHead>
-                <TableBody>
-                  {rows.map((row, i) => {
-                    prepareRow(row);
-                    return (
-                      <TableRow {...row.getRowProps()}>
-                        {row.cells.map((cell) => {
-                          return (
-                            <TableCell {...cell.getCellProps()}>
-                              {cell.render("Cell")}
-                            </TableCell>
-                          );
-                        })}
+            <div className={styles["table"]}>
+              <TableContainer component={Paper}>
+                <Table>
+                  <TableHead>
+                    {headerGroups.map((headerGroup) => (
+                      <TableRow {...headerGroup.getHeaderGroupProps()}>
+                        {headerGroup.headers.map((column) => (
+                          <TableCell {...column.getHeaderProps()}>
+                            {column.render("Header")}
+                          </TableCell>
+                        ))}
                       </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </div>
-        </>
-      )}
-    </div>
+                    ))}
+                  </TableHead>
+                  <TableBody>
+                    {rows.map((row, i) => {
+                      prepareRow(row);
+                      return (
+                        <TableRow {...row.getRowProps()}>
+                          {row.cells.map((cell) => {
+                            return (
+                              <TableCell {...cell.getCellProps()}>
+                                {cell.render("Cell")}
+                              </TableCell>
+                            );
+                          })}
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </div>
+          </>
+        )}
+      </div>
+    </>
   );
 };
 
