@@ -15,15 +15,24 @@ import TextField from "@material-ui/core/TextField";
 import { toast } from "react-toastify";
 import { usePromiseTracker, trackPromise } from "react-promise-tracker";
 import Loader from "react-loader-spinner";
+import { useRouter } from "next/router";
+import Head from "next/head";
+
+import SimpleTabs from "../../components/MainTab/demo";
 
 toast.configure();
 
-const DeficiencyLog = ({
-  projectState,
-  setProjectState,
-  employeeInfo,
-  setPreviousProject,
-}) => {
+const DeficiencyLog = (
+  {
+    // projectState,
+    // setProjectState,
+    // employeeInfo,
+    // setPreviousProject,
+  }
+) => {
+  const router = useRouter();
+  const projectState = router.query.ProjectID;
+
   const [data, setData] = useState(() => []);
 
   useEffect(() => {
@@ -31,7 +40,7 @@ const DeficiencyLog = ({
       let result = await axios({
         method: "get",
         url: `/api/project-deficiency-log?projectID=${projectState}`,
-        timeout: 5000, // 5 seconds timeout
+        timeout: 1000, // 5 seconds timeout
         headers: {},
       });
 
@@ -40,8 +49,8 @@ const DeficiencyLog = ({
 
     trackPromise(fetchData());
 
-    setPreviousProject(projectState);
-  }, []);
+    // setPreviousProject(projectState);
+  }, [projectState]);
 
   const today = new Date()
     .toLocaleString({
@@ -97,33 +106,48 @@ const DeficiencyLog = ({
   const { promiseInProgress } = usePromiseTracker();
 
   return (
-    <div id={styles.mainDiv}>
-      {promiseInProgress ? (
-        <div
-          style={{
-            width: "100%",
-            height: "100",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Loader type="ThreeDots" color="#2BAD60" height="100" width="100" />
-        </div>
-      ) : (
-        <>
-          <h3 className={styles["project-id"]}>
-            Project ID :{" "}
-            <span
-              onClick={() => {
-                setProjectState(0);
-              }}
-              className={styles["project-id__value"]}
-            >
-              {projectState}
-            </span>
-          </h3>
-          {/* <Accordion defaultExpanded={false}>
+    <>
+      <Head>
+        <title>Daily Report</title>
+        <link rel="icon" href="/favicon.ico" />
+        <meta
+          name="viewport"
+          content="minimum-scale=1, initial-scale=1, width=device-width"
+        />
+      </Head>
+      <SimpleTabs tapNo={2} projectState={projectState} />
+      <div id={styles.mainDiv}>
+        {promiseInProgress || !projectState ? (
+          <div
+            style={{
+              width: "100%",
+              height: "100",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Loader
+              type="Ball-Triangle"
+              color="#4e88de"
+              height="100"
+              width="100"
+            />
+          </div>
+        ) : (
+          <>
+            <h3 className={styles["project-id"]}>
+              Project ID :{" "}
+              <span
+                onClick={() => {
+                  // setProjectState(0);
+                }}
+                className={styles["project-id__value"]}
+              >
+                {projectState}
+              </span>
+            </h3>
+            {/* <Accordion defaultExpanded={false}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
@@ -151,68 +175,72 @@ const DeficiencyLog = ({
               </Button>
             </AccordionActions>
           </Accordion> */}
-          <Accordion defaultExpanded={true}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel2a-content"
-            >
-              <Typography variant="h5" color="primary">
-                Deficiency Log
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <div className={styles["inspection-record__wrapper"]}>
-                <div
-                  className={styles["inspection-record__wrapper__description"]}
-                >
-                  <TextField
-                    id="TextFieldForProblem"
-                    label="Problem"
-                    multiline
-                    rows={6}
-                    defaultValue={data[0] === undefined ? "" : data[0].Problem}
-                    variant="outlined"
-                    fullWidth
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                </div>
-                <div
-                  className={styles["inspection-record__wrapper__between"]}
-                ></div>
-                <div
-                  className={styles["inspection-record__wrapper__resolution"]}
-                >
-                  <TextField
-                    id="TextFieldForActionTaken"
-                    label="Action Taken"
-                    multiline
-                    rows={6}
-                    defaultValue={
-                      data[0] === undefined ? "" : data[0].ActionTaken
-                    }
-                    variant="outlined"
-                    fullWidth
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                </div>
-              </div>
-            </AccordionDetails>
-            <Divider />
-            <AccordionActions>
-              <Button
-                size="small"
-                color="primary"
-                onClick={saveInspectionRecord}
+            <Accordion defaultExpanded={true}>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel2a-content"
               >
-                Save
-              </Button>
-            </AccordionActions>
-          </Accordion>
-          {/* <Accordion defaultExpanded={true}>
+                <Typography variant="h5" color="primary">
+                  Deficiency Log
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <div className={styles["inspection-record__wrapper"]}>
+                  <div
+                    className={
+                      styles["inspection-record__wrapper__description"]
+                    }
+                  >
+                    <TextField
+                      id="TextFieldForProblem"
+                      label="Problem"
+                      multiline
+                      rows={6}
+                      defaultValue={
+                        data[0] === undefined ? "" : data[0].Problem
+                      }
+                      variant="outlined"
+                      fullWidth
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                  </div>
+                  <div
+                    className={styles["inspection-record__wrapper__between"]}
+                  ></div>
+                  <div
+                    className={styles["inspection-record__wrapper__resolution"]}
+                  >
+                    <TextField
+                      id="TextFieldForActionTaken"
+                      label="Action Taken"
+                      multiline
+                      rows={6}
+                      defaultValue={
+                        data[0] === undefined ? "" : data[0].ActionTaken
+                      }
+                      variant="outlined"
+                      fullWidth
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                  </div>
+                </div>
+              </AccordionDetails>
+              <Divider />
+              <AccordionActions>
+                <Button
+                  size="small"
+                  color="primary"
+                  onClick={saveInspectionRecord}
+                >
+                  Save
+                </Button>
+              </AccordionActions>
+            </Accordion>
+            {/* <Accordion defaultExpanded={true}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel3a-content"
@@ -240,9 +268,10 @@ const DeficiencyLog = ({
               </Button>
             </AccordionActions>
           </Accordion> */}
-        </>
-      )}
-    </div>
+          </>
+        )}
+      </div>
+    </>
   );
 };
 

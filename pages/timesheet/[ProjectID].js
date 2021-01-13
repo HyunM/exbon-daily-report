@@ -30,6 +30,7 @@ import classNames from "classnames/bind";
 import { usePromiseTracker, trackPromise } from "react-promise-tracker";
 import Loader from "react-loader-spinner";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 import SimpleTabs from "../../components/MainTab/demo";
 
@@ -797,6 +798,14 @@ const Timesheet = () => {
 
   return (
     <>
+      <Head>
+        <title>Daily Report</title>
+        <link rel="icon" href="/favicon.ico" />
+        <meta
+          name="viewport"
+          content="minimum-scale=1, initial-scale=1, width=device-width"
+        />
+      </Head>
       <SimpleTabs tapNo={0} projectState={projectState} />
       <div id={styles.mainDiv}>
         {promiseInProgress || !projectState ? (
@@ -809,7 +818,12 @@ const Timesheet = () => {
               alignItems: "center",
             }}
           >
-            <Loader type="ThreeDots" color="#2BAD60" height="100" width="100" />
+            <Loader
+              type="Ball-Triangle"
+              color="#4e88de"
+              height="100"
+              width="100"
+            />
           </div>
         ) : (
           <>

@@ -22,7 +22,11 @@ const SimpleTabs = ({ tapNo, projectState }) => {
           onClick={() => Router.push(`/task-completion/${projectState}`)}
           disableRipple={true}
         />
-        <Tab label="Deficiency Log" disableRipple={true} />
+        <Tab
+          label="Deficiency Log"
+          onClick={() => Router.push(`/deficiency-log/${projectState}`)}
+          disableRipple={true}
+        />
       </Tabs>
     </AppBar>
   );
