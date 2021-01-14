@@ -859,33 +859,36 @@ const Task = (
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      let result1 = await axios({
-        method: "get",
-        url: `/api/project-tasks-progress?selectedDate=${formatDate(
-          selectedDate
-        )}&projectID=${projectState}`,
-        timeout: 1000, // 5 seconds timeout
-        headers: {},
-      });
+    if (projectState !== undefined) {
+      const fetchData = async () => {
+        let result1 = await axios({
+          method: "get",
+          url: `/api/project-tasks-progress?selectedDate=${formatDate(
+            selectedDate
+          )}&projectID=${projectState}`,
+          timeout: 1000, // 5 seconds timeout
+          headers: {},
+        });
 
-      setData(result1.data);
+        setData(result1.data);
 
-      let result2 = await axios({
-        method: "get",
-        url: `/api/project-no-work?projectID=${projectState}`,
-        timeout: 1000, // 5 seconds timeout
-        headers: {},
-      });
+        let result2 = await axios({
+          method: "get",
+          url: `/api/project-no-work?projectID=${projectState}`,
+          timeout: 1000, // 5 seconds timeout
+          headers: {},
+        });
 
-      setNoWork(result2.data);
+        setNoWork(result2.data);
 
-      setPreviousProject(projectState);
-    };
+        setPreviousProject(projectState);
+      };
 
-    trackPromise(fetchData());
-    initializeDeleteQueue();
-    initializeUpdateQueue();
+      initializeDeleteQueue();
+      initializeUpdateQueue();
+
+      trackPromise(fetchData());
+    }
   }, [selectedDate, projectState]);
 
   const { promiseInProgress } = usePromiseTracker();
@@ -1191,6 +1194,7 @@ const Task = (
 
   return (
     <>
+      {console.log(projectState)}
       <Head>
         <title>Daily Report</title>
         <link rel="icon" href="/favicon.ico" />
@@ -1201,7 +1205,7 @@ const Task = (
       </Head>
       <SimpleTabs tapNo={1} projectState={projectState} main={false} />
       <div id={styles.mainDiv}>
-        {promiseInProgress || !projectState ? (
+        {promiseInProgress || projectState === undefined ? (
           <div
             style={{
               width: "100%",
