@@ -1192,7 +1192,7 @@ const Task = (
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
-      <SimpleTabs tapNo={1} projectState={projectState} />
+      <SimpleTabs tapNo={1} projectState={projectState} main={false} />
       <div id={styles.mainDiv}>
         {promiseInProgress || !projectState ? (
           <div

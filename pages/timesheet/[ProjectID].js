@@ -806,7 +806,7 @@ const Timesheet = () => {
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
-      <SimpleTabs tapNo={0} projectState={projectState} />
+      <SimpleTabs tapNo={0} projectState={projectState} main={false} />
       <div id={styles.mainDiv}>
         {promiseInProgress || !projectState ? (
           <div

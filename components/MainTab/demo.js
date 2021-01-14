@@ -8,24 +8,27 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Router from "next/router";
 
-const SimpleTabs = ({ tapNo, projectState }) => {
+const SimpleTabs = ({ tapNo, projectState, main }) => {
   return (
     <AppBar position="static">
       <Tabs value={tapNo}>
         <Tab
-          label="Timesheet"
+          label={main ? "" : "Timesheet"}
           onClick={() => Router.push(`/timesheet/${projectState}`)}
           disableRipple={true}
+          disabled={main}
         />
         <Tab
-          label="Task Completion"
+          label={main ? "" : "Task Completion"}
           onClick={() => Router.push(`/task-completion/${projectState}`)}
           disableRipple={true}
+          disabled={main}
         />
         <Tab
-          label="Deficiency Log"
+          label={main ? "" : "Deficiency Log"}
           onClick={() => Router.push(`/deficiency-log/${projectState}`)}
           disableRipple={true}
+          disabled={main}
         />
       </Tabs>
     </AppBar>
