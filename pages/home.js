@@ -2,11 +2,17 @@ import { useState, useEffect } from "react";
 import styles from "./TabsOfBoth.module.css";
 import { Button } from "@material-ui/core";
 import axios from "axios";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 
 import SimpleTabs from "../components/MainTab/demo";
 
-const home = () => {
+const home = ({ previousProject = 0 }) => {
+  const router = useRouter();
+  let tabs;
+  router.query.tab !== undefined
+    ? (tabs = router.query.tab)
+    : (tabs = "timesheet");
+
   const [assignedProject, setAssignedProject] = useState([]);
   useEffect(() => {
     axios({
@@ -27,17 +33,24 @@ const home = () => {
   const clickGo = () => {
     const projectState = document.getElementById("select-project").value;
 
-    Router.push(`/timesheet/${projectState}`);
+    Router.push(`/${tabs}/${projectState}`);
   };
   return (
     <>
+      {console.log(tabs)}
       <SimpleTabs tapNo={3} projectState={0} main={true} />
       <div className={styles["wrapper-select-project"]}>
         <h3 className={styles["projectID-text"]}>Project ID</h3>
         <select
           id="select-project"
           className={styles["wrapper-select-project__select-project"]}
-          // defaultValue={previousProject}
+          defaultValue={
+            previousProject
+              ? previousProject
+              : assignedProject[0] !== undefined
+              ? assignedProject[0].ProjectID
+              : 0
+          }
         >
           {assignedProject.map((item) => {
             return (

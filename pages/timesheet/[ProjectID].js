@@ -33,6 +33,7 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 
 import SimpleTabs from "../../components/MainTab/demo";
+import Router from "next/router";
 
 toast.configure();
 let afterSundayCheck = true;
@@ -796,6 +797,10 @@ const Timesheet = () => {
 
   const { promiseInProgress } = usePromiseTracker();
 
+  const goMain = () => {
+    Router.push({ pathname: "/home", query: { tab: "task-completion" } });
+  };
+
   return (
     <>
       <Head>
@@ -835,6 +840,7 @@ const Timesheet = () => {
                   Project ID :{" "}
                   <span
                     onClick={() => {
+                      goMain();
                       // setProjectState(0);
                     }}
                     className={styles["header__left__project-id__value"]}
