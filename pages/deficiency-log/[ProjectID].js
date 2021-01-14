@@ -15,7 +15,7 @@ import TextField from "@material-ui/core/TextField";
 import { toast } from "react-toastify";
 import { usePromiseTracker, trackPromise } from "react-promise-tracker";
 import Loader from "react-loader-spinner";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import Head from "next/head";
 
 import SimpleTabs from "../../components/MainTab/demo";
@@ -104,6 +104,12 @@ const DeficiencyLog = (
   };
 
   const { promiseInProgress } = usePromiseTracker();
+  const goMain = () => {
+    Router.push({
+      pathname: "/home",
+      query: { tab: "deficiency-log", project: projectState },
+    });
+  };
 
   return (
     <>
@@ -127,23 +133,13 @@ const DeficiencyLog = (
               alignItems: "center",
             }}
           >
-            <Loader
-              type="Ball-Triangle"
-              color="#4e88de"
-              height="100"
-              width="100"
-            />
+            <Loader type="Audio" color="#4e88de" height="100" width="100" />
           </div>
         ) : (
           <>
             <h3 className={styles["project-id"]}>
               Project ID :{" "}
-              <span
-                onClick={() => {
-                  // setProjectState(0);
-                }}
-                className={styles["project-id__value"]}
-              >
+              <span onClick={goMain} className={styles["project-id__value"]}>
                 {projectState}
               </span>
             </h3>

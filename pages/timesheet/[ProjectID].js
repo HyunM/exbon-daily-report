@@ -29,11 +29,10 @@ import styles from "./Timesheet.module.css";
 import classNames from "classnames/bind";
 import { usePromiseTracker, trackPromise } from "react-promise-tracker";
 import Loader from "react-loader-spinner";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import Head from "next/head";
 
 import SimpleTabs from "../../components/MainTab/demo";
-import Router from "next/router";
 
 toast.configure();
 let afterSundayCheck = true;
@@ -798,7 +797,10 @@ const Timesheet = () => {
   const { promiseInProgress } = usePromiseTracker();
 
   const goMain = () => {
-    Router.push({ pathname: "/home", query: { tab: "task-completion" } });
+    Router.push({
+      pathname: "/home",
+      query: { tab: "timesheet", project: projectState },
+    });
   };
 
   return (
@@ -823,12 +825,7 @@ const Timesheet = () => {
               alignItems: "center",
             }}
           >
-            <Loader
-              type="Ball-Triangle"
-              color="#4e88de"
-              height="100"
-              width="100"
-            />
+            <Loader type="Audio" color="#4e88de" height="100" width="100" />
           </div>
         ) : (
           <>
