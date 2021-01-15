@@ -1205,7 +1205,7 @@ const Task = (
       </Head>
       <SimpleTabs tapNo={1} projectState={projectState} main={false} />
       <div id={styles.mainDiv}>
-        {promiseInProgress || projectState === undefined ? (
+        {promiseInProgress || !projectState || !(data.length > 0) ? (
           <div
             style={{
               width: "100%",

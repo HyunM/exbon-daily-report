@@ -1,0 +1,34 @@
+.body {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  /* background: linear-gradient(to top, black, grey); */
+  box-shadow: 0px 0px 30px 10px rgb(163, 165, 180) inset;
+  /* background-color: rgb(217, 215, 228); */
+  background-image: url("./loginBackground.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.mainDiv {
+  width: 250px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5% !important;
+  background-color: white;
+  padding: 5%;
+  border-radius: 10px;
+  box-shadow: 3px 3px 20px 10px rgb(221, 217, 217);
+}
+
+.wrapper-upper {
+  display: flex;
+  justify-content: center;
+}
+
+.wrapper-upper__title {
+  color: rgb(114, 109, 109) !important;
+  align-self: center;
+}

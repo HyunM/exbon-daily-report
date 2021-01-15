@@ -20,8 +20,9 @@ import Head from "next/head";
 
 import SimpleTabs from "../../components/MainTab/demo";
 
+import { CookiesProvider, useCookies } from "react-cookie";
+import Login from "../../components/MainTab/login.js";
 toast.configure();
-
 const DeficiencyLog = (
   {
     // projectState,
@@ -32,6 +33,8 @@ const DeficiencyLog = (
 ) => {
   const router = useRouter();
   const projectState = router.query.ProjectID;
+
+  const [cookies, setCookie, removeCookie] = useCookies("username");
 
   const [data, setData] = useState(() => []);
 
@@ -121,29 +124,34 @@ const DeficiencyLog = (
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
-      <SimpleTabs tapNo={2} projectState={projectState} main={false} />
-      <div id={styles.mainDiv}>
-        {promiseInProgress || !projectState ? (
-          <div
-            style={{
-              width: "100%",
-              height: "100",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Loader type="Audio" color="#4e88de" height="100" width="100" />
-          </div>
-        ) : (
-          <>
-            <h3 className={styles["project-id"]}>
-              Project ID :{" "}
-              <span onClick={goMain} className={styles["project-id__value"]}>
-                {projectState}
-              </span>
-            </h3>
-            {/* <Accordion defaultExpanded={false}>
+      {!cookies.username ? (
+        <>
+          <SimpleTabs tapNo={2} projectState={projectState} main={false} />
+          <div id={styles.mainDiv}>
+            {promiseInProgress || !projectState ? (
+              <div
+                style={{
+                  width: "100%",
+                  height: "100",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Loader type="Audio" color="#4e88de" height="100" width="100" />
+              </div>
+            ) : (
+              <>
+                <h3 className={styles["project-id"]}>
+                  Project ID :{" "}
+                  <span
+                    onClick={goMain}
+                    className={styles["project-id__value"]}
+                  >
+                    {projectState}
+                  </span>
+                </h3>
+                {/* <Accordion defaultExpanded={false}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
@@ -171,72 +179,76 @@ const DeficiencyLog = (
               </Button>
             </AccordionActions>
           </Accordion> */}
-            <Accordion defaultExpanded={true}>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel2a-content"
-              >
-                <Typography variant="h5" color="primary">
-                  Deficiency Log
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <div className={styles["inspection-record__wrapper"]}>
-                  <div
-                    className={
-                      styles["inspection-record__wrapper__description"]
-                    }
+                <Accordion defaultExpanded={true}>
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel2a-content"
                   >
-                    <TextField
-                      id="TextFieldForProblem"
-                      label="Problem"
-                      multiline
-                      rows={6}
-                      defaultValue={
-                        data[0] === undefined ? "" : data[0].Problem
-                      }
-                      variant="outlined"
-                      fullWidth
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                    />
-                  </div>
-                  <div
-                    className={styles["inspection-record__wrapper__between"]}
-                  ></div>
-                  <div
-                    className={styles["inspection-record__wrapper__resolution"]}
-                  >
-                    <TextField
-                      id="TextFieldForActionTaken"
-                      label="Action Taken"
-                      multiline
-                      rows={6}
-                      defaultValue={
-                        data[0] === undefined ? "" : data[0].ActionTaken
-                      }
-                      variant="outlined"
-                      fullWidth
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                    />
-                  </div>
-                </div>
-              </AccordionDetails>
-              <Divider />
-              <AccordionActions>
-                <Button
-                  size="small"
-                  color="primary"
-                  onClick={saveInspectionRecord}
-                >
-                  Save
-                </Button>
-              </AccordionActions>
-            </Accordion>
-            {/* <Accordion defaultExpanded={true}>
+                    <Typography variant="h5" color="primary">
+                      Deficiency Log
+                    </Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <div className={styles["inspection-record__wrapper"]}>
+                      <div
+                        className={
+                          styles["inspection-record__wrapper__description"]
+                        }
+                      >
+                        <TextField
+                          id="TextFieldForProblem"
+                          label="Problem"
+                          multiline
+                          rows={6}
+                          defaultValue={
+                            data[0] === undefined ? "" : data[0].Problem
+                          }
+                          variant="outlined"
+                          fullWidth
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                        />
+                      </div>
+                      <div
+                        className={
+                          styles["inspection-record__wrapper__between"]
+                        }
+                      ></div>
+                      <div
+                        className={
+                          styles["inspection-record__wrapper__resolution"]
+                        }
+                      >
+                        <TextField
+                          id="TextFieldForActionTaken"
+                          label="Action Taken"
+                          multiline
+                          rows={6}
+                          defaultValue={
+                            data[0] === undefined ? "" : data[0].ActionTaken
+                          }
+                          variant="outlined"
+                          fullWidth
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </AccordionDetails>
+                  <Divider />
+                  <AccordionActions>
+                    <Button
+                      size="small"
+                      color="primary"
+                      onClick={saveInspectionRecord}
+                    >
+                      Save
+                    </Button>
+                  </AccordionActions>
+                </Accordion>
+                {/* <Accordion defaultExpanded={true}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel3a-content"
@@ -264,9 +276,13 @@ const DeficiencyLog = (
               </Button>
             </AccordionActions>
           </Accordion> */}
-          </>
-        )}
-      </div>
+              </>
+            )}
+          </div>
+        </>
+      ) : (
+        <Login />
+      )}
     </>
   );
 };
