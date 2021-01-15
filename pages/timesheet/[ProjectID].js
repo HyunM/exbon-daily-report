@@ -34,6 +34,9 @@ import Head from "next/head";
 
 import SimpleTabs from "../../components/MainTab/demo";
 
+import { CookiesProvider, useCookies } from "react-cookie";
+import Login from "../../components/MainTab/login.js";
+
 toast.configure();
 let afterSundayCheck = true;
 
@@ -50,6 +53,16 @@ const convertInputToTime = (time) => {
 const Timesheet = () => {
   const router = useRouter();
   const projectState = router.query.ProjectID;
+
+  const [cookies, setCookie, removeCookie] = useCookies("username");
+  const [status, setStatus] = useState({
+    cookies: {
+      username: 0,
+      password: 0,
+      fullname: "",
+      employeeid: 0,
+    },
+  });
 
   const getSunday = (d) => {
     d = new Date(d);
@@ -618,6 +631,15 @@ const Timesheet = () => {
       }
       setData(result.data.result[0]);
       dataEmployees = result.data.result[1];
+
+      setStatus({
+        cookies: {
+          username: cookies.username,
+          password: cookies.password,
+          fullname: cookies.fullname,
+          employeeid: cookies.employeeid,
+        },
+      });
     };
 
     trackPromise(fetchData());
@@ -803,6 +825,58 @@ const Timesheet = () => {
     });
   };
 
+  const signin = async (username, password) => {
+    await axios({
+      method: "post",
+      url: `/api/daily-report/signin`,
+      timeout: 5000, // 5 seconds timeout
+      headers: {},
+      data: {
+        Username: username,
+        Password: password,
+      },
+    }).then((response) => {
+      if (response.data.result.recordset[0] !== undefined) {
+        setCookie("username", username, { path: "/", maxAge: 3600 * 24 * 30 });
+        setCookie("password", password, { path: "/", maxAge: 3600 * 24 * 30 });
+        setCookie("fullname", response.data.result.recordset[0].FullName, {
+          path: "/",
+          maxAge: 3600 * 24 * 30,
+        });
+        setCookie("employeeid", response.data.result.recordset[0].EmployeeID, {
+          path: "/",
+          maxAge: 3600 * 24 * 30,
+        });
+        setStatus((prevState) => ({
+          ...prevState,
+          cookies: {
+            username: username,
+            password: password,
+            fullname: response.data.result.recordset[0].FullName,
+            employeeid: response.data.result.recordset[0].EmployeeID,
+          },
+        }));
+      } else {
+        alert("Login failed.");
+      }
+    });
+  };
+
+  const logout = () => {
+    removeCookie("username", { path: "/" });
+    removeCookie("password", { path: "/" });
+    removeCookie("fullname", { path: "/" });
+    removeCookie("employeeid", { path: "/" });
+    setStatus({
+      cookies: {
+        username: undefined,
+        password: 0,
+        fullname: "",
+        employeeid: 0,
+      },
+    });
+  };
+
   return (
     <>
       <Head>
@@ -813,142 +887,155 @@ const Timesheet = () => {
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
-      <SimpleTabs tapNo={0} projectState={projectState} main={false} />
-      <div id={styles.mainDiv}>
-        {promiseInProgress || !projectState ? (
-          <div
-            style={{
-              width: "100%",
-              height: "100",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Loader type="Audio" color="#4e88de" height="100" width="100" />
-          </div>
-        ) : (
-          <>
-            <div className={styles["header"]}>
-              <div className={styles["header__left"]}>
-                <h2 className={styles["header__left__title"]}>Timesheet</h2>
+      {status.cookies.username === undefined ? (
+        <Login signin={signin} />
+      ) : (
+        <>
+          <SimpleTabs
+            tapNo={0}
+            projectState={projectState}
+            main={false}
+            employeeID={status.cookies.employeeid}
+            employeeName={status.cookies.fullname}
+            logout={logout}
+          />
+          <div id={styles.mainDiv}>
+            {promiseInProgress || !projectState ? (
+              <div
+                style={{
+                  width: "100%",
+                  height: "100",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Loader type="Audio" color="#4e88de" height="100" width="100" />
+              </div>
+            ) : (
+              <>
+                <div className={styles["header"]}>
+                  <div className={styles["header__left"]}>
+                    <h2 className={styles["header__left__title"]}>Timesheet</h2>
 
-                <h3 className={styles["header__left__project-id"]}>
-                  Project ID :{" "}
-                  <span
-                    onClick={() => {
-                      goMain();
-                      // setProjectState(0);
-                    }}
-                    className={styles["header__left__project-id__value"]}
-                  >
-                    {projectState}
-                  </span>
-                </h3>
-              </div>
-              <div className={styles["header__right"]}>
-                {/* {dateCheckEditable(selectedDate) && ( */}
-                <>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    size="small"
-                    className={
-                      dateCheckEditable(selectedDate)
-                        ? styles["header__right__save-btn"]
-                        : styles["header__right__save-btn-before-sunday"]
-                    }
-                    onClick={handleSaveTimesheetBtn}
-                    startIcon={<SaveIcon />}
-                  >
-                    Save
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    size="small"
-                    className={
-                      dateCheckEditable(selectedDate)
-                        ? styles["header__right__add-btn"]
-                        : styles["header__right__add-btn-before-sunday"]
-                    }
-                    onClick={addTimesheetRow}
-                    startIcon={<AddIcon />}
-                  >
-                    Add&nbsp;Row
-                  </Button>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={checkState}
-                        onChange={checkChange}
-                        name="checkbox"
+                    <h3 className={styles["header__left__project-id"]}>
+                      Project ID :{" "}
+                      <span
+                        onClick={() => {
+                          goMain();
+                          // setProjectState(0);
+                        }}
+                        className={styles["header__left__project-id__value"]}
+                      >
+                        {projectState}
+                      </span>
+                    </h3>
+                  </div>
+                  <div className={styles["header__right"]}>
+                    {/* {dateCheckEditable(selectedDate) && ( */}
+                    <>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        className={
+                          dateCheckEditable(selectedDate)
+                            ? styles["header__right__save-btn"]
+                            : styles["header__right__save-btn-before-sunday"]
+                        }
+                        onClick={handleSaveTimesheetBtn}
+                        startIcon={<SaveIcon />}
+                      >
+                        Save
+                      </Button>
+                      <Button
+                        variant="contained"
                         color="secondary"
-                        id="checkboxForSetSameTime"
+                        size="small"
+                        className={
+                          dateCheckEditable(selectedDate)
+                            ? styles["header__right__add-btn"]
+                            : styles["header__right__add-btn-before-sunday"]
+                        }
+                        onClick={addTimesheetRow}
+                        startIcon={<AddIcon />}
+                      >
+                        Add&nbsp;Row
+                      </Button>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={checkState}
+                            onChange={checkChange}
+                            name="checkbox"
+                            color="secondary"
+                            id="checkboxForSetSameTime"
+                          />
+                        }
+                        label="Set Same Time of All"
+                        className={
+                          dateCheckEditable(selectedDate)
+                            ? styles["header__right__checkbox"]
+                            : styles["header__right__checkbox-before-sunday"]
+                        }
                       />
-                    }
-                    label="Set Same Time of All"
-                    className={
-                      dateCheckEditable(selectedDate)
-                        ? styles["header__right__checkbox"]
-                        : styles["header__right__checkbox-before-sunday"]
-                    }
-                  />
-                </>
-                {/* )} */}
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <DatePicker
-                    margin="normal"
-                    id="datePickerDialog"
-                    format="MM/dd/yyyy"
-                    value={selectedDate}
-                    onChange={handleDateChange}
-                    className={styles["header__right__date-picker"]}
-                    autoOk={true}
-                    okLabel=""
-                  />
-                </MuiPickersUtilsProvider>
-                <p className={styles["header__right__label-date-picker"]}>
-                  Date
-                </p>
-              </div>
-            </div>
-            <div className={styles["table"]}>
-              <TableContainer component={Paper}>
-                <Table>
-                  <TableHead>
-                    {headerGroups.map((headerGroup) => (
-                      <TableRow {...headerGroup.getHeaderGroupProps()}>
-                        {headerGroup.headers.map((column) => (
-                          <TableCell {...column.getHeaderProps()}>
-                            {column.render("Header")}
-                          </TableCell>
-                        ))}
-                      </TableRow>
-                    ))}
-                  </TableHead>
-                  <TableBody>
-                    {rows.map((row, i) => {
-                      prepareRow(row);
-                      return (
-                        <TableRow {...row.getRowProps()}>
-                          {row.cells.map((cell) => {
-                            return (
-                              <TableCell {...cell.getCellProps()}>
-                                {cell.render("Cell")}
+                    </>
+                    {/* )} */}
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <DatePicker
+                        margin="normal"
+                        id="datePickerDialog"
+                        format="MM/dd/yyyy"
+                        value={selectedDate}
+                        onChange={handleDateChange}
+                        className={styles["header__right__date-picker"]}
+                        autoOk={true}
+                        okLabel=""
+                      />
+                    </MuiPickersUtilsProvider>
+                    <p className={styles["header__right__label-date-picker"]}>
+                      Date
+                    </p>
+                  </div>
+                </div>
+                <div className={styles["table"]}>
+                  <TableContainer component={Paper}>
+                    <Table>
+                      <TableHead>
+                        {headerGroups.map((headerGroup) => (
+                          <TableRow {...headerGroup.getHeaderGroupProps()}>
+                            {headerGroup.headers.map((column) => (
+                              <TableCell {...column.getHeaderProps()}>
+                                {column.render("Header")}
                               </TableCell>
-                            );
-                          })}
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </div>
-          </>
-        )}
-      </div>
+                            ))}
+                          </TableRow>
+                        ))}
+                      </TableHead>
+                      <TableBody>
+                        {rows.map((row, i) => {
+                          prepareRow(row);
+                          return (
+                            <TableRow {...row.getRowProps()}>
+                              {row.cells.map((cell) => {
+                                return (
+                                  <TableCell {...cell.getCellProps()}>
+                                    {cell.render("Cell")}
+                                  </TableCell>
+                                );
+                              })}
+                            </TableRow>
+                          );
+                        })}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </div>
+              </>
+            )}
+          </div>
+        </>
+      )}
     </>
   );
 };

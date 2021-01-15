@@ -23,6 +23,9 @@ import Head from "next/head";
 
 import SimpleTabs from "../../components/MainTab/demo";
 
+import { CookiesProvider, useCookies } from "react-cookie";
+import Login from "../../components/MainTab/login.js";
+
 let noWorkMapKey = -1;
 
 toast.configure();
@@ -60,6 +63,16 @@ const Task = (
 ) => {
   const router = useRouter();
   const projectState = router.query.ProjectID;
+
+  const [cookies, setCookie, removeCookie] = useCookies("username");
+  const [status, setStatus] = useState({
+    cookies: {
+      username: 0,
+      password: 0,
+      fullname: "",
+      employeeid: 0,
+    },
+  });
 
   const deleteQueue = useSelector((state) => state.deleteQueue);
   const dispatch = useDispatch();
@@ -882,6 +895,14 @@ const Task = (
         setNoWork(result2.data);
 
         setPreviousProject(projectState);
+        setStatus({
+          cookies: {
+            username: cookies.username,
+            password: cookies.password,
+            fullname: cookies.fullname,
+            employeeid: cookies.employeeid,
+          },
+        });
       };
 
       initializeDeleteQueue();
@@ -889,6 +910,14 @@ const Task = (
 
       trackPromise(fetchData());
     }
+    setStatus({
+      cookies: {
+        username: cookies.username,
+        password: cookies.password,
+        fullname: cookies.fullname,
+        employeeid: cookies.employeeid,
+      },
+    });
   }, [selectedDate, projectState]);
 
   const { promiseInProgress } = usePromiseTracker();
@@ -1192,6 +1221,58 @@ const Task = (
     });
   };
 
+  const signin = async (username, password) => {
+    await axios({
+      method: "post",
+      url: `/api/daily-report/signin`,
+      timeout: 5000, // 5 seconds timeout
+      headers: {},
+      data: {
+        Username: username,
+        Password: password,
+      },
+    }).then((response) => {
+      if (response.data.result.recordset[0] !== undefined) {
+        setCookie("username", username, { path: "/", maxAge: 3600 * 24 * 30 });
+        setCookie("password", password, { path: "/", maxAge: 3600 * 24 * 30 });
+        setCookie("fullname", response.data.result.recordset[0].FullName, {
+          path: "/",
+          maxAge: 3600 * 24 * 30,
+        });
+        setCookie("employeeid", response.data.result.recordset[0].EmployeeID, {
+          path: "/",
+          maxAge: 3600 * 24 * 30,
+        });
+        setStatus((prevState) => ({
+          ...prevState,
+          cookies: {
+            username: username,
+            password: password,
+            fullname: response.data.result.recordset[0].FullName,
+            employeeid: response.data.result.recordset[0].EmployeeID,
+          },
+        }));
+      } else {
+        alert("Login failed.");
+      }
+    });
+  };
+
+  const logout = () => {
+    removeCookie("username", { path: "/" });
+    removeCookie("password", { path: "/" });
+    removeCookie("fullname", { path: "/" });
+    removeCookie("employeeid", { path: "/" });
+    setStatus({
+      cookies: {
+        username: undefined,
+        password: 0,
+        fullname: "",
+        employeeid: 0,
+      },
+    });
+  };
+
   return (
     <>
       {console.log(projectState)}
@@ -1203,498 +1284,533 @@ const Task = (
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
-      <SimpleTabs tapNo={1} projectState={projectState} main={false} />
-      <div id={styles.mainDiv}>
-        {promiseInProgress || !projectState || !(data.length > 0) ? (
-          <div
-            style={{
-              width: "100%",
-              height: "100",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Loader type="Audio" color="#4e88de" height="100" width="100" />
-          </div>
-        ) : (
-          <>
-            {/* {console.log("noWork")}
+      {status.cookies.username === undefined ? (
+        <Login signin={signin} />
+      ) : (
+        <>
+          <SimpleTabs
+            tapNo={1}
+            projectState={projectState}
+            main={false}
+            employeeID={status.cookies.employeeid}
+            employeeName={status.cookies.fullname}
+            logout={logout}
+          />
+          <div id={styles.mainDiv}>
+            {promiseInProgress || !projectState || !(data.length > 0) ? (
+              <div
+                style={{
+                  width: "100%",
+                  height: "100",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Loader type="Audio" color="#4e88de" height="100" width="100" />
+              </div>
+            ) : (
+              <>
+                {/* {console.log("noWork")}
           {console.log(noWork)}
           {console.log("modalSaveNoWork")}
           {console.log(modalSaveNoWork)} */}
-            {console.log(data)}
+                {console.log(data)}
 
-            <div className={styles["header"]}>
-              <div className={styles["header__left"]}>
-                <h2 className={styles["header__left__title"]}>
-                  Task Completion
-                </h2>
+                <div className={styles["header"]}>
+                  <div className={styles["header__left"]}>
+                    <h2 className={styles["header__left__title"]}>
+                      Task Completion
+                    </h2>
 
-                <h3 className={styles["header__left__project-id"]}>
-                  Project ID :{" "}
-                  <span
-                    onClick={goMain}
-                    className={styles["header__left__project-id__value"]}
-                  >
-                    {projectState}
-                  </span>
-                </h3>
-              </div>
-              <div className={styles["header__right"]}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="small"
-                  className={styles["header__right__save-btn"]}
-                  startIcon={<SaveIcon />}
-                  onClick={handleSaveBtn}
-                >
-                  Save
-                </Button>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  size="small"
-                  startIcon={<EventBusyIcon />}
-                  className={styles["header__right__no-work-btn"]}
-                  onClick={openModalNoWork}
-                >
-                  Set No Work Days
-                </Button>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <DatePicker
-                    margin="normal"
-                    id="datePickerDialog"
-                    format="MM/dd/yyyy"
-                    value={selectedDate}
-                    onChange={handleDateChange}
-                    className={styles["header__right__date-picker"]}
-                    autoOk={true}
-                    okLabel=""
-                  />
-                </MuiPickersUtilsProvider>
-                <p className={styles["header__right__label-date-picker"]}>
-                  Date
-                </p>
-                <Modal
-                  isOpen={modalNoWork.isOpen}
-                  onRequestClose={closeModalNoWork}
-                  style={customStylesNoWork}
-                  className={styles["modal-no-work"]}
-                >
-                  {/* <p className={styles["test"]}>
-                  (This is a test, so NOT working yet. )
-                </p> */}
-                  <div className={styles["modal-no-work__wrapper-title"]}>
-                    <h4
-                      className={styles["modal-no-work__wrapper-title__title"]}
+                    <h3 className={styles["header__left__project-id"]}>
+                      Project ID :{" "}
+                      <span
+                        onClick={goMain}
+                        className={styles["header__left__project-id__value"]}
+                      >
+                        {projectState}
+                      </span>
+                    </h3>
+                  </div>
+                  <div className={styles["header__right"]}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      size="small"
+                      className={styles["header__right__save-btn"]}
+                      startIcon={<SaveIcon />}
+                      onClick={handleSaveBtn}
+                    >
+                      Save
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      size="small"
+                      startIcon={<EventBusyIcon />}
+                      className={styles["header__right__no-work-btn"]}
+                      onClick={openModalNoWork}
                     >
                       Set No Work Days
-                    </h4>
-                  </div>
-                  <div className={styles["modal-no-work__wrapper-table"]}>
-                    <table
-                      className={styles["modal-no-work__wrapper-table__table"]}
+                    </Button>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <DatePicker
+                        margin="normal"
+                        id="datePickerDialog"
+                        format="MM/dd/yyyy"
+                        value={selectedDate}
+                        onChange={handleDateChange}
+                        className={styles["header__right__date-picker"]}
+                        autoOk={true}
+                        okLabel=""
+                      />
+                    </MuiPickersUtilsProvider>
+                    <p className={styles["header__right__label-date-picker"]}>
+                      Date
+                    </p>
+                    <Modal
+                      isOpen={modalNoWork.isOpen}
+                      onRequestClose={closeModalNoWork}
+                      style={customStylesNoWork}
+                      className={styles["modal-no-work"]}
                     >
-                      <thead>
-                        <tr>
-                          <td>ID</td>
-                          <td>Status</td>
-                          <td>Dates</td>
-                          <td>Reason</td>
-                          <td>Edit</td>
-                          <td>Delete</td>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {noWork.map((item, index) => {
-                          return item.Status === "Complete" ? (
-                            <tr key={noWorkMapKey++}>
-                              <td>{item.RecordID > 0 ? item.RecordID : ""}</td>
-                              <td
-                                className={
-                                  styles[
-                                    "modal-no-work__wrapper-table__table__approval"
-                                  ]
-                                }
-                              >
-                                Complete
-                              </td>
-                              <td>
-                                {formatDate(item.StartDate)} ~{" "}
-                                {formatDate(item.FinishDate)}
-                              </td>
-                              <td>&nbsp;{item.Note}</td>
-                              <td
-                                className={
-                                  styles[
-                                    "modal-no-work__wrapper-table__table__wrapper-icon-edit"
-                                  ]
-                                }
-                                onClick={() => editNoWork(item.RecordID)}
-                              >
-                                <EditTwoToneIcon
-                                  className={
-                                    styles[
-                                      "modal-no-work__wrapper-table__table__wrapper-icon-edit__icon-edit"
-                                    ]
-                                  }
-                                />
-                              </td>
-                              <td
-                                className={
-                                  styles[
-                                    "modal-no-work__wrapper-table__table__wrapper-icon-delete"
-                                  ]
-                                }
-                                onClick={() => deleteNoWork(item.RecordID)}
-                              >
-                                <DeleteTwoToneIcon
-                                  className={
-                                    styles[
-                                      "modal-no-work__wrapper-table__table__wrapper-icon-edit__icon-delete"
-                                    ]
-                                  }
-                                />
-                              </td>
+                      {/* <p className={styles["test"]}>
+                  (This is a test, so NOT working yet. )
+                </p> */}
+                      <div className={styles["modal-no-work__wrapper-title"]}>
+                        <h4
+                          className={
+                            styles["modal-no-work__wrapper-title__title"]
+                          }
+                        >
+                          Set No Work Days
+                        </h4>
+                      </div>
+                      <div className={styles["modal-no-work__wrapper-table"]}>
+                        <table
+                          className={
+                            styles["modal-no-work__wrapper-table__table"]
+                          }
+                        >
+                          <thead>
+                            <tr>
+                              <td>ID</td>
+                              <td>Status</td>
+                              <td>Dates</td>
+                              <td>Reason</td>
+                              <td>Edit</td>
+                              <td>Delete</td>
                             </tr>
-                          ) : (
-                            <tr key={noWorkMapKey++}>
-                              <td></td>
-                              <td
-                                className={
-                                  item.OrderStatus === "2"
-                                    ? styles[
-                                        "modal-no-work__wrapper-table__table__pending"
-                                      ]
-                                    : styles[
-                                        "modal-no-work__wrapper-table__table__request"
-                                      ]
-                                }
-                              >
-                                {item.Status}&nbsp;{" "}
-                                {item.RecordID ? (
-                                  <div
+                          </thead>
+                          <tbody>
+                            {noWork.map((item, index) => {
+                              return item.Status === "Complete" ? (
+                                <tr key={noWorkMapKey++}>
+                                  <td>
+                                    {item.RecordID > 0 ? item.RecordID : ""}
+                                  </td>
+                                  <td
                                     className={
                                       styles[
-                                        "modal-no-work__wrapper-table__table__pending__id"
+                                        "modal-no-work__wrapper-table__table__approval"
                                       ]
                                     }
                                   >
-                                    # {item.RecordID}{" "}
-                                  </div>
-                                ) : (
-                                  ""
-                                )}
-                              </td>
-                              <td>
-                                {formatDate(item.StartDate)} ~{" "}
-                                {formatDate(item.FinishDate)}
-                              </td>
-                              <td>&nbsp;{item.Note}</td>
-                              <td></td>
-                              <td
-                                className={
-                                  item.OrderStatus === "2"
-                                    ? styles[
-                                        "modal-no-work__wrapper-table__table__wrapper-icon-delete__pending"
+                                    Complete
+                                  </td>
+                                  <td>
+                                    {formatDate(item.StartDate)} ~{" "}
+                                    {formatDate(item.FinishDate)}
+                                  </td>
+                                  <td>&nbsp;{item.Note}</td>
+                                  <td
+                                    className={
+                                      styles[
+                                        "modal-no-work__wrapper-table__table__wrapper-icon-edit"
                                       ]
-                                    : styles[
-                                        "modal-no-work__wrapper-table__table__wrapper-icon-delete__request"
+                                    }
+                                    onClick={() => editNoWork(item.RecordID)}
+                                  >
+                                    <EditTwoToneIcon
+                                      className={
+                                        styles[
+                                          "modal-no-work__wrapper-table__table__wrapper-icon-edit__icon-edit"
+                                        ]
+                                      }
+                                    />
+                                  </td>
+                                  <td
+                                    className={
+                                      styles[
+                                        "modal-no-work__wrapper-table__table__wrapper-icon-delete"
                                       ]
-                                }
-                              >
-                                <DeleteTwoToneIcon
-                                  className={
-                                    item.OrderStatus === "2"
-                                      ? styles[
-                                          "modal-no-work__wrapper-table__table__wrapper-icon-edit__icon-delete__pending"
+                                    }
+                                    onClick={() => deleteNoWork(item.RecordID)}
+                                  >
+                                    <DeleteTwoToneIcon
+                                      className={
+                                        styles[
+                                          "modal-no-work__wrapper-table__table__wrapper-icon-edit__icon-delete"
                                         ]
-                                      : styles[
-                                          "modal-no-work__wrapper-table__table__wrapper-icon-edit__icon-delete__request"
-                                        ]
-                                  }
-                                  onClick={() => deleteRequestNoWork(index)}
-                                />
-                              </td>
-                            </tr>
-                          );
-                        })}
+                                      }
+                                    />
+                                  </td>
+                                </tr>
+                              ) : (
+                                <tr key={noWorkMapKey++}>
+                                  <td></td>
+                                  <td
+                                    className={
+                                      item.OrderStatus === "2"
+                                        ? styles[
+                                            "modal-no-work__wrapper-table__table__pending"
+                                          ]
+                                        : styles[
+                                            "modal-no-work__wrapper-table__table__request"
+                                          ]
+                                    }
+                                  >
+                                    {item.Status}&nbsp;{" "}
+                                    {item.RecordID ? (
+                                      <div
+                                        className={
+                                          styles[
+                                            "modal-no-work__wrapper-table__table__pending__id"
+                                          ]
+                                        }
+                                      >
+                                        # {item.RecordID}{" "}
+                                      </div>
+                                    ) : (
+                                      ""
+                                    )}
+                                  </td>
+                                  <td>
+                                    {formatDate(item.StartDate)} ~{" "}
+                                    {formatDate(item.FinishDate)}
+                                  </td>
+                                  <td>&nbsp;{item.Note}</td>
+                                  <td></td>
+                                  <td
+                                    className={
+                                      item.OrderStatus === "2"
+                                        ? styles[
+                                            "modal-no-work__wrapper-table__table__wrapper-icon-delete__pending"
+                                          ]
+                                        : styles[
+                                            "modal-no-work__wrapper-table__table__wrapper-icon-delete__request"
+                                          ]
+                                    }
+                                  >
+                                    <DeleteTwoToneIcon
+                                      className={
+                                        item.OrderStatus === "2"
+                                          ? styles[
+                                              "modal-no-work__wrapper-table__table__wrapper-icon-edit__icon-delete__pending"
+                                            ]
+                                          : styles[
+                                              "modal-no-work__wrapper-table__table__wrapper-icon-edit__icon-delete__request"
+                                            ]
+                                      }
+                                      onClick={() => deleteRequestNoWork(index)}
+                                    />
+                                  </td>
+                                </tr>
+                              );
+                            })}
 
-                        <tr>
-                          <td>
-                            <div
+                            <tr>
+                              <td>
+                                <div
+                                  className={
+                                    styles[
+                                      "modal-no-work__wrapper-table__table__wrapper-btn-new"
+                                    ]
+                                  }
+                                  onClick={addNoWork}
+                                >
+                                  <Button>(+) NEW</Button>
+                                </div>
+                              </td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <div
+                          className={styles["modal-no-work__wrapper-btn-close"]}
+                        >
+                          <Button
+                            className={
+                              styles[
+                                "modal-no-work__wrapper-btn-close__btn-close"
+                              ]
+                            }
+                            onClick={closeModalNoWork}
+                          >
+                            Close
+                          </Button>
+                        </div>
+                      </div>
+                    </Modal>
+
+                    <Modal
+                      isOpen={modalSaveNoWork.isOpen}
+                      onRequesClose={closeModalSaveNoWork}
+                      style={customStylesSaveNoWork}
+                    >
+                      <div
+                        className={
+                          styles["modal-save-no-work__wrapper-content"]
+                        }
+                      >
+                        <h4
+                          className={
+                            styles["modal-save-no-work__wrapper-content__title"]
+                          }
+                        >
+                          {modalSaveNoWork.Type}
+                        </h4>
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                          <ThemeProvider theme={themeForNoWork}>
+                            <DatePicker
+                              disableToolbar
+                              variant="inline"
+                              disabled={
+                                modalSaveNoWork.Type === "Delete" ? true : false
+                              }
+                              value={modalSaveNoWork.StartDate}
+                              onChange={handleStartDateOfSaveNoWork}
+                              format="MM/dd/yyyy"
+                              label="Start Date"
                               className={
                                 styles[
-                                  "modal-no-work__wrapper-table__table__wrapper-btn-new"
+                                  "modal-save-no-work__wrapper-content__start-date"
                                 ]
                               }
-                              onClick={addNoWork}
-                            >
-                              <Button>(+) NEW</Button>
-                            </div>
-                          </td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <div className={styles["modal-no-work__wrapper-btn-close"]}>
-                      <Button
+                              autoOk={true}
+                            />
+                            <DatePicker
+                              disableToolbar
+                              variant="inline"
+                              disabled={
+                                modalSaveNoWork.Type === "Delete" ? true : false
+                              }
+                              value={modalSaveNoWork.FinishDate}
+                              onChange={handleEndDateOfSaveNoWork}
+                              format="MM/dd/yyyy"
+                              label="End Date"
+                              className={
+                                styles[
+                                  "modal-save-no-work__wrapper-content__end-date"
+                                ]
+                              }
+                              autoOk={true}
+                            />
+                          </ThemeProvider>
+                        </MuiPickersUtilsProvider>
+                      </div>
+                      <div
                         className={
-                          styles["modal-no-work__wrapper-btn-close__btn-close"]
+                          styles["modal-save-no-work__wrapper-content__bottom"]
                         }
-                        onClick={closeModalNoWork}
                       >
-                        Close
-                      </Button>
-                    </div>
-                  </div>
-                </Modal>
-
-                <Modal
-                  isOpen={modalSaveNoWork.isOpen}
-                  onRequesClose={closeModalSaveNoWork}
-                  style={customStylesSaveNoWork}
-                >
-                  <div
-                    className={styles["modal-save-no-work__wrapper-content"]}
-                  >
-                    <h4
-                      className={
-                        styles["modal-save-no-work__wrapper-content__title"]
-                      }
-                    >
-                      {modalSaveNoWork.Type}
-                    </h4>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                      <ThemeProvider theme={themeForNoWork}>
-                        <DatePicker
-                          disableToolbar
-                          variant="inline"
-                          disabled={
-                            modalSaveNoWork.Type === "Delete" ? true : false
-                          }
-                          value={modalSaveNoWork.StartDate}
-                          onChange={handleStartDateOfSaveNoWork}
-                          format="MM/dd/yyyy"
-                          label="Start Date"
+                        <div
                           className={
                             styles[
-                              "modal-save-no-work__wrapper-content__start-date"
+                              "modal-save-no-work__wrapper-content__bottom__wrapper-note"
                             ]
                           }
-                          autoOk={true}
-                        />
+                        >
+                          <TextField
+                            label="Reason"
+                            multiline
+                            rows={2}
+                            onChange={handleReasonOfSaveNoWork}
+                            value={modalSaveNoWork.Reason || ""}
+                            variant="outlined"
+                            fullWidth
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                          />
+                        </div>
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          className={
+                            styles[
+                              "modal-save-no-work__wrapper-content__bottom__btn-save"
+                            ]
+                          }
+                          onClick={() =>
+                            requestNoWorkDays(modalSaveNoWork.Type)
+                          }
+                        >
+                          Request
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          className={
+                            styles[
+                              "modal-save-no-work__wrapper-content__bottom__btn-cancel"
+                            ]
+                          }
+                          onClick={closeModalSaveNoWork}
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    </Modal>
+                  </div>
+                </div>
+
+                <div className={styles["table"]}>
+                  <table {...getTableProps()}>
+                    <thead>
+                      {headerGroups.map((headerGroup) => (
+                        <tr {...headerGroup.getHeaderGroupProps()}>
+                          {headerGroup.headers.map((column) => (
+                            <td {...column.getHeaderProps()}>
+                              {column.render("Header")}
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </thead>
+                    <tbody {...getTableBodyProps()}>
+                      {rows.map((row, i) => {
+                        prepareRow(row);
+                        return (
+                          <tr
+                            {...row.getRowProps()}
+                            className={styles["table__row"]}
+                          >
+                            {row.cells.map((cell) => {
+                              return (
+                                <td {...cell.getCellProps()}>
+                                  {cell.render("Cell")}
+                                </td>
+                              );
+                            })}
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            )}
+
+            <Modal
+              isOpen={modalWorkDate.isOpen}
+              onAfterOpen={afterOpenModalWorkDate}
+              onRequestClose={closeModalWorkDate}
+              style={customStyles}
+              contentLabel="Example Modal"
+              className={styles["modal-work-date"]}
+            >
+              <div className={styles["modal-work-date__wrapper"]}>
+                <div className={styles["modal-work-date__wrapper-title"]}>
+                  <h4
+                    className={styles["modal-work-date__wrapper-title__title"]}
+                  >
+                    Change Task Date
+                  </h4>
+                  <h4
+                    className={
+                      styles[
+                        "modal-work-date__wrapper-title__sub-title-task-name"
+                      ]
+                    }
+                  >
+                    {modalWorkDate.TaskName}
+                  </h4>
+                  <h5
+                    className={
+                      styles[
+                        "modal-work-date__wrapper-title__sub-title-company-name"
+                      ]
+                    }
+                  >
+                    {modalWorkDate.Company ? "by " + modalWorkDate.Company : ""}
+                  </h5>
+                </div>
+                <div className={styles["modal-work-date__wrapper-date-picker"]}>
+                  <h4
+                    className={
+                      styles["modal-work-date__wrapper-date-picker__label"]
+                    }
+                  >
+                    {modalWorkDate.type}
+                  </h4>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <div
+                      className={
+                        styles[
+                          "modal-work-date__wrapper-date-picker__wrapper-work-date"
+                        ]
+                      }
+                    >
+                      <ThemeProvider theme={themeForWorkDate}>
                         <DatePicker
                           disableToolbar
                           variant="inline"
-                          disabled={
-                            modalSaveNoWork.Type === "Delete" ? true : false
+                          value={
+                            modalWorkDate.type === "Start Date"
+                              ? modalWorkDate.StartDate
+                              : modalWorkDate.FinishDate
                           }
-                          value={modalSaveNoWork.FinishDate}
-                          onChange={handleEndDateOfSaveNoWork}
+                          onChange={
+                            modalWorkDate.type === "Start Date"
+                              ? handleStartDateOfWorkDate
+                              : handleEndDateOfWorkDate
+                          }
                           format="MM/dd/yyyy"
-                          label="End Date"
                           className={
                             styles[
-                              "modal-save-no-work__wrapper-content__end-date"
+                              "modal-work-date__wrapper-date-picker__work-date"
                             ]
                           }
                           autoOk={true}
                         />
                       </ThemeProvider>
-                    </MuiPickersUtilsProvider>
-                  </div>
-                  <div
+                    </div>
+                  </MuiPickersUtilsProvider>
+                </div>
+                <div className={styles["modal-work-date__wrapper-btn"]}>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    onClick={requestModalWorkDate}
                     className={
-                      styles["modal-save-no-work__wrapper-content__bottom"]
+                      styles["modal-work-date__wrapper-btn__btn-request"]
                     }
                   >
-                    <div
-                      className={
-                        styles[
-                          "modal-save-no-work__wrapper-content__bottom__wrapper-note"
-                        ]
-                      }
-                    >
-                      <TextField
-                        label="Reason"
-                        multiline
-                        rows={2}
-                        onChange={handleReasonOfSaveNoWork}
-                        value={modalSaveNoWork.Reason || ""}
-                        variant="outlined"
-                        fullWidth
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                      />
-                    </div>
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      className={
-                        styles[
-                          "modal-save-no-work__wrapper-content__bottom__btn-save"
-                        ]
-                      }
-                      onClick={() => requestNoWorkDays(modalSaveNoWork.Type)}
-                    >
-                      Request
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      className={
-                        styles[
-                          "modal-save-no-work__wrapper-content__bottom__btn-cancel"
-                        ]
-                      }
-                      onClick={closeModalSaveNoWork}
-                    >
-                      Cancel
-                    </Button>
-                  </div>
-                </Modal>
-              </div>
-            </div>
-
-            <div className={styles["table"]}>
-              <table {...getTableProps()}>
-                <thead>
-                  {headerGroups.map((headerGroup) => (
-                    <tr {...headerGroup.getHeaderGroupProps()}>
-                      {headerGroup.headers.map((column) => (
-                        <td {...column.getHeaderProps()}>
-                          {column.render("Header")}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </thead>
-                <tbody {...getTableBodyProps()}>
-                  {rows.map((row, i) => {
-                    prepareRow(row);
-                    return (
-                      <tr
-                        {...row.getRowProps()}
-                        className={styles["table__row"]}
-                      >
-                        {row.cells.map((cell) => {
-                          return (
-                            <td {...cell.getCellProps()}>
-                              {cell.render("Cell")}
-                            </td>
-                          );
-                        })}
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </>
-        )}
-
-        <Modal
-          isOpen={modalWorkDate.isOpen}
-          onAfterOpen={afterOpenModalWorkDate}
-          onRequestClose={closeModalWorkDate}
-          style={customStyles}
-          contentLabel="Example Modal"
-          className={styles["modal-work-date"]}
-        >
-          <div className={styles["modal-work-date__wrapper"]}>
-            <div className={styles["modal-work-date__wrapper-title"]}>
-              <h4 className={styles["modal-work-date__wrapper-title__title"]}>
-                Change Task Date
-              </h4>
-              <h4
-                className={
-                  styles["modal-work-date__wrapper-title__sub-title-task-name"]
-                }
-              >
-                {modalWorkDate.TaskName}
-              </h4>
-              <h5
-                className={
-                  styles[
-                    "modal-work-date__wrapper-title__sub-title-company-name"
-                  ]
-                }
-              >
-                {modalWorkDate.Company ? "by " + modalWorkDate.Company : ""}
-              </h5>
-            </div>
-            <div className={styles["modal-work-date__wrapper-date-picker"]}>
-              <h4
-                className={
-                  styles["modal-work-date__wrapper-date-picker__label"]
-                }
-              >
-                {modalWorkDate.type}
-              </h4>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <div
-                  className={
-                    styles[
-                      "modal-work-date__wrapper-date-picker__wrapper-work-date"
-                    ]
-                  }
-                >
-                  <ThemeProvider theme={themeForWorkDate}>
-                    <DatePicker
-                      disableToolbar
-                      variant="inline"
-                      value={
-                        modalWorkDate.type === "Start Date"
-                          ? modalWorkDate.StartDate
-                          : modalWorkDate.FinishDate
-                      }
-                      onChange={
-                        modalWorkDate.type === "Start Date"
-                          ? handleStartDateOfWorkDate
-                          : handleEndDateOfWorkDate
-                      }
-                      format="MM/dd/yyyy"
-                      className={
-                        styles[
-                          "modal-work-date__wrapper-date-picker__work-date"
-                        ]
-                      }
-                      autoOk={true}
-                    />
-                  </ThemeProvider>
+                    Request
+                  </Button>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    onClick={closeModalWorkDate}
+                    className={
+                      styles["modal-work-date__wrapper-btn__btn-cancel"]
+                    }
+                  >
+                    Cancel
+                  </Button>
                 </div>
-              </MuiPickersUtilsProvider>
-            </div>
-            <div className={styles["modal-work-date__wrapper-btn"]}>
-              <Button
-                variant="contained"
-                size="small"
-                onClick={requestModalWorkDate}
-                className={styles["modal-work-date__wrapper-btn__btn-request"]}
-              >
-                Request
-              </Button>
-              <Button
-                variant="contained"
-                size="small"
-                onClick={closeModalWorkDate}
-                className={styles["modal-work-date__wrapper-btn__btn-cancel"]}
-              >
-                Cancel
-              </Button>
-            </div>
-            {/* <p className={styles["test"]}>(This is a test, so NOT working yet. )</p> */}
+                {/* <p className={styles["test"]}>(This is a test, so NOT working yet. )</p> */}
+              </div>
+            </Modal>
           </div>
-        </Modal>
-      </div>
+        </>
+      )}
     </>
   );
 };

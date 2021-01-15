@@ -6,6 +6,9 @@ import Router, { useRouter } from "next/router";
 
 import SimpleTabs from "../components/MainTab/demo";
 
+import { CookiesProvider, useCookies } from "react-cookie";
+import Login from "../components/MainTab/login.js";
+
 const home = () => {
   const router = useRouter();
 
@@ -19,6 +22,16 @@ const home = () => {
     prevTab: "timesheet",
     prevProject: 0,
     assignedProject: [],
+  });
+
+  const [cookies, setCookie, removeCookie] = useCookies("username");
+  const [status, setStatus] = useState({
+    cookies: {
+      username: 0,
+      password: 0,
+      fullname: "",
+      employeeid: 0,
+    },
   });
 
   useEffect(() => {
@@ -44,6 +57,15 @@ const home = () => {
         prevProject: project,
         assignedProject: response.data.result.recordsets[1],
       });
+
+      setStatus({
+        cookies: {
+          username: cookies.username,
+          password: cookies.password,
+          fullname: cookies.fullname,
+          employeeid: cookies.employeeid,
+        },
+      });
     });
   }, [router.query]);
 
@@ -52,40 +74,106 @@ const home = () => {
 
     Router.push(`/${state.prevTab}/${projectState}`);
   };
+
+  const signin = async (username, password) => {
+    await axios({
+      method: "post",
+      url: `/api/daily-report/signin`,
+      timeout: 5000, // 5 seconds timeout
+      headers: {},
+      data: {
+        Username: username,
+        Password: password,
+      },
+    }).then((response) => {
+      if (response.data.result.recordset[0] !== undefined) {
+        setCookie("username", username, { path: "/", maxAge: 3600 * 24 * 30 });
+        setCookie("password", password, { path: "/", maxAge: 3600 * 24 * 30 });
+        setCookie("fullname", response.data.result.recordset[0].FullName, {
+          path: "/",
+          maxAge: 3600 * 24 * 30,
+        });
+        setCookie("employeeid", response.data.result.recordset[0].EmployeeID, {
+          path: "/",
+          maxAge: 3600 * 24 * 30,
+        });
+        setStatus((prevState) => ({
+          ...prevState,
+          cookies: {
+            username: username,
+            password: password,
+            fullname: response.data.result.recordset[0].FullName,
+            employeeid: response.data.result.recordset[0].EmployeeID,
+          },
+        }));
+      } else {
+        alert("Login failed.");
+      }
+    });
+  };
+
+  const logout = () => {
+    removeCookie("username", { path: "/" });
+    removeCookie("password", { path: "/" });
+    removeCookie("fullname", { path: "/" });
+    removeCookie("employeeid", { path: "/" });
+    setStatus({
+      cookies: {
+        username: undefined,
+        password: 0,
+        fullname: "",
+        employeeid: 0,
+      },
+    });
+  };
+
   return (
     <>
       {console.log(state.assignedProject)}
-      <SimpleTabs tapNo={0} projectState={0} main={true} />
-      <div className={styles["wrapper-select-project"]}>
-        <h3 className={styles["projectID-text"]}>Project ID</h3>
-        {state.assignedProject.length > 1 && (
-          <select
-            id="select-project"
-            className={styles["wrapper-select-project__select-project"]}
-            defaultValue={state.prevProject}
-          >
-            {state.assignedProject.map((item) => {
-              return (
-                <option
-                  key={item.ProjectID}
-                  value={item.ProjectID}
-                  // selected={state.prevProject === item.ProjectID ? true : false}
-                >
-                  {item.ProjectID}
-                </option>
-              );
-            })}
-          </select>
-        )}
-        <Button
-          // onClick={handleProjectState}
-          color="primary"
-          className={styles["wrapper-select-project__btn-go"]}
-          onClick={clickGo}
-        >
-          Go
-        </Button>
-      </div>
+      {status.cookies.username === undefined ? (
+        <Login signin={signin} />
+      ) : (
+        <>
+          <SimpleTabs
+            tapNo={0}
+            projectState={0}
+            main={true}
+            employeeID={status.cookies.employeeid}
+            employeeName={status.cookies.fullname}
+            logout={logout}
+          />
+          <div className={styles["wrapper-select-project"]}>
+            <h3 className={styles["projectID-text"]}>Project ID</h3>
+            {state.assignedProject.length > 1 && (
+              <select
+                id="select-project"
+                className={styles["wrapper-select-project__select-project"]}
+                defaultValue={state.prevProject}
+              >
+                {state.assignedProject.map((item) => {
+                  return (
+                    <option
+                      key={item.ProjectID}
+                      value={item.ProjectID}
+                      // selected={state.prevProject === item.ProjectID ? true : false}
+                    >
+                      {item.ProjectID}
+                    </option>
+                  );
+                })}
+              </select>
+            )}
+            <Button
+              // onClick={handleProjectState}
+              color="primary"
+              className={styles["wrapper-select-project__btn-go"]}
+              onClick={clickGo}
+            >
+              Go
+            </Button>
+          </div>
+        </>
+      )}
     </>
   );
 };
