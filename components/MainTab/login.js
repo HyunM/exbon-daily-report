@@ -5,7 +5,7 @@ import Box from "@material-ui/core/Box";
 import ScheduleIcon from "@material-ui/icons/Schedule";
 import Typography from "@material-ui/core/Typography";
 import styles from "./index.module.css";
-
+import { sha256 } from "js-sha256";
 import { makeStyles } from "@material-ui/core/styles";
 const Copyright = () => {
   return (
@@ -20,7 +20,7 @@ const Copyright = () => {
   );
 };
 
-const Login = () => {
+const Login = ({ signin }) => {
   const useStyles = makeStyles((theme) => ({
     paper: {
       marginTop: theme.spacing(8),
@@ -41,6 +41,14 @@ const Login = () => {
     },
   }));
   const classes = useStyles();
+
+  const handleSignin = () => {
+    const username = document.getElementById("username").value;
+    const password =
+      "0x" + sha256(document.getElementById("password").value).toUpperCase();
+
+    signin(username, password);
+  };
   return (
     <div className={styles["body"]}>
       <div className={styles["mainDiv"]}>
@@ -84,6 +92,7 @@ const Login = () => {
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={handleSignin}
           >
             Sign In
           </Button>
