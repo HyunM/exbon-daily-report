@@ -35,7 +35,14 @@ const DeficiencyLog = (
   const projectState = router.query.ProjectID;
 
   const [cookies, setCookie, removeCookie] = useCookies("username");
-  const [cookieState, setCookieState] = useState(1);
+  const [status, setStatus] = useState({
+    cookies: {
+      username: 0,
+      password: 0,
+      fullname: "",
+      employeeid: 0,
+    },
+  });
 
   const [data, setData] = useState(() => []);
 
@@ -49,7 +56,14 @@ const DeficiencyLog = (
       });
 
       setData(result.data);
-      setCookieState(cookies.username);
+      setStatus({
+        cookies: {
+          username: cookies.username,
+          password: cookies.password,
+          fullname: cookies.fullname,
+          employeeid: cookies.employeeid,
+        },
+      });
     };
 
     trackPromise(fetchData());
@@ -130,17 +144,47 @@ const DeficiencyLog = (
       if (response.data.result.recordset[0] !== undefined) {
         setCookie("username", username, { path: "/", maxAge: 3600 * 24 * 30 });
         setCookie("password", password, { path: "/", maxAge: 3600 * 24 * 30 });
-        setCookieState(username);
+        setCookie("fullname", response.data.result.recordset[0].FullName, {
+          path: "/",
+          maxAge: 3600 * 24 * 30,
+        });
+        setCookie("employeeid", response.data.result.recordset[0].EmployeeID, {
+          path: "/",
+          maxAge: 3600 * 24 * 30,
+        });
+        setStatus((prevState) => ({
+          ...prevState,
+          cookies: {
+            username: username,
+            password: password,
+            fullname: response.data.result.recordset[0].FullName,
+            employeeid: response.data.result.recordset[0].EmployeeID,
+          },
+        }));
       } else {
         alert("Login failed.");
       }
     });
   };
 
+  const logout = () => {
+    removeCookie("username", { path: "/" });
+    removeCookie("password", { path: "/" });
+    removeCookie("fullname", { path: "/" });
+    removeCookie("employeeid", { path: "/" });
+    setStatus({
+      cookies: {
+        username: undefined,
+        password: 0,
+        fullname: "",
+        employeeid: 0,
+      },
+    });
+  };
   return (
     <>
       <CookiesProvider>
-        {console.log(cookieState)}
+        {console.log(status.cookies)}
         <Head>
           <title>Daily Report</title>
           <link rel="icon" href="/favicon.ico" />
@@ -149,11 +193,18 @@ const DeficiencyLog = (
             content="minimum-scale=1, initial-scale=1, width=device-width"
           />
         </Head>
-        {!cookieState ? (
+        {status.cookies.username === undefined ? (
           <Login signin={signin} />
         ) : (
           <>
-            <SimpleTabs tapNo={2} projectState={projectState} main={false} />
+            <SimpleTabs
+              tapNo={2}
+              projectState={projectState}
+              main={false}
+              employeeID={status.cookies.employeeid}
+              employeeName={status.cookies.fullname}
+              logout={logout}
+            />
             <div id={styles.mainDiv}>
               {promiseInProgress || !projectState ? (
                 <div

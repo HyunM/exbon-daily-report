@@ -1,0 +1,72 @@
+.right-tab {
+  margin-left: auto !important;
+  max-width: 250px !important;
+  width: 100%;
+}
+
+.projectID-text {
+  font-family: "Roboto";
+  margin-left: 7%;
+  color: #50474c;
+}
+.wrapper-right-tab {
+  display: flex;
+  width: 100% !important;
+}
+
+.wrapper-right-tab__employee-name {
+  margin-top: 0;
+  margin-bottom: 0;
+  width: 100%;
+  text-align: right;
+}
+
+.wrapper-right-tab__account-icon {
+  margin-left: 5% !important;
+}
+
+.wrapper-select-project {
+  width: 20%;
+  margin-left: 45%;
+  margin-right: auto;
+  margin-top: 10%;
+}
+
+.wrapper-select-project__select-project {
+  display: inline-block;
+  height: 25px;
+  width: 130px;
+  color: #74646e;
+  border: 1px solid #c8bfc4;
+  border-radius: 4px;
+  box-shadow: inset 1px 1px 2px #ddd8dc;
+  background: #fff;
+}
+
+.wrapper-select-project__btn-go {
+  color: blueviolet;
+}
+.wrapper-logout {
+  display: flex;
+  cursor: pointer;
+  color: cornflowerblue;
+  padding: 0.5rem;
+}
+.wrapper-logout:hover {
+  background-color: #e0d4dc;
+}
+.wrapper-schedule {
+  display: flex;
+  cursor: pointer;
+  color: rgb(142, 78, 184);
+  padding: 0.5rem;
+}
+.wrapper-schedule:hover {
+  background-color: #e0d4dc;
+}
+.wrapper-schedule__btn {
+  padding: 0 !important;
+}
+.wrapper-logout__btn {
+  padding: 0 !important;
+}

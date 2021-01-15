@@ -7,8 +7,39 @@ import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Router from "next/router";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import styles from "./TabsOfBoth.module.css";
+import { Button } from "@material-ui/core";
+import Popover from "@material-ui/core/Popover";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import EventIcon from "@material-ui/icons/Event";
 
-const SimpleTabs = ({ tapNo, projectState, main }) => {
+const SimpleTabs = ({
+  tapNo,
+  projectState,
+  main,
+  employeeID,
+  employeeName,
+  logout,
+}) => {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const handleSchedule = () => {
+    window.open(
+      `${location.protocol}//${location.host}/calendar/${employeeID}`
+    );
+  };
+  const handleLogout = () => {
+    logout();
+  };
   return (
     <AppBar position="static">
       <Tabs value={tapNo}>
@@ -30,6 +61,49 @@ const SimpleTabs = ({ tapNo, projectState, main }) => {
           disableRipple={true}
           disabled={main}
         />
+        <Tab
+          icon={
+            <div className={styles["wrapper-right-tab"]}>
+              <p className={styles["wrapper-right-tab__employee-name"]}>
+                {/* {employeeInfo.FullName} */}
+                {employeeName}
+              </p>
+              <AccountCircle
+                className={styles["wrapper-right-tab__account-icon"]}
+              />
+            </div>
+          }
+          className={styles["right-tab"]}
+          aria-describedby={id}
+          onClick={handleClick}
+        />
+        <Popover
+          id={id}
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "right",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "center",
+          }}
+        >
+          <div className={styles["wrapper-schedule"]} onClick={handleSchedule}>
+            <EventIcon />
+            &emsp;
+            <Button className={styles["wrapper-schedule__btn"]}>
+              Schedule
+            </Button>
+          </div>
+          <div className={styles["wrapper-logout"]} onClick={handleLogout}>
+            <ExitToAppIcon />
+            &emsp;
+            <Button className={styles["wrapper-logout__btn"]}>Logout</Button>
+          </div>
+        </Popover>
       </Tabs>
     </AppBar>
   );
