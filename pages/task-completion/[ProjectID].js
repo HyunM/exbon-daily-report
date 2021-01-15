@@ -713,7 +713,7 @@ const Task = (
               timeout: 3000, // 5 seconds timeout
               headers: {},
               data: {
-                EmployeeID: employeeInfo.EmployeeID,
+                EmployeeID: status.cookies.employeeid,
                 ProjectID: projectState,
                 RequestType: "Task",
                 RequestID: data[i].TaskID,
@@ -762,7 +762,7 @@ const Task = (
                 timeout: 3000, // 5 seconds timeout
                 headers: {},
                 data: {
-                  EmployeeID: employeeInfo.EmployeeID,
+                  EmployeeID: status.cookies.employeeid,
                   ProjectID: projectState,
                   RequestType: "No Work",
                   RequestID: null,
@@ -780,7 +780,7 @@ const Task = (
                 timeout: 3000, // 5 seconds timeout
                 headers: {},
                 data: {
-                  EmployeeID: employeeInfo.EmployeeID,
+                  EmployeeID: status.cookies.employeeid,
                   ProjectID: projectState,
                   RequestType: "No Work Modify",
                   RequestID: item.RecordID,
@@ -798,7 +798,7 @@ const Task = (
                 timeout: 3000, // 5 seconds timeout
                 headers: {},
                 data: {
-                  EmployeeID: employeeInfo.EmployeeID,
+                  EmployeeID: status.cookies.employeeid,
                   ProjectID: projectState,
                   RequestType: "No Work Delete",
                   RequestID: item.RecordID,
@@ -862,7 +862,7 @@ const Task = (
       timeout: 5000, // 5 seconds timeout
       headers: {},
       data: {
-        EmployeeID: employeeInfo.EmployeeID,
+        EmployeeID: status.cookies.employeeid,
         ProjectID: projectState,
         Date: formatDate(selectedDate),
         Category: "Tasks",
@@ -1216,7 +1216,7 @@ const Task = (
 
   const goMain = () => {
     Router.push({
-      pathname: "/home",
+      pathname: "/",
       query: { tab: "task-completion", project: projectState },
     });
   };

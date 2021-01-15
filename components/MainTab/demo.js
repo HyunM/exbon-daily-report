@@ -76,6 +76,7 @@ const SimpleTabs = ({
           className={styles["right-tab"]}
           aria-describedby={id}
           onClick={handleClick}
+          disableRipple={true}
         />
         <Popover
           id={id}

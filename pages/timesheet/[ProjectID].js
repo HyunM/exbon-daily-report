@@ -807,7 +807,7 @@ const Timesheet = () => {
       timeout: 5000, // 5 seconds timeout
       headers: {},
       data: {
-        EmployeeID: employeeInfo.EmployeeID,
+        EmployeeID: status.cookies.employeeid,
         ProjectID: projectState,
         Date: formatDate(selectedDate),
         Category: "Timesheet",
@@ -820,7 +820,7 @@ const Timesheet = () => {
 
   const goMain = () => {
     Router.push({
-      pathname: "/home",
+      pathname: "/",
       query: { tab: "timesheet", project: projectState },
     });
   };

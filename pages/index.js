@@ -1,66 +1,82 @@
 import { useState, useEffect } from "react";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Box from "@material-ui/core/Box";
-import ScheduleIcon from "@material-ui/icons/Schedule";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import ContainerMain from "../components/container";
+import styles from "./TabsOfBoth.module.css";
+import { Button } from "@material-ui/core";
 import axios from "axios";
-import { sha256 } from "js-sha256";
-import styles from "./index.module.css";
-import Head from "next/head";
+import Router, { useRouter } from "next/router";
+
+import SimpleTabs from "../components/MainTab/demo";
+
 import { CookiesProvider, useCookies } from "react-cookie";
-
-const Copyright = () => {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © Exbon Development, Inc. "}
-      {/* <Link color="inherit" href="https://www.exbon.com/">
-        Exbon Development, Inc.
-      </Link>{" "} */}
-      &nbsp;{new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-};
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: "#fa7000",
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
+import Login from "../components/MainTab/login.js";
+//filename
 
 const index = () => {
-  const [cookies, setCookie, removeCookie] = useCookies("username");
-  const [openLoginFormstate, setOpenLoginFormstate] = useState(false);
-  const classes = useStyles();
-  const [login, setLogin] = useState({
-    isLogin: false,
-    employeeInfo: [],
+  const router = useRouter();
+
+  //   const [prevTab, setPrevTab] = useState("timesheet");
+
+  //   const [prevProject, setPrevProject] = useState();
+
+  //   const [assignedProject, setAssignedProject] = useState([]);
+
+  const [state, setState] = useState({
+    prevTab: "timesheet",
+    prevProject: 0,
     assignedProject: [],
   });
 
-  const handleSignIn = async () => {
-    const username = document.getElementById("username").value;
-    const password =
-      "0x" + sha256(document.getElementById("password").value).toUpperCase();
+  const [cookies, setCookie, removeCookie] = useCookies("username");
+  const [status, setStatus] = useState({
+    cookies: {
+      username: 0,
+      password: 0,
+      fullname: "",
+      employeeid: 0,
+    },
+  });
 
+  useEffect(() => {
+    axios({
+      method: "post",
+      url: `/api/daily-report/signin`,
+      timeout: 5000, // 5 seconds timeout
+      headers: {},
+      data: {
+        Username: "hyunmyung.kim",
+        Password:
+          "0x40E0A47936CA3E0A624072613A9792F845418FC5C16D4B7A01F79D7E3C690E1A",
+      },
+    }).then((response) => {
+      //   setAssignedProject(() => response.data.result.recordsets[1]);
+      let tab = "timesheet";
+      let project = 0;
+      if (router.query.tab !== undefined) tab = router.query.tab;
+      if (router.query.project !== undefined) project = router.query.project;
+
+      setState({
+        prevTab: tab,
+        prevProject: project,
+        assignedProject: response.data.result.recordsets[1],
+      });
+
+      setStatus({
+        cookies: {
+          username: cookies.username,
+          password: cookies.password,
+          fullname: cookies.fullname,
+          employeeid: cookies.employeeid,
+        },
+      });
+    });
+  }, [router.query]);
+
+  const clickGo = () => {
+    const projectState = document.getElementById("select-project").value;
+
+    Router.push(`/${state.prevTab}/${projectState}`);
+  };
+
+  const signin = async (username, password) => {
     await axios({
       method: "post",
       url: `/api/daily-report/signin`,
@@ -71,145 +87,94 @@ const index = () => {
         Password: password,
       },
     }).then((response) => {
-      if (response.data.result.recordsets[0].length === 0) {
-        alert("Login failed.");
-      } else {
+      if (response.data.result.recordset[0] !== undefined) {
         setCookie("username", username, { path: "/", maxAge: 3600 * 24 * 30 });
         setCookie("password", password, { path: "/", maxAge: 3600 * 24 * 30 });
-        setLogin({
-          isLogin: true,
-          employeeInfo: response.data.result.recordsets[0],
-          assignedProject: response.data.result.recordsets[1],
+        setCookie("fullname", response.data.result.recordset[0].FullName, {
+          path: "/",
+          maxAge: 3600 * 24 * 30,
         });
+        setCookie("employeeid", response.data.result.recordset[0].EmployeeID, {
+          path: "/",
+          maxAge: 3600 * 24 * 30,
+        });
+        setStatus((prevState) => ({
+          ...prevState,
+          cookies: {
+            username: username,
+            password: password,
+            fullname: response.data.result.recordset[0].FullName,
+            employeeid: response.data.result.recordset[0].EmployeeID,
+          },
+        }));
+      } else {
+        alert("Login failed.");
       }
     });
   };
 
-  const handleLogout = () => {
+  const logout = () => {
     removeCookie("username", { path: "/" });
     removeCookie("password", { path: "/" });
-    setLogin({
-      isLogin: false,
-      employeeInfo: [],
-      assignedProject: [],
-    });
-    setOpenLoginFormstate(true);
-  };
-
-  const handleSignInUsingCookie = async () => {
-    const username = cookies.username;
-    const password = cookies.password;
-
-    await axios({
-      method: "post",
-      url: `/api/daily-report/signin`,
-      timeout: 5000, // 5 seconds timeout
-      headers: {},
-      data: {
-        Username: username,
-        Password: password,
+    removeCookie("fullname", { path: "/" });
+    removeCookie("employeeid", { path: "/" });
+    setStatus({
+      cookies: {
+        username: undefined,
+        password: 0,
+        fullname: "",
+        employeeid: 0,
       },
-    }).then((response) => {
-      setCookie("username", username, { path: "/", maxAge: 3600 * 24 * 30 });
-      setCookie("password", password, { path: "/", maxAge: 3600 * 24 * 30 });
-      setLogin({
-        isLogin: true,
-        employeeInfo: response.data.result.recordsets[0],
-        assignedProject: response.data.result.recordsets[1],
-      });
     });
   };
 
-  useEffect(() => {
-    if (cookies.username) {
-      handleSignInUsingCookie();
-    } else {
-      setOpenLoginFormstate(true);
-    }
-  }, []);
-
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      handleSignIn();
-    }
-  };
   return (
     <>
-      <CookiesProvider>
-        <Head>
-          <title>Daily Report</title>
-          <link rel="icon" href="/favicon.ico" />
-          <meta
-            name="viewport"
-            content="minimum-scale=1, initial-scale=1, width=device-width"
+      {console.log(state.assignedProject)}
+      {status.cookies.username === undefined ? (
+        <Login signin={signin} />
+      ) : (
+        <>
+          <SimpleTabs
+            tapNo={0}
+            projectState={0}
+            main={true}
+            employeeID={status.cookies.employeeid}
+            employeeName={status.cookies.fullname}
+            logout={logout}
           />
-        </Head>
-
-        {login.isLogin ? (
-          <ContainerMain
-            employeeInfo={login.employeeInfo[0]}
-            assignedProject={login.assignedProject}
-            handleLogout={handleLogout}
-          ></ContainerMain>
-        ) : !openLoginFormstate ? (
-          <></>
-        ) : (
-          <div className={styles["body"]}>
-            <div className={styles["mainDiv"]}>
-              <div className={styles["wrapper-upper"]}>
-                <Avatar className={classes.avatar}>
-                  <ScheduleIcon />
-                </Avatar>
-                <Typography
-                  component="h1"
-                  variant="h4"
-                  className={styles["wrapper-upper__title"]}
-                >
-                  Daily Report
-                </Typography>
-              </div>
-              <div className={classes.form}>
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="username"
-                  label="Username"
-                  name="username"
-                  onKeyPress={handleKeyPress}
-                  autoFocus
-                />
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                  onKeyPress={handleKeyPress}
-                />
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  className={classes.submit}
-                  onClick={handleSignIn}
-                >
-                  Sign In
-                </Button>
-              </div>
-            </div>
-            <Box mt={8}>
-              <Copyright />
-            </Box>
+          <div className={styles["wrapper-select-project"]}>
+            <h3 className={styles["projectID-text"]}>Project ID</h3>
+            {state.assignedProject.length > 0 && (
+              <select
+                id="select-project"
+                className={styles["wrapper-select-project__select-project"]}
+                defaultValue={state.prevProject}
+              >
+                {state.assignedProject.map((item) => {
+                  return (
+                    <option
+                      key={item.ProjectID}
+                      value={item.ProjectID}
+                      // selected={state.prevProject === item.ProjectID ? true : false}
+                    >
+                      {item.ProjectID}
+                    </option>
+                  );
+                })}
+              </select>
+            )}
+            <Button
+              // onClick={handleProjectState}
+              color="primary"
+              className={styles["wrapper-select-project__btn-go"]}
+              onClick={clickGo}
+            >
+              Go
+            </Button>
           </div>
-        )}
-      </CookiesProvider>
+        </>
+      )}
     </>
   );
 };

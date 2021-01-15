@@ -113,7 +113,7 @@ const DeficiencyLog = (
       timeout: 5000, // 5 seconds timeout
       headers: {},
       data: {
-        EmployeeID: employeeInfo.EmployeeID,
+        EmployeeID: status.cookies.employeeid,
         ProjectID: projectState,
         Date: today,
         Category: "DeficiencyLog",
@@ -125,7 +125,7 @@ const DeficiencyLog = (
   const { promiseInProgress } = usePromiseTracker();
   const goMain = () => {
     Router.push({
-      pathname: "/home",
+      pathname: "/",
       query: { tab: "deficiency-log", project: projectState },
     });
   };
