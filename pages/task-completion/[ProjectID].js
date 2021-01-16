@@ -25,6 +25,7 @@ import SimpleTabs from "../../components/MainTab/demo";
 
 import { CookiesProvider, useCookies } from "react-cookie";
 import Login from "../../components/MainTab/login.js";
+import "react-toastify/dist/ReactToastify.css";
 
 let noWorkMapKey = -1;
 

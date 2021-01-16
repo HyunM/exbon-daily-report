@@ -8,7 +8,8 @@ import SimpleTabs from "../components/MainTab/demo";
 
 import { CookiesProvider, useCookies } from "react-cookie";
 import Login from "../components/MainTab/login.js";
-//filename
+
+import "react-toastify/dist/ReactToastify.css";
 
 const index = () => {
   const router = useRouter();
