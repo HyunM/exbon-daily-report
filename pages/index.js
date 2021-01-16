@@ -131,7 +131,8 @@ const index = () => {
   return (
     <>
       {console.log(state.assignedProject)}
-      {status.cookies.username === undefined ? (
+      {status.cookies.username === undefined ||
+      status.cookies.employeeid === undefined ? (
         <Login signin={signin} />
       ) : (
         <>

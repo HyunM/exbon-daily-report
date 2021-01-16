@@ -887,7 +887,8 @@ const Timesheet = () => {
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
-      {status.cookies.username === undefined ? (
+      {status.cookies.username === undefined ||
+      status.cookies.employeeid === undefined ? (
         <Login signin={signin} />
       ) : (
         <>

@@ -185,6 +185,7 @@ const DeficiencyLog = (
     <>
       <CookiesProvider>
         {console.log(status.cookies)}
+
         <Head>
           <title>Daily Report</title>
           <link rel="icon" href="/favicon.ico" />
@@ -193,7 +194,8 @@ const DeficiencyLog = (
             content="minimum-scale=1, initial-scale=1, width=device-width"
           />
         </Head>
-        {status.cookies.username === undefined ? (
+        {status.cookies.username === undefined ||
+        status.cookies.employeeid === undefined ? (
           <Login signin={signin} />
         ) : (
           <>
