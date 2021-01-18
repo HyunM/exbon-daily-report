@@ -23,6 +23,7 @@ import SimpleTabs from "../../components/MainTab/demo";
 import { CookiesProvider, useCookies } from "react-cookie";
 import Login from "../../components/MainTab/login.js";
 import "react-toastify/dist/ReactToastify.css";
+import { TrendingUpTwoTone } from "@material-ui/icons";
 
 toast.configure();
 const DeficiencyLog = (
@@ -44,34 +45,72 @@ const DeficiencyLog = (
       fullname: "",
       employeeid: 0,
     },
+
+    permission: false,
   });
 
   const [data, setData] = useState(() => []);
 
   useEffect(() => {
-    const fetchData = async () => {
-      let result = await axios({
-        method: "get",
-        url: `/api/project-deficiency-log?projectID=${projectState}`,
-        timeout: 1000, // 5 seconds timeout
-        headers: {},
-      });
+    if (status.cookies.username !== 0) {
+      if (status.cookies.username !== undefined) {
+        axios({
+          method: "post",
+          url: `/api/daily-report/signin`,
+          timeout: 2000, // 2 seconds timeout
+          headers: {},
+          data: {
+            Username: status.cookies.username,
+            Password: status.cookies.password,
+          },
+        }).then((response) => {
+          console.log("status.cookies.username");
+          console.log(status.cookies.username);
+          const assignedProject = response.data.result.recordsets[1];
+          console.log("assignedProject");
+          console.log(assignedProject);
 
-      setData(result.data);
-      setStatus({
+          if (status.permission === false) {
+            for (let i = 0; i < assignedProject.length; i++) {
+              if (assignedProject[i].ProjectID.toString() === projectState) {
+                console.log("truetruetruetruetruetrue");
+                setStatus((prevState) => ({
+                  ...prevState,
+                  permission: true,
+                }));
+                break;
+              }
+            }
+          }
+        });
+      }
+    } else {
+      setStatus((prevState) => ({
+        ...prevState,
         cookies: {
           username: cookies.username,
           password: cookies.password,
           fullname: cookies.fullname,
           employeeid: cookies.employeeid,
         },
-      });
-    };
+      }));
+    }
 
-    trackPromise(fetchData());
+    if (status.permission === true) {
+      const fetchData = async () => {
+        let result = await axios({
+          method: "get",
+          url: `/api/project-deficiency-log?projectID=${projectState}`,
+          timeout: 2000, // 2 seconds timeout
+          headers: {},
+        });
 
-    // setPreviousProject(projectState);
-  }, [projectState]);
+        setData(result.data);
+      };
+
+      trackPromise(fetchData());
+    }
+  }, [projectState, status]);
 
   const today = new Date()
     .toLocaleString({
@@ -170,23 +209,26 @@ const DeficiencyLog = (
   };
 
   const logout = () => {
+    setData([]);
     removeCookie("username", { path: "/" });
     removeCookie("password", { path: "/" });
     removeCookie("fullname", { path: "/" });
     removeCookie("employeeid", { path: "/" });
-    setStatus({
+    setStatus((prevState) => ({
+      permission: false,
       cookies: {
         username: undefined,
         password: 0,
         fullname: "",
         employeeid: 0,
       },
-    });
+    }));
   };
   return (
     <>
       <CookiesProvider>
         {console.log(status.cookies)}
+        {console.log(data)}
 
         <Head>
           <title>Daily Report</title>
@@ -199,6 +241,8 @@ const DeficiencyLog = (
         {status.cookies.username === undefined ||
         status.cookies.employeeid === undefined ? (
           <Login signin={signin} />
+        ) : !status.permission ? (
+          <p>Not permission</p>
         ) : (
           <>
             <SimpleTabs
