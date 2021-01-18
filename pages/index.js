@@ -37,38 +37,39 @@ const index = () => {
   });
 
   useEffect(() => {
-    axios({
-      method: "post",
-      url: `/api/daily-report/signin`,
-      timeout: 5000, // 5 seconds timeout
-      headers: {},
-      data: {
-        Username: "hyunmyung.kim",
-        Password:
-          "0x40E0A47936CA3E0A624072613A9792F845418FC5C16D4B7A01F79D7E3C690E1A",
-      },
-    }).then((response) => {
-      //   setAssignedProject(() => response.data.result.recordsets[1]);
-      let tab = "timesheet";
-      let project = 0;
-      if (router.query.tab !== undefined) tab = router.query.tab;
-      if (router.query.project !== undefined) project = router.query.project;
-
-      setState({
-        prevTab: tab,
-        prevProject: project,
-        assignedProject: response.data.result.recordsets[1],
-      });
-
-      setStatus({
-        cookies: {
-          username: cookies.username,
-          password: cookies.password,
-          fullname: cookies.fullname,
-          employeeid: cookies.employeeid,
+    if (cookies.username !== undefined && cookies.fullname !== undefined) {
+      axios({
+        method: "post",
+        url: `/api/daily-report/signin`,
+        timeout: 5000, // 5 seconds timeout
+        headers: {},
+        data: {
+          Username: cookies.username,
+          Password: cookies.password,
         },
+      }).then((response) => {
+        //   setAssignedProject(() => response.data.result.recordsets[1]);
+        let tab = "timesheet";
+        let project = 0;
+        if (router.query.tab !== undefined) tab = router.query.tab;
+        if (router.query.project !== undefined) project = router.query.project;
+
+        setState({
+          prevTab: tab,
+          prevProject: project,
+          assignedProject: response.data.result.recordsets[1],
+        });
+
+        setStatus({
+          cookies: {
+            username: cookies.username,
+            password: cookies.password,
+            fullname: cookies.fullname,
+            employeeid: cookies.employeeid,
+          },
+        });
       });
-    });
+    }
   }, [router.query]);
 
   const clickGo = () => {
