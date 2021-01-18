@@ -57,7 +57,7 @@ const DeficiencyLog = (
         axios({
           method: "post",
           url: `/api/daily-report/signin`,
-          timeout: 2000, // 2 seconds timeout
+          timeout: 5000, // 2 seconds timeout
           headers: {},
           data: {
             Username: status.cookies.username,
@@ -99,12 +99,12 @@ const DeficiencyLog = (
       }));
     }
 
-    if (status.permission === true) {
+    if (status.permission === true && projectState !== undefined) {
       const fetchData = async () => {
         let result = await axios({
           method: "get",
           url: `/api/project-deficiency-log?projectID=${projectState}`,
-          timeout: 2000, // 2 seconds timeout
+          timeout: 5000, // 2 seconds timeout
           headers: {},
         });
 
