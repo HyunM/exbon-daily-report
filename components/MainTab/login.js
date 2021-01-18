@@ -49,6 +49,13 @@ const Login = ({ signin }) => {
 
     signin(username, password);
   };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleSignin();
+    }
+  };
+
   return (
     <div className={styles["body"]}>
       <div className={styles["mainDiv"]}>
@@ -73,6 +80,7 @@ const Login = ({ signin }) => {
             id="username"
             label="Username"
             name="username"
+            onKeyPress={handleKeyPress}
             autoFocus
           />
           <TextField
@@ -85,6 +93,7 @@ const Login = ({ signin }) => {
             type="password"
             id="password"
             autoComplete="current-password"
+            onKeyPress={handleKeyPress}
           />
           <Button
             type="submit"

@@ -13,6 +13,7 @@ import { Button } from "@material-ui/core";
 import Popover from "@material-ui/core/Popover";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import EventIcon from "@material-ui/icons/Event";
+import Link from "next/link";
 
 const SimpleTabs = ({
   tapNo,
@@ -43,24 +44,30 @@ const SimpleTabs = ({
   return (
     <AppBar position="static">
       <Tabs value={tapNo}>
-        <Tab
-          label={main ? "" : "Timesheet"}
-          onClick={() => Router.push(`/timesheet/${projectState}`)}
-          disableRipple={true}
-          disabled={main}
-        />
-        <Tab
-          label={main ? "" : "Task Completion"}
-          onClick={() => Router.push(`/task-completion/${projectState}`)}
-          disableRipple={true}
-          disabled={main}
-        />
-        <Tab
-          label={main ? "" : "Deficiency Log"}
-          onClick={() => Router.push(`/deficiency-log/${projectState}`)}
-          disableRipple={true}
-          disabled={main}
-        />
+        <Link href={`/timesheet/${projectState}`}>
+          <Tab
+            label={main ? "" : "Timesheet"}
+            // onClick={() => Router.push(`/timesheet/${projectState}`)}
+            disableRipple={true}
+            disabled={main}
+          />
+        </Link>
+        <Link href={`/task-completion/${projectState}`}>
+          <Tab
+            label={main ? "" : "Task Completion"}
+            // onClick={() => Router.push(`/task-completion/${projectState}`)}
+            disableRipple={true}
+            disabled={main}
+          />
+        </Link>
+        <Link href={`/deficiency-log/${projectState}`}>
+          <Tab
+            label={main ? "" : "Deficiency Log"}
+            // onClick={() => Router.push(`/deficiency-log/${projectState}`)}
+            disableRipple={true}
+            disabled={main}
+          />
+        </Link>
         <Tab
           icon={
             <div className={styles["wrapper-right-tab"]}>
