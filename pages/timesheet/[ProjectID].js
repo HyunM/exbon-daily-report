@@ -617,23 +617,38 @@ const Timesheet = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      let result = await axios({
-        method: "get",
-        url: `/api/timesheets?selectedDate=${formatDate(
-          selectedDate
-        )}&projectID=${projectState}`,
-        timeout: 1000, // 5 seconds timeout
-        headers: {},
-      });
-      if (result.data.result[0].length === 0) {
-        setCheckState(true);
-      } else {
-        setCheckState(false);
-      }
-      setData(result.data.result[0]);
-      dataEmployees = result.data.result[1];
+    if (status.cookies.username !== 0) {
+      if (status.cookies.username !== undefined) {
+        axios({
+          method: "post",
+          url: `/api/daily-report/signin`,
+          timeout: 5000, // 2 seconds timeout
+          headers: {},
+          data: {
+            Username: status.cookies.username,
+            Password: status.cookies.password,
+          },
+        }).then((response) => {
+          const assignedProject = response.data.result.recordsets[1];
 
+          if (status.permission === true && projectState !== undefined) {
+            let check = 0;
+            for (let i = 0; i < assignedProject.length; i++) {
+              if (assignedProject[i].ProjectID.toString() === projectState) {
+                check++;
+                break;
+              }
+            }
+            if (check === 0) {
+              setStatus((prevState) => ({
+                ...prevState,
+                permission: false,
+              }));
+            }
+          }
+        });
+      }
+    } else {
       setStatus((prevState) => ({
         ...prevState,
         cookies: {
@@ -643,14 +658,70 @@ const Timesheet = () => {
           employeeid: cookies.employeeid,
         },
       }));
-    };
+    }
 
-    trackPromise(fetchData());
-    initializeDeleteQueue();
-    initializeUpdateQueue();
+    if (
+      status.permission === true &&
+      projectState !== undefined &&
+      selectedDate !== undefined
+    ) {
+      const fetchData = async () => {
+        let result = await axios({
+          method: "get",
+          url: `/api/timesheets?selectedDate=${formatDate(
+            selectedDate
+          )}&projectID=${projectState}`,
+          timeout: 5000, // 5 seconds timeout
+          headers: {},
+        });
+        if (result.data.result[0].length === 0) {
+          setCheckState(true);
+        } else {
+          setCheckState(false);
+        }
+        setData(result.data.result[0]);
+        dataEmployees = result.data.result[1];
+      };
 
-    // setPreviousProject(projectState);
-  }, [selectedDate, projectState]);
+      trackPromise(fetchData());
+      initializeDeleteQueue();
+      initializeUpdateQueue();
+    } else {
+      setData([]);
+    }
+
+    // const fetchData = async () => {
+    //   let result = await axios({
+    //     method: "get",
+    //     url: `/api/timesheets?selectedDate=${formatDate(
+    //       selectedDate
+    //     )}&projectID=${projectState}`,
+    //     timeout: 1000, // 5 seconds timeout
+    //     headers: {},
+    //   });
+    //   if (result.data.result[0].length === 0) {
+    //     setCheckState(true);
+    //   } else {
+    //     setCheckState(false);
+    //   }
+    //   setData(result.data.result[0]);
+    //   dataEmployees = result.data.result[1];
+
+    //   setStatus((prevState) => ({
+    //     ...prevState,
+    //     cookies: {
+    //       username: cookies.username,
+    //       password: cookies.password,
+    //       fullname: cookies.fullname,
+    //       employeeid: cookies.employeeid,
+    //     },
+    //   }));
+    // };
+
+    // trackPromise(fetchData());
+    // initializeDeleteQueue();
+    // initializeUpdateQueue();
+  }, [selectedDate, projectState, status]);
 
   useEffect(() => {
     if (checkState) {
@@ -872,7 +943,7 @@ const Timesheet = () => {
     removeCookie("fullname", { path: "/" });
     removeCookie("employeeid", { path: "/" });
     setStatus((prevState) => ({
-      ...prevState,
+      permission: true,
       cookies: {
         username: undefined,
         password: 0,
@@ -895,6 +966,8 @@ const Timesheet = () => {
       {status.cookies.username === undefined ||
       status.cookies.employeeid === undefined ? (
         <Login signin={signin} />
+      ) : !status.permission ? (
+        <p>Not permission</p>
       ) : (
         <>
           <SimpleTabs

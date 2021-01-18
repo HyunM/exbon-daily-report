@@ -712,7 +712,7 @@ const Task = (
             axios({
               method: "POST",
               url: `/api/project-date-change-request`,
-              timeout: 3000, // 5 seconds timeout
+              timeout: 5000, // 5 seconds timeout
               headers: {},
               data: {
                 EmployeeID: status.cookies.employeeid,
@@ -738,7 +738,7 @@ const Task = (
             axios({
               method: "put",
               url: `/api/project-tasks-progress`,
-              timeout: 3000,
+              timeout: 5000,
               headers: {},
               data: {
                 TaskID: data[i].TaskID,
@@ -761,7 +761,7 @@ const Task = (
               axios({
                 method: "POST",
                 url: `/api/project-date-change-request`,
-                timeout: 3000, // 5 seconds timeout
+                timeout: 5000, // 5 seconds timeout
                 headers: {},
                 data: {
                   EmployeeID: status.cookies.employeeid,
@@ -779,7 +779,7 @@ const Task = (
               axios({
                 method: "POST",
                 url: `/api/project-date-change-request`,
-                timeout: 3000, // 5 seconds timeout
+                timeout: 5000, // 5 seconds timeout
                 headers: {},
                 data: {
                   EmployeeID: status.cookies.employeeid,
@@ -797,7 +797,7 @@ const Task = (
               axios({
                 method: "POST",
                 url: `/api/project-date-change-request`,
-                timeout: 3000, // 5 seconds timeout
+                timeout: 5000, // 5 seconds timeout
                 headers: {},
                 data: {
                   EmployeeID: status.cookies.employeeid,
@@ -924,7 +924,7 @@ const Task = (
           url: `/api/project-tasks-progress?selectedDate=${formatDate(
             selectedDate
           )}&projectID=${projectState}`,
-          timeout: 1000, // 5 seconds timeout
+          timeout: 5000, // 5 seconds timeout
           headers: {},
         });
 
@@ -933,7 +933,7 @@ const Task = (
         let result2 = await axios({
           method: "get",
           url: `/api/project-no-work?projectID=${projectState}`,
-          timeout: 1000, // 5 seconds timeout
+          timeout: 5000, // 5 seconds timeout
           headers: {},
         });
 
