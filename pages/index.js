@@ -70,7 +70,7 @@ const index = () => {
         },
       });
     }
-  }, [router.query, status]);
+  }, [router.query, status, cookies]);
 
   const clickGo = () => {
     const projectState = document.getElementById("select-project").value;
