@@ -33,6 +33,7 @@ import Router, { useRouter } from "next/router";
 import Head from "next/head";
 
 import SimpleTabs from "../../components/MainTab/demo";
+import NotPermission from "../../components/MainTab/NotPermission";
 
 import { CookiesProvider, useCookies } from "react-cookie";
 import Login from "../../components/MainTab/login.js";
@@ -967,7 +968,7 @@ const Timesheet = () => {
       status.cookies.employeeid === undefined ? (
         <Login signin={signin} />
       ) : !status.permission ? (
-        <p>Not permission</p>
+        <NotPermission />
       ) : (
         <>
           <SimpleTabs
