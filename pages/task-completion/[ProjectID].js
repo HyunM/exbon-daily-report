@@ -1252,6 +1252,7 @@ const Task = (
   };
 
   const logout = () => {
+    setData([]);
     removeCookie("username", { path: "/" });
     removeCookie("password", { path: "/" });
     removeCookie("fullname", { path: "/" });

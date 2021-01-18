@@ -46,7 +46,7 @@ const DeficiencyLog = (
       employeeid: 0,
     },
 
-    permission: false,
+    permission: true,
   });
 
   const [data, setData] = useState(() => []);
@@ -70,16 +70,19 @@ const DeficiencyLog = (
           console.log("assignedProject");
           console.log(assignedProject);
 
-          if (status.permission === false) {
+          if (status.permission === true && projectState !== undefined) {
+            let check = 0;
             for (let i = 0; i < assignedProject.length; i++) {
               if (assignedProject[i].ProjectID.toString() === projectState) {
-                console.log("truetruetruetruetruetrue");
-                setStatus((prevState) => ({
-                  ...prevState,
-                  permission: true,
-                }));
+                check++;
                 break;
               }
+            }
+            if (check === 0) {
+              setStatus((prevState) => ({
+                ...prevState,
+                permission: false,
+              }));
             }
           }
         });
@@ -109,6 +112,8 @@ const DeficiencyLog = (
       };
 
       trackPromise(fetchData());
+    } else {
+      setData([]);
     }
   }, [projectState, status]);
 
@@ -215,7 +220,7 @@ const DeficiencyLog = (
     removeCookie("fullname", { path: "/" });
     removeCookie("employeeid", { path: "/" });
     setStatus((prevState) => ({
-      permission: false,
+      permission: true,
       cookies: {
         username: undefined,
         password: 0,
