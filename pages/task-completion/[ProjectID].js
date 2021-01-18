@@ -896,14 +896,6 @@ const Task = (
         setNoWork(result2.data);
 
         setPreviousProject(projectState);
-        setStatus({
-          cookies: {
-            username: cookies.username,
-            password: cookies.password,
-            fullname: cookies.fullname,
-            employeeid: cookies.employeeid,
-          },
-        });
       };
 
       initializeDeleteQueue();
@@ -1277,6 +1269,7 @@ const Task = (
   return (
     <>
       {console.log(projectState)}
+      {console.log(status.cookies.employeeid)}
       <Head>
         <title>Daily Report</title>
         <link rel="icon" href="/favicon.ico" />
