@@ -63,6 +63,7 @@ const Timesheet = () => {
       fullname: "",
       employeeid: 0,
     },
+    permission: true,
   });
 
   const getSunday = (d) => {
@@ -633,14 +634,15 @@ const Timesheet = () => {
       setData(result.data.result[0]);
       dataEmployees = result.data.result[1];
 
-      setStatus({
+      setStatus((prevState) => ({
+        ...prevState,
         cookies: {
           username: cookies.username,
           password: cookies.password,
           fullname: cookies.fullname,
           employeeid: cookies.employeeid,
         },
-      });
+      }));
     };
 
     trackPromise(fetchData());
@@ -869,14 +871,15 @@ const Timesheet = () => {
     removeCookie("password", { path: "/" });
     removeCookie("fullname", { path: "/" });
     removeCookie("employeeid", { path: "/" });
-    setStatus({
+    setStatus((prevState) => ({
+      ...prevState,
       cookies: {
         username: undefined,
         password: 0,
         fullname: "",
         employeeid: 0,
       },
-    });
+    }));
   };
 
   return (

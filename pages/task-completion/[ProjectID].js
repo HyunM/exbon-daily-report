@@ -73,6 +73,7 @@ const Task = (
       fullname: "",
       employeeid: 0,
     },
+    permission: true,
   });
 
   const deleteQueue = useSelector((state) => state.deleteQueue);
@@ -873,7 +874,50 @@ const Task = (
   };
 
   useEffect(() => {
-    if (projectState !== undefined) {
+    if (status.cookies.username !== 0) {
+      if (status.cookies.username !== undefined) {
+        axios({
+          method: "post",
+          url: `/api/daily-report/signin`,
+          timeout: 5000, // 2 seconds timeout
+          headers: {},
+          data: {
+            Username: status.cookies.username,
+            Password: status.cookies.password,
+          },
+        }).then((response) => {
+          const assignedProject = response.data.result.recordsets[1];
+
+          if (status.permission === true && projectState !== undefined) {
+            let check = 0;
+            for (let i = 0; i < assignedProject.length; i++) {
+              if (assignedProject[i].ProjectID.toString() === projectState) {
+                check++;
+                break;
+              }
+            }
+            if (check === 0) {
+              setStatus((prevState) => ({
+                ...prevState,
+                permission: false,
+              }));
+            }
+          }
+        });
+      }
+    } else {
+      setStatus((prevState) => ({
+        ...prevState,
+        cookies: {
+          username: cookies.username,
+          password: cookies.password,
+          fullname: cookies.fullname,
+          employeeid: cookies.employeeid,
+        },
+      }));
+    }
+
+    if (status.permission === true && projectState !== undefined) {
       const fetchData = async () => {
         let result1 = await axios({
           method: "get",
@@ -902,16 +946,50 @@ const Task = (
       initializeUpdateQueue();
 
       trackPromise(fetchData());
+    } else {
+      setData([]);
     }
-    setStatus({
-      cookies: {
-        username: cookies.username,
-        password: cookies.password,
-        fullname: cookies.fullname,
-        employeeid: cookies.employeeid,
-      },
-    });
-  }, [selectedDate, projectState]);
+
+    // if (projectState !== undefined) {
+    //   const fetchData = async () => {
+    //     let result1 = await axios({
+    //       method: "get",
+    //       url: `/api/project-tasks-progress?selectedDate=${formatDate(
+    //         selectedDate
+    //       )}&projectID=${projectState}`,
+    //       timeout: 1000, // 5 seconds timeout
+    //       headers: {},
+    //     });
+
+    //     setData(result1.data);
+
+    //     let result2 = await axios({
+    //       method: "get",
+    //       url: `/api/project-no-work?projectID=${projectState}`,
+    //       timeout: 1000, // 5 seconds timeout
+    //       headers: {},
+    //     });
+
+    //     setNoWork(result2.data);
+
+    //     setPreviousProject(projectState);
+    //   };
+
+    //   initializeDeleteQueue();
+    //   initializeUpdateQueue();
+
+    //   trackPromise(fetchData());
+    // }
+    // setStatus((prevState) => ({
+    //   ...prevState,
+    //   cookies: {
+    //     username: cookies.username,
+    //     password: cookies.password,
+    //     fullname: cookies.fullname,
+    //     employeeid: cookies.employeeid,
+    //   },
+    // }));
+  }, [selectedDate, projectState, status]);
 
   const { promiseInProgress } = usePromiseTracker();
 
@@ -1257,19 +1335,21 @@ const Task = (
     removeCookie("password", { path: "/" });
     removeCookie("fullname", { path: "/" });
     removeCookie("employeeid", { path: "/" });
-    setStatus({
+    setStatus((prevState) => ({
+      permission: true,
       cookies: {
         username: undefined,
         password: 0,
         fullname: "",
         employeeid: 0,
       },
-    });
+    }));
   };
 
   return (
     <>
       {console.log(projectState)}
+      {console.log(status.cookies.username)}
       {console.log(status.cookies.employeeid)}
       <Head>
         <title>Daily Report</title>
@@ -1282,6 +1362,8 @@ const Task = (
       {status.cookies.username === undefined ||
       status.cookies.employeeid === undefined ? (
         <Login signin={signin} />
+      ) : !status.permission ? (
+        <p>Not permission</p>
       ) : (
         <>
           <SimpleTabs

@@ -45,7 +45,6 @@ const DeficiencyLog = (
       fullname: "",
       employeeid: 0,
     },
-
     permission: true,
   });
 
@@ -64,11 +63,7 @@ const DeficiencyLog = (
             Password: status.cookies.password,
           },
         }).then((response) => {
-          console.log("status.cookies.username");
-          console.log(status.cookies.username);
           const assignedProject = response.data.result.recordsets[1];
-          console.log("assignedProject");
-          console.log(assignedProject);
 
           if (status.permission === true && projectState !== undefined) {
             let check = 0;
