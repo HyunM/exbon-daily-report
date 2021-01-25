@@ -79,8 +79,13 @@ const Timesheet = ({
       afterSundayCheck = true;
       return true;
     } else {
-      afterSundayCheck = false;
-      return false;
+      // for turning on editable or disable
+      // afterSundayCheck = false;
+      // return false;
+
+      //for everything editable
+      afterSundayCheck = true;
+      return true;
     }
   };
 
