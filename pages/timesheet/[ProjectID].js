@@ -97,8 +97,13 @@ const Timesheet = () => {
       afterSundayCheck = true;
       return true;
     } else {
+      //Turning on the lockout
       afterSundayCheck = false;
       return false;
+
+      //Turning off the lockout
+      // afterSundayCheck = true;
+      // return true;
     }
   };
 
