@@ -32,28 +32,31 @@ const index = () => {
 
   useEffect(() => {
     if (status.cookies.username !== 0) {
-      axios({
-        method: "post",
-        url: `/api/daily-report/signin`,
-        timeout: 5000, // 5 seconds timeout
-        headers: {},
-        data: {
-          Username: status.cookies.username,
-          Password: status.cookies.password,
-        },
-      }).then((response) => {
-        //   setAssignedProject(() => response.data.result.recordsets[1]);
-        let tab = "timesheet";
-        let project = 0;
-        if (router.query.tab !== undefined) tab = router.query.tab;
-        if (router.query.project !== undefined) project = router.query.project;
+      if (status.cookies.username !== undefined) {
+        axios({
+          method: "post",
+          url: `/api/daily-report/signin`,
+          timeout: 5000, // 5 seconds timeout
+          headers: {},
+          data: {
+            Username: status.cookies.username,
+            Password: status.cookies.password,
+          },
+        }).then((response) => {
+          //   setAssignedProject(() => response.data.result.recordsets[1]);
+          let tab = "timesheet";
+          let project = 0;
+          if (router.query.tab !== undefined) tab = router.query.tab;
+          if (router.query.project !== undefined)
+            project = router.query.project;
 
-        setState({
-          prevTab: tab,
-          prevProject: project,
-          assignedProject: response.data.result.recordsets[1],
+          setState({
+            prevTab: tab,
+            prevProject: project,
+            assignedProject: response.data.result.recordsets[1],
+          });
         });
-      });
+      }
     } else {
       setStatus({
         cookies: {
