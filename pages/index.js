@@ -14,12 +14,6 @@ import "react-toastify/dist/ReactToastify.css";
 const index = () => {
   const router = useRouter();
 
-  //   const [prevTab, setPrevTab] = useState("timesheet");
-
-  //   const [prevProject, setPrevProject] = useState();
-
-  //   const [assignedProject, setAssignedProject] = useState([]);
-
   const [state, setState] = useState({
     prevTab: "timesheet",
     prevProject: 0,
