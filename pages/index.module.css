@@ -1,34 +1,73 @@
-.body {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  /* background: linear-gradient(to top, black, grey); */
-  box-shadow: 0px 0px 30px 10px rgb(163, 165, 180) inset;
-  /* background-color: rgb(217, 215, 228); */
-  background-image: url("./loginBackground.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
+.right-tab {
+  margin-left: auto !important;
+  max-width: 250px !important;
+  width: 100%;
 }
 
-.mainDiv {
-  width: 250px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 5% !important;
-  background-color: white;
-  padding: 5%;
-  border-radius: 10px;
-  box-shadow: 3px 3px 20px 10px rgb(221, 217, 217);
+.projectID-text {
+  font-family: "Roboto";
+  margin-left: 7%;
+  color: #50474c;
 }
-
-.wrapper-upper {
+.wrapper-right-tab {
   display: flex;
-  justify-content: center;
+  width: 100% !important;
 }
 
-.wrapper-upper__title {
-  color: rgb(114, 109, 109) !important;
-  align-self: center;
+.wrapper-right-tab__employee-name {
+  margin-top: 0;
+  margin-bottom: 0;
+  width: 100%;
+  text-align: right;
+}
+
+.wrapper-right-tab__account-icon {
+  margin-left: 5% !important;
+}
+
+.wrapper-select-project {
+  width: 20%;
+  margin-left: 45%;
+  margin-right: auto;
+  margin-top: 10%;
+}
+
+.wrapper-select-project__select-project {
+  display: inline-block;
+  height: 25px;
+  width: 130px;
+  color: #74646e;
+  border: 1px solid #c8bfc4;
+  border-radius: 4px;
+  box-shadow: inset 1px 1px 2px #ddd8dc;
+  background: #fff;
+  font-size: medium;
+}
+
+.wrapper-select-project__btn-go {
+  color: blueviolet;
+}
+.wrapper-logout {
+  display: flex;
+  cursor: pointer;
+  color: cornflowerblue;
+  padding: 0.5rem;
+}
+.wrapper-logout:hover {
+  background-color: #e0d4dc;
+}
+.wrapper-schedule {
+  display: flex;
+  cursor: pointer;
+  color: rgb(142, 78, 184);
+  padding: 0.5rem;
+}
+.wrapper-schedule:hover {
+  background-color: #e0d4dc;
+}
+.wrapper-schedule__btn {
+  padding: 0 !important;
+}
+.wrapper-logout__btn {
+  padding: 0 !important;
 }

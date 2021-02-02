@@ -1,7 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { useState, useMemo, useEffect } from "react";
-import styles from "../calendar.module.css";
+import styles from "./calendar.module.css";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import ReactTooltip from "react-tooltip";
@@ -16,7 +16,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import Head from "next/head";
 
 const calendar = () => {
-  const handleEventPositioned = (info) => {
+  const handleEventPositioned = info => {
     info.el.setAttribute(
       "data-tip",
       "Project ID : " +

@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import styles from "./TabsOfBoth.module.css";
+import styles from "./index.module.css";
 import { Button } from "@material-ui/core";
 import axios from "axios";
 import Router, { useRouter } from "next/router";
 
-import SimpleTabs from "../components/MainTab/demo";
+import MainTab from "../components/MainTab/MainTab.js";
 
 import { CookiesProvider, useCookies } from "react-cookie";
 import Login from "../components/MainTab/login.js";
@@ -42,7 +42,7 @@ const index = () => {
             Username: status.cookies.username,
             Password: status.cookies.password,
           },
-        }).then((response) => {
+        }).then(response => {
           //   setAssignedProject(() => response.data.result.recordsets[1]);
           let tab = "timesheet";
           let project = 0;
@@ -85,7 +85,7 @@ const index = () => {
         Username: username,
         Password: password,
       },
-    }).then((response) => {
+    }).then(response => {
       if (response.data.result.recordset[0] !== undefined) {
         setCookie("username", username, { path: "/", maxAge: 3600 * 24 * 30 });
         setCookie("password", password, { path: "/", maxAge: 3600 * 24 * 30 });
@@ -97,7 +97,7 @@ const index = () => {
           path: "/",
           maxAge: 3600 * 24 * 30,
         });
-        setStatus((prevState) => ({
+        setStatus(prevState => ({
           ...prevState,
           cookies: {
             username: username,
@@ -135,7 +135,7 @@ const index = () => {
         <Login signin={signin} />
       ) : (
         <>
-          <SimpleTabs
+          <MainTab
             tapNo={0}
             projectState={0}
             main={true}
@@ -151,7 +151,7 @@ const index = () => {
                 className={styles["wrapper-select-project__select-project"]}
                 defaultValue={state.prevProject}
               >
-                {state.assignedProject.map((item) => {
+                {state.assignedProject.map(item => {
                   return (
                     <option
                       key={item.ProjectID}

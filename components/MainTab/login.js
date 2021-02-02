@@ -4,7 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import Box from "@material-ui/core/Box";
 import ScheduleIcon from "@material-ui/icons/Schedule";
 import Typography from "@material-ui/core/Typography";
-import styles from "./index.module.css";
+import styles from "./login.module.css";
 import { sha256 } from "js-sha256";
 import { makeStyles } from "@material-ui/core/styles";
 const Copyright = () => {
@@ -21,7 +21,7 @@ const Copyright = () => {
 };
 
 const Login = ({ signin }) => {
-  const useStyles = makeStyles((theme) => ({
+  const useStyles = makeStyles(theme => ({
     paper: {
       marginTop: theme.spacing(8),
       display: "flex",
@@ -50,7 +50,7 @@ const Login = ({ signin }) => {
     signin(username, password);
   };
 
-  const handleKeyPress = (event) => {
+  const handleKeyPress = event => {
     if (event.key === "Enter") {
       handleSignin();
     }

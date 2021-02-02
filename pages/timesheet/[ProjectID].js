@@ -32,7 +32,7 @@ import Loader from "react-loader-spinner";
 import Router, { useRouter } from "next/router";
 import Head from "next/head";
 
-import SimpleTabs from "../../components/MainTab/demo";
+import MainTab from "../../components/MainTab/MainTab";
 import NotPermission from "../../components/MainTab/NotPermission";
 
 import { CookiesProvider, useCookies } from "react-cookie";
@@ -979,7 +979,7 @@ const Timesheet = () => {
         <NotPermission />
       ) : (
         <>
-          <SimpleTabs
+          <MainTab
             tapNo={0}
             projectState={projectState}
             main={false}

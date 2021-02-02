@@ -21,7 +21,7 @@ import DeleteTwoToneIcon from "@material-ui/icons/DeleteTwoTone";
 import Router, { useRouter } from "next/router";
 import Head from "next/head";
 
-import SimpleTabs from "../../components/MainTab/demo";
+import SimpleTabs from "../../components/MainTab/MainTab";
 import NotPermission from "../../components/MainTab/NotPermission";
 
 import { CookiesProvider, useCookies } from "react-cookie";
