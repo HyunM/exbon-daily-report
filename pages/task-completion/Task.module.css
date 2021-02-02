@@ -10,7 +10,7 @@
   color: darkblue;
   margin-right: 20px;
   margin-bottom: 0;
-  margin-left: 3px;
+  margin-left: 5px;
 }
 .header {
   display: flex;
@@ -22,7 +22,7 @@
   align-items: center;
   align-content: center;
   flex-grow: 1;
-  margin-left: 3px;
+  margin-left: 5px;
 }
 
 .header__left__project-id {

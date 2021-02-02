@@ -275,43 +275,29 @@ const DeficiencyLog = (
                 </div>
               ) : (
                 <>
-                  <h3 className={styles["project-id"]}>
-                    Project ID :{" "}
-                    <span
-                      onClick={goMain}
-                      className={styles["project-id__value"]}
-                    >
-                      {projectState}
-                    </span>
-                  </h3>
-                  {/* <Accordion defaultExpanded={false}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-            >
-              <Typography variant="h5" color="primary">
-                Safety Report
-              </Typography>
-            </AccordionSummary>
-            <div className={styles["safety-report__dropzone-wrapper"]}>
-              <DropzoneArea
-                showPreviews={true}
-                showPreviewsInDropzone={false}
-                useChipsForPreview
-                previewGridProps={{
-                  container: { spacing: 1, direction: "row" },
-                }}
-                previewChipProps={{ classes: { root: classes.previewChip } }}
-                previewText="Selected files"
-              />
-            </div>
-            <Divider />
-            <AccordionActions>
-              <Button size="small" color="primary">
-                Upload
-              </Button>
-            </AccordionActions>
-          </Accordion> */}
+                  <div className={styles["header"]}>
+                    <h3 className={styles["header__project-id"]}>
+                      <span
+                        onClick={goMain}
+                        className={styles["header__project-id__value"]}
+                      >
+                        {projectState}
+                      </span>
+                    </h3>
+                    {projectInfoTab3 !== undefined &&
+                    projectInfoTab3.length !== 0 ? (
+                      <>
+                        <h4 className={styles["header__project-group"]}>
+                          [{projectInfoTab3[0].ProjectGroup}]
+                        </h4>
+                        <h4 className={styles["header__project-name"]}>
+                          {projectInfoTab3[0].ProjectName}
+                        </h4>
+                      </>
+                    ) : (
+                      ""
+                    )}
+                  </div>
                   <Accordion defaultExpanded={true}>
                     <AccordionSummary
                       expandIcon={<ExpandMoreIcon />}

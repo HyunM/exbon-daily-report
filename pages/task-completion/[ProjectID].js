@@ -1383,7 +1383,7 @@ const Task = (
               </div>
             ) : (
               <>
-                <h2 className={styles["title"]}>Task Completion</h2>
+                <h1 className={styles["title"]}>Task Completion</h1>
                 <div className={styles["header"]}>
                   <div className={styles["header__left"]}>
                     <h3 className={styles["header__left__project-id"]}>
