@@ -15,7 +15,7 @@ const projectDeficiencyLogHandler = (req, res) => {
 
           const projectID = req.query.projectID;
 
-          const query = `EXEC [Hammer].[dbo].[ProjectDeficiencyLog_SelectByProjectID]
+          const query = `EXEC [Hammer].[dbo].[ProjectDeficiencyLog_SelectByProjectID_Temp]
           ${projectID} `;
 
           request.query(query, (err, recordset) => {
@@ -23,8 +23,9 @@ const projectDeficiencyLogHandler = (req, res) => {
               console.error(err);
               return resolve();
             }
-            const response = recordset.recordset;
-            res.status(200).json(response);
+            res.status(200).json({
+              result: recordset.recordsets,
+            });
             return resolve();
           });
         });

@@ -29,6 +29,7 @@ import Login from "../../components/MainTab/login.js";
 import "react-toastify/dist/ReactToastify.css";
 
 let noWorkMapKey = -1;
+let projectInfo;
 
 toast.configure();
 const themeForWorkDate = createMuiTheme({
@@ -923,7 +924,8 @@ const Task = (
           headers: {},
         });
 
-        setData(result1.data);
+        setData(result1.data.result[0]);
+        projectInfo = result.data.result[1];
 
         let result2 = await axios({
           method: "get",

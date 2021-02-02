@@ -44,8 +44,8 @@ let afterSundayCheck = true;
 
 let dataEmployees;
 
-const convertInputToTime = (time) => {
-  let match = inputTime.filter((data) => data.input === time);
+const convertInputToTime = time => {
+  let match = inputTime.filter(data => data.input === time);
   if (match[0] === undefined) {
     return "error";
   }
@@ -67,7 +67,7 @@ const Timesheet = () => {
     permission: true,
   });
 
-  const getSunday = (d) => {
+  const getSunday = d => {
     d = new Date(d);
     let day = d.getDay(),
       diff = d.getDate() - day;
@@ -82,7 +82,7 @@ const Timesheet = () => {
     );
   };
 
-  const dateCheckEditable = (str) => {
+  const dateCheckEditable = str => {
     const toStr = str.toLocaleString();
     const newStr =
       toStr.split("/")[0] +
@@ -107,18 +107,18 @@ const Timesheet = () => {
     }
   };
 
-  const deleteQueue = useSelector((state) => state.deleteQueue);
-  const updateQueue = useSelector((state) => state.updateQueue);
+  const deleteQueue = useSelector(state => state.deleteQueue);
+  const updateQueue = useSelector(state => state.updateQueue);
 
   const dispatch = useDispatch();
 
-  const addUpdateQueue = (value) =>
+  const addUpdateQueue = value =>
     dispatch({
       type: "ADDUPDATEQUEUE",
       addUpdateQueue: value,
     });
 
-  const addDeleteQueue = (value) =>
+  const addDeleteQueue = value =>
     dispatch({
       type: "ADDDELETEQUEUE",
       addDeleteQueue: value,
@@ -135,7 +135,7 @@ const Timesheet = () => {
     });
 
   const [checkState, setCheckState] = useState(true);
-  const checkChange = (event) => {
+  const checkChange = event => {
     if (event.target.checked) {
       for (
         let i = 12;
@@ -233,7 +233,7 @@ const Timesheet = () => {
     // We need to keep and update the state of the cell normally
     const [value, setValue] = React.useState(initialValue);
 
-    const onCheckHour = (e) => {
+    const onCheckHour = e => {
       const TimesheetID = e.target.parentElement.parentElement.parentElement.children[0].children[0].getAttribute(
         "value"
       );
@@ -255,7 +255,7 @@ const Timesheet = () => {
       }
     };
 
-    const onCheckMin = (e) => {
+    const onCheckMin = e => {
       const TimesheetID = e.target.parentElement.parentElement.parentElement.children[0].children[0].getAttribute(
         "value"
       );
@@ -263,7 +263,7 @@ const Timesheet = () => {
       setValue(value.slice(0, 2) + ":" + e.target.value + value.slice(5, 7));
     };
 
-    const onCheckAmPm = (e) => {
+    const onCheckAmPm = e => {
       const TimesheetID = e.target.parentElement.parentElement.parentElement.children[0].children[0].getAttribute(
         "value"
       );
@@ -277,7 +277,7 @@ const Timesheet = () => {
       }
     };
 
-    const onChangePosition = (e) => {
+    const onChangePosition = e => {
       const TimesheetID = e.target.parentElement.parentElement.children[0].children[0].getAttribute(
         "value"
       );
@@ -285,7 +285,7 @@ const Timesheet = () => {
       setValue(e.target.value);
     };
 
-    const onChange = (e) => {
+    const onChange = e => {
       const TimesheetID = e.target.parentElement.parentElement.parentElement.children[0].children[0].getAttribute(
         "value"
       );
@@ -293,13 +293,13 @@ const Timesheet = () => {
       setValue(e.target.value);
     };
 
-    const onChangeSelect = (value) => {
+    const onChangeSelect = value => {
       setValue(value);
       updateEmployeeData(index, id, value);
     };
 
     // We'll only update the external data when the input is blurred
-    const onBlur = (e) => {
+    const onBlur = e => {
       if (document.getElementById("checkboxForSetSameTime")) {
         if (document.getElementById("checkboxForSetSameTime").checked) {
           updateMyData(index, id, value);
@@ -312,11 +312,11 @@ const Timesheet = () => {
       }
     };
 
-    const onBlurForEmployee = (e) => {
+    const onBlurForEmployee = e => {
       updateEmployeeData(index, id, value);
     };
 
-    const clickDeleteTimesheet = (value) => {
+    const clickDeleteTimesheet = value => {
       //value = TimesheetID
       deleteTimesheetRow(index, id);
       addDeleteQueue(value);
@@ -425,7 +425,7 @@ const Timesheet = () => {
     } else if (id === "EmployeeName") {
       return (
         <Autocomplete
-          getItemValue={(item) => item.EmployeeName}
+          getItemValue={item => item.EmployeeName}
           items={dataEmployees}
           renderItem={(item, isHighlighted) => (
             <div
@@ -441,8 +441,8 @@ const Timesheet = () => {
           value={value}
           onChange={onChange}
           inputProps={{ onBlur: onBlurForEmployee }}
-          onSelect={(val) => onChangeSelect(val)}
-          renderInput={(props) => {
+          onSelect={val => onChangeSelect(val)}
+          renderInput={props => {
             return (
               <input
                 className={
@@ -494,7 +494,7 @@ const Timesheet = () => {
   // original data
   const updateMyData = (rowIndex, columnId, value) => {
     // We also turn on the flag to not reset the page
-    setData((old) =>
+    setData(old =>
       old.map((row, index) => {
         if (index === rowIndex) {
           return {
@@ -509,7 +509,7 @@ const Timesheet = () => {
 
   const updateEmployeeData = (rowIndex, columnId, value) => {
     // We also turn on the flag to not reset the page
-    setData((old) =>
+    setData(old =>
       old.map((row, index) => {
         if (index === rowIndex) {
           return {
@@ -524,7 +524,7 @@ const Timesheet = () => {
   };
 
   const updateTimesheetIDData = (InsertID, TimesheetID) => {
-    setData((old) =>
+    setData(old =>
       old.map((row, index) => {
         if (row.InsertID === InsertID) {
           return {
@@ -537,9 +537,9 @@ const Timesheet = () => {
     );
   };
 
-  const convertEmployeeNameToID = (name) => {
+  const convertEmployeeNameToID = name => {
     let employee = dataEmployees.find(
-      (employee) => name === employee.EmployeeName
+      employee => name === employee.EmployeeName
     );
     if (employee) {
       return employee.EmployeeID;
@@ -549,7 +549,7 @@ const Timesheet = () => {
   };
 
   const setSameTime = () => {
-    setData((old) =>
+    setData(old =>
       old.map((row, index) => {
         return {
           ...old[index],
@@ -587,7 +587,7 @@ const Timesheet = () => {
   };
 
   const deleteTimesheetRow = (rowIndex, columnId) => {
-    setData((old) =>
+    setData(old =>
       old.filter((row, index) => {
         return index !== rowIndex;
       })
@@ -618,7 +618,7 @@ const Timesheet = () => {
 
   const [selectedDate, setSelectedDate] = useState(now);
 
-  const handleDateChange = (date) => {
+  const handleDateChange = date => {
     setSelectedDate(date);
   };
 
@@ -634,7 +634,7 @@ const Timesheet = () => {
             Username: status.cookies.username,
             Password: status.cookies.password,
           },
-        }).then((response) => {
+        }).then(response => {
           const assignedProject = response.data.result.recordsets[1];
 
           if (status.permission === true && projectState !== undefined) {
@@ -646,7 +646,7 @@ const Timesheet = () => {
               }
             }
             if (check === 0) {
-              setStatus((prevState) => ({
+              setStatus(prevState => ({
                 ...prevState,
                 permission: false,
               }));
@@ -655,7 +655,7 @@ const Timesheet = () => {
         });
       }
     } else {
-      setStatus((prevState) => ({
+      setStatus(prevState => ({
         ...prevState,
         cookies: {
           username: cookies.username,
@@ -766,7 +766,7 @@ const Timesheet = () => {
   }, [data]);
 
   const handleSaveTimesheetBtn = () => {
-    let checkEmployeeName = data.find((employee) => employee.EmployeeID === 0);
+    let checkEmployeeName = data.find(employee => employee.EmployeeID === 0);
     let checkTime = 0;
     for (
       let i = 0;
@@ -825,7 +825,7 @@ const Timesheet = () => {
                   MealStart: data[i].MealStart,
                   MealEnd: data[i].MealEnd,
                 },
-              }).then((response) => {
+              }).then(response => {
                 updateTimesheetIDData(
                   data[i].InsertID,
                   response.data.TimesheetID
@@ -867,7 +867,7 @@ const Timesheet = () => {
 
       trackPromise(fetchData());
       trackPromise(
-        Promise.all(promises).then((result) => {
+        Promise.all(promises).then(result => {
           toast.success(
             <div className={styles["alert__complete"]}>
               <strong>Save Complete</strong>
@@ -915,7 +915,7 @@ const Timesheet = () => {
         Username: username,
         Password: password,
       },
-    }).then((response) => {
+    }).then(response => {
       if (response.data.result.recordset[0] !== undefined) {
         setCookie("username", username, { path: "/", maxAge: 3600 * 24 * 30 });
         setCookie("password", password, { path: "/", maxAge: 3600 * 24 * 30 });
@@ -927,7 +927,7 @@ const Timesheet = () => {
           path: "/",
           maxAge: 3600 * 24 * 30,
         });
-        setStatus((prevState) => ({
+        setStatus(prevState => ({
           ...prevState,
           cookies: {
             username: username,
@@ -948,7 +948,7 @@ const Timesheet = () => {
     removeCookie("password", { path: "/" });
     removeCookie("fullname", { path: "/" });
     removeCookie("employeeid", { path: "/" });
-    setStatus((prevState) => ({
+    setStatus(prevState => ({
       permission: true,
       cookies: {
         username: undefined,
@@ -1087,9 +1087,9 @@ const Timesheet = () => {
                   <TableContainer component={Paper}>
                     <Table>
                       <TableHead>
-                        {headerGroups.map((headerGroup) => (
+                        {headerGroups.map(headerGroup => (
                           <TableRow {...headerGroup.getHeaderGroupProps()}>
-                            {headerGroup.headers.map((column) => (
+                            {headerGroup.headers.map(column => (
                               <TableCell {...column.getHeaderProps()}>
                                 {column.render("Header")}
                               </TableCell>
@@ -1102,7 +1102,7 @@ const Timesheet = () => {
                           prepareRow(row);
                           return (
                             <TableRow {...row.getRowProps()}>
-                              {row.cells.map((cell) => {
+                              {row.cells.map(cell => {
                                 return (
                                   <TableCell {...cell.getCellProps()}>
                                     {cell.render("Cell")}

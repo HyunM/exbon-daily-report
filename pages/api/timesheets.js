@@ -16,7 +16,7 @@ const timesheetHandler = (req, res) => {
           const selectedDate = req.query.selectedDate;
           const projectID = req.query.projectID;
 
-          const query = `EXEC [Hammer].[dbo].[Timesheet_SelectByDate]
+          const query = `EXEC [Hammer].[dbo].[Timesheet_SelectByDate_Temp]
           '${selectedDate}',  ${projectID}`;
 
           request.query(query, (err, recordset) => {
