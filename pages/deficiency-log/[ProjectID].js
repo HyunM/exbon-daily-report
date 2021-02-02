@@ -232,9 +232,6 @@ const DeficiencyLog = (
   return (
     <>
       <CookiesProvider>
-        {console.log(status.cookies)}
-        {console.log(data)}
-
         <Head>
           <title>Daily Report</title>
           <link rel="icon" href="/favicon.ico" />

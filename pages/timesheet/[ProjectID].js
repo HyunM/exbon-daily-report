@@ -44,7 +44,7 @@ let afterSundayCheck = true;
 
 let dataEmployees;
 
-let projectInfoTab1;
+let projectInfoTab1 = undefined;
 
 const convertInputToTime = time => {
   let match = inputTime.filter(data => data.input === time);
@@ -1002,12 +1002,11 @@ const Timesheet = () => {
               </div>
             ) : (
               <>
+                <h1 className={styles["header__left__title"]}>Timesheet</h1>
+
                 <div className={styles["header"]}>
                   <div className={styles["header__left"]}>
-                    <h2 className={styles["header__left__title"]}>Timesheet</h2>
-
                     <h3 className={styles["header__left__project-id"]}>
-                      Project ID :{" "}
                       <span
                         onClick={() => {
                           goMain();
@@ -1018,6 +1017,20 @@ const Timesheet = () => {
                         {projectState}
                       </span>
                     </h3>
+
+                    {projectInfoTab1 !== undefined &&
+                    projectInfoTab1.length !== 0 ? (
+                      <>
+                        <h4 className={styles["header__left__project-group"]}>
+                          [{projectInfoTab1[0].ProjectGroup}]
+                        </h4>
+                        <h4 className={styles["header__left__project-name"]}>
+                          {projectInfoTab1[0].ProjectName}
+                        </h4>
+                      </>
+                    ) : (
+                      ""
+                    )}
                   </div>
                   <div className={styles["header__right"]}>
                     {/* {dateCheckEditable(selectedDate) && ( */}

@@ -1345,9 +1345,6 @@ const Task = (
 
   return (
     <>
-      {console.log(projectState)}
-      {console.log(status.cookies.username)}
-      {console.log(status.cookies.employeeid)}
       <Head>
         <title>Daily Report</title>
         <link rel="icon" href="/favicon.ico" />
@@ -1386,12 +1383,6 @@ const Task = (
               </div>
             ) : (
               <>
-                {/* {console.log("noWork")}
-          {console.log(noWork)}
-          {console.log("modalSaveNoWork")}
-          {console.log(modalSaveNoWork)} */}
-                {console.log(data)}
-
                 <div className={styles["header"]}>
                   <div className={styles["header__left"]}>
                     <h2 className={styles["header__left__title"]}>
