@@ -15,7 +15,7 @@ const projectDeficiencyLogHandler = (req, res) => {
 
           const projectID = req.query.projectID;
 
-          const query = `EXEC [Hammer].[dbo].[ProjectDeficiencyLog_SelectByProjectID_Temp]
+          const query = `EXEC [Hammer].[dbo].[ProjectDeficiencyLog_SelectByProjectID]
           ${projectID} `;
 
           request.query(query, (err, recordset) => {
