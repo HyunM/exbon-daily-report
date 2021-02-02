@@ -1002,7 +1002,7 @@ const Timesheet = () => {
               </div>
             ) : (
               <>
-                <h1 className={styles["header__left__title"]}>Timesheet</h1>
+                <h1 className={styles["title"]}>Timesheet</h1>
 
                 <div className={styles["header"]}>
                   <div className={styles["header__left"]}>

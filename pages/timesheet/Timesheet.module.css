@@ -7,6 +7,12 @@
   display: flex;
   justify-content: space-between;
 }
+.title {
+  margin-right: 20px;
+  font-family: "Roboto";
+  color: darkblue;
+  margin-bottom: 0;
+}
 
 .header__left {
   align-items: center;
@@ -15,18 +21,15 @@
   display: flex;
 }
 
-.header__left__title {
-  margin-right: 20px;
-  font-family: "Roboto";
-  color: darkblue;
-  margin-bottom: 0;
-}
-
 .header__left__project-id {
   font-family: "Roboto";
   margin-bottom: 15px !important;
   margin-right: 10px;
   color: black;
+}
+
+.header__left__project-id__value {
+  text-decoration: underline;
 }
 
 .header__left__project-group {
@@ -43,10 +46,6 @@
   margin-left: 10px;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.header__left__project-id__value {
-  text-decoration: underline;
 }
 
 .header__left__project-id__value:hover {

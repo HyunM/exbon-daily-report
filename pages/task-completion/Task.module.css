@@ -4,36 +4,47 @@
   width: 1387px;
   margin: auto;
 }
+
+.title {
+  font-family: "Roboto";
+  color: darkblue;
+  margin-right: 20px;
+  margin-bottom: 0;
+}
 .header {
   display: flex;
-}
-
-.header {
   justify-content: space-between;
-  margin-top: 30px;
 }
 
 .header__left {
   display: flex;
   align-items: center;
+  align-content: center;
   flex-grow: 1;
-}
-
-.header__left__title {
-  font-family: "Roboto";
-  color: darkblue;
-  margin-right: 20px;
-  margin-bottom: 13px;
 }
 
 .header__left__project-id {
   font-family: "Roboto";
-  margin-bottom: 9px !important;
-  color: #50474c;
+  color: black;
+  margin-right: 10px;
 }
 
 .header__left__project-id__value {
   text-decoration: underline;
+}
+
+.header__left__project-group {
+  font-family: "Roboto";
+  color: #50474c;
+  white-space: nowrap;
+}
+
+.header__left__project-name {
+  font-family: "Roboto";
+  color: #50474c;
+  margin-left: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .header__left__project-id__value:hover {
@@ -45,7 +56,14 @@
   display: flex;
   align-items: center;
   flex-direction: row-reverse;
-  margin-bottom: 15px;
+  align-content: center;
+  flex-grow: 1;
+  margin-bottom: 19px;
+}
+.header__right__label-date-picker {
+  margin-bottom: 0px;
+  font-family: "Roboto";
+  color: #534f51;
 }
 
 .header__right__date-picker {
@@ -56,22 +74,16 @@
 
 .header__right__date-picker input {
   text-align: center;
+  padding-bottom: 4px;
 }
 
 .header__right__save-btn {
-  margin-top: auto !important;
   align-self: flex-end;
 }
 
 .header__right__no-work-btn {
   margin-right: 20px !important;
   align-self: flex-end;
-}
-
-.header__right__label-date-picker {
-  margin-bottom: 1px;
-  font-family: "Roboto";
-  color: #534f51;
 }
 
 .table {

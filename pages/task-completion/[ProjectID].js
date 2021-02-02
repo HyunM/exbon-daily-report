@@ -1383,14 +1383,10 @@ const Task = (
               </div>
             ) : (
               <>
+                <h2 className={styles["title"]}>Task Completion</h2>
                 <div className={styles["header"]}>
                   <div className={styles["header__left"]}>
-                    <h2 className={styles["header__left__title"]}>
-                      Task Completion
-                    </h2>
-
                     <h3 className={styles["header__left__project-id"]}>
-                      Project ID :{" "}
                       <span
                         onClick={goMain}
                         className={styles["header__left__project-id__value"]}
@@ -1398,6 +1394,19 @@ const Task = (
                         {projectState}
                       </span>
                     </h3>
+                    {projectInfoTab2 !== undefined &&
+                    projectInfoTab2.length !== 0 ? (
+                      <>
+                        <h4 className={styles["header__left__project-group"]}>
+                          [{projectInfoTab2[0].ProjectGroup}]
+                        </h4>
+                        <h4 className={styles["header__left__project-name"]}>
+                          {projectInfoTab2[0].ProjectName}
+                        </h4>
+                      </>
+                    ) : (
+                      ""
+                    )}
                   </div>
                   <div className={styles["header__right"]}>
                     <Button
