@@ -77,10 +77,10 @@ const Task = (
     permission: true,
   });
 
-  const deleteQueue = useSelector((state) => state.deleteQueue);
+  const deleteQueue = useSelector(state => state.deleteQueue);
   const dispatch = useDispatch();
 
-  const addUpdateQueue = (value) =>
+  const addUpdateQueue = value =>
     dispatch({
       type: "ADDUPDATEQUEUE",
       addUpdateQueue: value,
@@ -177,11 +177,11 @@ const Task = (
     // We need to keep and update the state of the cell normally
     const [value, setValue] = React.useState(initialValue);
 
-    const onChange = (e) => {
+    const onChange = e => {
       setValue(e.target.value);
     };
 
-    const onChangePercent = (e) => {
+    const onChangePercent = e => {
       //e.nativeEvent.data => User input data (On Firefox, in case of arrow, next value)
       //e.target.value => future value
       if (e.nativeEvent.data) {
@@ -353,15 +353,15 @@ const Task = (
       // }
     };
 
-    const onChangeDatePicker = (e) => {
+    const onChangeDatePicker = e => {
       setValue(e);
     };
 
-    const selectReqStartDate = (e) => {
+    const selectReqStartDate = e => {
       updateReqStartDate(index, id, value, e);
     };
 
-    const selectReqFinishDate = (e) => {
+    const selectReqFinishDate = e => {
       updateReqFinishDate(index, id, value, e);
     };
     // We'll only update the external data when the input is blurred
@@ -369,7 +369,7 @@ const Task = (
       updateMyData(index, id, value);
     };
 
-    const onBlurForCurrentWork = (e) => {
+    const onBlurForCurrentWork = e => {
       updateMyData(index, id, value);
     };
 
@@ -396,7 +396,7 @@ const Task = (
       );
     };
 
-    const preventNegativeNumber = (e) => {
+    const preventNegativeNumber = e => {
       if (e.key === "-" || e.key === "+" || e.key === ".") {
         setValue("0");
       }
@@ -536,7 +536,7 @@ const Task = (
       );
     } else if (id === "CurrentWork") {
       let previousWork;
-      row.allCells.forEach((horizontalLine) => {
+      row.allCells.forEach(horizontalLine => {
         if (horizontalLine.column.Header === "Previous Work %") {
           previousWork = horizontalLine.value;
         }
@@ -587,7 +587,7 @@ const Task = (
 
   const updateMyData = (rowIndex, columnId, value) => {
     // We also turn on the flag to not reset the page
-    setData((old) =>
+    setData(old =>
       old.map((row, index) => {
         if (index === rowIndex) {
           return {
@@ -601,7 +601,7 @@ const Task = (
   };
 
   const updateReqStartDate = (rowIndex, columnId, value, date) => {
-    setData((old) =>
+    setData(old =>
       old.map((row, index) => {
         if (index === rowIndex) {
           return {
@@ -622,7 +622,7 @@ const Task = (
   };
 
   const updateReqFinishDate = (rowIndex, columnId, value, date) => {
-    setData((old) =>
+    setData(old =>
       old.map((row, index) => {
         if (index === rowIndex) {
           return {
@@ -664,8 +664,8 @@ const Task = (
 
   const [selectedDate, setSelectedDate] = useState(now);
 
-  const dateCheckEditable = (str) => {
-    const getSunday = (d) => {
+  const dateCheckEditable = str => {
+    const getSunday = d => {
       d = new Date(d);
       let day = d.getDay(),
         diff = d.getDate() - day;
@@ -697,7 +697,7 @@ const Task = (
     else return false;
   };
 
-  const handleDateChange = (date) => {
+  const handleDateChange = date => {
     setSelectedDate(date);
   };
 
@@ -728,13 +728,7 @@ const Task = (
           );
         }
 
-        if (
-          !(
-            data[i].CurrentWork === null ||
-            data[i].CurrentWork === "" ||
-            data[i].CurrentWork.toString() === data[i].PreviousWork.toString()
-          )
-        ) {
+        if (!(data[i].CurrentWork === null || data[i].CurrentWork === "")) {
           promises.push(
             axios({
               method: "put",
@@ -751,7 +745,7 @@ const Task = (
         }
       }
 
-      noWork.forEach((item) => {
+      noWork.forEach(item => {
         let reason = item.Note;
         if (reason === "") {
           reason = null;
@@ -832,7 +826,7 @@ const Task = (
 
         let tempData = [];
 
-        data.forEach((item) => {
+        data.forEach(item => {
           const singleItem = {
             ...item,
             NewReqStartDate: null,
@@ -844,7 +838,7 @@ const Task = (
 
         let tempNoWork = [];
 
-        noWork.forEach((item) => {
+        noWork.forEach(item => {
           let singleItem = { ...item };
           if (item.OrderStatus === "3") {
             singleItem = {
@@ -886,7 +880,7 @@ const Task = (
             Username: status.cookies.username,
             Password: status.cookies.password,
           },
-        }).then((response) => {
+        }).then(response => {
           const assignedProject = response.data.result.recordsets[1];
 
           if (status.permission === true && projectState !== undefined) {
@@ -898,7 +892,7 @@ const Task = (
               }
             }
             if (check === 0) {
-              setStatus((prevState) => ({
+              setStatus(prevState => ({
                 ...prevState,
                 permission: false,
               }));
@@ -907,7 +901,7 @@ const Task = (
         });
       }
     } else {
-      setStatus((prevState) => ({
+      setStatus(prevState => ({
         ...prevState,
         cookies: {
           username: cookies.username,
@@ -1047,7 +1041,7 @@ const Task = (
     setModalNoWork({ isOpen: false });
   };
 
-  const editNoWork = (recordID) => {
+  const editNoWork = recordID => {
     let StartDate;
     let FinishDate;
     for (let i = 0; i < noWork.length; i++) {
@@ -1067,7 +1061,7 @@ const Task = (
     });
   };
 
-  const deleteNoWork = (recordID) => {
+  const deleteNoWork = recordID => {
     let StartDate;
     let FinishDate;
     for (let i = 0; i < noWork.length; i++) {
@@ -1087,8 +1081,8 @@ const Task = (
     });
   };
 
-  const deleteRequestNoWork = (deleteForIndex) => {
-    setNoWork((old) =>
+  const deleteRequestNoWork = deleteForIndex => {
+    setNoWork(old =>
       old.filter((row, index) => {
         return index !== deleteForIndex;
       })
@@ -1120,23 +1114,23 @@ const Task = (
   };
 
   const closeModalSaveNoWork = () => {
-    setModalSaveNoWork((prevState) => ({ ...prevState, isOpen: false }));
+    setModalSaveNoWork(prevState => ({ ...prevState, isOpen: false }));
   };
 
-  const handleStartDateOfSaveNoWork = (StartDate) => {
-    setModalSaveNoWork((prevState) => ({ ...prevState, StartDate }));
+  const handleStartDateOfSaveNoWork = StartDate => {
+    setModalSaveNoWork(prevState => ({ ...prevState, StartDate }));
   };
 
-  const handleEndDateOfSaveNoWork = (FinishDate) => {
-    setModalSaveNoWork((prevState) => ({ ...prevState, FinishDate }));
+  const handleEndDateOfSaveNoWork = FinishDate => {
+    setModalSaveNoWork(prevState => ({ ...prevState, FinishDate }));
   };
 
-  const handleReasonOfSaveNoWork = (event) => {
+  const handleReasonOfSaveNoWork = event => {
     const reason = event.target.value;
-    setModalSaveNoWork((prevState) => ({ ...prevState, Reason: reason }));
+    setModalSaveNoWork(prevState => ({ ...prevState, Reason: reason }));
   };
 
-  const requestNoWorkDays = (type) => {
+  const requestNoWorkDays = type => {
     let tempNoWork = [];
 
     tempNoWork = [
@@ -1155,7 +1149,7 @@ const Task = (
     ];
     setNoWork(tempNoWork);
 
-    setModalSaveNoWork((prevState) => ({ ...prevState, isOpen: false }));
+    setModalSaveNoWork(prevState => ({ ...prevState, isOpen: false }));
   };
 
   // Work Date
@@ -1175,15 +1169,15 @@ const Task = (
   };
 
   const closeModalWorkDate = () => {
-    setModalWorkDate((prevState) => ({ ...prevState, isOpen: false }));
+    setModalWorkDate(prevState => ({ ...prevState, isOpen: false }));
   };
 
-  const handleStartDateOfWorkDate = (StartDate) => {
-    setModalWorkDate((prevState) => ({ ...prevState, StartDate }));
+  const handleStartDateOfWorkDate = StartDate => {
+    setModalWorkDate(prevState => ({ ...prevState, StartDate }));
   };
 
-  const handleEndDateOfWorkDate = (FinishDate) => {
-    setModalWorkDate((prevState) => ({ ...prevState, FinishDate }));
+  const handleEndDateOfWorkDate = FinishDate => {
+    setModalWorkDate(prevState => ({ ...prevState, FinishDate }));
   };
 
   const updateModalWorkDate = (
@@ -1216,7 +1210,7 @@ const Task = (
     const FinishDate = formatDate(modalWorkDate.FinishDate);
 
     if (modalWorkDate.type === "Start Date") {
-      setData((old) =>
+      setData(old =>
         old.map((row, index) => {
           if (index === modalWorkDate.rowIndex) {
             return {
@@ -1235,7 +1229,7 @@ const Task = (
         })
       );
     } else {
-      setData((old) =>
+      setData(old =>
         old.map((row, index) => {
           if (index === modalWorkDate.rowIndex) {
             return {
@@ -1303,7 +1297,7 @@ const Task = (
         Username: username,
         Password: password,
       },
-    }).then((response) => {
+    }).then(response => {
       if (response.data.result.recordset[0] !== undefined) {
         setCookie("username", username, { path: "/", maxAge: 3600 * 24 * 30 });
         setCookie("password", password, { path: "/", maxAge: 3600 * 24 * 30 });
@@ -1315,7 +1309,7 @@ const Task = (
           path: "/",
           maxAge: 3600 * 24 * 30,
         });
-        setStatus((prevState) => ({
+        setStatus(prevState => ({
           ...prevState,
           cookies: {
             username: username,
@@ -1336,7 +1330,7 @@ const Task = (
     removeCookie("password", { path: "/" });
     removeCookie("fullname", { path: "/" });
     removeCookie("employeeid", { path: "/" });
-    setStatus((prevState) => ({
+    setStatus(prevState => ({
       permission: true,
       cookies: {
         username: undefined,
@@ -1752,9 +1746,9 @@ const Task = (
                 <div className={styles["table"]}>
                   <table {...getTableProps()}>
                     <thead>
-                      {headerGroups.map((headerGroup) => (
+                      {headerGroups.map(headerGroup => (
                         <tr {...headerGroup.getHeaderGroupProps()}>
-                          {headerGroup.headers.map((column) => (
+                          {headerGroup.headers.map(column => (
                             <td {...column.getHeaderProps()}>
                               {column.render("Header")}
                             </td>
@@ -1770,7 +1764,7 @@ const Task = (
                             {...row.getRowProps()}
                             className={styles["table__row"]}
                           >
-                            {row.cells.map((cell) => {
+                            {row.cells.map(cell => {
                               return (
                                 <td {...cell.getCellProps()}>
                                   {cell.render("Cell")}
