@@ -44,6 +44,8 @@ let afterSundayCheck = true;
 
 let dataEmployees;
 
+let projectInfoTab1;
+
 const convertInputToTime = time => {
   let match = inputTime.filter(data => data.input === time);
   if (match[0] === undefined) {
@@ -687,6 +689,7 @@ const Timesheet = () => {
         }
         setData(result.data.result[0]);
         dataEmployees = result.data.result[1];
+        projectInfoTab1 = result.data.result[2];
       };
 
       trackPromise(fetchData());

@@ -27,6 +27,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { TrendingUpTwoTone } from "@material-ui/icons";
 
 toast.configure();
+
+let projectInfoTab3;
+
 const DeficiencyLog = (
   {
     // projectState,
@@ -63,7 +66,7 @@ const DeficiencyLog = (
             Username: status.cookies.username,
             Password: status.cookies.password,
           },
-        }).then((response) => {
+        }).then(response => {
           const assignedProject = response.data.result.recordsets[1];
 
           if (status.permission === true && projectState !== undefined) {
@@ -75,7 +78,7 @@ const DeficiencyLog = (
               }
             }
             if (check === 0) {
-              setStatus((prevState) => ({
+              setStatus(prevState => ({
                 ...prevState,
                 permission: false,
               }));
@@ -84,7 +87,7 @@ const DeficiencyLog = (
         });
       }
     } else {
-      setStatus((prevState) => ({
+      setStatus(prevState => ({
         ...prevState,
         cookies: {
           username: cookies.username,
@@ -104,7 +107,8 @@ const DeficiencyLog = (
           headers: {},
         });
 
-        setData(result.data);
+        setData(result.data.result[0]);
+        projectInfoTab3 = result.data.result[1];
       };
 
       trackPromise(fetchData());
@@ -182,7 +186,7 @@ const DeficiencyLog = (
         Username: username,
         Password: password,
       },
-    }).then((response) => {
+    }).then(response => {
       if (response.data.result.recordset[0] !== undefined) {
         setCookie("username", username, { path: "/", maxAge: 3600 * 24 * 30 });
         setCookie("password", password, { path: "/", maxAge: 3600 * 24 * 30 });
@@ -194,7 +198,7 @@ const DeficiencyLog = (
           path: "/",
           maxAge: 3600 * 24 * 30,
         });
-        setStatus((prevState) => ({
+        setStatus(prevState => ({
           ...prevState,
           cookies: {
             username: username,
@@ -215,7 +219,7 @@ const DeficiencyLog = (
     removeCookie("password", { path: "/" });
     removeCookie("fullname", { path: "/" });
     removeCookie("employeeid", { path: "/" });
-    setStatus((prevState) => ({
+    setStatus(prevState => ({
       permission: true,
       cookies: {
         username: undefined,
