@@ -378,7 +378,10 @@
   color: #f60057;
   margin-top: 0;
 }
-
+.modal-no-work__wrapper-table {
+  max-height: 650px;
+  overflow: auto;
+}
 .modal-no-work__wrapper-table__table__wrapper-btn-new {
   cursor: pointer;
 }
