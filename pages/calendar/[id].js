@@ -28,16 +28,16 @@ const calendar = () => {
         "Position : " +
         info.event._def.extendedProps.EmployeePosition +
         "<br/>" +
-        "Start Date : " +
+        "Task Start Date : " +
         formatDate(info.event._instance.range.start) +
         "<br/>" +
-        "End Date : " +
+        "Task End Date : " +
         formatDate(info.event._instance.range.end) +
         "<br/>" +
-        "Project Start Date : " +
+        "Start Date : " +
         formatDate(info.event.extendedProps.projectStart) +
         "<br/>" +
-        "Project End Date : " +
+        "End Date : " +
         formatDate(info.event.extendedProps.projectEnd)
     );
 
