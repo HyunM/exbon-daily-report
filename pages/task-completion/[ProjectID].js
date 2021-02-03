@@ -189,6 +189,7 @@ const Task = (
         if (e.nativeEvent.data.length > 1) {
           //For Firefox
           setValue(e.target.value);
+          updateMyData(index, id, e.target.value);
         } else if (
           e.nativeEvent.data !== "0" &&
           e.nativeEvent.data !== "1" &&
@@ -202,88 +203,124 @@ const Task = (
           e.nativeEvent.data !== "9"
         ) {
           setValue("0");
+          updateMyData(index, id, "0");
         } else if (e.nativeEvent.data === "0") {
           if (e.target.value === "100") {
             setValue("100");
+            updateMyData(index, id, "100");
           } else if (
             e.target.value.length > 2 &&
             e.target.value.includes("50")
           ) {
             setValue("0");
+            updateMyData(index, id, "0");
           } else if (e.target.value.includes("2")) {
             setValue("20");
+            updateMyData(index, id, "20");
           } else if (e.target.value.includes("3")) {
             setValue("30");
+            updateMyData(index, id, "30");
           } else if (e.target.value.includes("4")) {
             setValue("40");
+            updateMyData(index, id, "40");
           } else if (e.target.value.includes("5")) {
             setValue("50");
+            updateMyData(index, id, "50");
           } else if (e.target.value.includes("6")) {
             setValue("60");
+            updateMyData(index, id, "60");
           } else if (e.target.value.includes("7")) {
             setValue("70");
+            updateMyData(index, id, "70");
           } else if (e.target.value.includes("8")) {
             setValue("80");
+            updateMyData(index, id, "80");
           } else if (e.target.value.includes("9")) {
             setValue("90");
+            updateMyData(index, id, "90");
           } else {
             setValue("0");
+            updateMyData(index, id, "0");
           }
         } else if (e.nativeEvent.data === "1") {
           setValue("10");
+          updateMyData(index, id, "10");
         } else if (e.nativeEvent.data === "2") {
           setValue("20");
+          updateMyData(index, id, "20");
         } else if (e.nativeEvent.data === "3") {
           setValue("30");
+          updateMyData(index, id, "30");
         } else if (e.nativeEvent.data === "4") {
           setValue("40");
+          updateMyData(index, id, "40");
         } else if (e.nativeEvent.data === "5") {
           if (e.target.value === "5") {
             setValue("5");
+            updateMyData(index, id, "5");
           } else if (e.target.value === "05") {
             setValue("5");
+            updateMyData(index, id, "5");
           } else if (e.target.value === "55") {
             setValue("55");
+            updateMyData(index, id, "55");
           } else if (
             e.target.value.length > 2 &&
             e.target.value.includes("55")
           ) {
             setValue("5");
+            updateMyData(index, id, "5");
           } else if (e.target.value.includes("1")) {
             setValue("15");
+            updateMyData(index, id, "15");
           } else if (e.target.value.includes("2")) {
             setValue("25");
+            updateMyData(index, id, "25");
           } else if (e.target.value.includes("3")) {
             setValue("35");
+            updateMyData(index, id, "35");
           } else if (e.target.value.includes("4")) {
             setValue("45");
+            updateMyData(index, id, "45");
           } else if (e.target.value.includes("6")) {
             setValue("65");
+            updateMyData(index, id, "65");
           } else if (e.target.value.includes("7")) {
             setValue("75");
+            updateMyData(index, id, "75");
           } else if (e.target.value.includes("8")) {
             setValue("85");
+            updateMyData(index, id, "85");
           } else if (e.target.value.includes("9")) {
             setValue("95");
+            updateMyData(index, id, "95");
           } else {
             setValue("0");
+            updateMyData(index, id, "0");
           }
         } else if (e.nativeEvent.data === "6") {
           setValue("60");
+          updateMyData(index, id, "60");
         } else if (e.nativeEvent.data === "7") {
           setValue("70");
+          updateMyData(index, id, "70");
         } else if (e.nativeEvent.data === "8") {
           setValue("80");
+          updateMyData(index, id, "80");
         } else if (e.nativeEvent.data === "9") {
           setValue("90");
+          updateMyData(index, id, "90");
         } else if (e.nativeEvent.data === ".") {
           setValue("0");
+          updateMyData(index, id, "0");
         }
       } else {
         if (e.nativeEvent.data === undefined) {
           setValue(e.target.value);
+          updateMyData(index, id, e.target.value);
         } else {
           setValue("0");
+          updateMyData(index, id, "0");
         }
       }
 
@@ -714,7 +751,7 @@ const Task = (
             axios({
               method: "POST",
               url: `/api/project-date-change-request`,
-              timeout: 5000, // 5 seconds timeout
+              timeout: 3000, // 3 seconds timeout
               headers: {},
               data: {
                 EmployeeID: status.cookies.employeeid,
@@ -734,7 +771,7 @@ const Task = (
             axios({
               method: "put",
               url: `/api/project-tasks-progress`,
-              timeout: 5000,
+              timeout: 3000,
               headers: {},
               data: {
                 TaskID: data[i].TaskID,
@@ -757,7 +794,7 @@ const Task = (
               axios({
                 method: "POST",
                 url: `/api/project-date-change-request`,
-                timeout: 5000, // 5 seconds timeout
+                timeout: 3000, // 3 seconds timeout
                 headers: {},
                 data: {
                   EmployeeID: status.cookies.employeeid,
@@ -775,7 +812,7 @@ const Task = (
               axios({
                 method: "POST",
                 url: `/api/project-date-change-request`,
-                timeout: 5000, // 5 seconds timeout
+                timeout: 3000, // 3 seconds timeout
                 headers: {},
                 data: {
                   EmployeeID: status.cookies.employeeid,
@@ -793,7 +830,7 @@ const Task = (
               axios({
                 method: "POST",
                 url: `/api/project-date-change-request`,
-                timeout: 5000, // 5 seconds timeout
+                timeout: 3000, // 3 seconds timeout
                 headers: {},
                 data: {
                   EmployeeID: status.cookies.employeeid,
@@ -857,7 +894,7 @@ const Task = (
     axios({
       method: "post",
       url: `/api/log-daily-reports`,
-      timeout: 5000, // 5 seconds timeout
+      timeout: 3000, // 5 seconds timeout
       headers: {},
       data: {
         EmployeeID: status.cookies.employeeid,
@@ -875,7 +912,7 @@ const Task = (
         axios({
           method: "post",
           url: `/api/daily-report/signin`,
-          timeout: 5000, // 2 seconds timeout
+          timeout: 3000, // 2 seconds timeout
           headers: {},
           data: {
             Username: status.cookies.username,
@@ -920,7 +957,7 @@ const Task = (
           url: `/api/project-tasks-progress?selectedDate=${formatDate(
             selectedDate
           )}&projectID=${projectState}`,
-          timeout: 5000, // 5 seconds timeout
+          timeout: 3000, // 5 seconds timeout
           headers: {},
         });
 
@@ -930,7 +967,7 @@ const Task = (
         let result2 = await axios({
           method: "get",
           url: `/api/project-no-work?projectID=${projectState}`,
-          timeout: 5000, // 5 seconds timeout
+          timeout: 3000, // 5 seconds timeout
           headers: {},
         });
 
@@ -1293,7 +1330,7 @@ const Task = (
     await axios({
       method: "post",
       url: `/api/daily-report/signin`,
-      timeout: 5000, // 5 seconds timeout
+      timeout: 3000, // 5 seconds timeout
       headers: {},
       data: {
         Username: username,
