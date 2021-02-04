@@ -8,7 +8,7 @@ import MainTab from "../components/MainTab/MainTab.js";
 
 import { CookiesProvider, useCookies } from "react-cookie";
 import Login from "../components/MainTab/login.js";
-
+import Head from "next/head";
 import "react-toastify/dist/ReactToastify.css";
 
 const index = () => {
@@ -129,7 +129,14 @@ const index = () => {
 
   return (
     <>
-      {console.log(state.assignedProject)}
+      <Head>
+        <title>Daily Report</title>
+        <link rel="icon" href="/favicon.ico" />
+        <meta
+          name="viewport"
+          content="minimum-scale=1, initial-scale=1, width=device-width"
+        />
+      </Head>
       {status.cookies.username === undefined ||
       status.cookies.employeeid === undefined ? (
         <Login signin={signin} />
