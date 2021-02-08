@@ -1398,7 +1398,7 @@ const Task = (
       ) : (
         <>
           <SimpleTabs
-            tapNo={1}
+            tapNo={0}
             projectState={projectState}
             main={false}
             employeeID={status.cookies.employeeid}

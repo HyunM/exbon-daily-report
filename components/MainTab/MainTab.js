@@ -43,14 +43,14 @@ const MainTab = ({
   return (
     <AppBar position="static">
       <Tabs value={tapNo}>
-        <Link href={`/timesheet/${projectState}`}>
+        {/* <Link href={`/timesheet/${projectState}`}>
           <Tab
             label={main ? "" : "Timesheet"}
             // onClick={() => Router.push(`/timesheet/${projectState}`)}
             disableRipple={true}
             disabled={main}
           />
-        </Link>
+        </Link> */}
         <Link href={`/task-completion/${projectState}`}>
           <Tab
             label={main ? "" : "Task Completion"}
@@ -59,14 +59,14 @@ const MainTab = ({
             disabled={main}
           />
         </Link>
-        <Link href={`/deficiency-log/${projectState}`}>
+        {/* <Link href={`/deficiency-log/${projectState}`}>
           <Tab
             label={main ? "" : "Deficiency Log"}
             // onClick={() => Router.push(`/deficiency-log/${projectState}`)}
             disableRipple={true}
             disabled={main}
           />
-        </Link>
+        </Link> */}
         <Tab
           icon={
             <div className={styles["wrapper-right-tab"]}>

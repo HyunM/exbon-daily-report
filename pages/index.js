@@ -15,7 +15,7 @@ const index = () => {
   const router = useRouter();
 
   const [state, setState] = useState({
-    prevTab: "timesheet",
+    prevTab: "task-completion",
     prevProject: 0,
     assignedProject: [],
   });
@@ -44,7 +44,7 @@ const index = () => {
           },
         }).then(response => {
           //   setAssignedProject(() => response.data.result.recordsets[1]);
-          let tab = "timesheet";
+          let tab = "task-completion";
           let project = 0;
           if (router.query.tab !== undefined) tab = router.query.tab;
           if (router.query.project !== undefined)
