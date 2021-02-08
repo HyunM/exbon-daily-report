@@ -101,7 +101,7 @@ const calendar = () => {
           <>
             <FullCalendar
               plugins={[dayGridPlugin]}
-              height="auto"
+              height="100%"
               initialView="dayGridMonth"
               events={data}
               dayMaxEventRows={100}
