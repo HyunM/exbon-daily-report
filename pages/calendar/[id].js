@@ -28,17 +28,11 @@ const calendar = () => {
         "Position : " +
         info.event._def.extendedProps.EmployeePosition +
         "<br/>" +
-        "Task Start Date : " +
+        "Start Date : " +
         formatDate(info.event._instance.range.start) +
         "<br/>" +
-        "Task End Date : " +
-        formatDate(info.event._instance.range.end) +
-        "<br/>" +
-        "Start Date : " +
-        formatDate(info.event.extendedProps.projectStart) +
-        "<br/>" +
         "End Date : " +
-        formatDate(info.event.extendedProps.projectEnd)
+        formatDate(info.event._instance.range.end)
     );
 
     ReactTooltip.rebuild();
