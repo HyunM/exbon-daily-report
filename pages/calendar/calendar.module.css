@@ -18,12 +18,14 @@
   margin-left: auto;
   margin-right: auto;
   width: 1000px;
-  height: 1000px;
+  height: auto;
+  min-height: 800px;
   background-color: white;
   border-top: #fac863 5px solid;
   border-radius: 1%;
   padding: 25px;
   box-shadow: 15px 15px 2px 1px rgba(145, 145, 148, 0.2);
+  font-family: "Roboto", sans-serif;
 }
 
 .toolbar__wrapper {
@@ -46,4 +48,7 @@
 .toolbar__wrapper__right__account-icon {
   margin-left: 2%;
   align-self: center;
+}
+.tooltip {
+  font-family: "Roboto", sans-serif;
 }

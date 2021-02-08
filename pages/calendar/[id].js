@@ -101,7 +101,7 @@ const calendar = () => {
           <>
             <FullCalendar
               plugins={[dayGridPlugin]}
-              height="950px"
+              height="auto"
               initialView="dayGridMonth"
               events={data}
               dayMaxEventRows={100}
@@ -110,7 +110,12 @@ const calendar = () => {
               displayEventTime={false}
               eventDidMount={handleEventPositioned}
             />
-            <ReactTooltip multiline={true} type="info" offset={{ top: 10 }} />
+            <ReactTooltip
+              class={styles["tooltip"]}
+              multiline={true}
+              type="info"
+              offset={{ top: 10 }}
+            />
           </>
         )}
       </div>
