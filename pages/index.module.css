@@ -72,7 +72,7 @@
   padding: 0 !important;
 }
 .test-animation {
-  animation: cssAnimation 0s 1s forwards;
+  animation: cssAnimation 0s 0.5s forwards;
   visibility: hidden;
   font-family: "Roboto";
 }
