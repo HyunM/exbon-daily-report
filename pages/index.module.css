@@ -71,3 +71,14 @@
 .wrapper-logout__btn {
   padding: 0 !important;
 }
+.test-animation {
+  animation: cssAnimation 0s 1s forwards;
+  visibility: hidden;
+  font-family: "Roboto";
+}
+
+@keyframes cssAnimation {
+  to {
+    visibility: visible;
+  }
+}

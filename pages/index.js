@@ -151,34 +151,42 @@ const index = () => {
             logout={logout}
           />
           <div className={styles["wrapper-select-project"]}>
-            <h3 className={styles["projectID-text"]}>Project ID</h3>
-            {state.assignedProject.length > 0 && (
-              <select
-                id="select-project"
-                className={styles["wrapper-select-project__select-project"]}
-                defaultValue={state.prevProject}
-              >
-                {state.assignedProject.map(item => {
-                  return (
-                    <option
-                      key={item.ProjectID}
-                      value={item.ProjectID}
-                      // selected={state.prevProject === item.ProjectID ? true : false}
-                    >
-                      {item.ProjectID}
-                    </option>
-                  );
-                })}
-              </select>
+            {state.assignedProject.length > 0 ? (
+              <>
+                <h3 className={styles["projectID-text"]}>Project ID</h3>
+
+                <select
+                  id="select-project"
+                  className={styles["wrapper-select-project__select-project"]}
+                  defaultValue={state.prevProject}
+                >
+                  {state.assignedProject.map(item => {
+                    return (
+                      <option
+                        key={item.ProjectID}
+                        value={item.ProjectID}
+                        // selected={state.prevProject === item.ProjectID ? true : false}
+                      >
+                        {item.ProjectID}
+                      </option>
+                    );
+                  })}
+                </select>
+
+                <Button
+                  // onClick={handleProjectState}
+                  color="primary"
+                  className={styles["wrapper-select-project__btn-go"]}
+                  onClick={clickGo}
+                >
+                  Go
+                </Button>
+              </>
+            ) : (
+              <p className={styles["test-animation"]}>
+                You have NO permission.
+              </p>
             )}
-            <Button
-              // onClick={handleProjectState}
-              color="primary"
-              className={styles["wrapper-select-project__btn-go"]}
-              onClick={clickGo}
-            >
-              Go
-            </Button>
           </div>
         </>
       )}
