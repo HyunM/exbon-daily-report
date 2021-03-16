@@ -784,7 +784,7 @@ const Task = (
       }
 
       noWork.forEach(item => {
-        let reason = item.Note;
+        let reason = item.Note.replaceAll(`'`, `''`);
         if (reason === "") {
           reason = null;
         }
@@ -801,8 +801,8 @@ const Task = (
                   ProjectID: projectState,
                   RequestType: "No Work",
                   RequestID: null,
-                  StartDate: item.StartDate,
-                  EndDate: item.FinishDate,
+                  StartDate: formatDate(item.StartDate),
+                  EndDate: formatDate(item.FinishDate),
                   Reason: reason,
                 },
               })
@@ -819,8 +819,8 @@ const Task = (
                   ProjectID: projectState,
                   RequestType: "No Work Modify",
                   RequestID: item.RecordID,
-                  StartDate: item.StartDate,
-                  EndDate: item.FinishDate,
+                  StartDate: formatDate(item.StartDate),
+                  EndDate: formatDate(item.FinishDate),
                   Reason: reason,
                 },
               })
@@ -837,8 +837,8 @@ const Task = (
                   ProjectID: projectState,
                   RequestType: "No Work Delete",
                   RequestID: item.RecordID,
-                  StartDate: item.StartDate,
-                  EndDate: item.FinishDate,
+                  StartDate: formatDate(item.StartDate),
+                  EndDate: formatDate(item.FinishDate),
                   Reason: reason,
                 },
               })
