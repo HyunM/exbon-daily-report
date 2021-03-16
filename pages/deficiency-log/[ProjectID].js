@@ -124,9 +124,12 @@ const DeficiencyLog = (
     .split(",")[0];
 
   const saveInspectionRecord = () => {
-    const problem = document.getElementById("TextFieldForProblem").value;
-    const actionTaken = document.getElementById("TextFieldForActionTaken")
-      .value;
+    const problem = document
+      .getElementById("TextFieldForProblem")
+      .value.replaceAll(`'`, `''`);
+    const actionTaken = document
+      .getElementById("TextFieldForActionTaken")
+      .value.replaceAll(`'`, `''`);
 
     const fetchData = async () => {
       axios({
