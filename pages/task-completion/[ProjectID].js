@@ -879,10 +879,30 @@ const Task = (
         noWork.forEach(item => {
           let singleItem = { ...item };
           if (item.OrderStatus === "3") {
-            singleItem = {
-              ...item,
-              OrderStatus: "2",
-            };
+            if (item.Status === "Request For New") {
+              singleItem = {
+                ...item,
+                OrderStatus: "2",
+                Status: "Pending For New",
+              };
+            } else if (item.Status === "Request For Edit") {
+              singleItem = {
+                ...item,
+                OrderStatus: "2",
+                Status: "Pending For Edit",
+              };
+            } else if (item.Status === "Request For Delete") {
+              singleItem = {
+                ...item,
+                OrderStatus: "2",
+                Status: "Pending For Delete",
+              };
+            } else {
+              singleItem = {
+                ...item,
+                OrderStatus: "2",
+              };
+            }
           }
 
           tempNoWork = [...tempNoWork, singleItem];
