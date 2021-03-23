@@ -751,7 +751,7 @@ const Task = (
             axios({
               method: "POST",
               url: `/api/project-date-change-request`,
-              timeout: 3000, // 3 seconds timeout
+              timeout: 1000000, // 3 seconds timeout
               headers: {},
               data: {
                 EmployeeID: status.cookies.employeeid,
@@ -771,7 +771,7 @@ const Task = (
             axios({
               method: "put",
               url: `/api/project-tasks-progress`,
-              timeout: 3000,
+              timeout: 1000000,
               headers: {},
               data: {
                 TaskID: data[i].TaskID,
@@ -794,7 +794,7 @@ const Task = (
               axios({
                 method: "POST",
                 url: `/api/project-date-change-request`,
-                timeout: 3000, // 3 seconds timeout
+                timeout: 1000000, // 3 seconds timeout
                 headers: {},
                 data: {
                   EmployeeID: status.cookies.employeeid,
@@ -812,7 +812,7 @@ const Task = (
               axios({
                 method: "POST",
                 url: `/api/project-date-change-request`,
-                timeout: 3000, // 3 seconds timeout
+                timeout: 1000000, // 3 seconds timeout
                 headers: {},
                 data: {
                   EmployeeID: status.cookies.employeeid,
@@ -830,7 +830,7 @@ const Task = (
               axios({
                 method: "POST",
                 url: `/api/project-date-change-request`,
-                timeout: 3000, // 3 seconds timeout
+                timeout: 1000000, // 3 seconds timeout
                 headers: {},
                 data: {
                   EmployeeID: status.cookies.employeeid,
@@ -914,7 +914,7 @@ const Task = (
     axios({
       method: "post",
       url: `/api/log-daily-reports`,
-      timeout: 3000, // 5 seconds timeout
+      timeout: 1000000, // 5 seconds timeout
       headers: {},
       data: {
         EmployeeID: status.cookies.employeeid,
@@ -932,7 +932,7 @@ const Task = (
         axios({
           method: "post",
           url: `/api/daily-report/signin`,
-          timeout: 3000, // 2 seconds timeout
+          timeout: 1000000, // 2 seconds timeout
           headers: {},
           data: {
             Username: status.cookies.username,
@@ -977,7 +977,7 @@ const Task = (
           url: `/api/project-tasks-progress?selectedDate=${formatDate(
             selectedDate
           )}&projectID=${projectState}`,
-          timeout: 3000, // 5 seconds timeout
+          timeout: 1000000, // 5 seconds timeout
           headers: {},
         });
 
@@ -987,7 +987,7 @@ const Task = (
         let result2 = await axios({
           method: "get",
           url: `/api/project-no-work?projectID=${projectState}`,
-          timeout: 3000, // 5 seconds timeout
+          timeout: 1000000, // 5 seconds timeout
           headers: {},
         });
 
@@ -1350,7 +1350,7 @@ const Task = (
     await axios({
       method: "post",
       url: `/api/daily-report/signin`,
-      timeout: 3000, // 5 seconds timeout
+      timeout: 1000000, // 5 seconds timeout
       headers: {},
       data: {
         Username: username,
