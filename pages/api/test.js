@@ -1,38 +1,36 @@
-const mssql = require("mssql");
-const dbserver = require("../../dbConfig.js");
-
 const testHandler = (req, res) => {
   const { method, body } = req;
   return new Promise(resolve => {
     switch (method) {
       case "POST":
-        mssql.connect(dbserver.dbConfig, err => {
-          if (err) {
-            console.error(err);
-            return resolve();
-          }
-          const request = new mssql.Request();
+        // Requiring module
+        const reader = require("xlsx");
 
-          const query = `EXEC [Hammer].[dbo].[ProjectTaskProgress_Insert]
-          ${body.TaskID}, "${body.Date}", ${body.WorkCompleted}`;
-          /* --Params--
-          	@taskID	int,
-            @date date,
-            @workCompleted float
-          */
+        // Reading our test file
+        const file = reader.readFile("./6 Daily Report.xlsx");
 
-          request.query(query, (err, recordset) => {
-            if (err) {
-              console.error(err);
-              return resolve();
-            }
-            res.status(200).json({
-              message: "Success, the record of task progress has been created.",
-            });
-            return resolve();
-          });
-        });
-        break;
+        // Sample data set
+        let student_data = [
+          {
+            Student: "Nikhil",
+            Age: 22,
+            Branch: "ISE",
+            Marks: 70,
+          },
+          {
+            Name: "Amitha",
+            Age: 21,
+            Branch: "EC",
+            Marks: 80,
+          },
+        ];
+
+        const ws = reader.utils.json_to_sheet(student_data);
+
+        reader.utils.book_append_sheet(file, ws, "Sheet3");
+
+        // Writing to our file
+        reader.writeFile(file, "./test.xlsx");
 
       default:
         res.setHeader("Allow", ["POST"]);

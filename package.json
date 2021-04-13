@@ -41,7 +41,8 @@
     "redux-devtools-extension": "^2.13.8",
     "sass": "^1.29.0",
     "swagger-ui-react": "^3.35.2",
-    "swr": "^0.1.18"
+    "swr": "^0.1.18",
+    "xlsx": "^0.16.9"
   },
   "license": "MIT"
 }
