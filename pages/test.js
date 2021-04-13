@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const test = () => {
-  const callapi = () => {
+  const inNode = () => {
     let ProjectName = "TEST";
     axios({
       method: "post",
@@ -9,13 +9,17 @@ const test = () => {
       timeout: 1000000, // 2 seconds timeout
       headers: {},
       data: {
-        ProjectName: ProjectName,
+        // ProjectName: ProjectName,
       },
     });
   };
+  const inReact = () => {
+    let ProjectName = "TEST";
+  };
   return (
     <div>
-      <button onClick={callapi}>TEST EXCEL</button>
+      <button onClick={inNode}>Nodejs EXCEL</button>
+      <button onClick={inReact}>React EXCEL</button>
     </div>
   );
 };

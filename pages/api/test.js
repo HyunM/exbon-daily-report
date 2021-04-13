@@ -7,7 +7,8 @@ const testHandler = (req, res) => {
         const reader = require("xlsx");
 
         // Reading our test file
-        const file = reader.readFile("./6 Daily Report.xlsx");
+        const filetest = "./test.xlsx";
+        const file = reader.readFile(filetest);
 
         // Sample data set
         let student_data = [
@@ -30,7 +31,7 @@ const testHandler = (req, res) => {
         reader.utils.book_append_sheet(file, ws, "Sheet3");
 
         // Writing to our file
-        reader.writeFile(file, "./test.xlsx");
+        reader.writeFile(file, "./test2.xlsx");
 
       default:
         res.setHeader("Allow", ["POST"]);
