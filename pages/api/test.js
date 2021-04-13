@@ -3,35 +3,45 @@ const testHandler = (req, res) => {
   return new Promise(resolve => {
     switch (method) {
       case "POST":
-        // Requiring module
-        const reader = require("xlsx");
+        var Excel = require("exceljs");
+        var workbook = new Excel.Workbook();
+        var __dirname = "public";
+        workbook.xlsx.readFile(__dirname + "/test.xlsx").then(function () {
+          var worksheet = workbook.getWorksheet(1);
+          var row = worksheet.getRow(5);
+          row.getCell(1).value = 5; // A5's value set to 5
+          row.commit();
+          return workbook.xlsx.writeFile("new.xlsx");
+        });
 
-        // Reading our test file
-        const filetest = "./test.xlsx";
-        const file = reader.readFile(filetest);
+      // case "POST":
+      //   // Requiring module
+      //   const reader = require("xlsx");
 
-        // Sample data set
-        let student_data = [
-          {
-            Student: "Nikhil",
-            Age: 22,
-            Branch: "ISE",
-            Marks: 70,
-          },
-          {
-            Name: "Amitha",
-            Age: 21,
-            Branch: "EC",
-            Marks: 80,
-          },
-        ];
+      //   // Reading our test file
+      //   const __dirname = "public";
+      //   const file = reader.readFile(__dirname + "/test.xlsx");
 
-        const ws = reader.utils.json_to_sheet(student_data);
+      //   // Sample data set
+      //   let student_data = [
+      //     {
+      //       Student: "Nikhil",
+      //       Age: 22,
+      //       Branch: "ISE",
+      //       Marks: 70,
+      //     },
+      //     {
+      //       Name: "Amitha",
+      //       Age: 21,
+      //       Branch: "EC",
+      //       Marks: 80,
+      //     },
+      //   ];
 
-        reader.utils.book_append_sheet(file, ws, "Sheet3");
+      //   reader.utils.book_append_sheet(file, ws, "TEST");
 
-        // Writing to our file
-        reader.writeFile(file, "./test2.xlsx");
+      //   // Writing to our file
+      //   reader.writeFile(file, __dirname + "/test2.xlsx");
 
       default:
         res.setHeader("Allow", ["POST"]);
