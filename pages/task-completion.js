@@ -11,7 +11,6 @@ import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
 import { toast } from "react-toastify";
 import styles from "./Task.module.css";
-import { useSelector, useDispatch } from "react-redux";
 import { usePromiseTracker, trackPromise } from "react-promise-tracker";
 import Loader from "react-loader-spinner";
 import EventBusyIcon from "@material-ui/icons/EventBusy";
@@ -836,6 +835,7 @@ const Task = () => {
 
   useEffect(() => {
     let promises = [];
+
     const fetchData = async () => {
       if (status.cookies.username !== 0) {
         if (status.cookies.username !== undefined) {
@@ -857,6 +857,7 @@ const Task = () => {
                 response.data.result.recordsets[1].length > 0 &&
                 projectState === undefined
               ) {
+                console.log(router.query.pid);
                 if (router.query.pid) {
                   setProjectState(router.query.pid);
                 } else {
