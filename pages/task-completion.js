@@ -835,6 +835,7 @@ const Task = () => {
 
   useEffect(() => {
     if (!router.isReady) return;
+
     let promises = [];
 
     const fetchData = async () => {
@@ -858,7 +859,6 @@ const Task = () => {
                 response.data.result.recordsets[1].length > 0 &&
                 projectState === undefined
               ) {
-                console.log(router.query.pid);
                 if (router.query.pid) {
                   setProjectState(router.query.pid);
                 } else {
@@ -1377,7 +1377,7 @@ const Task = () => {
                       value={projectState}
                       onChange={e => setProjectState(e.target.value)}
                       style={{
-                        marginTop: "30px",
+                        marginBottom: "3px",
                         fontFamily: "Roboto, sans-serif",
                         fontSize: "medium",
                         display: "inline-block",

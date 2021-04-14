@@ -72,7 +72,7 @@ const index = () => {
   const clickGo = () => {
     const projectState = document.getElementById("select-project").value;
 
-    Router.push(`/${state.prevTab}/${projectState}`);
+    Router.push(`/task-completion?pid=${projectState}`);
   };
 
   const signin = async (username, password) => {

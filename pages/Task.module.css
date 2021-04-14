@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 
 #mainDiv {
-  width: 1387px;
+  width: 1391px;
   margin: auto;
 }
 
@@ -89,6 +89,7 @@
 
 .table {
   overflow: auto;
+  margin-left: 4px;
 }
 .table table {
   font-family: "Roboto", sans-serif;

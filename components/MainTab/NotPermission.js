@@ -4,9 +4,7 @@ const NotPermission = () => {
   return (
     <>
       <h1>No permissions</h1>
-      <Link href="/">
-        <a>Go to main page</a>
-      </Link>
+      <a href="/task-completion">Go to main page</a>
     </>
   );
 };
