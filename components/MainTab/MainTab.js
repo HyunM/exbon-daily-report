@@ -51,9 +51,17 @@ const MainTab = ({
             disabled={main}
           />
         </Link> */}
-        <Link href={`/task-completion/${projectState}`}>
+        <Link href={`/task-completion?pid=${projectState}`}>
           <Tab
             label={main ? "" : "Task Completion"}
+            // onClick={() => Router.push(`/task-completion/${projectState}`)}
+            disableRipple={true}
+            disabled={main}
+          />
+        </Link>
+        <Link href={`/work-activities?pid=${projectState}`}>
+          <Tab
+            label={main ? "" : "Work Activities"}
             // onClick={() => Router.push(`/task-completion/${projectState}`)}
             disableRipple={true}
             disabled={main}
