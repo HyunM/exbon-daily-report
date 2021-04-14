@@ -834,6 +834,7 @@ const Task = () => {
   };
 
   useEffect(() => {
+    if (!router.isReady) return;
     let promises = [];
 
     const fetchData = async () => {
@@ -842,7 +843,7 @@ const Task = () => {
           await axios({
             method: "post",
             url: `/api/daily-report/signin`,
-            timeout: 1000000, // 2 seconds timeout
+            timeout: 5000, // 2 seconds timeout
             headers: {},
             data: {
               Username: status.cookies.username,
@@ -1007,7 +1008,7 @@ const Task = () => {
 
     promises.push(fetchData());
     trackPromise(Promise.all(promises).then(() => {}));
-  }, [selectedDate, projectState, status]);
+  }, [selectedDate, projectState, status, router.isReady]);
 
   const { promiseInProgress } = usePromiseTracker();
 
