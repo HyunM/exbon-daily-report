@@ -835,93 +835,177 @@ const Task = () => {
   };
 
   useEffect(() => {
-    if (status.cookies.username !== 0) {
-      if (status.cookies.username !== undefined) {
-        axios({
-          method: "post",
-          url: `/api/daily-report/signin`,
-          timeout: 1000000, // 2 seconds timeout
-          headers: {},
-          data: {
-            Username: status.cookies.username,
-            Password: status.cookies.password,
-          },
-        }).then(response => {
-          const assignedProject = response.data.result.recordsets[1];
-          setStateAssignedProject(response.data.result.recordsets[1]);
+    let promises = [];
+    const fetchData = async () => {
+      if (status.cookies.username !== 0) {
+        if (status.cookies.username !== undefined) {
+          await axios({
+            method: "post",
+            url: `/api/daily-report/signin`,
+            timeout: 1000000, // 2 seconds timeout
+            headers: {},
+            data: {
+              Username: status.cookies.username,
+              Password: status.cookies.password,
+            },
+          })
+            .then(response => {
+              const assignedProject = response.data.result.recordsets[1];
+              setStateAssignedProject(response.data.result.recordsets[1]);
 
-          if (
-            response.data.result.recordsets[1].length > 0 &&
-            projectState === undefined
-          ) {
-            if (router.query.pid) {
-              setProjectState(router.query.pid);
-            } else {
-              setProjectState(
-                "" + response.data.result.recordsets[1][0].ProjectID
-              );
-            }
-          }
-
-          if (status.permission === true && projectState !== undefined) {
-            let check = 0;
-            for (let i = 0; i < assignedProject.length; i++) {
-              if (assignedProject[i].ProjectID.toString() === projectState) {
-                check++;
-                break;
+              if (
+                response.data.result.recordsets[1].length > 0 &&
+                projectState === undefined
+              ) {
+                if (router.query.pid) {
+                  setProjectState(router.query.pid);
+                } else {
+                  setProjectState(
+                    "" + response.data.result.recordsets[1][0].ProjectID
+                  );
+                }
               }
-            }
-            if (check === 0) {
-              setStatus(prevState => ({
-                ...prevState,
-                permission: false,
-              }));
-            }
-          }
-        });
-      }
-    } else {
-      setStatus(prevState => ({
-        ...prevState,
-        cookies: {
-          username: cookies.username,
-          password: cookies.password,
-          fullname: cookies.fullname,
-          employeeid: cookies.employeeid,
-        },
-      }));
-    }
 
-    if (status.permission === true && projectState !== undefined) {
-      router.push(`?pid=${projectState}`);
-      const fetchData = async () => {
-        let result1 = await axios({
+              if (status.permission === true && projectState !== undefined) {
+                let check = 0;
+                for (let i = 0; i < assignedProject.length; i++) {
+                  if (
+                    assignedProject[i].ProjectID.toString() === projectState
+                  ) {
+                    check++;
+                    break;
+                  }
+                }
+                if (check === 0) {
+                  setStatus(prevState => ({
+                    ...prevState,
+                    permission: false,
+                  }));
+                }
+              }
+            })
+            .catch(err => {
+              alert(
+                "Loading Error.(POST /api/daily-report/signin) \n\nPlease try again.\n\nPlease contact IT if the issue still persists. (Hyunmyung Kim 201-554-6666)\n\n" +
+                  err
+              );
+            });
+        }
+      } else {
+        setStatus(prevState => ({
+          ...prevState,
+          cookies: {
+            username: cookies.username,
+            password: cookies.password,
+            fullname: cookies.fullname,
+            employeeid: cookies.employeeid,
+          },
+        }));
+      }
+
+      if (status.permission === true && projectState !== undefined) {
+        router.push(`?pid=${projectState}`);
+        await axios({
           method: "get",
           url: `/api/project-tasks-progress?selectedDate=${formatDate(
             selectedDate
           )}&projectID=${projectState}`,
           timeout: 1000000, // 5 seconds timeout
           headers: {},
-        });
+        })
+          .then(response => {
+            setData(response.data.result[0]);
+          })
+          .catch(err => {
+            alert(
+              "Loading Error.(GET /api/project-tasks-progress?selectedDate=) \n\nPlease try again.\n\nPlease contact IT if the issue still persists. (Hyunmyung Kim 201-554-6666)\n\n" +
+                err
+            );
 
-        setData(result1.data.result[0]);
+            setData([
+              {
+                Company: "",
+                CurrentWork: "",
+                FinishDate: "",
+                LastDate: "",
+                NewReqFinishDate: "",
+                NewReqStartDate: "",
+                PreviousWork: "",
+                ProjectID: "",
+                RecordID: "",
+                ReqFinishDate: "",
+                ReqStartDate: "",
+                Section: "",
+                StartDate: "",
+                TaskID: "",
+                TaskName: "Loading Error",
+                Trade: "",
+              },
+            ]);
+          });
 
-        let result2 = await axios({
+        await axios({
           method: "get",
           url: `/api/project-no-work?projectID=${projectState}`,
           timeout: 1000000, // 5 seconds timeout
           headers: {},
-        });
+        })
+          .then(response => {
+            setNoWork(response.data);
+          })
+          .catch(err => {
+            alert(
+              "Loading Error.(GET /api/project-no-work?projectID=) \n\nPlease try again.\n\nPlease contact IT if the issue still persists. (Hyunmyung Kim 201-554-6666)\n\n" +
+                err
+            );
 
-        setNoWork(result2.data);
+            setData([
+              {
+                Company: "",
+                CurrentWork: "",
+                FinishDate: "",
+                LastDate: "",
+                NewReqFinishDate: "",
+                NewReqStartDate: "",
+                PreviousWork: "",
+                ProjectID: "",
+                RecordID: "",
+                ReqFinishDate: "",
+                ReqStartDate: "",
+                Section: "",
+                StartDate: "",
+                TaskID: "",
+                TaskName: "Loading Error",
+                Trade: "",
+              },
+            ]);
+          });
+      } else {
+        setData([
+          {
+            Company: "",
+            CurrentWork: "",
+            FinishDate: "",
+            LastDate: "",
+            NewReqFinishDate: "",
+            NewReqStartDate: "",
+            PreviousWork: "",
+            ProjectID: "",
+            RecordID: "",
+            ReqFinishDate: "",
+            ReqStartDate: "",
+            Section: "",
+            StartDate: "",
+            TaskID: "",
+            TaskName: "No Permission",
+            Trade: "",
+          },
+        ]);
+      }
+    };
 
-        setPreviousProject(projectState);
-      };
-
-      trackPromise(fetchData());
-    } else {
-      setData([]);
-    }
+    promises.push(fetchData());
+    trackPromise(Promise.all(promises).then(() => {}));
   }, [selectedDate, projectState, status]);
 
   const { promiseInProgress } = usePromiseTracker();
