@@ -6,7 +6,7 @@ const testHandler = (req, res) => {
         const handle = async () => {
           var Excel = require("exceljs");
           var __dirname = "public";
-          let filename = "/6 Daily Report.xlsx";
+          let filename = "/6 Daily Report.xltx";
           let workbook = new Excel.Workbook();
           await workbook.xlsx.readFile(__dirname + filename);
           let worksheet = workbook.getWorksheet("Daily Report");
