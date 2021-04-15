@@ -1,4 +1,55 @@
 #mainDiv {
-  width: 1390px;
+  width: 1391px;
   margin: auto;
+}
+.title {
+  font-family: "Roboto";
+  color: darkblue;
+  margin-right: 20px;
+  margin-bottom: 7px;
+  margin-left: 5px;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header__left {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  flex-grow: 1;
+  margin-left: 5px;
+}
+
+.header__right {
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+  align-content: center;
+  flex-grow: 1;
+}
+.header__right__label-date-picker {
+  margin-bottom: 17px;
+  font-family: "Roboto";
+  color: #534f51;
+}
+
+.header__right__date-picker {
+  width: 120px;
+  margin-right: 20px !important;
+}
+
+.header__right__date-picker input {
+  text-align: center;
+  padding-bottom: 4px;
+}
+
+.header__right__save-btn {
+}
+
+.header__right__no-work-btn {
+  margin-right: 20px !important;
+  white-space: nowrap;
+  visibility: hidden;
 }

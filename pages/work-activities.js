@@ -625,95 +625,107 @@ const workActivities = () => {
             employeeName={status.cookies.fullname}
             logout={logout}
           />
-          <h1 className={styles["title"]}>Work Activities</h1>
-          <div className={styles["header"]}>
-            <div className={styles["header__left"]}>
-              <select
-                value={projectState}
-                onChange={e => setProjectState(e.target.value)}
-                style={{
-                  marginBottom: "3px",
-                  fontFamily: "Roboto, sans-serif",
-                  fontSize: "medium",
-                  display: "inline-block",
-                  color: "#74646e",
-                  border: "1px solid #c8bfc4",
-                  borderRadius: "4px",
-                  boxShadow: "inset 1px 1px 2px #ddd8dc",
-                  background: "#fff",
-                  zIndex: "1",
-                  position: "relative",
-                }}
-              >
-                {stateAssignedProject.map(item => {
-                  return (
-                    <option
-                      value={item.ProjectID}
-                      key={item.ProjectID}
-                      projectgroup={item.ProjectGroup}
-                      projectname={item.ProjectName}
-                    >
-                      {item.ProjectID} &emsp;[{item.ProjectGroup}]&ensp;
-                      {item.ProjectName}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-            <div className={styles["header__right"]}>
-              <Button
-                variant="contained"
-                color="primary"
-                size="small"
-                className={styles["header__right__save-btn"]}
-                startIcon={<SaveIcon />}
-              >
-                Save
-              </Button>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <DatePicker
-                  value={selectedDate}
-                  onChange={handleDateChange}
-                  format="MM/dd/yyyy"
-                  autoOk={true}
-                  okLabel=""
-                  renderDay={(
-                    day,
-                    selectedDate,
-                    isInCurrentMonth,
-                    dayComponent
-                  ) => {
-                    const isSelected =
-                      isInCurrentMonth &&
-                      selectedDays.includes(formatDate(day));
-
-                    // You can also use our internal <Day /> component
-                    return (
-                      // <Badge badgeContent={isSelected ? "🌚" : undefined}>
-                      //   {dayComponent}
-                      // </Badge>
-                      <div
-                        style={
-                          isSelected
-                            ? {
-                                backgroundColor: "#14d1c8",
-                                borderRadius: "1000px",
-                              }
-                            : undefined
-                        }
-                      >
-                        {dayComponent}
-                      </div>
-                    );
-                  }}
-                />
-              </MuiPickersUtilsProvider>
-              <p className={styles["header__right__label-date-picker"]}>Date</p>
-            </div>
-          </div>
-
           <div id={styles.mainDiv}>
-            <div>
+            <h1 className={styles["title"]}>Work Activities</h1>
+            <div className={styles["header"]}>
+              <div className={styles["header__left"]}>
+                <select
+                  value={projectState}
+                  onChange={e => setProjectState(e.target.value)}
+                  style={{
+                    marginBottom: "3px",
+                    fontFamily: "Roboto, sans-serif",
+                    fontSize: "medium",
+                    display: "inline-block",
+                    color: "#74646e",
+                    border: "1px solid #c8bfc4",
+                    borderRadius: "4px",
+                    boxShadow: "inset 1px 1px 2px #ddd8dc",
+                    background: "#fff",
+                    zIndex: "1",
+                    position: "relative",
+                  }}
+                >
+                  {stateAssignedProject.map(item => {
+                    return (
+                      <option
+                        value={item.ProjectID}
+                        key={item.ProjectID}
+                        projectgroup={item.ProjectGroup}
+                        projectname={item.ProjectName}
+                      >
+                        {item.ProjectID} &emsp;[{item.ProjectGroup}]&ensp;
+                        {item.ProjectName}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+              <div className={styles["header__right"]}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  className={styles["header__right__save-btn"]}
+                  startIcon={<SaveIcon />}
+                >
+                  Save
+                </Button>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  size="small"
+                  startIcon={<SaveIcon />}
+                  className={styles["header__right__no-work-btn"]}
+                >
+                  Set No Work Days
+                </Button>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <DatePicker
+                    className={styles["header__right__date-picker"]}
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                    format="MM/dd/yyyy"
+                    autoOk={true}
+                    okLabel=""
+                    renderDay={(
+                      day,
+                      selectedDate,
+                      isInCurrentMonth,
+                      dayComponent
+                    ) => {
+                      const isSelected =
+                        isInCurrentMonth &&
+                        selectedDays.includes(formatDate(day));
+
+                      // You can also use our internal <Day /> component
+                      return (
+                        // <Badge badgeContent={isSelected ? "🌚" : undefined}>
+                        //   {dayComponent}
+                        // </Badge>
+                        <div
+                          style={
+                            isSelected
+                              ? {
+                                  backgroundColor: "#14d1c8",
+                                  borderRadius: "1000px",
+                                }
+                              : undefined
+                          }
+                        >
+                          {dayComponent}
+                        </div>
+                      );
+                    }}
+                  />
+                </MuiPickersUtilsProvider>
+                <p className={styles["header__right__label-date-picker"]}>
+                  Date
+                </p>
+              </div>
+            </div>
+
+            <div className={styles["table"]}>
               <table {...getTableProps()}>
                 <thead>
                   {headerGroups.map(headerGroup => (
