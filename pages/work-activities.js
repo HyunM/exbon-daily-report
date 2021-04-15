@@ -11,10 +11,16 @@ import Login from "../components/MainTab/login.js";
 import { useTable, usePagination } from "react-table";
 import styles from "./WorkActivities.module.css";
 import SaveIcon from "@material-ui/icons/Save";
-import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import Button from "@material-ui/core/Button";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+
+import { Badge } from "@material-ui/core";
+import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+
+function getRandomNumber(min, max) {
+  return Math.round(Math.random() * (max - min) + min);
+}
 
 const materialTheme = createMuiTheme({
   palette: {
@@ -589,6 +595,19 @@ const workActivities = () => {
     trackPromise(Promise.all(promises).then(() => {}));
   }, [projectState, status, router.isReady]);
 
+  const [selectedDays, setSelectedDays] = useState([1, 2, 15]);
+  const [selectedDate, handleDateChange] = useState(new Date());
+
+  const handleMonthChange = async () => {
+    // just select random days to simulate server side based data
+    return new Promise(resolve => {
+      setTimeout(() => {
+        setSelectedDays([1, 2, 3].map(() => getRandomNumber(1, 28)));
+        resolve();
+      }, 1000);
+    });
+  };
+
   return (
     <>
       <Head>
@@ -657,18 +676,51 @@ const workActivities = () => {
               >
                 Save
               </Button>
-
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <MuiThemeProvider theme={materialTheme}>
-                  <DatePicker
-                    margin="normal"
-                    id="datePickerDialog"
-                    format="MM/dd/yyyy"
-                    className={styles["header__right__date-picker"]}
-                    autoOk={true}
-                    okLabel=""
-                  />
-                </MuiThemeProvider>
+                <DatePicker
+                  label="With server data"
+                  value={selectedDate}
+                  onChange={handleDateChange}
+                  onMonthChange={handleMonthChange}
+                  renderDay={(
+                    day,
+                    selectedDate,
+                    isInCurrentMonth,
+                    dayComponent
+                  ) => {
+                    //const date = makeJSDateObject(day); // skip this step, it is required to support date libs
+                    const isSelected =
+                      isInCurrentMonth && selectedDays.includes(day.getDate());
+
+                    console.log("day.getDate()");
+                    console.log(day.getDate());
+                    console.log("isInCurrentMonth");
+                    console.log(isInCurrentMonth);
+                    console.log("dayComponent");
+                    console.log(dayComponent);
+                    // const isSelected =
+                    //   isInCurrentMonth && selectedDays.includes("4/11/2021");
+
+                    // You can also use our internal <Day /> component
+                    return (
+                      // <Badge badgeContent={isSelected ? "🌚" : undefined}>
+                      //   {dayComponent}
+                      // </Badge>
+                      <div
+                        style={
+                          isSelected
+                            ? {
+                                backgroundColor: "#14d1c8",
+                                borderRadius: "1000px",
+                              }
+                            : undefined
+                        }
+                      >
+                        {dayComponent}
+                      </div>
+                    );
+                  }}
+                />
               </MuiPickersUtilsProvider>
               <p className={styles["header__right__label-date-picker"]}>Date</p>
             </div>
