@@ -36,6 +36,15 @@ const workActivities = () => {
     }));
   };
 
+  useEffect(() => {
+    if (!router.isReady) return;
+    if (router.query.pid) {
+      setProjectState(router.query.pid);
+    } else {
+      setProjectState(undefined);
+    }
+  }, [router.isReady]);
+
   return (
     <>
       <Head>
@@ -48,7 +57,7 @@ const workActivities = () => {
       </Head>
       <SimpleTabs
         tapNo={1}
-        projectState={"5976"}
+        projectState={projectState}
         main={false}
         employeeID={"7387"}
         employeeName={"Hyun Myung, Kim"}
