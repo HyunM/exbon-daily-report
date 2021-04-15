@@ -9,6 +9,62 @@ import { usePromiseTracker, trackPromise } from "react-promise-tracker";
 import Loader from "react-loader-spinner";
 import Login from "../components/MainTab/login.js";
 import { useTable, usePagination } from "react-table";
+import styles from "./WorkActivities.module.css";
+import SaveIcon from "@material-ui/icons/Save";
+import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
+import Button from "@material-ui/core/Button";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+
+const materialTheme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#3E3F42",
+    },
+  },
+  overrides: {
+    MuiPickersCalendarHeader: {
+      switchHeader: {
+        backgroundColor: "#303235",
+        color: "white",
+      },
+      iconButton: {
+        backgroundColor: "transparent",
+        color: "white",
+      },
+      dayLabel: {
+        color: "white", //days in calendar
+      },
+      transitionContainer: {
+        color: "white",
+      },
+    },
+    MuiPickersBasePicker: {
+      pickerView: {
+        backgroundColor: "#3E3F42",
+      },
+    },
+    MuiPickersDay: {
+      day: {
+        color: "white", //days in calendar
+      },
+      daySelected: {
+        backgroundColor: "#FFC561", //calendar circle
+        color: "black",
+      },
+      current: {
+        backgroundColor: "#736F69",
+        color: "white",
+      },
+    },
+
+    MuiDialogActions: {
+      root: {
+        backgroundColor: "#3E3F42",
+      },
+    },
+  },
+});
 
 const workActivities = () => {
   const router = useRouter();
@@ -556,87 +612,156 @@ const workActivities = () => {
             employeeName={status.cookies.fullname}
             logout={logout}
           />
-          <div>
-            <table {...getTableProps()}>
-              <thead>
-                {headerGroups.map(headerGroup => (
-                  <tr {...headerGroup.getHeaderGroupProps()}>
-                    {headerGroup.headers.map(column => (
-                      <th {...column.getHeaderProps()}>
-                        {column.render("Header")}
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </thead>
-              <tbody {...getTableBodyProps()}>
-                {page.map((row, i) => {
-                  prepareRow(row);
-                  return (
-                    <tr {...row.getRowProps()}>
-                      {row.cells.map(cell => {
-                        return (
-                          <td {...cell.getCellProps()}>
-                            {cell.render("Cell")}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-            <div className="pagination">
-              <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-                {"<<"}
-              </button>{" "}
-              <button
-                onClick={() => previousPage()}
-                disabled={!canPreviousPage}
-              >
-                {"<"}
-              </button>{" "}
-              <button onClick={() => nextPage()} disabled={!canNextPage}>
-                {">"}
-              </button>{" "}
-              <button
-                onClick={() => gotoPage(pageCount - 1)}
-                disabled={!canNextPage}
-              >
-                {">>"}
-              </button>{" "}
-              <span>
-                Page{" "}
-                <strong>
-                  {pageIndex + 1} of {pageOptions.length}
-                </strong>{" "}
-              </span>
-              <span>
-                | Go to page:{" "}
-                <input
-                  type="number"
-                  defaultValue={pageIndex + 1}
-                  onChange={e => {
-                    const page = e.target.value
-                      ? Number(e.target.value) - 1
-                      : 0;
-                    gotoPage(page);
-                  }}
-                  style={{ width: "100px" }}
-                />
-              </span>{" "}
+          <h1 className={styles["title"]}>Work Activities</h1>
+          <div className={styles["header"]}>
+            <div className={styles["header__left"]}>
               <select
-                value={pageSize}
-                onChange={e => {
-                  setPageSize(Number(e.target.value));
+                value={projectState}
+                onChange={e => setProjectState(e.target.value)}
+                style={{
+                  marginBottom: "3px",
+                  fontFamily: "Roboto, sans-serif",
+                  fontSize: "medium",
+                  display: "inline-block",
+                  color: "#74646e",
+                  border: "1px solid #c8bfc4",
+                  borderRadius: "4px",
+                  boxShadow: "inset 1px 1px 2px #ddd8dc",
+                  background: "#fff",
+                  zIndex: "1",
+                  position: "relative",
                 }}
               >
-                {[10, 20, 30, 40, 50].map(pageSize => (
-                  <option key={pageSize} value={pageSize}>
-                    Show {pageSize}
-                  </option>
-                ))}
+                {stateAssignedProject.map(item => {
+                  return (
+                    <option
+                      value={item.ProjectID}
+                      key={item.ProjectID}
+                      projectgroup={item.ProjectGroup}
+                      projectname={item.ProjectName}
+                    >
+                      {item.ProjectID} &emsp;[{item.ProjectGroup}]&ensp;
+                      {item.ProjectName}
+                    </option>
+                  );
+                })}
               </select>
+            </div>
+            <div className={styles["header__right"]}>
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                className={styles["header__right__save-btn"]}
+                startIcon={<SaveIcon />}
+              >
+                Save
+              </Button>
+
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <MuiThemeProvider theme={materialTheme}>
+                  <DatePicker
+                    margin="normal"
+                    id="datePickerDialog"
+                    format="MM/dd/yyyy"
+                    className={styles["header__right__date-picker"]}
+                    autoOk={true}
+                    okLabel=""
+                  />
+                </MuiThemeProvider>
+              </MuiPickersUtilsProvider>
+              <p className={styles["header__right__label-date-picker"]}>Date</p>
+            </div>
+          </div>
+
+          <div id={styles.mainDiv}>
+            <div>
+              <table {...getTableProps()}>
+                <thead>
+                  {headerGroups.map(headerGroup => (
+                    <tr {...headerGroup.getHeaderGroupProps()}>
+                      {headerGroup.headers.map(column => (
+                        <th {...column.getHeaderProps()}>
+                          {column.render("Header")}
+                        </th>
+                      ))}
+                    </tr>
+                  ))}
+                </thead>
+                <tbody {...getTableBodyProps()}>
+                  {page.map((row, i) => {
+                    prepareRow(row);
+                    return (
+                      <tr {...row.getRowProps()}>
+                        {row.cells.map(cell => {
+                          return (
+                            <td {...cell.getCellProps()}>
+                              {cell.render("Cell")}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+              <div className="pagination">
+                <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+                  {"<<"}
+                </button>{" "}
+                <button
+                  onClick={() => previousPage()}
+                  disabled={!canPreviousPage}
+                >
+                  {"<"}
+                </button>{" "}
+                <button onClick={() => nextPage()} disabled={!canNextPage}>
+                  {">"}
+                </button>{" "}
+                <button
+                  onClick={() => gotoPage(pageCount - 1)}
+                  disabled={!canNextPage}
+                >
+                  {">>"}
+                </button>{" "}
+                <span>
+                  Page{" "}
+                  <strong>
+                    {pageIndex + 1} of {pageOptions.length}
+                  </strong>{" "}
+                </span>
+                <span>
+                  | Go to page:{" "}
+                  <input
+                    type="number"
+                    defaultValue={pageIndex + 1}
+                    onChange={e => {
+                      const page = e.target.value
+                        ? Number(e.target.value) - 1
+                        : 0;
+                      gotoPage(page);
+                    }}
+                    style={{ width: "100px" }}
+                  />
+                </span>{" "}
+                <select
+                  value={pageSize}
+                  onChange={e => {
+                    setPageSize(Number(e.target.value));
+                  }}
+                >
+                  {[10, 20, 30, 40, 50].map(pageSize => (
+                    <option key={pageSize} value={pageSize}>
+                      Show {pageSize}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div>
+              <input></input>
+              <input></input>
+              <input></input>
             </div>
           </div>
         </>
