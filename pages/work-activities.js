@@ -7,6 +7,7 @@ import SimpleTabs from "../components/MainTab/MainTab";
 import NotPermission from "../components/MainTab/NotPermission";
 import { usePromiseTracker, trackPromise } from "react-promise-tracker";
 import Loader from "react-loader-spinner";
+import Login from "../components/MainTab/login.js";
 
 const workActivities = () => {
   const router = useRouter();
@@ -38,6 +39,43 @@ const workActivities = () => {
         employeeid: 0,
       },
     }));
+  };
+
+  const signin = async (username, password) => {
+    await axios({
+      method: "post",
+      url: `/api/daily-report/signin`,
+      timeout: 1000000, // 5 seconds timeout
+      headers: {},
+      data: {
+        Username: username,
+        Password: password,
+      },
+    }).then(response => {
+      if (response.data.result.recordset[0] !== undefined) {
+        setCookie("username", username, { path: "/", maxAge: 3600 * 24 * 30 });
+        setCookie("password", password, { path: "/", maxAge: 3600 * 24 * 30 });
+        setCookie("fullname", response.data.result.recordset[0].FullName, {
+          path: "/",
+          maxAge: 3600 * 24 * 30,
+        });
+        setCookie("employeeid", response.data.result.recordset[0].EmployeeID, {
+          path: "/",
+          maxAge: 3600 * 24 * 30,
+        });
+        setStatus(prevState => ({
+          ...prevState,
+          cookies: {
+            username: username,
+            password: password,
+            fullname: response.data.result.recordset[0].FullName,
+            employeeid: response.data.result.recordset[0].EmployeeID,
+          },
+        }));
+      } else {
+        alert("Login failed.");
+      }
+    });
   };
 
   useEffect(() => {
@@ -133,14 +171,21 @@ const workActivities = () => {
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
-      <SimpleTabs
-        tapNo={1}
-        projectState={projectState}
-        main={false}
-        employeeID={status.cookies.employeeid}
-        employeeName={status.cookies.fullname}
-        logout={logout}
-      />
+      {status.cookies.username === undefined ||
+      status.cookies.employeeid === undefined ? (
+        <Login signin={signin} />
+      ) : (
+        <>
+          <SimpleTabs
+            tapNo={1}
+            projectState={projectState}
+            main={false}
+            employeeID={status.cookies.employeeid}
+            employeeName={status.cookies.fullname}
+            logout={logout}
+          />
+        </>
+      )}
     </>
   );
 };
