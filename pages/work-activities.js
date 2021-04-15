@@ -17,6 +17,7 @@ import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 
 import { Badge } from "@material-ui/core";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { formatDate } from "../components/main/formatDate";
 
 function getRandomNumber(min, max) {
   return Math.round(Math.random() * (max - min) + min);
@@ -595,18 +596,11 @@ const workActivities = () => {
     trackPromise(Promise.all(promises).then(() => {}));
   }, [projectState, status, router.isReady]);
 
-  const [selectedDays, setSelectedDays] = useState([1, 2, 15]);
+  const [selectedDays, setSelectedDays] = useState([
+    "04/10/2021",
+    "03/10/2021",
+  ]);
   const [selectedDate, handleDateChange] = useState(new Date());
-
-  const handleMonthChange = async () => {
-    // just select random days to simulate server side based data
-    return new Promise(resolve => {
-      setTimeout(() => {
-        setSelectedDays([1, 2, 3].map(() => getRandomNumber(1, 28)));
-        resolve();
-      }, 1000);
-    });
-  };
 
   return (
     <>
@@ -678,28 +672,20 @@ const workActivities = () => {
               </Button>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <DatePicker
-                  label="With server data"
                   value={selectedDate}
                   onChange={handleDateChange}
-                  onMonthChange={handleMonthChange}
+                  format="MM/dd/yyyy"
+                  autoOk={true}
+                  okLabel=""
                   renderDay={(
                     day,
                     selectedDate,
                     isInCurrentMonth,
                     dayComponent
                   ) => {
-                    //const date = makeJSDateObject(day); // skip this step, it is required to support date libs
                     const isSelected =
-                      isInCurrentMonth && selectedDays.includes(day.getDate());
-
-                    console.log("day.getDate()");
-                    console.log(day.getDate());
-                    console.log("isInCurrentMonth");
-                    console.log(isInCurrentMonth);
-                    console.log("dayComponent");
-                    console.log(dayComponent);
-                    // const isSelected =
-                    //   isInCurrentMonth && selectedDays.includes("4/11/2021");
+                      isInCurrentMonth &&
+                      selectedDays.includes(formatDate(day));
 
                     // You can also use our internal <Day /> component
                     return (
