@@ -57,6 +57,7 @@ const MainTab = ({
             // onClick={() => Router.push(`/task-completion/${projectState}`)}
             disableRipple={true}
             disabled={main}
+            textColor={tapNo === 0 ? "white" : "primary"}
           />
         </Link>
         <Link href={`/work-activities?pid=${projectState}`}>
@@ -65,6 +66,7 @@ const MainTab = ({
             // onClick={() => Router.push(`/task-completion/${projectState}`)}
             disableRipple={true}
             disabled={main}
+            textColor={tapNo === 1 ? "white" : "primary"}
           />
         </Link>
         {/* <Link href={`/deficiency-log/${projectState}`}>

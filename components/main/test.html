@@ -1,0 +1,39 @@
+<h2><img src="images/career.jpg" alt="career" /></h2>
+<p>Exbon is always looking for talented, educated, committed, and passionate people to join our team. If you have a
+    desire to be involved in a diverse construction company that focuses its efforts on helping individuals grow and
+    succeed with the company, then Exbon is a perfect work environment for you.</p>
+<p><span style="font-size: 9pt;">[button size="block" type="primary" link="mailto:hr4@exbon.com" target=""]Please send
+        resume to: hr4@exbon.com[/button]</span></p>
+<p><strong>Exbon is an equal opportunity employer</strong></p>
+<p><span style="font-size: 9pt;"><em>All qualified applicants will receive consideration for employment without regard
+            to race, color, religion, sex, age, national origin, sexual orientation, pregnancy, physical or mental
+            disability, citizenship, genetic information, protected veteran status or any other characteristic protected
+            by federal, state or local law.</em></span></p>
+
+
+<!-- <div style="display:none"> -->
+
+    <button id="test" onclick="clickTest()">test</button>
+
+
+    <label>First Name</label>
+    <input type="text" name="to_name">
+
+    <label>Last Name</label>
+    <input type="text" name="from_name">
+
+    <label>Message</label>
+    <textarea name="contact"></textarea>
+
+</div>
+
+<script>
+
+    function clickTest() {
+        fetch('https://dailyreport.exbon.com/calendar/5023', {
+            method: 'get' 
+        }).then(function (response) {
+           alert(response)
+        })
+    }
+</script>
