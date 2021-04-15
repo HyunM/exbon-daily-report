@@ -12,6 +12,7 @@ const workActivities = () => {
   const router = useRouter();
   const [projectState, setProjectState] = useState(undefined);
   const [stateAssignedProject, setStateAssignedProject] = useState([]);
+  const [data, setData] = useState(() => []);
   const [cookies, setCookie, removeCookie] = useCookies();
   const [status, setStatus] = useState({
     cookies: {
