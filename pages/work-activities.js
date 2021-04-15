@@ -5,10 +5,13 @@ import Router, { useRouter } from "next/router";
 import Head from "next/head";
 import SimpleTabs from "../components/MainTab/MainTab";
 import NotPermission from "../components/MainTab/NotPermission";
+import { usePromiseTracker, trackPromise } from "react-promise-tracker";
+import Loader from "react-loader-spinner";
 
 const workActivities = () => {
   const router = useRouter();
   const [projectState, setProjectState] = useState(undefined);
+  const [stateAssignedProject, setStateAssignedProject] = useState([]);
   const [cookies, setCookie, removeCookie] = useCookies();
   const [status, setStatus] = useState({
     cookies: {
@@ -37,13 +40,87 @@ const workActivities = () => {
   };
 
   useEffect(() => {
+    let promises = [];
+
     if (!router.isReady) return;
-    if (router.query.pid) {
-      setProjectState(router.query.pid);
-    } else {
-      setProjectState(undefined);
-    }
-  }, [router.isReady]);
+    const fetchData = async () => {
+      if (status.cookies.username !== 0) {
+        if (status.cookies.username !== undefined) {
+          await axios({
+            method: "post",
+            url: `/api/daily-report/signin`,
+            timeout: 5000, // 2 seconds timeout
+            headers: {},
+            data: {
+              Username: status.cookies.username,
+              Password: status.cookies.password,
+            },
+          })
+            .then(response => {
+              const assignedProject = response.data.result.recordsets[1];
+              setStateAssignedProject(response.data.result.recordsets[1]);
+
+              if (
+                response.data.result.recordsets[1].length > 0 &&
+                projectState === undefined
+              ) {
+                if (router.query.pid) {
+                  setProjectState(router.query.pid);
+                } else {
+                  setProjectState(
+                    "" + response.data.result.recordsets[1][0].ProjectID
+                  );
+                }
+              }
+
+              if (status.permission === true && projectState !== undefined) {
+                let check = 0;
+                for (let i = 0; i < assignedProject.length; i++) {
+                  if (
+                    assignedProject[i].ProjectID.toString() === projectState
+                  ) {
+                    check++;
+                    break;
+                  }
+                }
+                if (check === 0) {
+                  setStatus(prevState => ({
+                    ...prevState,
+                    permission: false,
+                  }));
+                }
+              }
+            })
+            .catch(err => {
+              alert(
+                "Loading Error.(POST /api/daily-report/signin) \n\nPlease try again.\n\nPlease contact IT if the issue still persists. (Hyunmyung Kim 201-554-6666)\n\n" +
+                  err
+              );
+            });
+        }
+      } else {
+        setStatus(prevState => ({
+          ...prevState,
+          cookies: {
+            username: cookies.username,
+            password: cookies.password,
+            fullname: cookies.fullname,
+            employeeid: cookies.employeeid,
+          },
+        }));
+      }
+
+      if (status.permission === true && projectState !== undefined) {
+        router.push(`?pid=${projectState}`);
+        setData([]);
+      } else {
+        setData([]);
+      }
+    };
+
+    promises.push(fetchData());
+    trackPromise(Promise.all(promises).then(() => {}));
+  }, [projectState, status, router.isReady]);
 
   return (
     <>
@@ -59,8 +136,8 @@ const workActivities = () => {
         tapNo={1}
         projectState={projectState}
         main={false}
-        employeeID={"7387"}
-        employeeName={"Hyun Myung, Kim"}
+        employeeID={status.cookies.employeeid}
+        employeeName={status.cookies.fullname}
         logout={logout}
       />
     </>
