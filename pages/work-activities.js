@@ -249,6 +249,21 @@ const workActivities = () => {
     return <input value={value} onChange={onChange} onBlur={onBlur} />;
   };
 
+  const addActivityRow = () => {
+    setData(previous => [
+      ...previous,
+      {
+        Contractor: "",
+        WorkActivity: "",
+        Super: 0,
+        Labor: 0,
+        Equipment: "",
+        WorkPerformed: "",
+        isDeleted: 0,
+      },
+    ]);
+  };
+
   // Set our editable cell renderer as the default Cell renderer
   const defaultColumn = {
     Cell: EditableCell,
@@ -398,33 +413,6 @@ const workActivities = () => {
       if (status.permission === true && projectState !== undefined) {
         router.push(`?pid=${projectState}`);
         setData([
-          {
-            Contractor: "TEST Contractor",
-            WorkActivity: "TEST WorkActivity",
-            Super: 15.5,
-            Labor: 10.5,
-            Equipment: "TEST Equipment",
-            WorkPerformed: "TEST Work Performed",
-            isDeleted: 0,
-          },
-          {
-            Contractor: "TEST Contractor",
-            WorkActivity: "TEST WorkActivity",
-            Super: 15.5,
-            Labor: 10.5,
-            Equipment: "TEST Equipment",
-            WorkPerformed: "TEST Work Performed",
-            isDeleted: 0,
-          },
-          {
-            Contractor: "TEST Contractor",
-            WorkActivity: "TEST WorkActivity",
-            Super: 15.5,
-            Labor: 10.5,
-            Equipment: "TEST Equipment",
-            WorkPerformed: "TEST Work Performed",
-            isDeleted: 0,
-          },
           {
             Contractor: "TEST Contractor",
             WorkActivity: "TEST WorkActivity",
@@ -670,7 +658,10 @@ const workActivities = () => {
                             {row.cells.map((cell, i) => {
                               return (
                                 <td {...cell.getCellProps()}>
-                                  <div className={styles["table__button-add"]}>
+                                  <div
+                                    className={styles["table__button-add"]}
+                                    onClick={addActivityRow}
+                                  >
                                     {i === 0 ? "(+) ADD" : ""}
                                   </div>
                                 </td>
