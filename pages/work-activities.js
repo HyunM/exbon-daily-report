@@ -662,24 +662,9 @@ const workActivities = () => {
                 </select>
               </div>
               <div className={styles["header__right"]}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="small"
-                  className={styles["header__right__save-btn"]}
-                  startIcon={<SaveIcon />}
-                >
-                  Save
-                </Button>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  size="small"
-                  startIcon={<SaveIcon />}
-                  className={styles["header__right__no-work-btn"]}
-                >
-                  Set No Work Days
-                </Button>
+                <p className={styles["header__right__label-date-picker"]}>
+                  Date
+                </p>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <DatePicker
                     className={styles["header__right__date-picker"]}
@@ -719,9 +704,16 @@ const workActivities = () => {
                     }}
                   />
                 </MuiPickersUtilsProvider>
-                <p className={styles["header__right__label-date-picker"]}>
-                  Date
-                </p>
+
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  className={styles["header__right__save-btn"]}
+                  startIcon={<SaveIcon />}
+                >
+                  Save
+                </Button>
               </div>
             </div>
 

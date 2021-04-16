@@ -1,5 +1,5 @@
 #mainDiv {
-  width: 1391px;
+  width: 1100px;
   margin: auto;
 }
 .title {
@@ -25,8 +25,8 @@
 .header__right {
   display: flex;
   align-items: center;
-  flex-direction: row-reverse;
   align-content: center;
+  justify-content: flex-end;
   flex-grow: 1;
 }
 .header__right__label-date-picker {
@@ -65,9 +65,9 @@
   margin-right: auto;
 }
 
-.table td {
+/* .table td {
   border: 1px solid #ddd;
-}
+} */
 
 .table th {
   border-left: 1px solid #ddd;
@@ -93,8 +93,8 @@
 }
 
 .table tbody tr:hover {
-  background-color: #e6e8f3;
-  border: 1px solid #ca1b1b;
+  background-color: #d3d6e7;
+  border: 1px solid #0d8863 !important;
   cursor: default;
 }
 
