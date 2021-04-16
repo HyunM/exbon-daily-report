@@ -18,6 +18,9 @@ import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { formatDate } from "../components/main/formatDate";
 
+import TextField from "@material-ui/core/TextField";
+import DeleteTwoTone from "@material-ui/icons/DeleteTwoTone";
+
 const materialTheme = createMuiTheme({
   palette: {
     primary: {
@@ -121,6 +124,11 @@ const workActivities = () => {
         accessor: "WorkPerformed",
         width: 260,
       },
+      {
+        Header: "",
+        accessor: "isDeleted",
+        width: 37,
+      },
     ],
     []
   );
@@ -172,6 +180,72 @@ const workActivities = () => {
       setValue(initialValue);
     }, [initialValue]);
 
+    //         Contractor: "TEST Contractor",
+    //         WorkActivity: "TEST WorkActivity",
+    //         Super: 15.5,
+    //         Labor: 10.5,
+    //         Equipment: "TEST Equipment",
+    //         WorkPerformed: "TEST Work Performed", isDeleted: 0,
+
+    if (id === "Contractor") {
+      return (
+        <input
+          className={styles["table__contractor__input"]}
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+        />
+      );
+    } else if (id === "WorkActivity") {
+      return (
+        <input
+          className={styles["table__work-activity__input"]}
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+        />
+      );
+    } else if (id === "Super") {
+      return (
+        <input
+          className={styles["table__super__input"]}
+          type="number"
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+        />
+      );
+    } else if (id === "Labor") {
+      return (
+        <input
+          className={styles["table__labor__input"]}
+          type="number"
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+        />
+      );
+    } else if (id === "Equipment") {
+      return (
+        <input
+          className={styles["table__equipment__input"]}
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+        />
+      );
+    } else if (id === "WorkPerformed") {
+      return (
+        <input
+          className={styles["table__work-performed__input"]}
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+        />
+      );
+    } else if (id === "isDeleted") {
+      return <DeleteTwoTone className={styles["table__is-deleted__icon"]} />;
+    }
     return <input value={value} onChange={onChange} onBlur={onBlur} />;
   };
 
@@ -331,6 +405,7 @@ const workActivities = () => {
             Labor: 10.5,
             Equipment: "TEST Equipment",
             WorkPerformed: "TEST Work Performed",
+            isDeleted: 0,
           },
           {
             Contractor: "TEST Contractor",
@@ -339,6 +414,7 @@ const workActivities = () => {
             Labor: 10.5,
             Equipment: "TEST Equipment",
             WorkPerformed: "TEST Work Performed",
+            isDeleted: 0,
           },
           {
             Contractor: "TEST Contractor",
@@ -347,6 +423,7 @@ const workActivities = () => {
             Labor: 10.5,
             Equipment: "TEST Equipment",
             WorkPerformed: "TEST Work Performed",
+            isDeleted: 0,
           },
           {
             Contractor: "TEST Contractor",
@@ -355,6 +432,7 @@ const workActivities = () => {
             Labor: 10.5,
             Equipment: "TEST Equipment",
             WorkPerformed: "TEST Work Performed",
+            isDeleted: 0,
           },
           {
             Contractor: "TEST Contractor",
@@ -363,6 +441,7 @@ const workActivities = () => {
             Labor: 10.5,
             Equipment: "TEST Equipment",
             WorkPerformed: "TEST Work Performed",
+            isDeleted: 0,
           },
           {
             Contractor: "TEST Contractor",
@@ -371,6 +450,7 @@ const workActivities = () => {
             Labor: 10.5,
             Equipment: "TEST Equipment",
             WorkPerformed: "TEST Work Performed",
+            isDeleted: 0,
           },
           {
             Contractor: "TEST Contractor",
@@ -379,6 +459,7 @@ const workActivities = () => {
             Labor: 10.5,
             Equipment: "TEST Equipment",
             WorkPerformed: "TEST Work Performed",
+            isDeleted: 0,
           },
           {
             Contractor: "TEST Contractor",
@@ -387,6 +468,7 @@ const workActivities = () => {
             Labor: 10.5,
             Equipment: "TEST Equipment",
             WorkPerformed: "TEST Work Performed",
+            isDeleted: 0,
           },
           {
             Contractor: "TEST Contractor",
@@ -395,6 +477,7 @@ const workActivities = () => {
             Labor: 10.5,
             Equipment: "TEST Equipment",
             WorkPerformed: "TEST Work Performed",
+            isDeleted: 0,
           },
 
           {
@@ -404,6 +487,7 @@ const workActivities = () => {
             Labor: 10.5,
             Equipment: "TEST Equipment",
             WorkPerformed: "TEST Work Performed",
+            isDeleted: 0,
           },
           {
             Contractor: "TEST Contractor",
@@ -412,6 +496,7 @@ const workActivities = () => {
             Labor: 10.5,
             Equipment: "TEST Equipment",
             WorkPerformed: "TEST Work Performed",
+            isDeleted: 0,
           },
           {
             Contractor: "TEST Contractor",
@@ -420,14 +505,7 @@ const workActivities = () => {
             Labor: 10.5,
             Equipment: "TEST Equipment",
             WorkPerformed: "TEST Work Performed",
-          },
-          {
-            Contractor: "TEST Contractor",
-            WorkActivity: "TEST WorkActivity",
-            Super: 15.5,
-            Labor: 10.5,
-            Equipment: "TEST Equipment",
-            WorkPerformed: "TEST Work Performed",
+            isDeleted: 0,
           },
         ]);
       } else {
@@ -535,7 +613,7 @@ const workActivities = () => {
                           style={
                             isSelected
                               ? {
-                                  backgroundColor: "#14d1c8",
+                                  backgroundColor: "#61e2bb",
                                   borderRadius: "1000px",
                                 }
                               : undefined
@@ -576,6 +654,32 @@ const workActivities = () => {
                 <tbody {...getTableBodyProps()}>
                   {rows.map((row, i) => {
                     prepareRow(row);
+                    if (i == rows.length - 1) {
+                      return (
+                        <>
+                          <tr {...row.getRowProps()}>
+                            {row.cells.map(cell => {
+                              return (
+                                <td {...cell.getCellProps()}>
+                                  {cell.render("Cell")}
+                                </td>
+                              );
+                            })}
+                          </tr>
+                          <tr {...row.getRowProps()}>
+                            {row.cells.map((cell, i) => {
+                              return (
+                                <td {...cell.getCellProps()}>
+                                  <div className={styles["table__button-add"]}>
+                                    {i === 0 ? "(+) ADD" : ""}
+                                  </div>
+                                </td>
+                              );
+                            })}
+                          </tr>
+                        </>
+                      );
+                    }
                     return (
                       <tr {...row.getRowProps()}>
                         {row.cells.map(cell => {
@@ -592,9 +696,66 @@ const workActivities = () => {
               </table>
             </div>
             <div>
-              <input></input>
-              <input></input>
-              <input></input>
+              <TextField
+                label="Delivery Pick-up"
+                style={{ margin: 8 }}
+                fullWidth
+                margin="normal"
+                InputLabelProps={{
+                  shrink: true,
+                  style: {
+                    fontWeight: 1000,
+                    fontSize: "1.2rem",
+                    color: "#1bb486",
+                  },
+                }}
+                variant="outlined"
+                style={{
+                  backgroundColor: "#ececf5",
+                  width: "99%",
+                  marginLeft: "8px",
+                }}
+              />
+              <TextField
+                label="Potential Problems"
+                style={{ margin: 8 }}
+                fullWidth
+                margin="normal"
+                InputLabelProps={{
+                  shrink: true,
+                  style: {
+                    fontWeight: 1000,
+                    fontSize: "1.2rem",
+                    color: "#1bb486",
+                  },
+                }}
+                variant="outlined"
+                style={{
+                  backgroundColor: "#ececf5",
+                  marginLeft: "8px",
+                  width: "99%",
+                }}
+              />
+              <TextField
+                label="Unforeseen Condition"
+                style={{ margin: 8 }}
+                fullWidth
+                margin="normal"
+                InputLabelProps={{
+                  shrink: true,
+                  style: {
+                    fontWeight: 1000,
+                    fontSize: "1.2rem",
+                    color: "#1bb486",
+                  },
+                }}
+                variant="outlined"
+                style={{
+                  backgroundColor: "#ececf5",
+                  marginLeft: "8px",
+                  width: "99%",
+                }}
+              />
             </div>
           </div>
         </>
