@@ -8,20 +8,15 @@ import NotPermission from "../components/MainTab/NotPermission";
 import { usePromiseTracker, trackPromise } from "react-promise-tracker";
 import Loader from "react-loader-spinner";
 import Login from "../components/MainTab/login.js";
-import { useTable, usePagination } from "react-table";
+import { useTable, useBlockLayout } from "react-table";
 import styles from "./WorkActivities.module.css";
 import SaveIcon from "@material-ui/icons/Save";
 import DateFnsUtils from "@date-io/date-fns";
 import Button from "@material-ui/core/Button";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 
-import { Badge } from "@material-ui/core";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { formatDate } from "../components/main/formatDate";
-
-function getRandomNumber(min, max) {
-  return Math.round(Math.random() * (max - min) + min);
-}
 
 const materialTheme = createMuiTheme({
   palette: {
@@ -93,31 +88,38 @@ const workActivities = () => {
       {
         Header: "Contractor",
         accessor: "Contractor",
+        width: 220,
       },
       {
         Header: "Work Activities",
         accessor: "WorkActivity",
+        width: 250,
       },
       {
         Header: "Manpower",
+        width: 160,
         columns: [
           {
             Header: "Super",
             accessor: "Super",
+            width: 80,
           },
           {
             Header: "Labor",
             accessor: "Labor",
+            width: 80,
           },
         ],
       },
       {
         Header: "Equipment Utilization",
         accessor: "Equipment",
+        width: 203,
       },
       {
         Header: "Work Performed",
         accessor: "WorkPerformed",
+        width: 260,
       },
     ],
     []
@@ -182,32 +184,16 @@ const workActivities = () => {
     getTableProps,
     getTableBodyProps,
     headerGroups,
+    rows,
     prepareRow,
-    page,
-    canPreviousPage,
-    canNextPage,
-    pageOptions,
-    pageCount,
-    gotoPage,
-    nextPage,
-    previousPage,
-    setPageSize,
-    state: { pageIndex, pageSize },
   } = useTable(
     {
       columns,
       data,
       defaultColumn,
-      // use the skipPageReset option to disable page resetting temporarily
-      autoResetPage: !skipPageReset,
-      // updateMyData isn't part of the API, but
-      // anything we put into these options will
-      // automatically be available on the instance.
-      // That way we can call this function from our
-      // cell renderer!
       updateMyData,
     },
-    usePagination
+    useBlockLayout
   );
 
   const logout = () => {
@@ -410,150 +396,7 @@ const workActivities = () => {
             Equipment: "TEST Equipment",
             WorkPerformed: "TEST Work Performed",
           },
-          {
-            Contractor: "TEST Contractor",
-            WorkActivity: "TEST WorkActivity",
-            Super: 15.5,
-            Labor: 10.5,
-            Equipment: "TEST Equipment",
-            WorkPerformed: "TEST Work Performed",
-          },
-          {
-            Contractor: "TEST Contractor",
-            WorkActivity: "TEST WorkActivity",
-            Super: 15.5,
-            Labor: 10.5,
-            Equipment: "TEST Equipment",
-            WorkPerformed: "TEST Work Performed",
-          },
-          {
-            Contractor: "TEST Contractor",
-            WorkActivity: "TEST WorkActivity",
-            Super: 15.5,
-            Labor: 10.5,
-            Equipment: "TEST Equipment",
-            WorkPerformed: "TEST Work Performed",
-          },
-          {
-            Contractor: "TEST Contractor",
-            WorkActivity: "TEST WorkActivity",
-            Super: 15.5,
-            Labor: 10.5,
-            Equipment: "TEST Equipment",
-            WorkPerformed: "TEST Work Performed",
-          },
-          {
-            Contractor: "TEST Contractor",
-            WorkActivity: "TEST WorkActivity",
-            Super: 15.5,
-            Labor: 10.5,
-            Equipment: "TEST Equipment",
-            WorkPerformed: "TEST Work Performed",
-          },
-          {
-            Contractor: "TEST Contractor",
-            WorkActivity: "TEST WorkActivity",
-            Super: 15.5,
-            Labor: 10.5,
-            Equipment: "TEST Equipment",
-            WorkPerformed: "TEST Work Performed",
-          },
-          {
-            Contractor: "TEST Contractor",
-            WorkActivity: "TEST WorkActivity",
-            Super: 15.5,
-            Labor: 10.5,
-            Equipment: "TEST Equipment",
-            WorkPerformed: "TEST Work Performed",
-          },
-          {
-            Contractor: "TEST Contractor",
-            WorkActivity: "TEST WorkActivity",
-            Super: 15.5,
-            Labor: 10.5,
-            Equipment: "TEST Equipment",
-            WorkPerformed: "TEST Work Performed",
-          },
-          {
-            Contractor: "TEST Contractor",
-            WorkActivity: "TEST WorkActivity",
-            Super: 15.5,
-            Labor: 10.5,
-            Equipment: "TEST Equipment",
-            WorkPerformed: "TEST Work Performed",
-          },
-          {
-            Contractor: "TEST Contractor",
-            WorkActivity: "TEST WorkActivity",
-            Super: 15.5,
-            Labor: 10.5,
-            Equipment: "TEST Equipment",
-            WorkPerformed: "TEST Work Performed",
-          },
-          {
-            Contractor: "TEST Contractor",
-            WorkActivity: "TEST WorkActivity",
-            Super: 15.5,
-            Labor: 10.5,
-            Equipment: "TEST Equipment",
-            WorkPerformed: "TEST Work Performed",
-          },
-          {
-            Contractor: "TEST Contractor",
-            WorkActivity: "TEST WorkActivity",
-            Super: 15.5,
-            Labor: 10.5,
-            Equipment: "TEST Equipment",
-            WorkPerformed: "TEST Work Performed",
-          },
-          {
-            Contractor: "TEST Contractor",
-            WorkActivity: "TEST WorkActivity",
-            Super: 15.5,
-            Labor: 10.5,
-            Equipment: "TEST Equipment",
-            WorkPerformed: "TEST Work Performed",
-          },
-          {
-            Contractor: "TEST Contractor",
-            WorkActivity: "TEST WorkActivity",
-            Super: 15.5,
-            Labor: 10.5,
-            Equipment: "TEST Equipment",
-            WorkPerformed: "TEST Work Performed",
-          },
-          {
-            Contractor: "TEST Contractor",
-            WorkActivity: "TEST WorkActivity",
-            Super: 15.5,
-            Labor: 10.5,
-            Equipment: "TEST Equipment",
-            WorkPerformed: "TEST Work Performed",
-          },
-          {
-            Contractor: "TEST Contractor",
-            WorkActivity: "TEST WorkActivity",
-            Super: 15.5,
-            Labor: 10.5,
-            Equipment: "TEST Equipment",
-            WorkPerformed: "TEST Work Performed",
-          },
-          {
-            Contractor: "TEST Contractor",
-            WorkActivity: "TEST WorkActivity",
-            Super: 15.5,
-            Labor: 10.5,
-            Equipment: "TEST Equipment",
-            WorkPerformed: "TEST Work Performed",
-          },
-          {
-            Contractor: "TEST Contractor",
-            WorkActivity: "TEST WorkActivity",
-            Super: 15.5,
-            Labor: 10.5,
-            Equipment: "TEST Equipment",
-            WorkPerformed: "TEST Work Performed",
-          },
+
           {
             Contractor: "TEST Contractor",
             WorkActivity: "TEST WorkActivity",
@@ -731,7 +574,7 @@ const workActivities = () => {
                   ))}
                 </thead>
                 <tbody {...getTableBodyProps()}>
-                  {page.map((row, i) => {
+                  {rows.map((row, i) => {
                     prepareRow(row);
                     return (
                       <tr {...row.getRowProps()}>
@@ -747,58 +590,6 @@ const workActivities = () => {
                   })}
                 </tbody>
               </table>
-              <div className="pagination">
-                <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-                  {"<<"}
-                </button>{" "}
-                <button
-                  onClick={() => previousPage()}
-                  disabled={!canPreviousPage}
-                >
-                  {"<"}
-                </button>{" "}
-                <button onClick={() => nextPage()} disabled={!canNextPage}>
-                  {">"}
-                </button>{" "}
-                <button
-                  onClick={() => gotoPage(pageCount - 1)}
-                  disabled={!canNextPage}
-                >
-                  {">>"}
-                </button>{" "}
-                <span>
-                  Page{" "}
-                  <strong>
-                    {pageIndex + 1} of {pageOptions.length}
-                  </strong>{" "}
-                </span>
-                <span>
-                  | Go to page:{" "}
-                  <input
-                    type="number"
-                    defaultValue={pageIndex + 1}
-                    onChange={e => {
-                      const page = e.target.value
-                        ? Number(e.target.value) - 1
-                        : 0;
-                      gotoPage(page);
-                    }}
-                    style={{ width: "100px" }}
-                  />
-                </span>{" "}
-                <select
-                  value={pageSize}
-                  onChange={e => {
-                    setPageSize(Number(e.target.value));
-                  }}
-                >
-                  {[10, 20, 30, 40, 50].map(pageSize => (
-                    <option key={pageSize} value={pageSize}>
-                      Show {pageSize}
-                    </option>
-                  ))}
-                </select>
-              </div>
             </div>
             <div>
               <input></input>

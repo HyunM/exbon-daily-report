@@ -92,6 +92,10 @@
   background-color: #ffffff;
 }
 
+.table td {
+  border: 1px solid #ddd;
+}
+
 .table tbody tr:hover {
   background-color: #d3d6e7;
   border: 1px solid #0d8863 !important;
@@ -118,15 +122,16 @@
   padding-bottom: 20px !important;
 }
 .table thead tr:nth-child(2) th:nth-child(3) {
+  padding-top: 10px !important;
   border-top: 1px solid #ddd;
 }
 .table thead tr:nth-child(2) th:nth-child(4) {
+  padding-top: 10px !important;
+  border-top: 1px solid #ddd;
 }
 .table thead tr:nth-child(2) th:nth-child(5) {
-  padding-bottom: 20px !important;
 }
 .table thead tr:nth-child(2) th:nth-child(6) {
-  padding-bottom: 20px !important;
 }
 
 .table tbody td {
