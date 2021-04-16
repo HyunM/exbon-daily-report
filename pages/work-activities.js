@@ -134,16 +134,9 @@ const workActivities = () => {
   );
 
   const [data, setData] = useState(() => []);
-  const [originalData] = React.useState(data);
-  const [skipPageReset, setSkipPageReset] = React.useState(false);
-  const resetData = () => setData(originalData);
 
-  React.useEffect(() => {
-    setSkipPageReset(false);
-  }, [data]);
   const updateMyData = (rowIndex, columnId, value) => {
     // We also turn on the flag to not reset the page
-    setSkipPageReset(true);
     setData(old =>
       old.map((row, index) => {
         if (index === rowIndex) {
@@ -244,7 +237,12 @@ const workActivities = () => {
         />
       );
     } else if (id === "isDeleted") {
-      return <DeleteTwoTone className={styles["table__is-deleted__icon"]} />;
+      return (
+        <DeleteTwoTone
+          className={styles["table__is-deleted__icon"]}
+          onClick={() => deleteActivityRow(index)}
+        />
+      );
     }
     return <input value={value} onChange={onChange} onBlur={onBlur} />;
   };
@@ -262,6 +260,14 @@ const workActivities = () => {
         isDeleted: 0,
       },
     ]);
+  };
+
+  const deleteActivityRow = rowIndex => {
+    setData(old =>
+      old.filter((row, index) => {
+        return index !== rowIndex;
+      })
+    );
   };
 
   // Set our editable cell renderer as the default Cell renderer
@@ -414,85 +420,84 @@ const workActivities = () => {
         router.push(`?pid=${projectState}`);
         setData([
           {
-            Contractor: "TEST Contractor",
-            WorkActivity: "TEST WorkActivity",
+            id: 1,
+            Contractor: "TEST Contractor 1",
+            WorkActivity: "TEST WorkActivity 1",
             Super: 15.5,
             Labor: 10.5,
-            Equipment: "TEST Equipment",
-            WorkPerformed: "TEST Work Performed",
+            Equipment: "TEST Equipment 1",
+            WorkPerformed: "TEST Work Performed 1",
             isDeleted: 0,
           },
           {
-            Contractor: "TEST Contractor",
-            WorkActivity: "TEST WorkActivity",
+            id: 2,
+            Contractor: "TEST Contractor 2",
+            WorkActivity: "TEST WorkActivity 2",
             Super: 15.5,
             Labor: 10.5,
-            Equipment: "TEST Equipment",
-            WorkPerformed: "TEST Work Performed",
+            Equipment: "TEST Equipment 2",
+            WorkPerformed: "TEST Work Performed 2",
             isDeleted: 0,
           },
           {
-            Contractor: "TEST Contractor",
-            WorkActivity: "TEST WorkActivity",
+            id: 3,
+            Contractor: "TEST Contractor 3",
+            WorkActivity: "TEST WorkActivity 3",
             Super: 15.5,
             Labor: 10.5,
-            Equipment: "TEST Equipment",
-            WorkPerformed: "TEST Work Performed",
+            Equipment: "TEST Equipment 3",
+            WorkPerformed: "TEST Work Performed 3",
             isDeleted: 0,
           },
           {
-            Contractor: "TEST Contractor",
-            WorkActivity: "TEST WorkActivity",
+            id: 4,
+            Contractor: "TEST Contractor 4",
+            WorkActivity: "TEST WorkActivity 4",
             Super: 15.5,
             Labor: 10.5,
-            Equipment: "TEST Equipment",
-            WorkPerformed: "TEST Work Performed",
+            Equipment: "TEST Equipment 4",
+            WorkPerformed: "TEST Work Performed 4",
             isDeleted: 0,
           },
           {
-            Contractor: "TEST Contractor",
-            WorkActivity: "TEST WorkActivity",
+            id: 5,
+            Contractor: "TEST Contractor 5",
+            WorkActivity: "TEST WorkActivity 5",
             Super: 15.5,
             Labor: 10.5,
-            Equipment: "TEST Equipment",
-            WorkPerformed: "TEST Work Performed",
+            Equipment: "TEST Equipment 5",
+            WorkPerformed: "TEST Work Performed 5",
             isDeleted: 0,
           },
           {
-            Contractor: "TEST Contractor",
-            WorkActivity: "TEST WorkActivity",
+            id: 6,
+            Contractor: "TEST Contractor 6",
+            WorkActivity: "TEST WorkActivity 6",
             Super: 15.5,
             Labor: 10.5,
-            Equipment: "TEST Equipment",
-            WorkPerformed: "TEST Work Performed",
+            Equipment: "TEST Equipment 7",
+            WorkPerformed: "TEST Work Performed 7",
             isDeleted: 0,
           },
 
           {
-            Contractor: "TEST Contractor",
-            WorkActivity: "TEST WorkActivity",
+            id: 7,
+            Contractor: "TEST Contractor 8",
+            WorkActivity: "TEST WorkActivity 8",
             Super: 15.5,
             Labor: 10.5,
-            Equipment: "TEST Equipment",
-            WorkPerformed: "TEST Work Performed",
+            Equipment: "TEST Equipment 8",
+            WorkPerformed: "TEST Work Performed 8",
             isDeleted: 0,
           },
           {
-            Contractor: "TEST Contractor",
-            WorkActivity: "TEST WorkActivity",
+            id: 8,
+            Contractor: "TEST Contractor 9",
+            WorkActivity: "TEST WorkActivity 9",
             Super: 15.5,
             Labor: 10.5,
-            Equipment: "TEST Equipment",
-            WorkPerformed: "TEST Work Performed",
-            isDeleted: 0,
-          },
-          {
-            Contractor: "TEST Contractor",
-            WorkActivity: "TEST WorkActivity",
-            Super: 15.5,
-            Labor: 10.5,
-            Equipment: "TEST Equipment",
-            WorkPerformed: "TEST Work Performed",
+            Equipment: "TEST Equipment 9",
+            WorkPerformed: "TEST Work Performed 9",
             isDeleted: 0,
           },
         ]);
@@ -629,9 +634,9 @@ const workActivities = () => {
             <div className={styles["table"]}>
               <table {...getTableProps()}>
                 <thead>
-                  {headerGroups.map(headerGroup => (
+                  {headerGroups.map((headerGroup, i) => (
                     <tr {...headerGroup.getHeaderGroupProps()}>
-                      {headerGroup.headers.map(column => (
+                      {headerGroup.headers.map((column, j) => (
                         <th {...column.getHeaderProps()}>
                           {column.render("Header")}
                         </th>
@@ -644,45 +649,105 @@ const workActivities = () => {
                     prepareRow(row);
                     if (i == rows.length - 1) {
                       return (
-                        <>
+                        <React.Fragment key={i}>
                           <tr {...row.getRowProps()}>
-                            {row.cells.map(cell => {
+                            {console.log({ ...row.getRowProps() })}
+                            {row.cells.map((cell, j) => {
                               return (
                                 <td {...cell.getCellProps()}>
+                                  {console.log({ ...cell.getCellProps() })}
                                   {cell.render("Cell")}
                                 </td>
                               );
                             })}
                           </tr>
                           <tr {...row.getRowProps()}>
-                            {row.cells.map((cell, i) => {
+                            {row.cells.map((cell, j) => {
                               return (
                                 <td {...cell.getCellProps()}>
                                   <div
                                     className={styles["table__button-add"]}
                                     onClick={addActivityRow}
                                   >
-                                    {i === 0 ? "(+) ADD" : ""}
+                                    {j === 0 ? "(+) ADD" : ""}
                                   </div>
                                 </td>
                               );
                             })}
                           </tr>
-                        </>
+                        </React.Fragment>
+                      );
+                    } else {
+                      return (
+                        <tr {...row.getRowProps()}>
+                          {row.cells.map((cell, j) => {
+                            return (
+                              <td {...cell.getCellProps()}>
+                                {cell.render("Cell")}
+                              </td>
+                            );
+                          })}
+                        </tr>
                       );
                     }
-                    return (
-                      <tr {...row.getRowProps()}>
-                        {row.cells.map(cell => {
-                          return (
-                            <td {...cell.getCellProps()}>
-                              {cell.render("Cell")}
-                            </td>
-                          );
-                        })}
-                      </tr>
-                    );
                   })}
+                  {rows.length === 0 && (
+                    <tr style={{ display: "flex", width: "1130px" }}>
+                      <td
+                        className={styles["table__button-add"]}
+                        style={{
+                          boxSizing: "border-box",
+                          display: "inline-block",
+                          width: "220px",
+                        }}
+                        onClick={addActivityRow}
+                      >
+                        (+) ADD
+                      </td>
+                      <td
+                        style={{
+                          boxSizing: "border-box",
+                          display: "inline-block",
+                          width: "250px",
+                        }}
+                      ></td>
+                      <td
+                        style={{
+                          boxSizing: "border-box",
+                          display: "inline-block",
+                          width: "80px",
+                        }}
+                      ></td>
+                      <td
+                        style={{
+                          boxSizing: "border-box",
+                          display: "inline-block",
+                          width: "80px",
+                        }}
+                      ></td>
+                      <td
+                        style={{
+                          boxSizing: "border-box",
+                          display: "inline-block",
+                          width: "203px",
+                        }}
+                      ></td>
+                      <td
+                        style={{
+                          boxSizing: "border-box",
+                          display: "inline-block",
+                          width: "260px",
+                        }}
+                      ></td>
+                      <td
+                        style={{
+                          boxSizing: "border-box",
+                          display: "inline-block",
+                          width: "37px",
+                        }}
+                      ></td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
