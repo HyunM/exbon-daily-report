@@ -85,6 +85,8 @@ const workActivities = () => {
     },
     permission: true,
   });
+  const [data, setData] = useState(() => []);
+  const [activity, setActivity] = useState(() => []);
 
   const columns = React.useMemo(
     () => [
@@ -132,8 +134,6 @@ const workActivities = () => {
     ],
     []
   );
-
-  const [data, setData] = useState(() => []);
 
   const updateMyData = (rowIndex, columnId, value) => {
     // We also turn on the flag to not reset the page
@@ -418,89 +418,113 @@ const workActivities = () => {
 
       if (status.permission === true && projectState !== undefined) {
         router.push(`?pid=${projectState}`);
-        setData([
-          {
-            id: 1,
-            Contractor: "TEST Contractor 1",
-            WorkActivity: "TEST WorkActivity 1",
-            Super: 15.5,
-            Labor: 10.5,
-            Equipment: "TEST Equipment 1",
-            WorkPerformed: "TEST Work Performed 1",
-            isDeleted: 0,
-          },
-          {
-            id: 2,
-            Contractor: "TEST Contractor 2",
-            WorkActivity: "TEST WorkActivity 2",
-            Super: 15.5,
-            Labor: 10.5,
-            Equipment: "TEST Equipment 2",
-            WorkPerformed: "TEST Work Performed 2",
-            isDeleted: 0,
-          },
-          {
-            id: 3,
-            Contractor: "TEST Contractor 3",
-            WorkActivity: "TEST WorkActivity 3",
-            Super: 15.5,
-            Labor: 10.5,
-            Equipment: "TEST Equipment 3",
-            WorkPerformed: "TEST Work Performed 3",
-            isDeleted: 0,
-          },
-          {
-            id: 4,
-            Contractor: "TEST Contractor 4",
-            WorkActivity: "TEST WorkActivity 4",
-            Super: 15.5,
-            Labor: 10.5,
-            Equipment: "TEST Equipment 4",
-            WorkPerformed: "TEST Work Performed 4",
-            isDeleted: 0,
-          },
-          {
-            id: 5,
-            Contractor: "TEST Contractor 5",
-            WorkActivity: "TEST WorkActivity 5",
-            Super: 15.5,
-            Labor: 10.5,
-            Equipment: "TEST Equipment 5",
-            WorkPerformed: "TEST Work Performed 5",
-            isDeleted: 0,
-          },
-          {
-            id: 6,
-            Contractor: "TEST Contractor 6",
-            WorkActivity: "TEST WorkActivity 6",
-            Super: 15.5,
-            Labor: 10.5,
-            Equipment: "TEST Equipment 7",
-            WorkPerformed: "TEST Work Performed 7",
-            isDeleted: 0,
-          },
+        await axios({
+          method: "get",
+          url: `/api/project-activity?projectID=${projectState}&selectedDate=${formatDate(
+            selectedDate
+          )}`,
+          timeout: 1000000, // 5 seconds timeout
+          headers: {},
+        }).then(response => {
+          setData(response.data.result[1]);
+          console.log(response.data.result[0]);
+          if (response.data.result[0][0] !== undefined) {
+            setActivity({
+              Delivery: response.data.result[0][0].Delivery,
+              Problems: response.data.result[0][0].Problems,
+              Unforeseen: response.data.result[0][0].Unforeseen,
+            });
+          } else {
+            setActivity({
+              Delivery: "",
+              Problems: "",
+              Unforeseen: "",
+            });
+          }
+        });
+        // setData([
+        //   {
+        //     id: 1,
+        //     Contractor: "TEST Contractor 1",
+        //     WorkActivity: "TEST WorkActivity 1",
+        //     Super: 15.5,
+        //     Labor: 10.5,
+        //     Equipment: "TEST Equipment 1",
+        //     WorkPerformed: "TEST Work Performed 1",
+        //     isDeleted: 0,
+        //   },
+        //   {
+        //     id: 2,
+        //     Contractor: "TEST Contractor 2",
+        //     WorkActivity: "TEST WorkActivity 2",
+        //     Super: 15.5,
+        //     Labor: 10.5,
+        //     Equipment: "TEST Equipment 2",
+        //     WorkPerformed: "TEST Work Performed 2",
+        //     isDeleted: 0,
+        //   },
+        //   {
+        //     id: 3,
+        //     Contractor: "TEST Contractor 3",
+        //     WorkActivity: "TEST WorkActivity 3",
+        //     Super: 15.5,
+        //     Labor: 10.5,
+        //     Equipment: "TEST Equipment 3",
+        //     WorkPerformed: "TEST Work Performed 3",
+        //     isDeleted: 0,
+        //   },
+        //   {
+        //     id: 4,
+        //     Contractor: "TEST Contractor 4",
+        //     WorkActivity: "TEST WorkActivity 4",
+        //     Super: 15.5,
+        //     Labor: 10.5,
+        //     Equipment: "TEST Equipment 4",
+        //     WorkPerformed: "TEST Work Performed 4",
+        //     isDeleted: 0,
+        //   },
+        //   {
+        //     id: 5,
+        //     Contractor: "TEST Contractor 5",
+        //     WorkActivity: "TEST WorkActivity 5",
+        //     Super: 15.5,
+        //     Labor: 10.5,
+        //     Equipment: "TEST Equipment 5",
+        //     WorkPerformed: "TEST Work Performed 5",
+        //     isDeleted: 0,
+        //   },
+        //   {
+        //     id: 6,
+        //     Contractor: "TEST Contractor 6",
+        //     WorkActivity: "TEST WorkActivity 6",
+        //     Super: 15.5,
+        //     Labor: 10.5,
+        //     Equipment: "TEST Equipment 7",
+        //     WorkPerformed: "TEST Work Performed 7",
+        //     isDeleted: 0,
+        //   },
 
-          {
-            id: 7,
-            Contractor: "TEST Contractor 8",
-            WorkActivity: "TEST WorkActivity 8",
-            Super: 15.5,
-            Labor: 10.5,
-            Equipment: "TEST Equipment 8",
-            WorkPerformed: "TEST Work Performed 8",
-            isDeleted: 0,
-          },
-          {
-            id: 8,
-            Contractor: "TEST Contractor 9",
-            WorkActivity: "TEST WorkActivity 9",
-            Super: 15.5,
-            Labor: 10.5,
-            Equipment: "TEST Equipment 9",
-            WorkPerformed: "TEST Work Performed 9",
-            isDeleted: 0,
-          },
-        ]);
+        //   {
+        //     id: 7,
+        //     Contractor: "TEST Contractor 8",
+        //     WorkActivity: "TEST WorkActivity 8",
+        //     Super: 15.5,
+        //     Labor: 10.5,
+        //     Equipment: "TEST Equipment 8",
+        //     WorkPerformed: "TEST Work Performed 8",
+        //     isDeleted: 0,
+        //   },
+        //   {
+        //     id: 8,
+        //     Contractor: "TEST Contractor 9",
+        //     WorkActivity: "TEST WorkActivity 9",
+        //     Super: 15.5,
+        //     Labor: 10.5,
+        //     Equipment: "TEST Equipment 9",
+        //     WorkPerformed: "TEST Work Performed 9",
+        //     isDeleted: 0,
+        //   },
+        // ]);
       } else {
         setData([]);
       }
@@ -753,6 +777,7 @@ const workActivities = () => {
             </div>
             <div>
               <TextField
+                value={activity.Delivery}
                 label="Delivery Pick-up"
                 style={{ margin: 8 }}
                 fullWidth
@@ -773,6 +798,7 @@ const workActivities = () => {
                 }}
               />
               <TextField
+                value={activity.Problems}
                 label="Potential Problems"
                 style={{ margin: 8 }}
                 fullWidth
@@ -793,6 +819,7 @@ const workActivities = () => {
                 }}
               />
               <TextField
+                value={activity.Unforeseen}
                 label="Unforeseen Condition"
                 style={{ margin: 8 }}
                 fullWidth
