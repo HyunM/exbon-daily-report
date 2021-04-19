@@ -41,7 +41,7 @@ const projectActivityHandler = (req, res) => {
           const request = new mssql.Request();
 
           const query = `EXEC [Hammer].[dbo].[ProjectActivity_UpdateOrInsert]
-          ${body.ProjectID}, "${body.Date}", "${body.Delivery}, "${body.Problems}, "${body.Unforeseen}",`;
+          ${body.ProjectID}, "${body.Date}", '${body.Delivery}', '${body.Problems}', '${body.Unforeseen}'`;
           /* --Params--
           	@projectID int,
             @date date,

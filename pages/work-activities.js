@@ -428,7 +428,6 @@ const workActivities = () => {
           headers: {},
         }).then(response => {
           setData(response.data.result[1]);
-          console.log(response.data.result[0]);
           if (response.data.result[0][0] !== undefined) {
             setActivity({
               Delivery: response.data.result[0][0].Delivery,
@@ -546,6 +545,12 @@ const workActivities = () => {
   ]);
 
   const handleSaveBtn = async () => {
+    const editValue = {
+      Delivery: activity.Delivery.replaceAll(`'`, `''`),
+      Problems: activity.Problems.replaceAll(`'`, `''`),
+      Unforeseen: activity.Unforeseen.replaceAll(`'`, `''`),
+    };
+
     await axios({
       method: "post",
       url: `/api/project-activity?`,
@@ -561,15 +566,40 @@ const workActivities = () => {
       data: {
         ProjectID: projectState,
         Date: selectedDate,
-        Delivery: activity.Delivery,
-        Problems: activity.Problems,
-        Unforeseen: activity.Unforeseen,
+        Delivery: editValue.Delivery,
+        Problems: editValue.Problems,
+        Unforeseen: editValue.Unforeseen,
       },
-    });
+    }).then(alert("Save Complete"));
+  };
+
+  const handleChangeDelivery = value => {
+    setActivity(() => ({
+      Delivery: value,
+      Problems: activity.Problems,
+      Unforeseen: activity.Unforeseen,
+    }));
+  };
+
+  const handleChangeProblems = value => {
+    setActivity(() => ({
+      Delivery: activity.Delivery,
+      Problems: value,
+      Unforeseen: activity.Unforeseen,
+    }));
+  };
+
+  const handleChangeUnforeseen = value => {
+    setActivity(() => ({
+      Delivery: activity.Delivery,
+      Problems: activity.Problems,
+      Unforeseen: value,
+    }));
   };
 
   return (
     <>
+      {console.log(activity)}
       <Head>
         <title>Daily Report</title>
         <link rel="icon" href="/favicon.ico" />
@@ -702,11 +732,9 @@ const workActivities = () => {
                     prepareRow(row);
                     return (
                       <tr {...row.getRowProps()}>
-                        {console.log({ ...row.getRowProps() })}
                         {row.cells.map((cell, j) => {
                           return (
                             <td {...cell.getCellProps()}>
-                              {console.log({ ...cell.getCellProps() })}
                               {cell.render("Cell")}
                             </td>
                           );
@@ -774,8 +802,6 @@ const workActivities = () => {
             </div>
             <div>
               <TextField
-                id="delivery-input"
-                value={activity.Delivery}
                 label="Delivery Pick-up"
                 style={{ margin: 8 }}
                 fullWidth
@@ -794,10 +820,10 @@ const workActivities = () => {
                   width: "99%",
                   marginLeft: "8px",
                 }}
+                value={activity.Delivery !== undefined ? activity.Delivery : ""}
+                onChange={e => handleChangeDelivery(e.target.value)}
               />
               <TextField
-                id="problems-input"
-                value={activity.Problems}
                 label="Potential Problems"
                 style={{ margin: 8 }}
                 fullWidth
@@ -816,10 +842,10 @@ const workActivities = () => {
                   marginLeft: "8px",
                   width: "99%",
                 }}
+                value={activity.Problems !== undefined ? activity.Problems : ""}
+                onChange={e => handleChangeProblems(e.target.value)}
               />
               <TextField
-                id="unforeseen-input"
-                value={activity.Unforeseen}
                 label="Unforeseen Condition"
                 style={{ margin: 8 }}
                 fullWidth
@@ -838,6 +864,10 @@ const workActivities = () => {
                   marginLeft: "8px",
                   width: "99%",
                 }}
+                value={
+                  activity.Unforeseen !== undefined ? activity.Unforeseen : ""
+                }
+                onChange={e => handleChangeUnforeseen(e.target.value)}
               />
             </div>
           </div>
