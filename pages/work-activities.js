@@ -545,6 +545,29 @@ const workActivities = () => {
     "03/10/2021",
   ]);
 
+  const handleSaveBtn = async () => {
+    await axios({
+      method: "post",
+      url: `/api/project-activity?`,
+      timeout: 1000000, // 5 seconds timeout
+      headers: {},
+      /* --Params--
+          	@projectID int,
+            @date date,
+            @delivery nvarchar(1000),
+            @problems nvarchar(1000),
+            @unforeseen nvarchar(1000)
+          */
+      data: {
+        ProjectID: projectState,
+        Date: selectedDate,
+        Delivery: activity.Delivery,
+        Problems: activity.Problems,
+        Unforeseen: activity.Unforeseen,
+      },
+    });
+  };
+
   return (
     <>
       <Head>
@@ -654,6 +677,7 @@ const workActivities = () => {
                   size="small"
                   className={styles["header__right__save-btn"]}
                   startIcon={<SaveIcon />}
+                  onClick={handleSaveBtn}
                 >
                   Save
                 </Button>
@@ -708,15 +732,17 @@ const workActivities = () => {
                       );
                     } else {
                       return (
-                        <tr {...row.getRowProps()}>
-                          {row.cells.map((cell, j) => {
-                            return (
-                              <td {...cell.getCellProps()}>
-                                {cell.render("Cell")}
-                              </td>
-                            );
-                          })}
-                        </tr>
+                        <React.Fragment key={i}>
+                          <tr {...row.getRowProps()}>
+                            {row.cells.map((cell, j) => {
+                              return (
+                                <td {...cell.getCellProps()}>
+                                  {cell.render("Cell")}
+                                </td>
+                              );
+                            })}
+                          </tr>
+                        </React.Fragment>
                       );
                     }
                   })}
@@ -782,6 +808,7 @@ const workActivities = () => {
             </div>
             <div>
               <TextField
+                id="delivery-input"
                 value={activity.Delivery}
                 label="Delivery Pick-up"
                 style={{ margin: 8 }}
@@ -803,6 +830,7 @@ const workActivities = () => {
                 }}
               />
               <TextField
+                id="problems-input"
                 value={activity.Problems}
                 label="Potential Problems"
                 style={{ margin: 8 }}
@@ -824,6 +852,7 @@ const workActivities = () => {
                 }}
               />
               <TextField
+                id="unforeseen-input"
                 value={activity.Unforeseen}
                 label="Unforeseen Condition"
                 style={{ margin: 8 }}
