@@ -32,6 +32,37 @@ const projectActivityHandler = (req, res) => {
         });
         break;
 
+      case "POST":
+        mssql.connect(dbserver.dbConfig, err => {
+          if (err) {
+            console.error(err);
+            return resolve();
+          }
+          const request = new mssql.Request();
+
+          const query = `EXEC [Hammer].[dbo].[ProjectActivity_UpdateOrInsert]
+          ${body.ProjectID}, "${body.Date}", "${body.Delivery}, "${body.Problems}, "${body.Unforeseen}",`;
+          /* --Params--
+          	@projectID int,
+            @date date,
+            @delivery nvarchar(1000),
+            @problems nvarchar(1000),
+            @unforeseen nvarchar(1000)
+          */
+
+          request.query(query, (err, recordset) => {
+            if (err) {
+              console.error(err);
+              return resolve();
+            }
+            res.status(200).json({
+              message: "Success.",
+            });
+            return resolve();
+          });
+        });
+        break;
+
       default:
         res.setHeader("Allow", ["GET", "POST", "PUT"]);
         res.status(405).end(`Method ${method} Not Allowed`);
