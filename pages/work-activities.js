@@ -698,111 +698,77 @@ const workActivities = () => {
                   ))}
                 </thead>
                 <tbody {...getTableBodyProps()}>
-                  {rows.map((row, i) => {
+                  {rows.map(row => {
                     prepareRow(row);
-                    if (i == rows.length - 1) {
-                      return (
-                        <React.Fragment key={i}>
-                          <tr {...row.getRowProps()}>
-                            {console.log({ ...row.getRowProps() })}
-                            {row.cells.map((cell, j) => {
-                              return (
-                                <td {...cell.getCellProps()}>
-                                  {console.log({ ...cell.getCellProps() })}
-                                  {cell.render("Cell")}
-                                </td>
-                              );
-                            })}
-                          </tr>
-                          <tr {...row.getRowProps()}>
-                            {row.cells.map((cell, j) => {
-                              return (
-                                <td {...cell.getCellProps()}>
-                                  <div
-                                    className={styles["table__button-add"]}
-                                    onClick={addActivityRow}
-                                  >
-                                    {j === 0 ? "(+) ADD" : ""}
-                                  </div>
-                                </td>
-                              );
-                            })}
-                          </tr>
-                        </React.Fragment>
-                      );
-                    } else {
-                      return (
-                        <React.Fragment key={i}>
-                          <tr {...row.getRowProps()}>
-                            {row.cells.map((cell, j) => {
-                              return (
-                                <td {...cell.getCellProps()}>
-                                  {cell.render("Cell")}
-                                </td>
-                              );
-                            })}
-                          </tr>
-                        </React.Fragment>
-                      );
-                    }
+                    return (
+                      <tr {...row.getRowProps()}>
+                        {console.log({ ...row.getRowProps() })}
+                        {row.cells.map((cell, j) => {
+                          return (
+                            <td {...cell.getCellProps()}>
+                              {console.log({ ...cell.getCellProps() })}
+                              {cell.render("Cell")}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    );
                   })}
-                  {rows.length === 0 && (
-                    <tr style={{ display: "flex", width: "1130px" }}>
-                      <td
-                        className={styles["table__button-add"]}
-                        style={{
-                          boxSizing: "border-box",
-                          display: "inline-block",
-                          width: "220px",
-                        }}
-                        onClick={addActivityRow}
-                      >
-                        (+) ADD
-                      </td>
-                      <td
-                        style={{
-                          boxSizing: "border-box",
-                          display: "inline-block",
-                          width: "250px",
-                        }}
-                      ></td>
-                      <td
-                        style={{
-                          boxSizing: "border-box",
-                          display: "inline-block",
-                          width: "80px",
-                        }}
-                      ></td>
-                      <td
-                        style={{
-                          boxSizing: "border-box",
-                          display: "inline-block",
-                          width: "80px",
-                        }}
-                      ></td>
-                      <td
-                        style={{
-                          boxSizing: "border-box",
-                          display: "inline-block",
-                          width: "203px",
-                        }}
-                      ></td>
-                      <td
-                        style={{
-                          boxSizing: "border-box",
-                          display: "inline-block",
-                          width: "260px",
-                        }}
-                      ></td>
-                      <td
-                        style={{
-                          boxSizing: "border-box",
-                          display: "inline-block",
-                          width: "37px",
-                        }}
-                      ></td>
-                    </tr>
-                  )}
+                  <tr style={{ display: "flex", width: "1130px" }}>
+                    <td
+                      className={styles["table__button-add"]}
+                      style={{
+                        boxSizing: "border-box",
+                        display: "inline-block",
+                        width: "220px",
+                      }}
+                      onClick={addActivityRow}
+                    >
+                      (+) ADD
+                    </td>
+                    <td
+                      style={{
+                        boxSizing: "border-box",
+                        display: "inline-block",
+                        width: "250px",
+                      }}
+                    ></td>
+                    <td
+                      style={{
+                        boxSizing: "border-box",
+                        display: "inline-block",
+                        width: "80px",
+                      }}
+                    ></td>
+                    <td
+                      style={{
+                        boxSizing: "border-box",
+                        display: "inline-block",
+                        width: "80px",
+                      }}
+                    ></td>
+                    <td
+                      style={{
+                        boxSizing: "border-box",
+                        display: "inline-block",
+                        width: "203px",
+                      }}
+                    ></td>
+                    <td
+                      style={{
+                        boxSizing: "border-box",
+                        display: "inline-block",
+                        width: "260px",
+                      }}
+                    ></td>
+                    <td
+                      style={{
+                        boxSizing: "border-box",
+                        display: "inline-block",
+                        width: "37px",
+                      }}
+                    ></td>
+                  </tr>
                 </tbody>
               </table>
             </div>
