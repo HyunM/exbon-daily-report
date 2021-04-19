@@ -87,6 +87,7 @@ const workActivities = () => {
   });
   const [data, setData] = useState(() => []);
   const [activity, setActivity] = useState(() => []);
+  const [selectedDate, handleDateChange] = useState(new Date());
 
   const columns = React.useMemo(
     () => [
@@ -527,18 +528,22 @@ const workActivities = () => {
         // ]);
       } else {
         setData([]);
+        setActivity({
+          Delivery: "",
+          Problems: "",
+          Unforeseen: "",
+        });
       }
     };
 
     promises.push(fetchData());
     trackPromise(Promise.all(promises).then(() => {}));
-  }, [projectState, status, router.isReady]);
+  }, [projectState, status, selectedDate, router.isReady]);
 
   const [selectedDays, setSelectedDays] = useState([
     "04/10/2021",
     "03/10/2021",
   ]);
-  const [selectedDate, handleDateChange] = useState(new Date());
 
   return (
     <>
@@ -659,7 +664,7 @@ const workActivities = () => {
               <table {...getTableProps()}>
                 <thead>
                   {headerGroups.map((headerGroup, i) => (
-                    <tr {...headerGroup.getHeaderGroupProps()}>
+                    <tr {...headerGroup.getHeaderGroupProps()} key={i}>
                       {headerGroup.headers.map((column, j) => (
                         <th {...column.getHeaderProps()}>
                           {column.render("Header")}
