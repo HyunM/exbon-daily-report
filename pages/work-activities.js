@@ -599,7 +599,6 @@ const workActivities = () => {
 
   return (
     <>
-      {console.log(activity)}
       <Head>
         <title>Daily Report</title>
         <link rel="icon" href="/favicon.ico" />
