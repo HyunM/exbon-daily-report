@@ -39,6 +39,33 @@ const projectActivityItemHandler = (req, res) => {
         });
         break;
 
+      case "DELETE":
+        mssql.connect(dbserver.dbConfig, err => {
+          if (err) {
+            console.error(err);
+            return resolve();
+          }
+          const request = new mssql.Request();
+
+          const query = `EXEC [Hammer].[dbo].[ProjectActivityItem_Delete]
+          ${body.ActivityID}`;
+          /* --Params--
+          	@activityID int	
+          */
+
+          request.query(query, (err, recordset) => {
+            if (err) {
+              console.error(err);
+              return resolve();
+            }
+            res.status(200).json({
+              message: "Success.",
+            });
+            return resolve();
+          });
+        });
+        break;
+
       default:
         res.setHeader("Allow", ["POST", "DELETE"]);
         res.status(405).end(`Method ${method} Not Allowed`);
