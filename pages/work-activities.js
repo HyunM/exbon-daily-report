@@ -571,9 +571,47 @@ const workActivities = () => {
         Unforeseen: editValue.Unforeseen,
       },
     }).then(response => {
-      alert("Save Complete");
       AID = response.data.ActivityID;
     });
+
+    await axios({
+      method: "delete",
+      url: `/api/project-activity-item`,
+      timeout: 1000000, // 5 seconds timeout
+      headers: {},
+      data: {
+        ActivityID: AID,
+      },
+    });
+
+    data.forEach(async element => {
+      await axios({
+        method: "post",
+        url: `/api/project-activity-item`,
+        timeout: 1000000, // 5 seconds timeout
+        headers: {},
+        /* --Params--
+          @activityID int,
+
+          @contractor nvarchar(100),
+          @workActivity nvarchar(100),
+          @super float,
+          @labor float,
+          @equipment nvarchar(100),
+          @workPerformed nvarchar(300)
+        */
+        data: {
+          ActivityID: AID,
+          Contractor: element.Contractor,
+          WorkActivity: element.WorkActivity,
+          Super: element.Super,
+          Labor: element.Labor,
+          Equipment: element.Equipment,
+          WorkPerformed: element.WorkPerformed,
+        },
+      });
+    });
+    alert("Save Complete");
   };
 
   const handleChangeDelivery = value => {
