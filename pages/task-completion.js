@@ -1344,7 +1344,7 @@ const Task = () => {
       status.cookies.employeeid === undefined ? (
         <Login signin={signin} />
       ) : !status.permission ? (
-        <NotPermission />
+        <NotPermission path="task-completion" />
       ) : (
         <>
           <SimpleTabs

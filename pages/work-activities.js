@@ -23,8 +23,6 @@ import DeleteTwoTone from "@material-ui/icons/DeleteTwoTone";
 
 import Autocomplete from "react-autocomplete";
 
-import NotPermission from "../components/MainTab/NotPermission";
-
 let dataContractor;
 const materialTheme = createMuiTheme({
   palette: {
@@ -706,7 +704,6 @@ const workActivities = () => {
 
   return (
     <>
-      {console.log(status.permission)}
       <Head>
         <title>Daily Report</title>
         <link rel="icon" href="/favicon.ico" />
@@ -718,6 +715,8 @@ const workActivities = () => {
       {status.cookies.username === undefined ||
       status.cookies.employeeid === undefined ? (
         <Login signin={signin} />
+      ) : !status.permission ? (
+        <NotPermission path="work-activities" />
       ) : (
         <>
           <SimpleTabs
