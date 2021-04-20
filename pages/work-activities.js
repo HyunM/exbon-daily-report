@@ -550,7 +550,7 @@ const workActivities = () => {
       Problems: activity.Problems.replaceAll(`'`, `''`),
       Unforeseen: activity.Unforeseen.replaceAll(`'`, `''`),
     };
-
+    let AID = 0;
     await axios({
       method: "post",
       url: `/api/project-activity?`,
@@ -570,7 +570,10 @@ const workActivities = () => {
         Problems: editValue.Problems,
         Unforeseen: editValue.Unforeseen,
       },
-    }).then(alert("Save Complete"));
+    }).then(response => {
+      alert("Save Complete");
+      AID = response.data.ActivityID;
+    });
   };
 
   const handleChangeDelivery = value => {

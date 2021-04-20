@@ -57,6 +57,7 @@ const projectActivityHandler = (req, res) => {
             }
             res.status(200).json({
               message: "Success.",
+              ActivityID: recordset.recordset[0].ActivityID,
             });
             return resolve();
           });
