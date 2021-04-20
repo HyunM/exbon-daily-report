@@ -22,6 +22,9 @@ import TextField from "@material-ui/core/TextField";
 import DeleteTwoTone from "@material-ui/icons/DeleteTwoTone";
 
 import Autocomplete from "react-autocomplete";
+
+import NotPermission from "../components/MainTab/NotPermission";
+
 let dataContractor;
 const materialTheme = createMuiTheme({
   palette: {
@@ -703,7 +706,7 @@ const workActivities = () => {
 
   return (
     <>
-      {console.log(contractor)}
+      {console.log(status.permission)}
       <Head>
         <title>Daily Report</title>
         <link rel="icon" href="/favicon.ico" />
