@@ -21,6 +21,8 @@ import { formatDate } from "../components/main/formatDate";
 import TextField from "@material-ui/core/TextField";
 import DeleteTwoTone from "@material-ui/icons/DeleteTwoTone";
 
+import Autocomplete from "react-autocomplete";
+let dataContractor;
 const materialTheme = createMuiTheme({
   palette: {
     primary: {
@@ -87,6 +89,7 @@ const workActivities = () => {
   });
   const [data, setData] = useState(() => []);
   const [activity, setActivity] = useState(() => []);
+  const [contractor, setContractor] = useState(() => []);
   const [selectedDate, handleDateChange] = useState(new Date());
 
   const columns = React.useMemo(
@@ -181,15 +184,59 @@ const workActivities = () => {
     //         Equipment: "TEST Equipment",
     //         WorkPerformed: "TEST Work Performed", isDeleted: 0,
 
+    const onBlurForContractor = e => {
+      updateContractorData(index, id, value);
+    };
+
+    const onChangeSelect = value => {
+      setValue(value);
+      updateContractorData(index, id, value);
+    };
+
     if (id === "Contractor") {
       return (
-        <input
+        <Autocomplete
+          getItemValue={item => item.Name}
+          items={dataContractor}
+          renderItem={(item, isHighlighted) => (
+            <div
+              key={item.Name}
+              style={{
+                background: isHighlighted ? "lightgray" : "white",
+              }}
+            >
+              {item.Name}
+            </div>
+          )}
+          shouldItemRender={(item, value) =>
+            item.Name.toString()
+              .toLowerCase()
+              .indexOf(value.toString().toLowerCase()) > -1
+          }
+          value={value}
+          onChange={onChange}
+          inputProps={{ onBlur: onBlurForContractor }}
+          onSelect={val => onChangeSelect(val)}
+          renderInput={props => {
+            return (
+              <input
+                className={styles["table__contractor__input"]}
+                {...props}
+              ></input>
+            );
+          }}
+          // menuStyle={props => ({
+          //   ...props,
+          // })}
+        />
+      );
+
+      /* <input
           className={styles["table__contractor__input"]}
           value={value}
           onChange={onChange}
           onBlur={onBlur}
-        />
-      );
+        /> */
     } else if (id === "WorkActivity") {
       return (
         <input
@@ -246,6 +293,21 @@ const workActivities = () => {
       );
     }
     return <input value={value} onChange={onChange} onBlur={onBlur} />;
+  };
+
+  const updateContractorData = (rowIndex, columnId, value) => {
+    // We also turn on the flag to not reset the page
+    setData(old =>
+      old.map((row, index) => {
+        if (index === rowIndex) {
+          return {
+            ...old[rowIndex],
+            [columnId]: value,
+          };
+        }
+        return row;
+      })
+    );
   };
 
   const addActivityRow = () => {
@@ -441,6 +503,7 @@ const workActivities = () => {
               Unforeseen: "",
             });
           }
+          dataContractor = response.data.result[2];
         });
         // setData([
         //   {
@@ -640,6 +703,7 @@ const workActivities = () => {
 
   return (
     <>
+      {console.log(contractor)}
       <Head>
         <title>Daily Report</title>
         <link rel="icon" href="/favicon.ico" />

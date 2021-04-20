@@ -158,6 +158,10 @@
   text-align: left !important;
 }
 
+.table__contractor__input + div {
+  z-index: 9999;
+}
+
 .table__work-activity__input {
   width: 230px !important;
   text-align: left !important;
