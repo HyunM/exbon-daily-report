@@ -23,7 +23,7 @@ import DeleteTwoTone from "@material-ui/icons/DeleteTwoTone";
 
 import Autocomplete from "react-autocomplete";
 
-let dataContractor;
+let dataContractor = [{ Name: "" }];
 const materialTheme = createMuiTheme({
   palette: {
     primary: {
@@ -90,7 +90,6 @@ const workActivities = () => {
   });
   const [data, setData] = useState(() => []);
   const [activity, setActivity] = useState(() => []);
-  const [contractor, setContractor] = useState(() => []);
   const [selectedDate, handleDateChange] = useState(new Date());
 
   const columns = React.useMemo(
@@ -649,6 +648,12 @@ const workActivities = () => {
     });
 
     data.forEach(async element => {
+      const editValue = {
+        Contractor: element.Contractor.replaceAll(`'`, `''`),
+        WorkActivity: element.WorkActivity.replaceAll(`'`, `''`),
+        Equipment: element.Equipment.replaceAll(`'`, `''`),
+        WorkPerformed: element.WorkPerformed.replaceAll(`'`, `''`),
+      };
       await axios({
         method: "post",
         url: `/api/project-activity-item`,
@@ -666,12 +671,12 @@ const workActivities = () => {
         */
         data: {
           ActivityID: AID,
-          Contractor: element.Contractor,
-          WorkActivity: element.WorkActivity,
+          Contractor: editValue.Contractor,
+          WorkActivity: editValue.WorkActivity,
           Super: element.Super,
           Labor: element.Labor,
-          Equipment: element.Equipment,
-          WorkPerformed: element.WorkPerformed,
+          Equipment: editValue.Equipment,
+          WorkPerformed: editValue.WorkPerformed,
         },
       });
     });
