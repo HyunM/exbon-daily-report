@@ -23,6 +23,9 @@ import DeleteTwoTone from "@material-ui/icons/DeleteTwoTone";
 
 import Autocomplete from "react-autocomplete";
 
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
+toast.configure();
 let dataContractor = [{ Name: "" }];
 const materialTheme = createMuiTheme({
   palette: {
@@ -680,7 +683,15 @@ const workActivities = () => {
         },
       });
     });
-    alert("Save Complete");
+    toast.success(
+      <div className={styles["alert__complete"]}>
+        <strong>Save Complete</strong>
+      </div>,
+      {
+        position: toast.POSITION.BOTTOM_CENTER,
+        hideProgressBar: true,
+      }
+    );
   };
 
   const handleChangeDelivery = value => {

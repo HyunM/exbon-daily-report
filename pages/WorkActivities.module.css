@@ -207,3 +207,7 @@
   color: white;
   cursor: pointer;
 }
+
+.alert__complete {
+  text-align: center;
+}
