@@ -859,7 +859,12 @@ const workActivities = () => {
                   alignItems: "center",
                 }}
               >
-                <Loader type="Audio" color="#4e88de" height="150" width="150" />
+                <Loader
+                  type="BallTriangle"
+                  color="#1ec996"
+                  height="150"
+                  width="150"
+                />
               </div>
             ) : (
               <>
