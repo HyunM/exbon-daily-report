@@ -25,6 +25,7 @@ import Autocomplete from "react-autocomplete";
 
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
+
 toast.configure();
 let dataContractor = [{ Name: "" }];
 const materialTheme = createMuiTheme({
@@ -94,6 +95,7 @@ const workActivities = () => {
   const [data, setData] = useState(() => []);
   const [activity, setActivity] = useState(() => []);
   const [selectedDate, handleDateChange] = useState(new Date());
+  const { promiseInProgress } = usePromiseTracker();
 
   const columns = React.useMemo(
     () => [
@@ -611,58 +613,61 @@ const workActivities = () => {
   ]);
 
   const handleSaveBtn = async () => {
-    const editValue = {
-      Delivery: activity.Delivery.replaceAll(`'`, `''`),
-      Problems: activity.Problems.replaceAll(`'`, `''`),
-      Unforeseen: activity.Unforeseen.replaceAll(`'`, `''`),
-    };
-    let AID = 0;
-    await axios({
-      method: "post",
-      url: `/api/project-activity?`,
-      timeout: 1000000, // 5 seconds timeout
-      headers: {},
-      /* --Params--
+    let promises = [];
+
+    const fetchData = async () => {
+      const editValue = {
+        Delivery: activity.Delivery.replaceAll(`'`, `''`),
+        Problems: activity.Problems.replaceAll(`'`, `''`),
+        Unforeseen: activity.Unforeseen.replaceAll(`'`, `''`),
+      };
+      let AID = 0;
+      await axios({
+        method: "post",
+        url: `/api/project-activity?`,
+        timeout: 1000000, // 5 seconds timeout
+        headers: {},
+        /* --Params--
           	@projectID int,
             @date date,
             @delivery nvarchar(1000),
             @problems nvarchar(1000),
             @unforeseen nvarchar(1000)
           */
-      data: {
-        ProjectID: projectState,
-        Date: selectedDate,
-        Delivery: editValue.Delivery,
-        Problems: editValue.Problems,
-        Unforeseen: editValue.Unforeseen,
-      },
-    }).then(response => {
-      AID = response.data.ActivityID;
-    });
+        data: {
+          ProjectID: projectState,
+          Date: selectedDate,
+          Delivery: editValue.Delivery,
+          Problems: editValue.Problems,
+          Unforeseen: editValue.Unforeseen,
+        },
+      }).then(response => {
+        AID = response.data.ActivityID;
+      });
 
-    await axios({
-      method: "delete",
-      url: `/api/project-activity-item`,
-      timeout: 1000000, // 5 seconds timeout
-      headers: {},
-      data: {
-        ActivityID: AID,
-      },
-    });
-
-    data.forEach(async element => {
-      const editValue = {
-        Contractor: element.Contractor.replaceAll(`'`, `''`),
-        WorkActivity: element.WorkActivity.replaceAll(`'`, `''`),
-        Equipment: element.Equipment.replaceAll(`'`, `''`),
-        WorkPerformed: element.WorkPerformed.replaceAll(`'`, `''`),
-      };
       await axios({
-        method: "post",
+        method: "delete",
         url: `/api/project-activity-item`,
         timeout: 1000000, // 5 seconds timeout
         headers: {},
-        /* --Params--
+        data: {
+          ActivityID: AID,
+        },
+      });
+
+      data.forEach(async element => {
+        const editValue = {
+          Contractor: element.Contractor.replaceAll(`'`, `''`),
+          WorkActivity: element.WorkActivity.replaceAll(`'`, `''`),
+          Equipment: element.Equipment.replaceAll(`'`, `''`),
+          WorkPerformed: element.WorkPerformed.replaceAll(`'`, `''`),
+        };
+        await axios({
+          method: "post",
+          url: `/api/project-activity-item`,
+          timeout: 1000000, // 5 seconds timeout
+          headers: {},
+          /* --Params--
           @activityID int,
 
           @contractor nvarchar(100),
@@ -672,25 +677,33 @@ const workActivities = () => {
           @equipment nvarchar(100),
           @workPerformed nvarchar(300)
         */
-        data: {
-          ActivityID: AID,
-          Contractor: editValue.Contractor,
-          WorkActivity: editValue.WorkActivity,
-          Super: element.Super,
-          Labor: element.Labor,
-          Equipment: editValue.Equipment,
-          WorkPerformed: editValue.WorkPerformed,
-        },
+          data: {
+            ActivityID: AID,
+            Contractor: editValue.Contractor,
+            WorkActivity: editValue.WorkActivity,
+            Super: element.Super,
+            Labor: element.Labor,
+            Equipment: editValue.Equipment,
+            WorkPerformed: editValue.WorkPerformed,
+          },
+        });
       });
-    });
-    toast.success(
-      <div className={styles["alert__complete"]}>
-        <strong>Save Complete</strong>
-      </div>,
-      {
-        position: toast.POSITION.BOTTOM_CENTER,
-        hideProgressBar: true,
-      }
+    };
+
+    trackPromise(fetchData());
+
+    trackPromise(
+      Promise.all(promises).then(() => {
+        toast.success(
+          <div className={styles["alert__complete"]}>
+            <strong>Save Complete</strong>
+          </div>,
+          {
+            position: toast.POSITION.BOTTOM_CENTER,
+            hideProgressBar: true,
+          }
+        );
+      })
     );
   };
 
@@ -836,162 +849,184 @@ const workActivities = () => {
               </div>
             </div>
 
-            <div className={styles["table"]}>
-              <table {...getTableProps()}>
-                <thead>
-                  {headerGroups.map((headerGroup, i) => (
-                    <tr {...headerGroup.getHeaderGroupProps()} key={i}>
-                      {headerGroup.headers.map((column, j) => (
-                        <th {...column.getHeaderProps()}>
-                          {column.render("Header")}
-                        </th>
+            {promiseInProgress || !projectState ? (
+              <div
+                style={{
+                  width: "100%",
+                  height: "100",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Loader type="Audio" color="#4e88de" height="150" width="150" />
+              </div>
+            ) : (
+              <>
+                <div className={styles["table"]}>
+                  <table {...getTableProps()}>
+                    <thead>
+                      {headerGroups.map((headerGroup, i) => (
+                        <tr {...headerGroup.getHeaderGroupProps()} key={i}>
+                          {headerGroup.headers.map((column, j) => (
+                            <th {...column.getHeaderProps()}>
+                              {column.render("Header")}
+                            </th>
+                          ))}
+                        </tr>
                       ))}
-                    </tr>
-                  ))}
-                </thead>
-                <tbody {...getTableBodyProps()}>
-                  {rows.map(row => {
-                    prepareRow(row);
-                    return (
-                      <tr {...row.getRowProps()}>
-                        {row.cells.map((cell, j) => {
-                          return (
-                            <td {...cell.getCellProps()}>
-                              {cell.render("Cell")}
-                            </td>
-                          );
-                        })}
+                    </thead>
+                    <tbody {...getTableBodyProps()}>
+                      {rows.map(row => {
+                        prepareRow(row);
+                        return (
+                          <tr {...row.getRowProps()}>
+                            {row.cells.map((cell, j) => {
+                              return (
+                                <td {...cell.getCellProps()}>
+                                  {cell.render("Cell")}
+                                </td>
+                              );
+                            })}
+                          </tr>
+                        );
+                      })}
+                      <tr style={{ display: "flex", width: "1130px" }}>
+                        <td
+                          className={styles["table__button-add"]}
+                          style={{
+                            boxSizing: "border-box",
+                            display: "inline-block",
+                            width: "220px",
+                          }}
+                          onClick={addActivityRow}
+                        >
+                          (+) ADD
+                        </td>
+                        <td
+                          style={{
+                            boxSizing: "border-box",
+                            display: "inline-block",
+                            width: "250px",
+                          }}
+                        ></td>
+                        <td
+                          style={{
+                            boxSizing: "border-box",
+                            display: "inline-block",
+                            width: "80px",
+                          }}
+                        ></td>
+                        <td
+                          style={{
+                            boxSizing: "border-box",
+                            display: "inline-block",
+                            width: "80px",
+                          }}
+                        ></td>
+                        <td
+                          style={{
+                            boxSizing: "border-box",
+                            display: "inline-block",
+                            width: "203px",
+                          }}
+                        ></td>
+                        <td
+                          style={{
+                            boxSizing: "border-box",
+                            display: "inline-block",
+                            width: "260px",
+                          }}
+                        ></td>
+                        <td
+                          style={{
+                            boxSizing: "border-box",
+                            display: "inline-block",
+                            width: "37px",
+                          }}
+                        ></td>
                       </tr>
-                    );
-                  })}
-                  <tr style={{ display: "flex", width: "1130px" }}>
-                    <td
-                      className={styles["table__button-add"]}
-                      style={{
-                        boxSizing: "border-box",
-                        display: "inline-block",
-                        width: "220px",
-                      }}
-                      onClick={addActivityRow}
-                    >
-                      (+) ADD
-                    </td>
-                    <td
-                      style={{
-                        boxSizing: "border-box",
-                        display: "inline-block",
-                        width: "250px",
-                      }}
-                    ></td>
-                    <td
-                      style={{
-                        boxSizing: "border-box",
-                        display: "inline-block",
-                        width: "80px",
-                      }}
-                    ></td>
-                    <td
-                      style={{
-                        boxSizing: "border-box",
-                        display: "inline-block",
-                        width: "80px",
-                      }}
-                    ></td>
-                    <td
-                      style={{
-                        boxSizing: "border-box",
-                        display: "inline-block",
-                        width: "203px",
-                      }}
-                    ></td>
-                    <td
-                      style={{
-                        boxSizing: "border-box",
-                        display: "inline-block",
-                        width: "260px",
-                      }}
-                    ></td>
-                    <td
-                      style={{
-                        boxSizing: "border-box",
-                        display: "inline-block",
-                        width: "37px",
-                      }}
-                    ></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div>
-              <TextField
-                label="Delivery Pick-up"
-                style={{ margin: 8 }}
-                fullWidth
-                margin="normal"
-                InputLabelProps={{
-                  shrink: true,
-                  style: {
-                    fontWeight: 1000,
-                    fontSize: "1.2rem",
-                    color: "#1bb486",
-                  },
-                }}
-                variant="outlined"
-                style={{
-                  backgroundColor: "#ececf5",
-                  width: "99%",
-                  marginLeft: "8px",
-                }}
-                value={activity.Delivery !== undefined ? activity.Delivery : ""}
-                onChange={e => handleChangeDelivery(e.target.value)}
-              />
-              <TextField
-                label="Potential Problems"
-                style={{ margin: 8 }}
-                fullWidth
-                margin="normal"
-                InputLabelProps={{
-                  shrink: true,
-                  style: {
-                    fontWeight: 1000,
-                    fontSize: "1.2rem",
-                    color: "#1bb486",
-                  },
-                }}
-                variant="outlined"
-                style={{
-                  backgroundColor: "#ececf5",
-                  marginLeft: "8px",
-                  width: "99%",
-                }}
-                value={activity.Problems !== undefined ? activity.Problems : ""}
-                onChange={e => handleChangeProblems(e.target.value)}
-              />
-              <TextField
-                label="Unforeseen Condition"
-                style={{ margin: 8 }}
-                fullWidth
-                margin="normal"
-                InputLabelProps={{
-                  shrink: true,
-                  style: {
-                    fontWeight: 1000,
-                    fontSize: "1.2rem",
-                    color: "#1bb486",
-                  },
-                }}
-                variant="outlined"
-                style={{
-                  backgroundColor: "#ececf5",
-                  marginLeft: "8px",
-                  width: "99%",
-                }}
-                value={
-                  activity.Unforeseen !== undefined ? activity.Unforeseen : ""
-                }
-                onChange={e => handleChangeUnforeseen(e.target.value)}
-              />
-            </div>
+                    </tbody>
+                  </table>
+                </div>
+                <div>
+                  <TextField
+                    label="Delivery Pick-up"
+                    style={{ margin: 8 }}
+                    fullWidth
+                    margin="normal"
+                    InputLabelProps={{
+                      shrink: true,
+                      style: {
+                        fontWeight: 1000,
+                        fontSize: "1.2rem",
+                        color: "#1bb486",
+                      },
+                    }}
+                    variant="outlined"
+                    style={{
+                      backgroundColor: "#ececf5",
+                      width: "99%",
+                      marginLeft: "8px",
+                    }}
+                    value={
+                      activity.Delivery !== undefined ? activity.Delivery : ""
+                    }
+                    onChange={e => handleChangeDelivery(e.target.value)}
+                  />
+                  <TextField
+                    label="Potential Problems"
+                    style={{ margin: 8 }}
+                    fullWidth
+                    margin="normal"
+                    InputLabelProps={{
+                      shrink: true,
+                      style: {
+                        fontWeight: 1000,
+                        fontSize: "1.2rem",
+                        color: "#1bb486",
+                      },
+                    }}
+                    variant="outlined"
+                    style={{
+                      backgroundColor: "#ececf5",
+                      marginLeft: "8px",
+                      width: "99%",
+                    }}
+                    value={
+                      activity.Problems !== undefined ? activity.Problems : ""
+                    }
+                    onChange={e => handleChangeProblems(e.target.value)}
+                  />
+                  <TextField
+                    label="Unforeseen Condition"
+                    style={{ margin: 8 }}
+                    fullWidth
+                    margin="normal"
+                    InputLabelProps={{
+                      shrink: true,
+                      style: {
+                        fontWeight: 1000,
+                        fontSize: "1.2rem",
+                        color: "#1bb486",
+                      },
+                    }}
+                    variant="outlined"
+                    style={{
+                      backgroundColor: "#ececf5",
+                      marginLeft: "8px",
+                      width: "99%",
+                    }}
+                    value={
+                      activity.Unforeseen !== undefined
+                        ? activity.Unforeseen
+                        : ""
+                    }
+                    onChange={e => handleChangeUnforeseen(e.target.value)}
+                  />
+                </div>
+              </>
+            )}
           </div>
         </>
       )}
