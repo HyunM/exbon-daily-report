@@ -705,6 +705,20 @@ const workActivities = () => {
         );
       })
     );
+
+    axios({
+      method: "post",
+      url: `/api/log-daily-reports`,
+      timeout: 1000000, // 5 seconds timeout
+      headers: {},
+      data: {
+        EmployeeID: status.cookies.employeeid,
+        ProjectID: projectState,
+        Date: formatDate(selectedDate),
+        Category: "Work Activities",
+        Action: "update",
+      },
+    });
   };
 
   const handleChangeDelivery = value => {
