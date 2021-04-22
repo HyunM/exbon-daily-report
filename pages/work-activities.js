@@ -888,6 +888,52 @@ const workActivities = () => {
             ) : (
               <>
                 <div className={styles["table"]}>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "left",
+                      marginTop: "20px",
+                      marginBottom: "10px",
+                      fontFamily: "Roboto",
+                    }}
+                  >
+                    <p
+                      style={{
+                        marginTop: "0px",
+                        marginBottom: "0px",
+                        marginRight: "15px",
+                        marginLeft: "3px",
+                        fontFamily: "Roboto, sans-serif",
+                        color: "#534f51",
+                      }}
+                    >
+                      Weather
+                    </p>
+                    <select
+                      style={{
+                        marginBottom: "3px",
+                        fontFamily: "Roboto, sans-serif",
+                        fontSize: "medium",
+                        display: "inline-block",
+                        color: "#74646e",
+                        border: "1px solid #c8bfc4",
+                        borderRadius: "4px",
+                        boxShadow: "inset 1px 1px 2px #ddd8dc",
+                        background: "#fff",
+                        zIndex: "1",
+                        position: "relative",
+                      }}
+                    >
+                      <option>Sunny</option>
+                      <option>Cloudy</option>
+                      <option>Partly Cloudy</option>
+                      <option>Windy</option>
+                      <option>Rainy</option>
+                      <option>Foggy</option>
+                      <option>Snowy</option>
+                    </select>
+                  </div>
+
                   <table {...getTableProps()}>
                     <thead>
                       {headerGroups.map((headerGroup, i) => (
