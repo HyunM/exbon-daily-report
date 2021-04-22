@@ -124,3 +124,8 @@ body {
 .fc ::-webkit-scrollbar-thumb:hover {
   background: #b30000;
 }
+
+/* input[type="time"]::-webkit-calendar-picker-indicator {
+    background: none;
+    display: none;
+} */

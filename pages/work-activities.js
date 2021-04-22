@@ -753,7 +753,6 @@ const workActivities = () => {
   };
   return (
     <>
-      {console.log(data)}
       <Head>
         <title>Daily Report</title>
         <link rel="icon" href="/favicon.ico" />
@@ -1065,9 +1064,9 @@ const workActivities = () => {
                 <div>
                   <TextField
                     label="TESTS & INSPECTIONS"
-                    style={{ margin: 8 }}
                     fullWidth
                     margin="normal"
+                    InputProps={{ style: { color: "#888484" } }}
                     InputLabelProps={{
                       shrink: true,
                       style: {
@@ -1087,9 +1086,9 @@ const workActivities = () => {
                   />
                   <TextField
                     label="CORRECTIONAL ITEMS"
-                    style={{ margin: 8 }}
                     fullWidth
                     margin="normal"
+                    InputProps={{ style: { color: "#888484" } }}
                     InputLabelProps={{
                       shrink: true,
                       style: {
@@ -1113,9 +1112,9 @@ const workActivities = () => {
                   />
                   <TextField
                     label="NOTE"
-                    style={{ margin: 8 }}
                     fullWidth
                     margin="normal"
+                    InputProps={{ style: { color: "#888484" } }}
                     InputLabelProps={{
                       shrink: true,
                       style: {
