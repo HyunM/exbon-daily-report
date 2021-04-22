@@ -245,7 +245,7 @@ const workActivities = () => {
     } else if (id === "Trade") {
       return (
         <input
-          className={styles["table__work-activity__input"]}
+          className={styles["table__trade__input"]}
           value={value}
           onChange={onChange}
           onBlur={onBlur}
@@ -254,7 +254,7 @@ const workActivities = () => {
     } else if (id === "Workers") {
       return (
         <input
-          className={styles["table__super__input"]}
+          className={styles["table__workers__input"]}
           type="number"
           value={value}
           onChange={onChange}
@@ -264,7 +264,7 @@ const workActivities = () => {
     } else if (id === "Hours") {
       return (
         <input
-          className={styles["table__labor__input"]}
+          className={styles["table__hours__input"]}
           type="number"
           value={value}
           onChange={onChange}

@@ -162,17 +162,17 @@
   z-index: 9999;
 }
 
-.table__work-activity__input {
+.table__trade__input {
   width: 230px !important;
   text-align: left !important;
 }
 
-.table__super__input {
+.table__workers__input {
   width: 60px !important;
   text-align: right !important;
 }
 
-.table__labor__input {
+.table__hours__input {
   width: 60px !important;
   text-align: right !important;
 }
