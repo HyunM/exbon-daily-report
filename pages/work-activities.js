@@ -170,6 +170,7 @@ const workActivities = () => {
 
     const onChange = e => {
       setValue(e.target.value);
+      updateMyData(index, id, e.target.value);
     };
 
     // We'll only update the external data when the input is blurred
@@ -747,11 +748,12 @@ const workActivities = () => {
 
   const totalWorkers = array => {
     let total = 0;
-    array.forEach(element => (total += element.Workers));
+    array.forEach(element => (total += parseInt(element.Workers)));
     return total;
   };
   return (
     <>
+      {console.log(data)}
       <Head>
         <title>Daily Report</title>
         <link rel="icon" href="/favicon.ico" />
