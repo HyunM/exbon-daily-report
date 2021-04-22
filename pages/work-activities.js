@@ -899,29 +899,32 @@ const workActivities = () => {
                   >
                     <p
                       style={{
-                        marginTop: "0px",
+                        marginTop: "4px",
                         marginBottom: "0px",
                         marginRight: "15px",
                         marginLeft: "3px",
                         fontFamily: "Roboto, sans-serif",
-                        color: "#534f51",
+                        color: "#807b7d",
+                        height: "30px",
+                        alignSelf: "center",
                       }}
                     >
                       Weather
                     </p>
                     <select
                       style={{
-                        marginBottom: "3px",
                         fontFamily: "Roboto, sans-serif",
                         fontSize: "medium",
                         display: "inline-block",
-                        color: "#74646e",
+                        color: "rgb(150, 146, 149)",
                         border: "1px solid #c8bfc4",
                         borderRadius: "4px",
                         boxShadow: "inset 1px 1px 2px #ddd8dc",
                         background: "#fff",
                         zIndex: "1",
                         position: "relative",
+                        height: "1.5em",
+                        marginTop: "15.5px",
                       }}
                     >
                       <option>Sunny</option>
@@ -932,6 +935,38 @@ const workActivities = () => {
                       <option>Foggy</option>
                       <option>Snowy</option>
                     </select>
+                    <div style={{ marginLeft: "80px", display: "flex" }}>
+                      <div>
+                        <TextField
+                          className={styles["table__start-time"]}
+                          label="Start Time"
+                          type="time"
+                          defaultValue="07:00"
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                          inputProps={{
+                            step: 300, // 5 min
+                          }}
+                          style={{ marginBottom: "20px" }}
+                        />
+                      </div>
+                      <div style={{ marginLeft: "20px" }}>
+                        <TextField
+                          className={styles["table__end-time"]}
+                          label="End Time"
+                          type="time"
+                          defaultValue="17:00"
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                          inputProps={{
+                            step: 600, // 10 min
+                          }}
+                          style={{ marginBottom: "10px" }}
+                        />
+                      </div>
+                    </div>
                   </div>
 
                   <table {...getTableProps()}>

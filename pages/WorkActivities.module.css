@@ -58,6 +58,16 @@
   overflow: auto;
   margin-left: 4px;
 }
+
+.table__start-time input {
+  padding: 1px !important;
+  height: 1.2em !important;
+}
+
+.table__end-time input {
+  padding: 1px !important;
+  height: 1.2em !important;
+}
 .table table {
   font-family: "Roboto", sans-serif;
   border-collapse: collapse;
