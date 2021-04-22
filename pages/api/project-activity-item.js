@@ -14,14 +14,14 @@ const projectActivityItemHandler = (req, res) => {
           const request = new mssql.Request();
 
           const query = `EXEC [Hammer].[dbo].[ProjectActivityItem_Insert]
-          ${body.ActivityID}, '${body.Contractor}', '${body.WorkActivity}', ${body.Super}, ${body.Labor}, '${body.Equipment}', '${body.WorkPerformed}'`;
+          ${body.ActivityID}, '${body.Contractor}', '${body.Trade}', ${body.Workers}, ${body.Hours}, '${body.Equipment}', '${body.WorkPerformed}'`;
           /* --Params--
           	@activityID int,
 
             @contractor nvarchar(100),
-            @workActivity nvarchar(100),
-            @super float,
-            @labor float,
+            @trade nvarchar(100),
+            @workers int,
+            @hours float,
             @equipment nvarchar(100),
             @workPerformed nvarchar(300)
           */
