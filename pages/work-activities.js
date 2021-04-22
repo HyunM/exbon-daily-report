@@ -105,8 +105,8 @@ const workActivities = () => {
         width: 220,
       },
       {
-        Header: "Work Activities",
-        accessor: "WorkActivity",
+        Header: "Trade",
+        accessor: "Trade",
         width: 250,
       },
       {
@@ -114,13 +114,13 @@ const workActivities = () => {
         width: 160,
         columns: [
           {
-            Header: "Super",
-            accessor: "Super",
+            Header: "Workers",
+            accessor: "Workers",
             width: 80,
           },
           {
-            Header: "Labor",
-            accessor: "Labor",
+            Header: "Hours",
+            accessor: "Hours",
             width: 80,
           },
         ],
@@ -242,7 +242,7 @@ const workActivities = () => {
           onChange={onChange}
           onBlur={onBlur}
         /> */
-    } else if (id === "WorkActivity") {
+    } else if (id === "Trade") {
       return (
         <input
           className={styles["table__work-activity__input"]}
@@ -251,7 +251,7 @@ const workActivities = () => {
           onBlur={onBlur}
         />
       );
-    } else if (id === "Super") {
+    } else if (id === "Workers") {
       return (
         <input
           className={styles["table__super__input"]}
@@ -261,7 +261,7 @@ const workActivities = () => {
           onBlur={onBlur}
         />
       );
-    } else if (id === "Labor") {
+    } else if (id === "Hours") {
       return (
         <input
           className={styles["table__labor__input"]}
@@ -320,9 +320,9 @@ const workActivities = () => {
       ...previous,
       {
         Contractor: "",
-        WorkActivity: "",
-        Super: 0,
-        Labor: 0,
+        Trade: "",
+        Workers: 0,
+        Hours: 0,
         Equipment: "",
         WorkPerformed: "",
         isDeleted: 0,
@@ -497,15 +497,15 @@ const workActivities = () => {
           setData(response.data.result[1]);
           if (response.data.result[0][0] !== undefined) {
             setActivity({
-              Delivery: response.data.result[0][0].Delivery,
-              Problems: response.data.result[0][0].Problems,
-              Unforeseen: response.data.result[0][0].Unforeseen,
+              Tests: response.data.result[0][0].Tests,
+              Correctional: response.data.result[0][0].Correctional,
+              Note: response.data.result[0][0].Note,
             });
           } else {
             setActivity({
-              Delivery: "",
-              Problems: "",
-              Unforeseen: "",
+              Tests: "",
+              Correctional: "",
+              Note: "",
             });
           }
           dataContractor = response.data.result[2];
@@ -596,9 +596,9 @@ const workActivities = () => {
       } else {
         setData([]);
         setActivity({
-          Delivery: "",
-          Problems: "",
-          Unforeseen: "",
+          Tests: "",
+          Correctional: "",
+          Note: "",
         });
       }
     };
@@ -617,9 +617,9 @@ const workActivities = () => {
 
     const fetchData = async () => {
       const editValue = {
-        Delivery: activity.Delivery.replaceAll(`'`, `''`),
-        Problems: activity.Problems.replaceAll(`'`, `''`),
-        Unforeseen: activity.Unforeseen.replaceAll(`'`, `''`),
+        Tests: activity.Tests.replaceAll(`'`, `''`),
+        Correctional: activity.Correctional.replaceAll(`'`, `''`),
+        Note: activity.Note.replaceAll(`'`, `''`),
       };
       let AID = 0;
       await axios({
@@ -630,16 +630,16 @@ const workActivities = () => {
         /* --Params--
           	@projectID int,
             @date date,
-            @delivery nvarchar(1000),
-            @problems nvarchar(1000),
-            @unforeseen nvarchar(1000)
+            @tests nvarchar(1000),
+            @correctional nvarchar(1000),
+            @note nvarchar(1000)
           */
         data: {
           ProjectID: projectState,
           Date: selectedDate,
-          Delivery: editValue.Delivery,
-          Problems: editValue.Problems,
-          Unforeseen: editValue.Unforeseen,
+          Tests: editValue.Tests,
+          Correctional: editValue.Correctional,
+          Note: editValue.Note,
         },
       }).then(response => {
         AID = response.data.ActivityID;
@@ -658,7 +658,7 @@ const workActivities = () => {
       data.forEach(async element => {
         const editValue = {
           Contractor: element.Contractor.replaceAll(`'`, `''`),
-          WorkActivity: element.WorkActivity.replaceAll(`'`, `''`),
+          Trade: element.Trade.replaceAll(`'`, `''`),
           Equipment: element.Equipment.replaceAll(`'`, `''`),
           WorkPerformed: element.WorkPerformed.replaceAll(`'`, `''`),
         };
@@ -671,18 +671,18 @@ const workActivities = () => {
           @activityID int,
 
           @contractor nvarchar(100),
-          @workActivity nvarchar(100),
-          @super float,
-          @labor float,
+          @trade nvarchar(100),
+          @workers int,
+          @hours float,
           @equipment nvarchar(100),
           @workPerformed nvarchar(300)
         */
           data: {
             ActivityID: AID,
             Contractor: editValue.Contractor,
-            WorkActivity: editValue.WorkActivity,
-            Super: element.Super,
-            Labor: element.Labor,
+            Trade: editValue.Trade,
+            Workers: element.Workers,
+            Hours: element.Hours,
             Equipment: editValue.Equipment,
             WorkPerformed: editValue.WorkPerformed,
           },
@@ -721,27 +721,27 @@ const workActivities = () => {
     });
   };
 
-  const handleChangeDelivery = value => {
+  const handleChangeTests = value => {
     setActivity(() => ({
-      Delivery: value,
-      Problems: activity.Problems,
-      Unforeseen: activity.Unforeseen,
+      Tests: value,
+      Correctional: activity.Correctional,
+      Note: activity.Note,
     }));
   };
 
-  const handleChangeProblems = value => {
+  const handleChangeCorrectional = value => {
     setActivity(() => ({
-      Delivery: activity.Delivery,
-      Problems: value,
-      Unforeseen: activity.Unforeseen,
+      Tests: activity.Tests,
+      Correctional: value,
+      Note: activity.Note,
     }));
   };
 
-  const handleChangeUnforeseen = value => {
+  const handleChangeNote = value => {
     setActivity(() => ({
-      Delivery: activity.Delivery,
-      Problems: activity.Problems,
-      Unforeseen: value,
+      Tests: activity.Tests,
+      Correctional: activity.Correctional,
+      Note: value,
     }));
   };
 
@@ -970,7 +970,7 @@ const workActivities = () => {
                 </div>
                 <div>
                   <TextField
-                    label="Delivery Pick-up"
+                    label="TESTS & INSPECTIONS"
                     style={{ margin: 8 }}
                     fullWidth
                     margin="normal"
@@ -988,13 +988,11 @@ const workActivities = () => {
                       width: "99%",
                       marginLeft: "8px",
                     }}
-                    value={
-                      activity.Delivery !== undefined ? activity.Delivery : ""
-                    }
-                    onChange={e => handleChangeDelivery(e.target.value)}
+                    value={activity.Tests !== undefined ? activity.Tests : ""}
+                    onChange={e => handleChangeTests(e.target.value)}
                   />
                   <TextField
-                    label="Potential Problems"
+                    label="CORRECTIONAL ITEMS"
                     style={{ margin: 8 }}
                     fullWidth
                     margin="normal"
@@ -1013,35 +1011,33 @@ const workActivities = () => {
                       width: "99%",
                     }}
                     value={
-                      activity.Problems !== undefined ? activity.Problems : ""
-                    }
-                    onChange={e => handleChangeProblems(e.target.value)}
-                  />
-                  <TextField
-                    label="Unforeseen Condition"
-                    style={{ margin: 8 }}
-                    fullWidth
-                    margin="normal"
-                    InputLabelProps={{
-                      shrink: true,
-                      style: {
-                        fontWeight: 1000,
-                        fontSize: "1.2rem",
-                        color: "#1bb486",
-                      },
-                    }}
-                    variant="outlined"
-                    style={{
-                      backgroundColor: "#ececf5",
-                      marginLeft: "8px",
-                      width: "99%",
-                    }}
-                    value={
-                      activity.Unforeseen !== undefined
-                        ? activity.Unforeseen
+                      activity.Correctional !== undefined
+                        ? activity.Correctional
                         : ""
                     }
-                    onChange={e => handleChangeUnforeseen(e.target.value)}
+                    onChange={e => handleChangeCorrectional(e.target.value)}
+                  />
+                  <TextField
+                    label="NOTE"
+                    style={{ margin: 8 }}
+                    fullWidth
+                    margin="normal"
+                    InputLabelProps={{
+                      shrink: true,
+                      style: {
+                        fontWeight: 1000,
+                        fontSize: "1.2rem",
+                        color: "#1bb486",
+                      },
+                    }}
+                    variant="outlined"
+                    style={{
+                      backgroundColor: "#ececf5",
+                      marginLeft: "8px",
+                      width: "99%",
+                    }}
+                    value={activity.Note !== undefined ? activity.Note : ""}
+                    onChange={e => handleChangeNote(e.target.value)}
                   />
                 </div>
               </>
