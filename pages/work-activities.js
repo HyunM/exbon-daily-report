@@ -934,8 +934,14 @@ const workActivities = () => {
                             boxSizing: "border-box",
                             display: "inline-block",
                             width: "80px",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            color: "rgb(116, 108, 114)",
                           }}
-                        ></td>
+                        >
+                          <div>Total</div>
+                          <div>{data.map(element => element.Workers)}</div>
+                        </td>
                         <td
                           style={{
                             boxSizing: "border-box",
