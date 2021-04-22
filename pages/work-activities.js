@@ -745,6 +745,11 @@ const workActivities = () => {
     }));
   };
 
+  const totalWorkers = array => {
+    let total = 0;
+    array.forEach(element => (total += element.Workers));
+    return total;
+  };
   return (
     <>
       <Head>
@@ -940,7 +945,7 @@ const workActivities = () => {
                           }}
                         >
                           <div>Total</div>
-                          <div>{data.map(element => element.Workers)}</div>
+                          <div>{totalWorkers(data)}</div>
                         </td>
                         <td
                           style={{
