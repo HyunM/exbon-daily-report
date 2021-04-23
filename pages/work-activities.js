@@ -507,9 +507,9 @@ const workActivities = () => {
             });
           } else {
             setActivity({
-              Weather: "Sunny",
-              StartTime: "07:00",
-              EndTime: "17:00",
+              Weather: "",
+              StartTime: "",
+              EndTime: "",
               Tests: "",
               Correctional: "",
               Note: "",
@@ -603,7 +603,7 @@ const workActivities = () => {
       } else {
         setData([]);
         setActivity({
-          Weather: "Sunny",
+          Weather: "",
           StartTime: "",
           EndTime: "",
           Tests: "",
@@ -991,6 +991,7 @@ const workActivities = () => {
                       value={activity.Weather}
                       onChange={e => handleChangeWeather(e.target.value)}
                     >
+                      <option value="">Choose here</option>
                       <option value="Sunny">Sunny</option>
                       <option value="Cloudy">Cloudy</option>
                       <option value="Partly Cloudy">Partly Cloudy</option>

@@ -39,9 +39,15 @@ const projectActivityHandler = (req, res) => {
             return resolve();
           }
           const request = new mssql.Request();
+          let startTime;
+          let endTime;
 
+          if (body.StartTime === null) startTime = "";
+          else startTime = body.StartTime;
+          if (body.EndTime === null) endTime = "";
+          else endTime = body.EndTime;
           const query = `EXEC [Hammer].[dbo].[ProjectActivity_UpdateOrInsert]
-          ${body.ProjectID}, '${body.Date}', '${body.Weather}', '${body.StartTime}', '${body.EndTime}', '${body.Tests}', '${body.Correctional}', '${body.Note}'`;
+          ${body.ProjectID}, '${body.Date}', '${body.Weather}', '${startTime}', '${endTime}', '${body.Tests}', '${body.Correctional}', '${body.Note}'`;
           /* --Params--
           	@projectID int,
             @date date,
