@@ -498,12 +498,18 @@ const workActivities = () => {
           setData(response.data.result[1]);
           if (response.data.result[0][0] !== undefined) {
             setActivity({
+              Weather: response.data.result[0][0].Weather,
+              StartTime: response.data.result[0][0].StartTime,
+              EndTime: response.data.result[0][0].EndTime,
               Tests: response.data.result[0][0].Tests,
               Correctional: response.data.result[0][0].Correctional,
               Note: response.data.result[0][0].Note,
             });
           } else {
             setActivity({
+              Weather: "",
+              StartTime: "07:00",
+              EndTime: "17:00",
               Tests: "",
               Correctional: "",
               Note: "",
@@ -597,6 +603,9 @@ const workActivities = () => {
       } else {
         setData([]);
         setActivity({
+          Weather: "",
+          StartTime: "",
+          EndTime: "",
           Tests: "",
           Correctional: "",
           Note: "",
@@ -631,13 +640,19 @@ const workActivities = () => {
         /* --Params--
           	@projectID int,
             @date date,
+            @weather nvarchar(50),
+            @startTime time(0),
+            @endTime time(0),
             @tests nvarchar(1000),
             @correctional nvarchar(1000),
             @note nvarchar(1000)
           */
         data: {
           ProjectID: projectState,
-          Date: selectedDate,
+          Date: formatDate(selectedDate),
+          Weather: activity.Weather,
+          StartTime: activity.StartTime,
+          EndTime: activity.EndTime,
           Tests: editValue.Tests,
           Correctional: editValue.Correctional,
           Note: editValue.Note,
@@ -716,14 +731,50 @@ const workActivities = () => {
         EmployeeID: status.cookies.employeeid,
         ProjectID: projectState,
         Date: formatDate(selectedDate),
-        Category: "Work Activities",
+        Category: "Activity",
         Action: "update",
       },
     });
   };
 
+  const handleChangeWeather = value => {
+    setActivity(() => ({
+      Weather: value,
+      StartTime: activity.StartTime,
+      EndTime: activity.EndTime,
+      Tests: activity.Tests,
+      Correctional: activity.Correctional,
+      Note: activity.Note,
+    }));
+  };
+
+  const handleChangeStartTime = value => {
+    setActivity(() => ({
+      Weather: activity.Weather,
+      StartTime: value,
+      EndTime: activity.EndTime,
+      Tests: activity.Tests,
+      Correctional: activity.Correctional,
+      Note: activity.Note,
+    }));
+  };
+
+  const handleChangeEndTime = value => {
+    setActivity(() => ({
+      Weather: activity.Weather,
+      StartTime: activity.StartTime,
+      EndTime: value,
+      Tests: activity.Tests,
+      Correctional: activity.Correctional,
+      Note: activity.Note,
+    }));
+  };
+
   const handleChangeTests = value => {
     setActivity(() => ({
+      Weather: activity.Weather,
+      StartTime: activity.StartTime,
+      EndTime: activity.EndTime,
       Tests: value,
       Correctional: activity.Correctional,
       Note: activity.Note,
@@ -732,6 +783,9 @@ const workActivities = () => {
 
   const handleChangeCorrectional = value => {
     setActivity(() => ({
+      Weather: activity.Weather,
+      StartTime: activity.StartTime,
+      EndTime: activity.EndTime,
       Tests: activity.Tests,
       Correctional: value,
       Note: activity.Note,
@@ -740,6 +794,9 @@ const workActivities = () => {
 
   const handleChangeNote = value => {
     setActivity(() => ({
+      Weather: activity.Weather,
+      StartTime: activity.StartTime,
+      EndTime: activity.EndTime,
       Tests: activity.Tests,
       Correctional: activity.Correctional,
       Note: value,
@@ -753,6 +810,8 @@ const workActivities = () => {
   };
   return (
     <>
+      {console.log(activity)}
+      {console.log(formatDate(selectedDate))}
       <Head>
         <title>Daily Report</title>
         <link rel="icon" href="/favicon.ico" />
@@ -927,6 +986,7 @@ const workActivities = () => {
                         height: "1.5em",
                         marginTop: "15.5px",
                       }}
+                      onChange={e => handleChangeWeather(e.target.value)}
                     >
                       <option>Sunny</option>
                       <option>Cloudy</option>
@@ -942,7 +1002,6 @@ const workActivities = () => {
                           className={styles["table__start-time"]}
                           label="Start Time"
                           type="time"
-                          defaultValue="07:00"
                           InputLabelProps={{
                             shrink: true,
                           }}
@@ -950,6 +1009,12 @@ const workActivities = () => {
                             step: 300, // 5 min
                           }}
                           style={{ marginBottom: "20px" }}
+                          value={
+                            activity.StartTime !== undefined
+                              ? activity.StartTime
+                              : "07:00"
+                          }
+                          onChange={e => handleChangeStartTime(e.target.value)}
                         />
                       </div>
                       <div style={{ marginLeft: "20px" }}>
@@ -957,7 +1022,6 @@ const workActivities = () => {
                           className={styles["table__end-time"]}
                           label="End Time"
                           type="time"
-                          defaultValue="17:00"
                           InputLabelProps={{
                             shrink: true,
                           }}
@@ -965,6 +1029,12 @@ const workActivities = () => {
                             step: 600, // 10 min
                           }}
                           style={{ marginBottom: "10px" }}
+                          value={
+                            activity.EndTime !== undefined
+                              ? activity.EndTime
+                              : "17:00"
+                          }
+                          onChange={e => handleChangeEndTime(e.target.value)}
                         />
                       </div>
                     </div>
