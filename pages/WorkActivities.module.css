@@ -132,11 +132,11 @@
   padding-bottom: 20px !important;
 }
 .table thead tr:nth-child(2) th:nth-child(3) {
-  padding-top: 10px !important;
+  padding-top: 3px !important;
   border-top: 1px solid #ddd;
 }
 .table thead tr:nth-child(2) th:nth-child(4) {
-  padding-top: 10px !important;
+  padding-top: 3px !important;
   border-top: 1px solid #ddd;
 }
 /* .table thead tr:nth-child(2) th:nth-child(5) {

@@ -114,12 +114,12 @@ const workActivities = () => {
         width: 160,
         columns: [
           {
-            Header: "Workers",
+            Header: "No. of Workers",
             accessor: "Workers",
             width: 80,
           },
           {
-            Header: "Hours",
+            Header: "Hours /Day",
             accessor: "Hours",
             width: 80,
           },
