@@ -507,7 +507,7 @@ const workActivities = () => {
             });
           } else {
             setActivity({
-              Weather: "",
+              Weather: "Sunny",
               StartTime: "07:00",
               EndTime: "17:00",
               Tests: "",
@@ -603,7 +603,7 @@ const workActivities = () => {
       } else {
         setData([]);
         setActivity({
-          Weather: "",
+          Weather: "Sunny",
           StartTime: "",
           EndTime: "",
           Tests: "",
@@ -972,6 +972,8 @@ const workActivities = () => {
                       Weather
                     </p>
                     <select
+                      id="weatherID"
+                      name="weatherName"
                       style={{
                         fontFamily: "Roboto, sans-serif",
                         fontSize: "medium",
@@ -986,15 +988,16 @@ const workActivities = () => {
                         height: "1.5em",
                         marginTop: "15.5px",
                       }}
+                      value={activity.Weather}
                       onChange={e => handleChangeWeather(e.target.value)}
                     >
-                      <option>Sunny</option>
-                      <option>Cloudy</option>
-                      <option>Partly Cloudy</option>
-                      <option>Windy</option>
-                      <option>Rainy</option>
-                      <option>Foggy</option>
-                      <option>Snowy</option>
+                      <option value="Sunny">Sunny</option>
+                      <option value="Cloudy">Cloudy</option>
+                      <option value="Partly Cloudy">Partly Cloudy</option>
+                      <option value="Windy">Windy</option>
+                      <option value="Rainy">Rainy</option>
+                      <option value="Foggy">Foggy</option>
+                      <option value="Snowy">Snowy</option>
                     </select>
                     <div style={{ marginLeft: "80px", display: "flex" }}>
                       <div>
