@@ -740,6 +740,29 @@ const Task = (
   };
 
   const handleSaveBtn = () => {
+    let checkDate = 0;
+    data.forEach(element => {
+      if (new Date(element.ReqStartDate) > new Date(element.ReqFinishDate)) {
+        console.log(new Date(element.ReqStartDate));
+        console.log(new Date(element.ReqFinishDate));
+        checkDate++;
+        return null;
+      }
+    });
+    if (checkDate > 0) {
+      toast.error(
+        <div className={styles["alert__complete"]}>
+          <strong>
+            Request Start Date CANNOT BE LATER than Request Finish Date.
+          </strong>
+        </div>,
+        {
+          position: toast.POSITION.TOP_CENTER,
+          hideProgressBar: true,
+        }
+      );
+      return null;
+    }
     let promises = [];
     const fetchData = async () => {
       for (let i = 0; i < data.length; i++) {
