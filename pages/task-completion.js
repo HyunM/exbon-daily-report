@@ -647,6 +647,36 @@ const Task = () => {
   };
 
   const handleSaveBtn = () => {
+    let checkDate = 0;
+    let indexNo = 0;
+    data.forEach((element, index) => {
+      if (new Date(element.ReqStartDate) > new Date(element.ReqFinishDate)) {
+        console.log(new Date(element.ReqStartDate));
+        console.log(new Date(element.ReqFinishDate));
+        checkDate++;
+        indexNo = index + 1;
+        return null;
+      }
+    });
+    if (checkDate > 0) {
+      toast.error(
+        <div className={styles["alert__complete"]}>
+          <strong style={{ marginBottom: "30px" }}>CANNOT SAVE</strong>
+          <p style={{ marginBottom: "20px" }}>
+            Request Start Date <strong>CANNOT BE LATER </strong>than Request
+            Finish Date.
+          </p>
+          <p>Line [{indexNo}] needs to be modified.</p>
+        </div>,
+        {
+          position: toast.POSITION.TOP_CENTER,
+          hideProgressBar: true,
+          autoClose: 10000,
+        }
+      );
+      return null;
+    }
+
     let promises = [];
     const fetchData = async () => {
       for (let i = 0; i < data.length; i++) {
