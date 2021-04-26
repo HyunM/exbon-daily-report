@@ -1175,6 +1175,21 @@ const Task = () => {
   };
 
   const requestNoWorkDays = type => {
+    if (
+      new Date(modalSaveNoWork.StartDate) > new Date(modalSaveNoWork.FinishDate)
+    ) {
+      toast.error(
+        <div className={styles["alert__complete"]}>
+          <strong>Start Date CANNOT BE LATER than End Date.</strong>
+        </div>,
+        {
+          position: toast.POSITION.TOP_CENTER,
+          hideProgressBar: true,
+        }
+      );
+      return null;
+    }
+
     let tempNoWork = [];
 
     tempNoWork = [
