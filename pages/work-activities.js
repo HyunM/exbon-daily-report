@@ -1138,6 +1138,8 @@ const workActivities = () => {
                 <div>
                   <TextField
                     label="TESTS & INSPECTIONS"
+                    multiline
+                    rows={3}
                     fullWidth
                     margin="normal"
                     InputProps={{ style: { color: "#888484" } }}
@@ -1160,6 +1162,8 @@ const workActivities = () => {
                   />
                   <TextField
                     label="CORRECTIONAL ITEMS"
+                    multiline
+                    rows={3}
                     fullWidth
                     margin="normal"
                     InputProps={{ style: { color: "#888484" } }}
@@ -1186,6 +1190,8 @@ const workActivities = () => {
                   />
                   <TextField
                     label="NOTE"
+                    multiline
+                    rows={3}
                     fullWidth
                     margin="normal"
                     InputProps={{ style: { color: "#888484" } }}
