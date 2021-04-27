@@ -3,6 +3,7 @@ const testHandler = (req, res) => {
   return new Promise(resolve => {
     switch (method) {
       case "POST":
+        const handle = async () => {
           var Excel = require("exceljs");
           var __dirname = "public";
           let filename = "/6 Daily Report.xltx";
@@ -17,10 +18,11 @@ const testHandler = (req, res) => {
 
           var express = require("express");
           var app = express();
-          app.get('/download', function(req, res){
+          app.get("/download", function (req, res) {
             res.download(__dirname + "/6 Daily Report - Test.xlsx");
           });
-
+        };
+        handle();
         res.status(200).json({
           message: "Success",
         });
