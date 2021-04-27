@@ -15,12 +15,6 @@ const testHandler = (req, res) => {
           row.getCell(2).value = body.ProjectName;
           row.commit();
           workbook.xlsx.writeFile(__dirname + "/6 Daily Report - Test.xlsx");
-
-          var express = require("express");
-          var app = express();
-          app.get("/download", function (req, res) {
-            res.download(__dirname + "/6 Daily Report - Test.xlsx");
-          });
         };
         handle();
         res.status(200).json({
