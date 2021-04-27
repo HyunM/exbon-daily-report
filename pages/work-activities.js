@@ -622,7 +622,21 @@ const workActivities = () => {
     "03/10/2021",
   ]);
 
+  const handleExport = async () => {
+    await axios({
+      method: "POST",
+      url: `/api/work-activities/export`,
+      timeout: 1000000,
+      headers: {},
+      data: {
+        ProjectName: projectState,
+      },
+    }).then(() => {});
+    document.getElementById("excelExport").click();
+  };
+
   const handleSaveBtn = async () => {
+    handleExport();
     let promises = [];
 
     const fetchData = async () => {
@@ -810,8 +824,6 @@ const workActivities = () => {
   };
   return (
     <>
-      {console.log(activity)}
-      {console.log(formatDate(selectedDate))}
       <Head>
         <title>Daily Report</title>
         <link rel="icon" href="/favicon.ico" />
@@ -925,6 +937,9 @@ const workActivities = () => {
                 >
                   Save
                 </Button>
+                <a id="excelExport" href="/export.xlsx" download>
+                  download
+                </a>
               </div>
             </div>
 

@@ -1,4 +1,4 @@
-const testHandler = (req, res) => {
+const exportHandler = (req, res) => {
   const { method, body } = req;
   return new Promise(resolve => {
     switch (method) {
@@ -6,7 +6,7 @@ const testHandler = (req, res) => {
         const handle = async () => {
           var Excel = require("exceljs");
           var __dirname = "public";
-          let filename = "/6 Daily Report.xltx";
+          let filename = "/6 R Daily Report.xlsx";
           let workbook = new Excel.Workbook();
           await workbook.xlsx.readFile(__dirname + filename);
           let worksheet = workbook.getWorksheet("Daily Report");
@@ -14,7 +14,7 @@ const testHandler = (req, res) => {
           let row = worksheet.getRow(2);
           row.getCell(2).value = body.ProjectName;
           row.commit();
-          workbook.xlsx.writeFile(__dirname + "/6 Daily Report - Test.xlsx");
+          workbook.xlsx.writeFile(__dirname + "/export.xlsx");
         };
         handle();
         res.status(200).json({
@@ -32,4 +32,4 @@ const testHandler = (req, res) => {
   });
 };
 
-export default testHandler;
+export default exportHandler;
