@@ -95,6 +95,7 @@ const workActivities = () => {
   const [data, setData] = useState(() => []);
   const [activity, setActivity] = useState(() => []);
   const [selectedDate, handleDateChange] = useState(new Date());
+  const [checkDownload, setCheckDownload] = useState(0);
   const { promiseInProgress } = usePromiseTracker();
 
   const columns = React.useMemo(
@@ -623,23 +624,45 @@ const workActivities = () => {
   ]);
 
   const handleExport = async () => {
-    await axios({
+    const project_id = document.getElementById("project-state-id");
+
+    const projectName = project_id.options[
+      project_id.selectedIndex
+    ].getAttribute("projectname");
+
+    axios({
       method: "POST",
       url: `/api/work-activities/export`,
       timeout: 1000000,
       headers: {},
       data: {
-        ProjectName: projectState,
+        ProjectName: projectName,
+        ProjectID: projectState,
+        Date: formatDate(selectedDate),
+        Weather: activity.Weather,
+        StartTime: activity.StartTime,
+        EndTime: activity.EndTime,
       },
     }).then(() => {
-      document.getElementById("excelExport").click();
+      setTimeout(() => {
+        document.getElementById("excelExport").click();
+        setCheckDownload(0);
+        toast.success(
+          <div className={styles["alert__complete"]}>
+            <strong>Save Complete</strong>
+          </div>,
+          {
+            position: toast.POSITION.BOTTOM_CENTER,
+            hideProgressBar: true,
+          }
+        );
+      }, 3000);
     });
   };
 
   const handleSaveBtn = async () => {
-    handleExport();
+    setCheckDownload(1);
     let promises = [];
-
     const fetchData = async () => {
       const editValue = {
         Tests: activity.Tests.replaceAll(`'`, `''`),
@@ -722,20 +745,21 @@ const workActivities = () => {
     };
 
     trackPromise(fetchData());
+    trackPromise(handleExport());
 
-    trackPromise(
-      Promise.all(promises).then(() => {
-        toast.success(
-          <div className={styles["alert__complete"]}>
-            <strong>Save Complete</strong>
-          </div>,
-          {
-            position: toast.POSITION.BOTTOM_CENTER,
-            hideProgressBar: true,
-          }
-        );
-      })
-    );
+    // trackPromise(
+    //   Promise.all(promises).then(() => {
+    //     toast.success(
+    //       <div className={styles["alert__complete"]}>
+    //         <strong>Save Complete</strong>
+    //       </div>,
+    //       {
+    //         position: toast.POSITION.BOTTOM_CENTER,
+    //         hideProgressBar: true,
+    //       }
+    //     );
+    //   })
+    // );
 
     axios({
       method: "post",
@@ -853,6 +877,7 @@ const workActivities = () => {
             <div className={styles["header"]}>
               <div className={styles["header__left"]}>
                 <select
+                  id="project-state-id"
                   value={projectState}
                   onChange={e => setProjectState(e.target.value)}
                   style={{
@@ -936,15 +961,20 @@ const workActivities = () => {
                   startIcon={<SaveIcon />}
                   onClick={handleSaveBtn}
                 >
-                  Save
+                  Save & Export
                 </Button>
-                <a id="excelExport" href="/export.xlsx" download>
+                <a
+                  id="excelExport"
+                  href="/export.xlsx"
+                  download
+                  style={{ display: "none" }}
+                >
                   download
                 </a>
               </div>
             </div>
 
-            {promiseInProgress || !projectState ? (
+            {promiseInProgress || !projectState || checkDownload ? (
               <div
                 style={{
                   width: "100%",
