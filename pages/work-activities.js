@@ -631,8 +631,9 @@ const workActivities = () => {
       data: {
         ProjectName: projectState,
       },
-    }).then(() => {});
-    document.getElementById("excelExport").click();
+    }).then(() => {
+      document.getElementById("excelExport").click();
+    });
   };
 
   const handleSaveBtn = async () => {
