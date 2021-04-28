@@ -630,6 +630,8 @@ const workActivities = () => {
       project_id.selectedIndex
     ].getAttribute("projectname");
 
+    const timenow = new Date().getTime();
+
     axios({
       method: "POST",
       url: `/api/work-activities/export`,
@@ -646,9 +648,16 @@ const workActivities = () => {
         Correctional: activity.Correctional,
         Note: activity.Note,
         data: data,
+        username: status.cookies.username,
       },
     }).then(() => {
       setTimeout(() => {
+        document
+          .getElementById("excelExport")
+          .setAttribute(
+            "href",
+            "/" + projectState + "_" + status.cookies.username + ".xlsx"
+          );
         document.getElementById("excelExport").click();
         setCheckDownload(0);
         toast.success(

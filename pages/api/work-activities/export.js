@@ -52,7 +52,9 @@ const exportHandler = (req, res) => {
         row23.getCell(1).value = body.Correctional;
         row28.getCell(1).value = body.Note;
 
-        await workbook.xlsx.writeFile(__dirname + "/export.xlsx");
+        await workbook.xlsx.writeFile(
+          __dirname + "/" + body.ProjectID + "_" + body.username + ".xlsx"
+        );
 
         res.status(200).json({
           message: "Success",
