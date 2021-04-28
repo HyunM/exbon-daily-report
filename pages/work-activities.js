@@ -27,6 +27,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 
 import DescriptionIcon from "@material-ui/icons/Description";
+import { RiFileExcel2Fill } from "react-icons/ri";
 
 toast.configure();
 let dataContractor = [{ Name: "" }];
@@ -995,10 +996,9 @@ const workActivities = () => {
                 </MuiPickersUtilsProvider>
                 <Button
                   variant="contained"
-                  color="#2abd43"
                   size="small"
                   className={styles["header__right__export-btn"]}
-                  startIcon={<DescriptionIcon />}
+                  startIcon={<RiFileExcel2Fill />}
                   onClick={handleExport}
                   style={{ marginRight: "10px" }}
                 >

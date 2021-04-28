@@ -45,7 +45,8 @@
   padding-bottom: 4px;
 }
 .header__right__export-btn {
-  color: #0d8863 !important;
+  background: #1cc26f !important;
+  color: #ffffff !important;
 }
 
 /* .header__right__save-btn {
