@@ -644,6 +644,39 @@ const workActivities = () => {
   ]);
 
   const handleExport = async () => {
+    setCheckDownload(1);
+    const project_id = document.getElementById("project-state-id");
+
+    const projectName = project_id.options[
+      project_id.selectedIndex
+    ].getAttribute("projectname");
+
+    const contractNo = project_id.options[
+      project_id.selectedIndex
+    ].getAttribute("contractno");
+
+    await axios({
+      method: "POST",
+      url: `/api/work-activities/export`,
+      timeout: 1000000,
+      headers: {},
+      data: {
+        ProjectName: projectName,
+        ProjectID: projectState,
+        Date: formatDate(selectedDate),
+        Weather: activity.Weather,
+        StartTime: activity.StartTime,
+        EndTime: activity.EndTime,
+        Tests: activity.Tests,
+        Correctional: activity.Correctional,
+        Note: activity.Note,
+        data: data,
+        username: status.cookies.username,
+        fullname: status.cookies.fullname,
+        contractno: contractNo,
+      },
+    });
+
     setTimeout(() => {
       // setCheckDownload(0);
       document
@@ -653,7 +686,7 @@ const workActivities = () => {
           "/Work Activities_" + status.cookies.username + ".xlsx"
         );
       document.getElementById("excelExport").click();
-
+      setCheckDownload(0);
       toast.success(
         <div className={styles["alert__complete"]}>
           <strong>Download Complete</strong>
@@ -663,45 +696,13 @@ const workActivities = () => {
           hideProgressBar: true,
         }
       );
-    }, 1000);
+    }, 3000);
   };
 
   const handleSaveBtn = async () => {
     // setCheckDownload(1);
     let promises = [];
     const fetchData = async () => {
-      const project_id = document.getElementById("project-state-id");
-
-      const projectName = project_id.options[
-        project_id.selectedIndex
-      ].getAttribute("projectname");
-
-      const contractNo = project_id.options[
-        project_id.selectedIndex
-      ].getAttribute("contractno");
-
-      await axios({
-        method: "POST",
-        url: `/api/work-activities/export`,
-        timeout: 1000000,
-        headers: {},
-        data: {
-          ProjectName: projectName,
-          ProjectID: projectState,
-          Date: formatDate(selectedDate),
-          Weather: activity.Weather,
-          StartTime: activity.StartTime,
-          EndTime: activity.EndTime,
-          Tests: activity.Tests,
-          Correctional: activity.Correctional,
-          Note: activity.Note,
-          data: data,
-          username: status.cookies.username,
-          fullname: status.cookies.fullname,
-          contractno: contractNo,
-        },
-      });
-
       const editValue = {
         Tests: activity.Tests.replaceAll(`'`, `''`),
         Correctional: activity.Correctional.replaceAll(`'`, `''`),
