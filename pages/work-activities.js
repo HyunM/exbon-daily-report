@@ -642,6 +642,10 @@ const workActivities = () => {
         Weather: activity.Weather,
         StartTime: activity.StartTime,
         EndTime: activity.EndTime,
+        Tests: activity.Tests,
+        Correctional: activity.Correctional,
+        Note: activity.Note,
+        data: data,
       },
     }).then(() => {
       setTimeout(() => {
@@ -656,7 +660,7 @@ const workActivities = () => {
             hideProgressBar: true,
           }
         );
-      }, 3000);
+      }, 2000);
     });
   };
 
@@ -849,6 +853,7 @@ const workActivities = () => {
   };
   return (
     <>
+      {console.log(data)}
       <Head>
         <title>Daily Report</title>
         <link rel="icon" href="/favicon.ico" />
