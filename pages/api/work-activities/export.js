@@ -57,7 +57,7 @@ const exportHandler = (req, res) => {
         row28.getCell(1).value = body.Note;
 
         await workbook.xlsx.writeFile(
-          __dirname + "/" + body.ProjectID + "_" + body.username + ".xlsx"
+          __dirname + "/export_" + body.username + ".xlsx"
         );
 
         res.status(200).json({
