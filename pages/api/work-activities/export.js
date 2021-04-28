@@ -27,10 +27,10 @@ const exportHandler = (req, res) => {
 
         row3.getCell(6).value = body.ProjectID;
 
-        row4.getCell(6).value = body.StartTime;
+        row4.getCell(6).value = body.StartTime.substring(0, 5);
 
         row5.getCell(2).value = body.Weather;
-        row5.getCell(6).value = body.EndTime;
+        row5.getCell(6).value = body.EndTime.substring(0, 5);
 
         for (let i = 0; i < data.length; i++) {
           rowData.push(data[i]);
