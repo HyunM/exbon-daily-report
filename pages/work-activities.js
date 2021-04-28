@@ -318,6 +318,24 @@ const workActivities = () => {
   };
 
   const addActivityRow = () => {
+    if (data.length >= 8) {
+      toast.warning(
+        <div className={styles["alert__complete"]}>
+          <strong style={{ marginBottom: "30px" }}>
+            CANNOT ADD row more than 8
+          </strong>
+          <p style={{ marginBottom: "20px" }}>
+            Please contact IT if you need to add more. (Hyunmyung Kim:
+            201-554-6666)
+          </p>
+        </div>,
+        {
+          position: toast.POSITION.TOP_CENTER,
+          hideProgressBar: true,
+        }
+      );
+      return null;
+    }
     setData(previous => [
       ...previous,
       {
@@ -630,8 +648,6 @@ const workActivities = () => {
       project_id.selectedIndex
     ].getAttribute("projectname");
 
-    const timenow = new Date().getTime();
-
     axios({
       method: "POST",
       url: `/api/work-activities/export`,
@@ -649,9 +665,11 @@ const workActivities = () => {
         Note: activity.Note,
         data: data,
         username: status.cookies.username,
+        fullname: status.cookies.fullname,
       },
     }).then(() => {
       setTimeout(() => {
+        setCheckDownload(0);
         document
           .getElementById("excelExport")
           .setAttribute(
@@ -659,7 +677,7 @@ const workActivities = () => {
             "/" + projectState + "_" + status.cookies.username + ".xlsx"
           );
         document.getElementById("excelExport").click();
-        setCheckDownload(0);
+
         toast.success(
           <div className={styles["alert__complete"]}>
             <strong>Save Complete</strong>

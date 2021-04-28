@@ -25,8 +25,9 @@ const exportHandler = (req, res) => {
         row2.getCell(2).value = body.ProjectName;
         row2.getCell(6).value = body.Date;
 
-        row3.getCell(6).value = body.ProjectID;
+        row3.getCell(6).value = parseInt(body.ProjectID);
 
+        row4.getCell(2).value = body.fullname;
         row4.getCell(6).value = body.StartTime.substring(0, 5);
 
         row5.getCell(2).value = body.Weather;
@@ -43,7 +44,9 @@ const exportHandler = (req, res) => {
           worksheet.getRow(8 + i).getCell(3).value = parseInt(
             rowData[i].Workers
           );
-          worksheet.getRow(8 + i).getCell(4).value = rowData[i].Hours;
+          worksheet.getRow(8 + i).getCell(4).value = parseFloat(
+            rowData[i].Hours
+          );
           worksheet.getRow(8 + i).getCell(5).value = rowData[i].Equipment;
           worksheet.getRow(8 + i).getCell(6).value = rowData[i].WorkPerformed;
         }
