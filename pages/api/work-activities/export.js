@@ -25,6 +25,7 @@ const exportHandler = (req, res) => {
         row2.getCell(2).value = body.ProjectName;
         row2.getCell(6).value = body.Date;
 
+        row3.getCell(2).value = body.contractno;
         row3.getCell(6).value = parseInt(body.ProjectID);
 
         row4.getCell(2).value = body.fullname;

@@ -44,8 +44,12 @@
   text-align: center;
   padding-bottom: 4px;
 }
+.header__right__export-btn {
+  color: #0d8863 !important;
+}
 
 /* .header__right__save-btn {
+  color: #0d8863 !important;
 } */
 
 .header__right__no-work-btn {

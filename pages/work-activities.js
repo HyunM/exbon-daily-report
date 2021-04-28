@@ -26,6 +26,8 @@ import Autocomplete from "react-autocomplete";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 
+import DescriptionIcon from "@material-ui/icons/Description";
+
 toast.configure();
 let dataContractor = [{ Name: "" }];
 const materialTheme = createMuiTheme({
@@ -648,6 +650,12 @@ const workActivities = () => {
       project_id.selectedIndex
     ].getAttribute("projectname");
 
+    const contractNo = project_id.options[
+      project_id.selectedIndex
+    ].getAttribute("contractno");
+
+    console.log(contractNo);
+
     axios({
       method: "POST",
       url: `/api/work-activities/export`,
@@ -666,10 +674,11 @@ const workActivities = () => {
         data: data,
         username: status.cookies.username,
         fullname: status.cookies.fullname,
+        contractno: contractNo,
       },
     }).then(() => {
       setTimeout(() => {
-        setCheckDownload(0);
+        // setCheckDownload(0);
         document
           .getElementById("excelExport")
           .setAttribute(
@@ -680,19 +689,19 @@ const workActivities = () => {
 
         toast.success(
           <div className={styles["alert__complete"]}>
-            <strong>Save Complete</strong>
+            <strong>Download Complete</strong>
           </div>,
           {
             position: toast.POSITION.BOTTOM_CENTER,
             hideProgressBar: true,
           }
         );
-      }, 2000);
+      }, 1000);
     });
   };
 
   const handleSaveBtn = async () => {
-    setCheckDownload(1);
+    // setCheckDownload(1);
     let promises = [];
     const fetchData = async () => {
       const editValue = {
@@ -776,21 +785,21 @@ const workActivities = () => {
     };
 
     trackPromise(fetchData());
-    trackPromise(handleExport());
+    // trackPromise(handleExport());
 
-    // trackPromise(
-    //   Promise.all(promises).then(() => {
-    //     toast.success(
-    //       <div className={styles["alert__complete"]}>
-    //         <strong>Save Complete</strong>
-    //       </div>,
-    //       {
-    //         position: toast.POSITION.BOTTOM_CENTER,
-    //         hideProgressBar: true,
-    //       }
-    //     );
-    //   })
-    // );
+    trackPromise(
+      Promise.all(promises).then(() => {
+        toast.success(
+          <div className={styles["alert__complete"]}>
+            <strong>Save Complete</strong>
+          </div>,
+          {
+            position: toast.POSITION.BOTTOM_CENTER,
+            hideProgressBar: true,
+          }
+        );
+      })
+    );
 
     axios({
       method: "post",
@@ -933,6 +942,7 @@ const workActivities = () => {
                         key={item.ProjectID}
                         projectgroup={item.ProjectGroup}
                         projectname={item.ProjectName}
+                        contractno={item.ContractNumber}
                       >
                         {item.ProjectID} &emsp;[{item.ProjectGroup}]&ensp;
                         {item.ProjectName}
@@ -984,7 +994,17 @@ const workActivities = () => {
                     }}
                   />
                 </MuiPickersUtilsProvider>
-
+                <Button
+                  variant="contained"
+                  color="#2abd43"
+                  size="small"
+                  className={styles["header__right__export-btn"]}
+                  startIcon={<DescriptionIcon />}
+                  onClick={handleExport}
+                  style={{ marginRight: "10px" }}
+                >
+                  Export
+                </Button>
                 <Button
                   variant="contained"
                   color="primary"
@@ -993,8 +1013,9 @@ const workActivities = () => {
                   startIcon={<SaveIcon />}
                   onClick={handleSaveBtn}
                 >
-                  Save & Export
+                  Save
                 </Button>
+
                 <a
                   id="excelExport"
                   href="/export.xlsx"
