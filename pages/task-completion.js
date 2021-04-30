@@ -121,12 +121,12 @@ const Task = () => {
       {
         Header: "Previous Work %",
         accessor: "PreviousWork",
-        width: 70,
+        width: 73,
       },
       {
         Header: "Current Work %",
         accessor: "CurrentWork",
-        width: 70,
+        width: 73,
       },
       // {
       //   Header: "Message",

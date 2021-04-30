@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 
 #mainDiv {
-  width: 1391px;
+  width: 1397px;
   margin: auto;
 }
 
@@ -332,7 +332,7 @@
 
 .table__current-work-wrapper__input__previous-work {
   text-align: center;
-  width: 38px !important;
+  width: 40px !important;
   color: rgb(168, 164, 167);
   border: 1px solid rgb(200, 191, 196);
   border-radius: 4px;
@@ -345,7 +345,7 @@
 
 .table__current-work-wrapper__input__current-work {
   text-align: center;
-  width: 38px !important;
+  width: 40px !important;
   font-weight: 700;
   color: black;
   border: 1px solid rgb(200, 191, 196);
