@@ -1176,7 +1176,7 @@ const workActivities = () => {
                             boxSizing: "border-box",
                             display: "inline-block",
                             width: "220px",
-                            fontSize: "0.88rem",
+                            fontSize: "0.82rem",
                           }}
                           onClick={addActivityRow}
                         >
@@ -1197,7 +1197,7 @@ const workActivities = () => {
                             display: "flex",
                             justifyContent: "space-between",
                             color: "rgb(116, 108, 114)",
-                            fontSize: "0.88rem",
+                            fontSize: "0.82rem",
                           }}
                         >
                           <div>Total</div>
