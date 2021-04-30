@@ -339,6 +339,7 @@
   box-shadow: rgb(221, 216, 220) 1px 1px 2px inset;
   background: rgb(255, 255, 255);
   padding: 4px;
+  font-family: "Roboto";
 }
 
 .table__current-work-wrapper__input__current-work {
@@ -351,6 +352,7 @@
   box-shadow: rgb(221, 216, 220) 1px 1px 2px inset;
   background: rgb(255, 255, 255);
   padding: 4px;
+  font-family: "Roboto";
 }
 
 .alert__table__current-work-wrapper__input {
