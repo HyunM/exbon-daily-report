@@ -340,6 +340,7 @@
   background: rgb(255, 255, 255);
   padding: 4px;
   font-family: "Roboto";
+  font-size: 0.93rem;
 }
 
 .table__current-work-wrapper__input__current-work {
@@ -353,6 +354,7 @@
   background: rgb(255, 255, 255);
   padding: 4px;
   font-family: "Roboto";
+  font-size: 0.93rem;
 }
 
 .alert__table__current-work-wrapper__input {
