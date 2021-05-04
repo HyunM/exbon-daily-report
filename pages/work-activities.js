@@ -658,8 +658,8 @@ const workActivities = () => {
       project_id.selectedIndex
     ].getAttribute("contractno");
 
-    let StartTime = activity.StartTime;
-    let EndTime = activity.EndTime;
+    let StartTime = activity.StartTime.replaceAll(" ", "");
+    let EndTime = activity.EndTime.replaceAll(" ", "");
     if (activity.StartTime.includes("_") && activity.EndTime.includes("_")) {
       StartTime = "";
       EndTime = "";
@@ -693,6 +693,14 @@ const workActivities = () => {
       }));
     }
 
+    if (StartTime.includes("p") || StartTime.includes("P")) {
+      const hour = parseInt(StartTime.substring(0, 2)) + 12;
+      StartTime = hour + StartTime.substring(2);
+    }
+    if (EndTime.includes("p") || EndTime.includes("P")) {
+      const hour = parseInt(EndTime.substring(0, 2)) + 12;
+      EndTime = hour + EndTime.substring(2);
+    }
     await axios({
       method: "POST",
       url: `/api/work-activities/export`,
