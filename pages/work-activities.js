@@ -658,8 +658,8 @@ const workActivities = () => {
       project_id.selectedIndex
     ].getAttribute("contractno");
 
-    let StartTime = activity.StartTime.replaceAll(" ", "");
-    let EndTime = activity.EndTime.replaceAll(" ", "");
+    let StartTime = activity.StartTime;
+    let EndTime = activity.EndTime;
     if (activity.StartTime.includes("_") && activity.EndTime.includes("_")) {
       StartTime = "";
       EndTime = "";
@@ -969,8 +969,23 @@ const workActivities = () => {
   };
 
   const checkStartTime = value => {
-    if (parseInt(value.substring(0, 2)) > 12) {
-      alert("The hh unit cannot exceed 12 in Start Time. Please set AM or PM.");
+    if (
+      parseInt(value.substring(0, 2)) > 12 ||
+      parseInt(value.substring(0, 2)) == 0
+    ) {
+      toast.warning(
+        <div className={styles["alert__complete"]}>
+          <p style={{ marginBottom: "20px" }}>
+            The hh unit range is <strong>01 ~ 12 </strong> in Start Time. Please
+            set AM or PM.
+          </p>
+        </div>,
+        {
+          position: toast.POSITION.TOP_CENTER,
+          hideProgressBar: true,
+        }
+      );
+
       setActivity(() => ({
         Weather: activity.Weather,
         StartTime: "",
@@ -983,11 +998,25 @@ const workActivities = () => {
   };
 
   const checkEndTime = value => {
-    if (parseInt(value.substring(0, 2)) > 12) {
-      alert("The hh unit cannot exceed 12 in End Time. Please set AM or PM.");
+    if (
+      parseInt(value.substring(0, 2)) > 12 ||
+      parseInt(value.substring(0, 2)) == 0
+    ) {
+      toast.warning(
+        <div className={styles["alert__complete"]}>
+          <p style={{ marginBottom: "20px" }}>
+            The hh unit range is <strong>01 ~ 12 </strong> in End Time. Please
+            set AM or PM.
+          </p>
+        </div>,
+        {
+          position: toast.POSITION.TOP_CENTER,
+          hideProgressBar: true,
+        }
+      );
       setActivity(() => ({
         Weather: activity.Weather,
-        StartTime: activity.EndTime,
+        StartTime: activity.StartTime,
         EndTime: "",
         Tests: activity.Tests,
         Correctional: activity.Correctional,
@@ -1165,7 +1194,7 @@ const workActivities = () => {
                   >
                     <p
                       style={{
-                        marginTop: "4px",
+                        marginTop: "18px",
                         marginBottom: "0px",
                         marginRight: "15px",
                         marginLeft: "3px",
@@ -1207,9 +1236,9 @@ const workActivities = () => {
                       <option value="Snowy">Snowy</option>
                     </select>
                     <div style={{ marginLeft: "80px", display: "flex" }}>
-                      <div>
+                      <div style={{ display: "flex" }}>
                         <InputMask
-                          mask="29 : 60 OM"
+                          mask="29:60 OM"
                           formatChars={{
                             2: "[0-1]",
                             9: "[0-9]",
@@ -1221,16 +1250,32 @@ const workActivities = () => {
                           value={activity.StartTime}
                         >
                           {inputProps => (
-                            <input
-                              id="start-time-id"
-                              placeholder="Start Time"
-                              style={{ width: "80px" }}
-                            ></input>
+                            <div
+                              style={{
+                                display: "flex",
+                                flexDirection: "column-reverse",
+                                marginRight: "20px",
+                                justifyContent: "flex-end",
+                              }}
+                            >
+                              <input
+                                id="start-time-id"
+                                style={{ width: "80px" }}
+                              ></input>
+                              <label
+                                htmlFor="start-time-id"
+                                style={{
+                                  fontSize: "0.8rem",
+                                  color: "#807b7d",
+                                }}
+                              >
+                                Start Time
+                              </label>
+                            </div>
                           )}
-                        </InputMask>{" "}
-                        -{" "}
+                        </InputMask>
                         <InputMask
-                          mask="29 : 60 OM"
+                          mask="29:60 OM"
                           formatChars={{
                             2: "[0-1]",
                             9: "[0-9]",
@@ -1242,10 +1287,27 @@ const workActivities = () => {
                           value={activity.EndTime}
                         >
                           {inputProps => (
-                            <input
-                              placeholder="End Time"
-                              style={{ width: "80px" }}
-                            ></input>
+                            <div
+                              style={{
+                                display: "flex",
+                                flexDirection: "column-reverse",
+                                justifyContent: "flex-end",
+                              }}
+                            >
+                              <input
+                                id="end-time-id"
+                                style={{ width: "80px" }}
+                              ></input>
+                              <label
+                                htmlFor="end-time-id"
+                                style={{
+                                  fontSize: "0.8rem",
+                                  color: "#807b7d",
+                                }}
+                              >
+                                End Time
+                              </label>
+                            </div>
                           )}
                         </InputMask>
                         {/* <TextField
