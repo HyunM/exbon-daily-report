@@ -695,10 +695,24 @@ const workActivities = () => {
 
     if (StartTime.includes("p") || StartTime.includes("P")) {
       const hour = parseInt(StartTime.substring(0, 2)) + 12;
-      StartTime = hour + StartTime.substring(2);
+      if (hour !== 24) StartTime = hour + StartTime.substring(2);
     }
     if (EndTime.includes("p") || EndTime.includes("P")) {
       const hour = parseInt(EndTime.substring(0, 2)) + 12;
+      if (hour !== 24) EndTime = hour + EndTime.substring(2);
+    }
+    if (StartTime.includes("a") || StartTime.includes("A")) {
+      let hour = parseInt(StartTime.substring(0, 2));
+      if (hour === 12) {
+        hour = "00";
+      }
+      StartTime = hour + StartTime.substring(2);
+    }
+    if (EndTime.includes("a") || EndTime.includes("A")) {
+      let hour = parseInt(EndTime.substring(0, 2));
+      if (hour === 12) {
+        hour = "00";
+      }
       EndTime = hour + EndTime.substring(2);
     }
     await axios({
