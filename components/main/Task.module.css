@@ -1,0 +1,444 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
+@media screen and (min-width: 900px) {
+  #mainDiv {
+    width: 680px;
+    margin: auto;
+  }
+  .header {
+    display: flex;
+  }
+  .header__right__save-btn {
+    height: 50%;
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+    padding: 1rem !important;
+    align-self: flex-end;
+  }
+}
+
+@media screen and (max-width: 1420px) {
+  #mainDiv {
+    width: 680px;
+    margin: auto;
+  }
+  .header__right__save-btn {
+    height: 50%;
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  #mainDiv {
+    width: 100%;
+    margin: auto;
+  }
+}
+
+.header {
+  justify-content: space-between;
+  margin-top: 7%;
+}
+
+.header__left {
+  display: flex;
+  align-items: center;
+  flex: 1 1 auto;
+}
+
+.header__left__title {
+  font-family: system-ui;
+  color: darkblue;
+  flex: 0 1 auto;
+  margin-right: 3%;
+}
+
+.header__left__date-picker {
+  width: 120px;
+}
+
+.header__left__date-picker input {
+  text-align: center;
+}
+
+.header__left__project-id {
+  font-family: monospace;
+  margin-bottom: 0 !important;
+  margin-left: 3% !important;
+}
+
+.header__right {
+  display: flex;
+  align-items: center;
+  flex: 1 1 auto;
+  flex-direction: row-reverse;
+  margin-bottom: 1%;
+}
+
+.header__right__save-btn {
+  padding: 0.5em !important;
+  height: auto;
+}
+
+.header__right__no-work-btn {
+  padding: 0.5em !important;
+  height: auto;
+  margin-right: 10% !important;
+}
+
+.table {
+  overflow: auto;
+}
+.table table {
+  font-family: "Roboto", sans-serif;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.table td {
+  border: 1px solid #ddd;
+}
+
+.table thead tr td {
+  text-align: center;
+}
+
+.table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.table tr {
+  background-color: #ffffff;
+}
+
+.table tbody tr:hover {
+  /* background-color: #ddd; */
+  background-color: #e6e8f3;
+  border: 1px solid #647be2;
+  cursor: default;
+}
+
+.table thead td {
+  background-color: #647be2;
+  color: white;
+}
+.table thead td:nth-child(1) {
+  padding-top: 10px;
+}
+.table thead td:nth-child(2) {
+  padding-top: 10px;
+}
+.table thead td:nth-child(3) {
+  padding-top: 10px;
+}
+.table thead td:nth-child(4) {
+  padding-top: 5px;
+}
+.table thead td:nth-child(5) {
+  padding-top: 5px;
+}
+.table thead td:nth-child(6) {
+  padding-top: 10px;
+}
+
+.table tbody td {
+  padding: 4px;
+}
+
+.table__trade-wrapper {
+  display: table;
+  height: 100%;
+  margin-top: auto;
+}
+
+.table__trade-wrapper__data {
+  vertical-align: middle;
+  text-align: left;
+  display: table-cell;
+}
+
+.table__company-wrapper {
+  display: table;
+  height: 100%;
+  margin-top: auto;
+}
+
+.table__company-wrapper__data {
+  vertical-align: middle;
+  text-align: left;
+  display: table-cell;
+  color: rgb(116, 100, 110);
+  font-size: 0.95rem;
+}
+
+.table__task-name-wrapper {
+  display: table;
+  height: 100%;
+  margin-top: auto;
+}
+
+.table__task-name-wrapper__data {
+  vertical-align: middle;
+  text-align: left;
+  display: table-cell;
+  color: rgb(116, 100, 110);
+  font-size: 0.95rem;
+}
+
+.table__date-wrapper {
+  display: table;
+  height: 100%;
+  margin: auto;
+}
+
+.table__date-wrapper__data {
+  font-size: 0.85rem;
+  text-align: center;
+  vertical-align: middle;
+  display: table-cell;
+  color: rgb(116, 100, 110);
+  transition: all 0.1s linear;
+}
+
+.table__date-wrapper__data:hover {
+  transform: scale(1.1);
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.table__previous-work-wrapper {
+  display: table;
+  height: 100%;
+  margin-top: auto;
+  margin-left: auto;
+}
+
+.table__previous-work-wrapper__data {
+  text-align: right;
+  vertical-align: middle;
+  display: table-cell;
+  color: rgb(116, 100, 110);
+  font-size: 0.95rem;
+}
+
+.table__current-work-wrapper {
+  display: table;
+  height: 100%;
+  margin-top: auto;
+  margin-left: auto;
+}
+
+.table__current-work-wrapper__data {
+  text-align: right;
+  vertical-align: middle;
+  display: table-cell;
+  color: rgb(116, 100, 110);
+}
+
+.table__current-work-wrapper__input__previous-work {
+  text-align: center;
+  width: 38px !important;
+  color: rgb(168, 164, 167);
+  border: 1px solid rgb(200, 191, 196);
+  border-radius: 4px;
+  box-shadow: rgb(221, 216, 220) 1px 1px 2px inset;
+  background: rgb(255, 255, 255);
+  padding: 4px;
+}
+
+.table__current-work-wrapper__input__current-work {
+  text-align: center;
+  width: 38px !important;
+  font-weight: 700;
+  color: black;
+  border: 1px solid rgb(200, 191, 196);
+  border-radius: 4px;
+  box-shadow: rgb(221, 216, 220) 1px 1px 2px inset;
+  background: rgb(255, 255, 255);
+  padding: 4px;
+}
+
+/* .table__current-work-wrapper__input::-webkit-outer-spin-button,
+.table__current-work-wrapper__input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+} */
+
+.alert__table__current-work-wrapper__input {
+  text-align: center;
+}
+
+.alert__table__current-work-input {
+  text-align: center;
+}
+
+.alert__complete {
+  text-align: center;
+}
+
+.table__report-icon {
+  cursor: pointer;
+}
+
+.modal-no-work__wrapper-title {
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.modal-no-work__wrapper-title__title {
+  color: #f60057;
+  margin-top: 0;
+}
+
+.modal-no-work__wrapper-content {
+  width: 600px;
+  display: flex;
+}
+
+.modal-no-work__wrapper-content__left {
+  width: 100%;
+  flex: 0 1 34%;
+  border-right: 1px solid rgb(226, 150, 150);
+  padding: 3%;
+}
+
+.modal-no-work__wrapper-content__right {
+  width: 100%;
+  flex: 0 1 66%;
+}
+
+.modal-no-work__wrapper-content__left__fixed-date {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: "Roboto";
+  color: rgb(102, 98, 98);
+  margin-bottom: 3%;
+  text-align: center;
+  padding: 3%;
+  cursor: pointer;
+}
+
+.modal-no-work__wrapper-content__left__fixed-date:hover {
+  background-color: #f5f5f5;
+}
+
+.modal-no-work__wrapper-content__left__fixed-date:active {
+  color: #fd7c6e;
+}
+
+.modal-no-work__wrapper-content__left__wrapper-btn-new {
+  text-align: center;
+}
+.modal-no-work__wrapper-content__left__wrapper-btn-new__btn-new:active {
+  color: #fd7c6e;
+}
+
+.modal-no-work__wrapper-content__right__RecordID-0 {
+  margin-top: 10%;
+  margin-left: auto;
+  text-align: center;
+  font-family: "Roboto";
+  font-weight: 800;
+  color: #909de9;
+}
+
+.modal-no-work__wrapper-content__right__wrapper-date-picker {
+  margin-top: 5%;
+}
+.modal-no-work__wrapper-content__right__wrapper-date-picker__start-date {
+  margin-left: 16% !important;
+  width: 30% !important;
+}
+
+.modal-no-work__wrapper-content__right__wrapper-date-picker__end-date {
+  margin-left: 10% !important;
+  width: 30% !important;
+}
+
+.modal-no-work__wrapper-content__right__wrapper-btn {
+  margin-top: 10%;
+}
+
+.modal-no-work__wrapper-content__right__text {
+  text-align: center;
+  color: grey;
+  font-family: "Roboto";
+}
+
+.modal-no-work__wrapper-content__right__wrapper-btn__btn-update {
+  color: rgb(0, 110, 255) !important;
+  margin-left: 30% !important;
+}
+
+.modal-no-work__wrapper-content__right__wrapper-btn__btn-delete {
+  color: rgb(224, 44, 44) !important;
+  margin-left: 5% !important;
+}
+.modal-no-work__wrapper-content__right__wrapper-btn__btn-add {
+  color: rgb(16, 207, 182) !important;
+  margin-left: 43% !important;
+}
+.modal-no-work__wrapper-content__right__wrapper-btn__btn-cancel {
+  background-color: #fd7c6e !important;
+  color: white !important;
+  margin-left: 5% !important;
+}
+.modal-no-work__footer {
+  text-align: center;
+}
+.modal-no-work__footer__btn-close {
+  background-color: rgb(144, 157, 233) !important;
+  color: white !important;
+}
+.modal-work-date__wrapper-title {
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.modal-work-date__wrapper-title__title {
+  color: #647be2;
+  margin-top: 0;
+}
+.modal-work-date__wrapper-date-picker__start-date {
+  margin-left: 16% !important;
+  width: 30% !important;
+}
+
+.modal-work-date__wrapper-date-picker__end-date {
+  margin-left: 10% !important;
+  width: 30% !important;
+}
+
+.modal-work-date__wrapper-btn {
+  margin-top: 10%;
+}
+
+.modal-work-date__wrapper-btn__btn-request {
+  background-color: #1cd3a2 !important;
+  color: white !important;
+  margin-left: 25% !important;
+}
+
+.modal-work-date__wrapper-btn__btn-cancel {
+  background-color: #fd7c6e !important;
+  color: white !important;
+  margin-left: 5% !important;
+}
+
+.modal-work-date__wrapper-title__sub-title-task-name {
+  margin-bottom: 0px;
+  font-family: "Roboto";
+}
+
+.modal-work-date__wrapper-title__sub-title-company-name {
+  margin-top: 5px;
+  font-family: "Roboto";
+  color: grey;
+}
+
+.test {
+  text-align: center;
+  color: gray;
+}
