@@ -1,7 +1,7 @@
 const mssql = require("mssql");
 const dbserver = require("../../dbConfig.js");
 
-const timesheetHandler = (req, res) => {
+const projectActivityHandler = (req, res) => {
   const { method, body } = req;
   return new Promise(resolve => {
     switch (method) {
@@ -16,8 +16,8 @@ const timesheetHandler = (req, res) => {
           const selectedDate = req.query.selectedDate;
           const projectID = req.query.projectID;
 
-          const query = `EXEC [Hammer].[dbo].[Timesheet_SelectByDate]
-          '${selectedDate}',  ${projectID}`;
+          const query = `EXEC [Hammer].[dbo].[ProjectActivity_SelectByPIDandDate]
+          ${projectID}, '${selectedDate}'`;
 
           request.query(query, (err, recordset) => {
             if (err) {
@@ -39,18 +39,25 @@ const timesheetHandler = (req, res) => {
             return resolve();
           }
           const request = new mssql.Request();
+          let startTime;
+          let endTime;
 
-          const query = `EXEC [Hammer].[dbo].[Timesheet_Insert]
-          ${body.ProjectID}, ${body.EmployeeID}, '${body.Position}', '${body.Date}', '${body.WorkStart}', '${body.WorkEnd}', '${body.MealStart}', '${body.MealEnd}' `;
+          if (body.StartTime === null) startTime = "";
+          else startTime = body.StartTime;
+          if (body.EndTime === null) endTime = "";
+          else endTime = body.EndTime;
+
+          const query = `EXEC [Hammer].[dbo].[ProjectActivity_UpdateOrInsert]
+          ${body.ProjectID}, '${body.Date}', '${body.Weather}', '${startTime}', '${endTime}', '${body.Tests}', '${body.Correctional}', '${body.Note}'`;
           /* --Params--
-          @projectID int,
-          @employeeID int,
-          @position nvarchar(100),
-          @date date,
-          @workStart time(0),
-          @workEnd time(0),
-          @mealStart time(0),
-          @mealEnd time(0)
+          	@projectID int,
+            @date date,
+            @weather nvarchar(50),
+            @startTime time(0),
+            @endTime time(0),
+            @tests nvarchar(1000),
+            @correctional nvarchar(1000),
+            @note nvarchar(1000)
           */
 
           request.query(query, (err, recordset) => {
@@ -59,8 +66,8 @@ const timesheetHandler = (req, res) => {
               return resolve();
             }
             res.status(200).json({
-              message: "Success, the timesheet has been created.",
-              TimesheetID: recordset.recordset[0].TimesheetID,
+              message: "Success.",
+              ActivityID: recordset.recordset[0].ActivityID,
             });
             return resolve();
           });
@@ -68,7 +75,7 @@ const timesheetHandler = (req, res) => {
         break;
 
       default:
-        res.setHeader("Allow", ["GET", "POST"]);
+        res.setHeader("Allow", ["GET", "POST", "PUT"]);
         res.status(405).end(`Method ${method} Not Allowed`);
         res.status(404).end(`Failed`);
         resolve();
@@ -76,4 +83,4 @@ const timesheetHandler = (req, res) => {
   });
 };
 
-export default timesheetHandler;
+export default projectActivityHandler;

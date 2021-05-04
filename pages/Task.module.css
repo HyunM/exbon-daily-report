@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 
 #mainDiv {
-  width: 1387px;
+  width: 1397px;
   margin: auto;
 }
 
@@ -89,6 +89,7 @@
 
 .table {
   overflow: auto;
+  margin-left: 4px;
 }
 .table table {
   font-family: "Roboto", sans-serif;
@@ -331,18 +332,20 @@
 
 .table__current-work-wrapper__input__previous-work {
   text-align: center;
-  width: 38px !important;
+  width: 40px !important;
   color: rgb(168, 164, 167);
   border: 1px solid rgb(200, 191, 196);
   border-radius: 4px;
   box-shadow: rgb(221, 216, 220) 1px 1px 2px inset;
   background: rgb(255, 255, 255);
   padding: 4px;
+  font-family: "Roboto";
+  font-size: 0.93rem;
 }
 
 .table__current-work-wrapper__input__current-work {
   text-align: center;
-  width: 38px !important;
+  width: 40px !important;
   font-weight: 700;
   color: black;
   border: 1px solid rgb(200, 191, 196);
@@ -350,6 +353,8 @@
   box-shadow: rgb(221, 216, 220) 1px 1px 2px inset;
   background: rgb(255, 255, 255);
   padding: 4px;
+  font-family: "Roboto";
+  font-size: 0.93rem;
 }
 
 .alert__table__current-work-wrapper__input {

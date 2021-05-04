@@ -1,37 +1,10 @@
 const mssql = require("mssql");
 const dbserver = require("../../dbConfig.js");
 
-const timesheetHandler = (req, res) => {
+const projectActivityItemHandler = (req, res) => {
   const { method, body } = req;
   return new Promise(resolve => {
     switch (method) {
-      case "GET":
-        mssql.connect(dbserver.dbConfig, err => {
-          if (err) {
-            console.error(err);
-            return resolve();
-          }
-          const request = new mssql.Request();
-
-          const selectedDate = req.query.selectedDate;
-          const projectID = req.query.projectID;
-
-          const query = `EXEC [Hammer].[dbo].[Timesheet_SelectByDate]
-          '${selectedDate}',  ${projectID}`;
-
-          request.query(query, (err, recordset) => {
-            if (err) {
-              console.error(err);
-              return resolve();
-            }
-            res.status(200).json({
-              result: recordset.recordsets,
-            });
-            return resolve();
-          });
-        });
-        break;
-
       case "POST":
         mssql.connect(dbserver.dbConfig, err => {
           if (err) {
@@ -40,17 +13,17 @@ const timesheetHandler = (req, res) => {
           }
           const request = new mssql.Request();
 
-          const query = `EXEC [Hammer].[dbo].[Timesheet_Insert]
-          ${body.ProjectID}, ${body.EmployeeID}, '${body.Position}', '${body.Date}', '${body.WorkStart}', '${body.WorkEnd}', '${body.MealStart}', '${body.MealEnd}' `;
+          const query = `EXEC [Hammer].[dbo].[ProjectActivityItem_Insert]
+          ${body.ActivityID}, '${body.Contractor}', '${body.Trade}', ${body.Workers}, ${body.Hours}, '${body.Equipment}', '${body.WorkPerformed}'`;
           /* --Params--
-          @projectID int,
-          @employeeID int,
-          @position nvarchar(100),
-          @date date,
-          @workStart time(0),
-          @workEnd time(0),
-          @mealStart time(0),
-          @mealEnd time(0)
+          	@activityID int,
+
+            @contractor nvarchar(100),
+            @trade nvarchar(100),
+            @workers int,
+            @hours float,
+            @equipment nvarchar(100),
+            @workPerformed nvarchar(300)
           */
 
           request.query(query, (err, recordset) => {
@@ -59,8 +32,34 @@ const timesheetHandler = (req, res) => {
               return resolve();
             }
             res.status(200).json({
-              message: "Success, the timesheet has been created.",
-              TimesheetID: recordset.recordset[0].TimesheetID,
+              message: "Success.",
+            });
+            return resolve();
+          });
+        });
+        break;
+
+      case "DELETE":
+        mssql.connect(dbserver.dbConfig, err => {
+          if (err) {
+            console.error(err);
+            return resolve();
+          }
+          const request = new mssql.Request();
+
+          const query = `EXEC [Hammer].[dbo].[ProjectActivityItem_Delete]
+          ${body.ActivityID}`;
+          /* --Params--
+          	@activityID int	
+          */
+
+          request.query(query, (err, recordset) => {
+            if (err) {
+              console.error(err);
+              return resolve();
+            }
+            res.status(200).json({
+              message: "Success.",
             });
             return resolve();
           });
@@ -68,7 +67,7 @@ const timesheetHandler = (req, res) => {
         break;
 
       default:
-        res.setHeader("Allow", ["GET", "POST"]);
+        res.setHeader("Allow", ["POST", "DELETE"]);
         res.status(405).end(`Method ${method} Not Allowed`);
         res.status(404).end(`Failed`);
         resolve();
@@ -76,4 +75,4 @@ const timesheetHandler = (req, res) => {
   });
 };
 
-export default timesheetHandler;
+export default projectActivityItemHandler;

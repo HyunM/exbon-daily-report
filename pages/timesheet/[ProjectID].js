@@ -964,6 +964,7 @@ const Timesheet = () => {
 
   return (
     <>
+      {console.log(data)}
       <Head>
         <title>Daily Report</title>
         <link rel="icon" href="/favicon.ico" />

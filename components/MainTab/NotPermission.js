@@ -1,12 +1,10 @@
 import Link from "next/link";
 
-const NotPermission = () => {
+const NotPermission = ({ path }) => {
   return (
     <>
       <h1>No permissions</h1>
-      <Link href="/">
-        <a>Go to main page</a>
-      </Link>
+      <a href={path}>Go to main page</a>
     </>
   );
 };

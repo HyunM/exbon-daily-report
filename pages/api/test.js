@@ -12,12 +12,15 @@ const testHandler = (req, res) => {
           let worksheet = workbook.getWorksheet("Daily Report");
           // header id name dob
           let row = worksheet.getRow(2);
-          console.log(row);
           row.getCell(2).value = body.ProjectName;
           row.commit();
           workbook.xlsx.writeFile(__dirname + "/6 Daily Report - Test.xlsx");
         };
         handle();
+        res.status(200).json({
+          message: "Success",
+        });
+        return resolve();
         break;
 
       default:
