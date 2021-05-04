@@ -658,63 +658,6 @@ const workActivities = () => {
       project_id.selectedIndex
     ].getAttribute("contractno");
 
-    let StartTime = activity.StartTime;
-    let EndTime = activity.EndTime;
-    if (activity.StartTime.includes("_") && activity.EndTime.includes("_")) {
-      StartTime = "";
-      EndTime = "";
-      setActivity(() => ({
-        Weather: activity.Weather,
-        StartTime: "",
-        EndTime: "",
-        Tests: activity.Tests,
-        Correctional: activity.Correctional,
-        Note: activity.Note,
-      }));
-    } else if (activity.StartTime.includes("_")) {
-      StartTime = "";
-      setActivity(() => ({
-        Weather: activity.Weather,
-        StartTime: "",
-        EndTime: activity.EndTime,
-        Tests: activity.Tests,
-        Correctional: activity.Correctional,
-        Note: activity.Note,
-      }));
-    } else if (activity.EndTime.includes("_")) {
-      EndTime = "";
-      setActivity(() => ({
-        Weather: activity.Weather,
-        StartTime: activity.StartTime,
-        EndTime: "",
-        Tests: activity.Tests,
-        Correctional: activity.Correctional,
-        Note: activity.Note,
-      }));
-    }
-
-    if (StartTime.includes("p") || StartTime.includes("P")) {
-      const hour = parseInt(StartTime.substring(0, 2)) + 12;
-      if (hour !== 24) StartTime = hour + StartTime.substring(2);
-    }
-    if (EndTime.includes("p") || EndTime.includes("P")) {
-      const hour = parseInt(EndTime.substring(0, 2)) + 12;
-      if (hour !== 24) EndTime = hour + EndTime.substring(2);
-    }
-    if (StartTime.includes("a") || StartTime.includes("A")) {
-      let hour = parseInt(StartTime.substring(0, 2));
-      if (hour === 12) {
-        hour = "00";
-      }
-      StartTime = hour + StartTime.substring(2);
-    }
-    if (EndTime.includes("a") || EndTime.includes("A")) {
-      let hour = parseInt(EndTime.substring(0, 2));
-      if (hour === 12) {
-        hour = "00";
-      }
-      EndTime = hour + EndTime.substring(2);
-    }
     await axios({
       method: "POST",
       url: `/api/work-activities/export`,
@@ -725,8 +668,8 @@ const workActivities = () => {
         ProjectID: projectState,
         Date: formatDate(selectedDate),
         Weather: activity.Weather,
-        StartTime: StartTime,
-        EndTime: EndTime,
+        StartTime: activity.StartTime,
+        EndTime: activity.EndTime,
         Tests: activity.Tests,
         Correctional: activity.Correctional,
         Note: activity.Note,
@@ -762,40 +705,7 @@ const workActivities = () => {
   const handleSaveBtn = async () => {
     // setCheckDownload(1);
     let promises = [];
-    let StartTime = activity.StartTime;
-    let EndTime = activity.EndTime;
-    if (activity.StartTime.includes("_") && activity.EndTime.includes("_")) {
-      StartTime = "";
-      EndTime = "";
-      setActivity(() => ({
-        Weather: activity.Weather,
-        StartTime: "",
-        EndTime: "",
-        Tests: activity.Tests,
-        Correctional: activity.Correctional,
-        Note: activity.Note,
-      }));
-    } else if (activity.StartTime.includes("_")) {
-      StartTime = "";
-      setActivity(() => ({
-        Weather: activity.Weather,
-        StartTime: "",
-        EndTime: activity.EndTime,
-        Tests: activity.Tests,
-        Correctional: activity.Correctional,
-        Note: activity.Note,
-      }));
-    } else if (activity.EndTime.includes("_")) {
-      EndTime = "";
-      setActivity(() => ({
-        Weather: activity.Weather,
-        StartTime: activity.StartTime,
-        EndTime: "",
-        Tests: activity.Tests,
-        Correctional: activity.Correctional,
-        Note: activity.Note,
-      }));
-    }
+
     const fetchData = async () => {
       const editValue = {
         Tests: activity.Tests.replaceAll(`'`, `''`),
@@ -823,8 +733,8 @@ const workActivities = () => {
           ProjectID: projectState,
           Date: formatDate(selectedDate),
           Weather: activity.Weather,
-          StartTime: StartTime,
-          EndTime: EndTime,
+          StartTime: activity.StartTime,
+          EndTime: activity.EndTime,
           Tests: editValue.Tests,
           Correctional: editValue.Correctional,
           Note: editValue.Note,
@@ -1208,7 +1118,7 @@ const workActivities = () => {
                   >
                     <p
                       style={{
-                        marginTop: "18px",
+                        marginTop: "4px",
                         marginBottom: "0px",
                         marginRight: "15px",
                         marginLeft: "3px",
@@ -1251,88 +1161,7 @@ const workActivities = () => {
                     </select>
                     <div style={{ marginLeft: "80px", display: "flex" }}>
                       <div style={{ display: "flex" }}>
-                        <InputMask
-                          mask="29:60 OM"
-                          formatChars={{
-                            2: "[0-1]",
-                            9: "[0-9]",
-                            6: "[0-5]",
-                            O: "[A,P,a,p]",
-                          }}
-                          onChange={e => handleChangeStartTime(e.target.value)}
-                          onBlur={e => checkStartTime(e.target.value)}
-                          value={activity.StartTime}
-                        >
-                          {inputProps => (
-                            <div
-                              style={{
-                                display: "flex",
-                                flexDirection: "column-reverse",
-                                marginRight: "20px",
-                                justifyContent: "flex-end",
-                              }}
-                            >
-                              <input
-                                id="start-time-id"
-                                style={{
-                                  width: "80px",
-                                  fontSize: "0.95rem",
-                                  height: "0.95em",
-                                }}
-                              ></input>
-                              <label
-                                htmlFor="start-time-id"
-                                style={{
-                                  fontSize: "0.8rem",
-                                  color: "#807b7d",
-                                }}
-                              >
-                                Start Time
-                              </label>
-                            </div>
-                          )}
-                        </InputMask>
-                        <InputMask
-                          mask="29:60 OM"
-                          formatChars={{
-                            2: "[0-1]",
-                            9: "[0-9]",
-                            6: "[0-5]",
-                            O: "[A,P,a,p]",
-                          }}
-                          onChange={e => handleChangeEndTime(e.target.value)}
-                          onBlur={e => checkEndTime(e.target.value)}
-                          value={activity.EndTime}
-                        >
-                          {inputProps => (
-                            <div
-                              style={{
-                                display: "flex",
-                                flexDirection: "column-reverse",
-                                justifyContent: "flex-end",
-                              }}
-                            >
-                              <input
-                                id="end-time-id"
-                                style={{
-                                  width: "80px",
-                                  fontSize: "0.95rem",
-                                  height: "0.95em",
-                                }}
-                              ></input>
-                              <label
-                                htmlFor="end-time-id"
-                                style={{
-                                  fontSize: "0.8rem",
-                                  color: "#807b7d",
-                                }}
-                              >
-                                End Time
-                              </label>
-                            </div>
-                          )}
-                        </InputMask>
-                        {/* <TextField
+                        <TextField
                           className={styles["table__start-time"]}
                           label="Start Time"
                           type="time"
@@ -1349,10 +1178,10 @@ const workActivities = () => {
                               : "07:00"
                           }
                           onChange={e => handleChangeStartTime(e.target.value)}
-                        /> */}
+                        />
                       </div>
                       <div style={{ marginLeft: "20px" }}>
-                        {/* <TextField
+                        <TextField
                           className={styles["table__end-time"]}
                           label="End Time"
                           type="time"
@@ -1369,7 +1198,7 @@ const workActivities = () => {
                               : "17:00"
                           }
                           onChange={e => handleChangeEndTime(e.target.value)}
-                        /> */}
+                        />
                       </div>
                     </div>
                   </div>
