@@ -1169,7 +1169,7 @@ const workActivities = () => {
                             shrink: true,
                           }}
                           inputProps={{
-                            step: 300, // 5 min
+                            step: 600, // 5 min
                           }}
                           style={{ marginBottom: "20px" }}
                           value={
