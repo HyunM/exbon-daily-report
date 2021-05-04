@@ -46,6 +46,10 @@ const projectActivityHandler = (req, res) => {
           else startTime = body.StartTime;
           if (body.EndTime === null) endTime = "";
           else endTime = body.EndTime;
+
+          if (startTime === "12:00 AM") {
+            console.log(startTime);
+          }
           const query = `EXEC [Hammer].[dbo].[ProjectActivity_UpdateOrInsert]
           ${body.ProjectID}, '${body.Date}', '${body.Weather}', '${startTime}', '${endTime}', '${body.Tests}', '${body.Correctional}', '${body.Note}'`;
           /* --Params--
