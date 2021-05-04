@@ -1201,7 +1201,7 @@ const workActivities = () => {
                     style={{
                       display: "flex",
                       justifyContent: "left",
-                      marginTop: "20px",
+                      marginTop: "18px",
                       marginBottom: "10px",
                       fontFamily: "Roboto",
                     }}
@@ -1274,7 +1274,11 @@ const workActivities = () => {
                             >
                               <input
                                 id="start-time-id"
-                                style={{ width: "80px" }}
+                                style={{
+                                  width: "80px",
+                                  fontSize: "0.95rem",
+                                  height: "0.95em",
+                                }}
                               ></input>
                               <label
                                 htmlFor="start-time-id"
@@ -1310,7 +1314,11 @@ const workActivities = () => {
                             >
                               <input
                                 id="end-time-id"
-                                style={{ width: "80px" }}
+                                style={{
+                                  width: "80px",
+                                  fontSize: "0.95rem",
+                                  height: "0.95em",
+                                }}
                               ></input>
                               <label
                                 htmlFor="end-time-id"
