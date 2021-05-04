@@ -29,6 +29,8 @@ import { toast } from "react-toastify";
 import DescriptionIcon from "@material-ui/icons/Description";
 import { RiFileExcel2Fill } from "react-icons/ri";
 
+import InputMask from "react-input-mask";
+
 toast.configure();
 let dataContractor = [{ Name: "" }];
 const materialTheme = createMuiTheme({
@@ -656,6 +658,41 @@ const workActivities = () => {
       project_id.selectedIndex
     ].getAttribute("contractno");
 
+    let StartTime = activity.StartTime;
+    let EndTime = activity.EndTime;
+    if (activity.StartTime.includes("_") && activity.EndTime.includes("_")) {
+      StartTime = "";
+      EndTime = "";
+      setActivity(() => ({
+        Weather: activity.Weather,
+        StartTime: "",
+        EndTime: "",
+        Tests: activity.Tests,
+        Correctional: activity.Correctional,
+        Note: activity.Note,
+      }));
+    } else if (activity.StartTime.includes("_")) {
+      StartTime = "";
+      setActivity(() => ({
+        Weather: activity.Weather,
+        StartTime: "",
+        EndTime: activity.EndTime,
+        Tests: activity.Tests,
+        Correctional: activity.Correctional,
+        Note: activity.Note,
+      }));
+    } else if (activity.EndTime.includes("_")) {
+      EndTime = "";
+      setActivity(() => ({
+        Weather: activity.Weather,
+        StartTime: activity.StartTime,
+        EndTime: "",
+        Tests: activity.Tests,
+        Correctional: activity.Correctional,
+        Note: activity.Note,
+      }));
+    }
+
     await axios({
       method: "POST",
       url: `/api/work-activities/export`,
@@ -666,8 +703,8 @@ const workActivities = () => {
         ProjectID: projectState,
         Date: formatDate(selectedDate),
         Weather: activity.Weather,
-        StartTime: activity.StartTime,
-        EndTime: activity.EndTime,
+        StartTime: StartTime,
+        EndTime: EndTime,
         Tests: activity.Tests,
         Correctional: activity.Correctional,
         Note: activity.Note,
@@ -703,6 +740,40 @@ const workActivities = () => {
   const handleSaveBtn = async () => {
     // setCheckDownload(1);
     let promises = [];
+    let StartTime = activity.StartTime;
+    let EndTime = activity.EndTime;
+    if (activity.StartTime.includes("_") && activity.EndTime.includes("_")) {
+      StartTime = "";
+      EndTime = "";
+      setActivity(() => ({
+        Weather: activity.Weather,
+        StartTime: "",
+        EndTime: "",
+        Tests: activity.Tests,
+        Correctional: activity.Correctional,
+        Note: activity.Note,
+      }));
+    } else if (activity.StartTime.includes("_")) {
+      StartTime = "";
+      setActivity(() => ({
+        Weather: activity.Weather,
+        StartTime: "",
+        EndTime: activity.EndTime,
+        Tests: activity.Tests,
+        Correctional: activity.Correctional,
+        Note: activity.Note,
+      }));
+    } else if (activity.EndTime.includes("_")) {
+      EndTime = "";
+      setActivity(() => ({
+        Weather: activity.Weather,
+        StartTime: activity.StartTime,
+        EndTime: "",
+        Tests: activity.Tests,
+        Correctional: activity.Correctional,
+        Note: activity.Note,
+      }));
+    }
     const fetchData = async () => {
       const editValue = {
         Tests: activity.Tests.replaceAll(`'`, `''`),
@@ -710,6 +781,7 @@ const workActivities = () => {
         Note: activity.Note.replaceAll(`'`, `''`),
       };
       let AID = 0;
+
       await axios({
         method: "post",
         url: `/api/project-activity?`,
@@ -729,8 +801,8 @@ const workActivities = () => {
           ProjectID: projectState,
           Date: formatDate(selectedDate),
           Weather: activity.Weather,
-          StartTime: activity.StartTime,
-          EndTime: activity.EndTime,
+          StartTime: StartTime,
+          EndTime: EndTime,
           Tests: editValue.Tests,
           Correctional: editValue.Correctional,
           Note: editValue.Note,
@@ -887,9 +959,37 @@ const workActivities = () => {
     array.forEach(element => (total += parseInt(element.Workers)));
     return total;
   };
+
+  const checkStartTime = value => {
+    if (parseInt(value.substring(0, 2)) > 12) {
+      alert("The hh unit cannot exceed 12 in Start Time. Please set AM or PM.");
+      setActivity(() => ({
+        Weather: activity.Weather,
+        StartTime: "",
+        EndTime: activity.EndTime,
+        Tests: activity.Tests,
+        Correctional: activity.Correctional,
+        Note: activity.Note,
+      }));
+    }
+  };
+
+  const checkEndTime = value => {
+    if (parseInt(value.substring(0, 2)) > 12) {
+      alert("The hh unit cannot exceed 12 in End Time. Please set AM or PM.");
+      setActivity(() => ({
+        Weather: activity.Weather,
+        StartTime: activity.EndTime,
+        EndTime: "",
+        Tests: activity.Tests,
+        Correctional: activity.Correctional,
+        Note: activity.Note,
+      }));
+    }
+  };
   return (
     <>
-      {console.log(data)}
+      {console.log(activity)}
       <Head>
         <title>Daily Report</title>
         <link rel="icon" href="/favicon.ico" />
@@ -1100,7 +1200,47 @@ const workActivities = () => {
                     </select>
                     <div style={{ marginLeft: "80px", display: "flex" }}>
                       <div>
-                        <TextField
+                        <InputMask
+                          mask="29 : 60 OM"
+                          formatChars={{
+                            2: "[0-1]",
+                            9: "[0-9]",
+                            6: "[0-5]",
+                            O: "[A,P,a,p]",
+                          }}
+                          onChange={e => handleChangeStartTime(e.target.value)}
+                          onBlur={e => checkStartTime(e.target.value)}
+                          value={activity.StartTime}
+                        >
+                          {inputProps => (
+                            <input
+                              id="start-time-id"
+                              placeholder="Start Time"
+                              style={{ width: "80px" }}
+                            ></input>
+                          )}
+                        </InputMask>{" "}
+                        -{" "}
+                        <InputMask
+                          mask="29 : 60 OM"
+                          formatChars={{
+                            2: "[0-1]",
+                            9: "[0-9]",
+                            6: "[0-5]",
+                            O: "[A,P,a,p]",
+                          }}
+                          onChange={e => handleChangeEndTime(e.target.value)}
+                          onBlur={e => checkEndTime(e.target.value)}
+                          value={activity.EndTime}
+                        >
+                          {inputProps => (
+                            <input
+                              placeholder="End Time"
+                              style={{ width: "80px" }}
+                            ></input>
+                          )}
+                        </InputMask>
+                        {/* <TextField
                           className={styles["table__start-time"]}
                           label="Start Time"
                           type="time"
@@ -1117,10 +1257,10 @@ const workActivities = () => {
                               : "07:00"
                           }
                           onChange={e => handleChangeStartTime(e.target.value)}
-                        />
+                        /> */}
                       </div>
                       <div style={{ marginLeft: "20px" }}>
-                        <TextField
+                        {/* <TextField
                           className={styles["table__end-time"]}
                           label="End Time"
                           type="time"
@@ -1137,7 +1277,7 @@ const workActivities = () => {
                               : "17:00"
                           }
                           onChange={e => handleChangeEndTime(e.target.value)}
-                        />
+                        /> */}
                       </div>
                     </div>
                   </div>
