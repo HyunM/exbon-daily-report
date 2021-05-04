@@ -990,8 +990,8 @@ const workActivities = () => {
       toast.warning(
         <div className={styles["alert__complete"]}>
           <p style={{ marginBottom: "20px" }}>
-            The hh unit range is <strong>01 ~ 12 </strong> in Start Time. Please
-            set AM or PM.
+            The hour input range is <strong>01 ~ 12 </strong> in Start Time.
+            Please set AM or PM.
           </p>
         </div>,
         {
@@ -1019,8 +1019,8 @@ const workActivities = () => {
       toast.warning(
         <div className={styles["alert__complete"]}>
           <p style={{ marginBottom: "20px" }}>
-            The hh unit range is <strong>01 ~ 12 </strong> in End Time. Please
-            set AM or PM.
+            The hour input range is <strong>01 ~ 12 </strong> in End Time.
+            Please set AM or PM.
           </p>
         </div>,
         {
