@@ -686,7 +686,7 @@ const workActivities = () => {
         .getElementById("excelExport")
         .setAttribute(
           "href",
-          "/Daily Report_" + status.cookies.username + ".xlsx"
+          "/Daily Report_" + status.cookies.username + ".pdf"
         );
       document.getElementById("excelExport").click();
       setCheckDownload(0);
