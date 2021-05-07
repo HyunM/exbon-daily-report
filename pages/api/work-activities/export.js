@@ -1,3 +1,5 @@
+var edge = require("edge-js");
+
 const exportHandler = (req, res) => {
   const { method, body } = req;
   return new Promise(async resolve => {
@@ -57,8 +59,60 @@ const exportHandler = (req, res) => {
         row28.getCell(1).value = body.Note;
 
         await workbook.xlsx.writeFile(
-          __dirname + "/Daily Report_" + body.username + ".pdf"
+          __dirname + "/Daily Report_" + body.username + ".xlsx"
         );
+
+        var helloWorld = edge.func(`
+                                      async (input) => { 
+                                          return ".NET Welcomes " + input.ToString(); 
+                                      }
+                                  `);
+
+        helloWorld("JavaScript", function (error, result) {
+          if (error) throw error;
+          console.log(result);
+        });
+
+        var msopdf = require("node-msoffice-pdf");
+
+        msopdf(null, function (error, office) {
+          if (error) {
+            console.log("Init failed", error);
+            return;
+          }
+
+          /*
+     There is a queue on the background thread, so adding things is non-blocking.
+   */
+
+          office.excel(
+            {
+              input: "public/6 R Daily Report.xlsx",
+              output: "public/outfile.pdf",
+            },
+            function (error, pdf) {
+              if (error) {
+                console.log("Woops", error);
+              } else {
+                console.log("Saved to", pdf);
+              }
+            }
+          );
+
+          /*
+     Word/PowerPoint/Excel remain open (for faster batch conversion)
+ 
+     To clean them up, and to wait for the queue to finish processing
+   */
+
+          office.close(null, function (error) {
+            if (error) {
+              console.log("Woops", error);
+            } else {
+              console.log("Finished & closed");
+            }
+          });
+        });
 
         res.status(200).json({
           message: "Success",

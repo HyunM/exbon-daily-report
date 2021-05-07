@@ -684,10 +684,11 @@ const workActivities = () => {
       // setCheckDownload(0);
       document
         .getElementById("excelExport")
-        .setAttribute(
-          "href",
-          "/Daily Report_" + status.cookies.username + ".pdf"
-        );
+        // .setAttribute(
+        //   "href",
+        //   "/Daily Report_" + status.cookies.username + ".xlsx"
+        // );
+        .setAttribute("href", "/outfile.pdf");
       document.getElementById("excelExport").click();
       setCheckDownload(0);
       toast.success(
