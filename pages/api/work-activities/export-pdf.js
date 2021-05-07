@@ -1,3 +1,8 @@
+const libre = require("libreoffice-convert");
+
+const path = require("path");
+const fs = require("fs");
+
 const exportPDFHandler = (req, res) => {
   const { method, body } = req;
   return new Promise(async resolve => {
@@ -59,6 +64,25 @@ const exportPDFHandler = (req, res) => {
         await workbook.xlsx.writeFile(
           __dirname + "/Daily Report_" + body.username + ".xlsx"
         );
+
+        const extend = ".pdf";
+        const enterPath = path.join(
+          __dirname,
+          "/Daily Report_" + body.username + ".xlsx"
+        );
+        const outputPath = path.join(__dirname, `/output${extend}`);
+
+        // Read file
+        const file = fs.readFileSync(enterPath);
+        // Convert it to pdf format with undefined filter (see Libreoffice doc about filter)
+        libre.convert(file, extend, undefined, (err, done) => {
+          if (err) {
+            console.log(`Error converting file: ${err}`);
+          }
+
+          // Here in done you have pdf file which you can save or transfer in another stream
+          fs.writeFileSync(outputPath, done);
+        });
 
         res.status(200).json({
           message: "Success",
