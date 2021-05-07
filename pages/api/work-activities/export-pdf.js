@@ -62,58 +62,6 @@ const exportPDFHandler = (req, res) => {
           __dirname + "/Daily Report_" + body.username + ".xlsx"
         );
 
-        // var helloWorld = edge.func(`
-        //                               async (input) => {
-        //                                   return ".NET Welcomes " + input.ToString();
-        //                               }
-        //                           `);
-
-        // helloWorld("JavaScript", function (error, result) {
-        //   if (error) throw error;
-        //   console.log(result);
-        // });
-
-        var msopdf = require("node-msoffice-pdf");
-
-        msopdf(null, async function (error, office) {
-          if (error) {
-            console.log("Init failed", error);
-            return;
-          }
-
-          /*
-            There is a queue on the background thread, so adding things is non-blocking.
-          */
-
-          await office.excel(
-            {
-              input: __dirname + "/Daily Report_" + body.username + ".xlsx",
-              output: __dirname + "/Daily Report_" + body.username + ".pdf",
-            },
-            function (error, pdf) {
-              if (error) {
-                console.log("Woops", error);
-              } else {
-                console.log("Saved to", pdf);
-              }
-            }
-          );
-
-          /*
-            Word/PowerPoint/Excel remain open (for faster batch conversion)
-        
-            To clean them up, and to wait for the queue to finish processing
-          */
-
-          office.close(null, function (error) {
-            if (error) {
-              console.log("Woops", error);
-            } else {
-              console.log("Finished & closed");
-            }
-          });
-        });
-
         res.status(200).json({
           message: "Success",
         });
