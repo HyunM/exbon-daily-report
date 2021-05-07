@@ -62,16 +62,16 @@ const exportHandler = (req, res) => {
           __dirname + "/Daily Report_" + body.username + ".xlsx"
         );
 
-        var helloWorld = edge.func(`
-                                      async (input) => { 
-                                          return ".NET Welcomes " + input.ToString(); 
-                                      }
-                                  `);
+        // var helloWorld = edge.func(`
+        //                               async (input) => {
+        //                                   return ".NET Welcomes " + input.ToString();
+        //                               }
+        //                           `);
 
-        helloWorld("JavaScript", function (error, result) {
-          if (error) throw error;
-          console.log(result);
-        });
+        // helloWorld("JavaScript", function (error, result) {
+        //   if (error) throw error;
+        //   console.log(result);
+        // });
 
         var msopdf = require("node-msoffice-pdf");
 
