@@ -1,5 +1,3 @@
-var edge = require("edge-js");
-
 const exportPDFHandler = (req, res) => {
   const { method, body } = req;
   return new Promise(async resolve => {
