@@ -1,6 +1,6 @@
 var edge = require("edge-js");
 
-const exportHandler = (req, res) => {
+const exportPDFHandler = (req, res) => {
   const { method, body } = req;
   return new Promise(async resolve => {
     switch (method) {
@@ -75,20 +75,20 @@ const exportHandler = (req, res) => {
 
         var msopdf = require("node-msoffice-pdf");
 
-        msopdf(null, function (error, office) {
+        msopdf(null, async function (error, office) {
           if (error) {
             console.log("Init failed", error);
             return;
           }
 
           /*
-     There is a queue on the background thread, so adding things is non-blocking.
-   */
+            There is a queue on the background thread, so adding things is non-blocking.
+          */
 
-          office.excel(
+          await office.excel(
             {
-              input: "public/6 R Daily Report.xlsx",
-              output: "public/outfile.pdf",
+              input: __dirname + "/Daily Report_" + body.username + ".xlsx",
+              output: __dirname + "/Daily Report_" + body.username + ".pdf",
             },
             function (error, pdf) {
               if (error) {
@@ -100,10 +100,10 @@ const exportHandler = (req, res) => {
           );
 
           /*
-     Word/PowerPoint/Excel remain open (for faster batch conversion)
- 
-     To clean them up, and to wait for the queue to finish processing
-   */
+            Word/PowerPoint/Excel remain open (for faster batch conversion)
+        
+            To clean them up, and to wait for the queue to finish processing
+          */
 
           office.close(null, function (error) {
             if (error) {
@@ -129,4 +129,4 @@ const exportHandler = (req, res) => {
   });
 };
 
-export default exportHandler;
+export default exportPDFHandler;

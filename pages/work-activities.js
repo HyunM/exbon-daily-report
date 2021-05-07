@@ -28,7 +28,7 @@ import { toast } from "react-toastify";
 
 import DescriptionIcon from "@material-ui/icons/Description";
 import { RiFileExcel2Fill } from "react-icons/ri";
-
+import { FaFilePdf } from "react-icons/fa";
 import InputMask from "react-input-mask";
 
 toast.configure();
@@ -646,7 +646,7 @@ const workActivities = () => {
     "03/10/2021",
   ]);
 
-  const handleExport = async () => {
+  const handleExcelExport = async () => {
     setCheckDownload(1);
     const project_id = document.getElementById("project-state-id");
 
@@ -660,7 +660,7 @@ const workActivities = () => {
 
     await axios({
       method: "POST",
-      url: `/api/work-activities/export`,
+      url: `/api/work-activities/export-excel`,
       timeout: 1000000,
       headers: {},
       data: {
@@ -688,7 +688,10 @@ const workActivities = () => {
         //   "href",
         //   "/Daily Report_" + status.cookies.username + ".xlsx"
         // );
-        .setAttribute("href", "/outfile.pdf");
+        .setAttribute(
+          "href",
+          "/Daily Report_" + status.cookies.username + ".xlsx"
+        );
       document.getElementById("excelExport").click();
       setCheckDownload(0);
       toast.success(
@@ -701,6 +704,66 @@ const workActivities = () => {
         }
       );
     }, 3000);
+  };
+
+  const handlePDFExport = async () => {
+    setCheckDownload(1);
+    const project_id = document.getElementById("project-state-id");
+
+    const projectName = project_id.options[
+      project_id.selectedIndex
+    ].getAttribute("projectname");
+
+    const contractNo = project_id.options[
+      project_id.selectedIndex
+    ].getAttribute("contractno");
+
+    await axios({
+      method: "POST",
+      url: `/api/work-activities/export-pdf`,
+      timeout: 1000000,
+      headers: {},
+      data: {
+        ProjectName: projectName,
+        ProjectID: projectState,
+        Date: formatDate(selectedDate),
+        Weather: activity.Weather,
+        StartTime: activity.StartTime,
+        EndTime: activity.EndTime,
+        Tests: activity.Tests,
+        Correctional: activity.Correctional,
+        Note: activity.Note,
+        data: data,
+        username: status.cookies.username,
+        fullname: status.cookies.fullname,
+        contractno: contractNo,
+      },
+    });
+
+    setTimeout(() => {
+      // setCheckDownload(0);
+      document
+        .getElementById("pdfExport")
+        // .setAttribute(
+        //   "href",
+        //   "/Daily Report_" + status.cookies.username + ".xlsx"
+        // );
+        .setAttribute(
+          "href",
+          "/Daily Report_" + status.cookies.username + ".pdf"
+        );
+      document.getElementById("pdfExport").click();
+      setCheckDownload(0);
+      toast.success(
+        <div className={styles["alert__complete"]}>
+          <strong>Download Complete</strong>
+        </div>,
+        {
+          position: toast.POSITION.BOTTOM_CENTER,
+          hideProgressBar: true,
+        }
+      );
+    }, 3500);
   };
 
   const handleSaveBtn = async () => {
@@ -1059,9 +1122,19 @@ const workActivities = () => {
                 <Button
                   variant="contained"
                   size="small"
-                  className={styles["header__right__export-btn"]}
+                  className={styles["header__right__pdf-export-btn"]}
+                  startIcon={<FaFilePdf />}
+                  onClick={handlePDFExport}
+                  style={{ marginRight: "10px" }}
+                >
+                  Export
+                </Button>
+                <Button
+                  variant="contained"
+                  size="small"
+                  className={styles["header__right__excel-export-btn"]}
                   startIcon={<RiFileExcel2Fill />}
-                  onClick={handleExport}
+                  onClick={handleExcelExport}
                   style={{ marginRight: "10px" }}
                 >
                   Export
@@ -1080,6 +1153,14 @@ const workActivities = () => {
                 <a
                   id="excelExport"
                   href="/export.xlsx"
+                  download
+                  style={{ display: "none" }}
+                >
+                  download
+                </a>
+                <a
+                  id="pdfExport"
+                  href="/export.pdf"
                   download
                   style={{ display: "none" }}
                 >
