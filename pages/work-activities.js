@@ -1156,23 +1156,6 @@ const workActivities = () => {
                   >
                     Save
                   </Button>
-
-                  <a
-                    id="excelExport"
-                    href="/export.xlsx"
-                    download
-                    style={{ display: "none" }}
-                  >
-                    download
-                  </a>
-                  <a
-                    id="pdfExport"
-                    href="/export.pdf"
-                    download
-                    style={{ display: "none" }}
-                  >
-                    download
-                  </a>
                 </div>
               </div>
 
@@ -1448,6 +1431,17 @@ const workActivities = () => {
           )}
         </>
       )}
+      <a
+        id="excelExport"
+        href="/export.xlsx"
+        download
+        style={{ display: "none" }}
+      >
+        download
+      </a>
+      <a id="pdfExport" href="/export.pdf" download style={{ display: "none" }}>
+        download
+      </a>
     </>
   );
 };
