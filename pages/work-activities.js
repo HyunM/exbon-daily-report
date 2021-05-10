@@ -751,7 +751,7 @@ const workActivities = () => {
         .setAttribute(
           "href",
           "/Daily Report_" + status.cookies.username + ".pdf"
-        );
+         );
       document.getElementById("pdfExport").click();
       setCheckDownload(0);
       toast.success(
