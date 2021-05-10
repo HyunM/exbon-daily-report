@@ -5,7 +5,7 @@ const exportExcelHandler = (req, res) => {
       case "POST":
         const __dirname = "public";
         const Excel = require("exceljs");
-        const filename = "/6 R Daily Report.xlsx";
+        const filename = "/ExcelForm.xlsx";
         const workbook = new Excel.Workbook();
         await workbook.xlsx.readFile(__dirname + filename);
         const worksheet = workbook.getWorksheet("Daily Report");

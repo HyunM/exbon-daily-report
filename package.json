@@ -26,7 +26,7 @@
     "mime": "^2.5.2",
     "moment": "^2.29.1",
     "mssql": "^6.2.3",
-    "next": "^10.1.3",
+    "next": "^10.2.0",
     "node-fetch": "^2.6.1",
     "object-path": "^0.11.5",
     "office-converter": "^1.0.2",
