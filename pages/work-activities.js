@@ -368,21 +368,16 @@ const workActivities = () => {
     Cell: EditableCell,
   };
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable(
-    {
-      columns,
-      data,
-      defaultColumn,
-      updateMyData,
-    },
-    useBlockLayout
-  );
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable(
+      {
+        columns,
+        data,
+        defaultColumn,
+        updateMyData,
+      },
+      useBlockLayout
+    );
 
   const logout = () => {
     setData([]);
@@ -650,13 +645,11 @@ const workActivities = () => {
     setCheckDownload(1);
     const project_id = document.getElementById("project-state-id");
 
-    const projectName = project_id.options[
-      project_id.selectedIndex
-    ].getAttribute("projectname");
+    const projectName =
+      project_id.options[project_id.selectedIndex].getAttribute("projectname");
 
-    const contractNo = project_id.options[
-      project_id.selectedIndex
-    ].getAttribute("contractno");
+    const contractNo =
+      project_id.options[project_id.selectedIndex].getAttribute("contractno");
 
     await axios({
       method: "POST",
@@ -684,10 +677,6 @@ const workActivities = () => {
       // setCheckDownload(0);
       document
         .getElementById("excelExport")
-        // .setAttribute(
-        //   "href",
-        //   "/Daily Report_" + status.cookies.username + ".xlsx"
-        // );
         .setAttribute(
           "href",
           "/Daily Report_" + status.cookies.username + ".xlsx"
@@ -710,15 +699,13 @@ const workActivities = () => {
     setCheckDownload(1);
     const project_id = document.getElementById("project-state-id");
 
-    const projectName = project_id.options[
-      project_id.selectedIndex
-    ].getAttribute("projectname");
+    const projectName =
+      project_id.options[project_id.selectedIndex].getAttribute("projectname");
 
-    const contractNo = project_id.options[
-      project_id.selectedIndex
-    ].getAttribute("contractno");
+    const contractNo =
+      project_id.options[project_id.selectedIndex].getAttribute("contractno");
 
-    const totalWorkers = document.getElementById("total-workers-id").innerText
+    const totalWorkers = document.getElementById("total-workers-id").innerText;
     await axios({
       method: "POST",
       url: `/api/work-activities/export-pdf`,
@@ -753,7 +740,7 @@ const workActivities = () => {
         .setAttribute(
           "href",
           "/Daily Report_" + status.cookies.username + ".pdf"
-         );
+        );
       document.getElementById("pdfExport").click();
       setCheckDownload(0);
       toast.success(
@@ -1040,427 +1027,425 @@ const workActivities = () => {
             employeeName={status.cookies.fullname}
             logout={logout}
           />
-          <div id={styles.mainDiv}>
-            <h1 className={styles["title"]}>Work Activities</h1>
-            <div className={styles["header"]}>
-              <div className={styles["header__left"]}>
-                <select
-                  id="project-state-id"
-                  value={projectState}
-                  onChange={e => setProjectState(e.target.value)}
-                  style={{
-                    marginBottom: "3px",
-                    fontFamily: "Roboto, sans-serif",
-                    fontSize: "medium",
-                    display: "inline-block",
-                    color: "#74646e",
-                    border: "1px solid #c8bfc4",
-                    borderRadius: "4px",
-                    boxShadow: "inset 1px 1px 2px #ddd8dc",
-                    background: "#fff",
-                    zIndex: "1",
-                    position: "relative",
-                  }}
-                >
-                  {stateAssignedProject.map(item => {
-                    return (
-                      <option
-                        value={item.ProjectID}
-                        key={item.ProjectID}
-                        projectgroup={item.ProjectGroup}
-                        projectname={item.ProjectName}
-                        contractno={item.ContractNumber}
-                      >
-                        {item.ProjectID} &emsp;[{item.ProjectGroup}]&ensp;
-                        {item.ProjectName}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-              <div className={styles["header__right"]}>
-                <p className={styles["header__right__label-date-picker"]}>
-                  Date
-                </p>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <DatePicker
-                    className={styles["header__right__date-picker"]}
-                    value={selectedDate}
-                    onChange={handleDateChange}
-                    format="MM/dd/yyyy"
-                    autoOk={true}
-                    okLabel=""
-                    renderDay={(
-                      day,
-                      selectedDate,
-                      isInCurrentMonth,
-                      dayComponent
-                    ) => {
-                      const isSelected =
-                        isInCurrentMonth &&
-                        selectedDays.includes(formatDate(day));
-
-                      // You can also use our internal <Day /> component
-                      return (
-                        // <Badge badgeContent={isSelected ? "🌚" : undefined}>
-                        //   {dayComponent}
-                        // </Badge>
-                        <div
-                          style={
-                            isSelected
-                              ? {
-                                  backgroundColor: "#61e2bb",
-                                  borderRadius: "1000px",
-                                }
-                              : undefined
-                          }
-                        >
-                          {dayComponent}
-                        </div>
-                      );
-                    }}
-                  />
-                </MuiPickersUtilsProvider>
-                <Button
-                  variant="contained"
-                  size="small"
-                  className={styles["header__right__pdf-export-btn"]}
-                  startIcon={<FaFilePdf />}
-                  onClick={handlePDFExport}
-                  style={{ marginRight: "10px" }}
-                >
-                  Export
-                </Button>
-                <Button
-                  variant="contained"
-                  size="small"
-                  className={styles["header__right__excel-export-btn"]}
-                  startIcon={<RiFileExcel2Fill />}
-                  onClick={handleExcelExport}
-                  style={{ marginRight: "10px" }}
-                >
-                  Export
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="small"
-                  className={styles["header__right__save-btn"]}
-                  startIcon={<SaveIcon />}
-                  onClick={handleSaveBtn}
-                >
-                  Save
-                </Button>
-
-                <a
-                  id="excelExport"
-                  href="/export.xlsx"
-                  download
-                  style={{ display: "none" }}
-                >
-                  download
-                </a>
-                <a
-                  id="pdfExport"
-                  href="/export.pdf"
-                  download
-                  style={{ display: "none" }}
-                >
-                  download
-                </a>
-              </div>
+          {promiseInProgress || !projectState || checkDownload ? (
+            <div
+              style={{
+                width: "100%",
+                height: "100",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Loader
+                type="BallTriangle"
+                color="#1ec996"
+                height="150"
+                width="150"
+              />
             </div>
-
-            {promiseInProgress || !projectState || checkDownload ? (
-              <div
-                style={{
-                  width: "100%",
-                  height: "100",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Loader
-                  type="BallTriangle"
-                  color="#1ec996"
-                  height="150"
-                  width="150"
-                />
-              </div>
-            ) : (
-              <>
-                <div className={styles["table"]}>
-                  <div
+          ) : (
+            <div id={styles.mainDiv}>
+              <h1 className={styles["title"]}>Work Activities</h1>
+              <div className={styles["header"]}>
+                <div className={styles["header__left"]}>
+                  <select
+                    id="project-state-id"
+                    value={projectState}
+                    onChange={e => setProjectState(e.target.value)}
                     style={{
-                      display: "flex",
-                      justifyContent: "left",
-                      marginTop: "18px",
-                      marginBottom: "10px",
-                      fontFamily: "Roboto",
+                      marginBottom: "3px",
+                      fontFamily: "Roboto, sans-serif",
+                      fontSize: "medium",
+                      display: "inline-block",
+                      color: "#74646e",
+                      border: "1px solid #c8bfc4",
+                      borderRadius: "4px",
+                      boxShadow: "inset 1px 1px 2px #ddd8dc",
+                      background: "#fff",
+                      zIndex: "1",
+                      position: "relative",
                     }}
                   >
-                    <p
-                      style={{
-                        marginTop: "4px",
-                        marginBottom: "0px",
-                        marginRight: "15px",
-                        marginLeft: "3px",
-                        fontFamily: "Roboto, sans-serif",
-                        color: "#807b7d",
-                        height: "30px",
-                        alignSelf: "center",
+                    {stateAssignedProject.map(item => {
+                      return (
+                        <option
+                          value={item.ProjectID}
+                          key={item.ProjectID}
+                          projectgroup={item.ProjectGroup}
+                          projectname={item.ProjectName}
+                          contractno={item.ContractNumber}
+                        >
+                          {item.ProjectID} &emsp;[{item.ProjectGroup}]&ensp;
+                          {item.ProjectName}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+                <div className={styles["header__right"]}>
+                  <p className={styles["header__right__label-date-picker"]}>
+                    Date
+                  </p>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <DatePicker
+                      className={styles["header__right__date-picker"]}
+                      value={selectedDate}
+                      onChange={handleDateChange}
+                      format="MM/dd/yyyy"
+                      autoOk={true}
+                      okLabel=""
+                      renderDay={(
+                        day,
+                        selectedDate,
+                        isInCurrentMonth,
+                        dayComponent
+                      ) => {
+                        const isSelected =
+                          isInCurrentMonth &&
+                          selectedDays.includes(formatDate(day));
+
+                        // You can also use our internal <Day /> component
+                        return (
+                          // <Badge badgeContent={isSelected ? "🌚" : undefined}>
+                          //   {dayComponent}
+                          // </Badge>
+                          <div
+                            style={
+                              isSelected
+                                ? {
+                                    backgroundColor: "#61e2bb",
+                                    borderRadius: "1000px",
+                                  }
+                                : undefined
+                            }
+                          >
+                            {dayComponent}
+                          </div>
+                        );
                       }}
-                    >
-                      Weather
-                    </p>
-                    <select
-                      id="weatherID"
-                      name="weatherName"
-                      style={{
-                        fontFamily: "Roboto, sans-serif",
-                        fontSize: "medium",
-                        display: "inline-block",
-                        color: "rgb(150, 146, 149)",
-                        border: "1px solid #c8bfc4",
-                        borderRadius: "4px",
-                        boxShadow: "inset 1px 1px 2px #ddd8dc",
-                        background: "#fff",
-                        zIndex: "1",
-                        position: "relative",
-                        height: "1.5em",
-                        marginTop: "15.5px",
-                      }}
-                      value={activity.Weather}
-                      onChange={e => handleChangeWeather(e.target.value)}
-                    >
-                      <option value="">Choose here</option>
-                      <option value="Sunny">Sunny</option>
-                      <option value="Cloudy">Cloudy</option>
-                      <option value="Partly Cloudy">Partly Cloudy</option>
-                      <option value="Windy">Windy</option>
-                      <option value="Rainy">Rainy</option>
-                      <option value="Foggy">Foggy</option>
-                      <option value="Snowy">Snowy</option>
-                    </select>
-                    <div style={{ marginLeft: "80px", display: "flex" }}>
-                      <div style={{ display: "flex" }}>
-                        <TextField
-                          className={styles["table__start-time"]}
-                          label="Start Time"
-                          type="time"
-                          InputLabelProps={{
-                            shrink: true,
-                          }}
-                          inputProps={{
-                            step: 600, // 5 min
-                          }}
-                          style={{ marginBottom: "20px" }}
-                          value={
-                            activity.StartTime !== undefined
-                              ? activity.StartTime
-                              : "07:00"
-                          }
-                          onChange={e => handleChangeStartTime(e.target.value)}
-                        />
-                      </div>
-                      <div style={{ marginLeft: "20px" }}>
-                        <TextField
-                          className={styles["table__end-time"]}
-                          label="End Time"
-                          type="time"
-                          InputLabelProps={{
-                            shrink: true,
-                          }}
-                          inputProps={{
-                            step: 600, // 10 min
-                          }}
-                          style={{ marginBottom: "10px" }}
-                          value={
-                            activity.EndTime !== undefined
-                              ? activity.EndTime
-                              : "17:00"
-                          }
-                          onChange={e => handleChangeEndTime(e.target.value)}
-                        />
-                      </div>
+                    />
+                  </MuiPickersUtilsProvider>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    className={styles["header__right__pdf-export-btn"]}
+                    startIcon={<FaFilePdf />}
+                    onClick={handlePDFExport}
+                    style={{ marginRight: "10px" }}
+                  >
+                    Export
+                  </Button>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    className={styles["header__right__excel-export-btn"]}
+                    startIcon={<RiFileExcel2Fill />}
+                    onClick={handleExcelExport}
+                    style={{ marginRight: "10px" }}
+                  >
+                    Export
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    className={styles["header__right__save-btn"]}
+                    startIcon={<SaveIcon />}
+                    onClick={handleSaveBtn}
+                  >
+                    Save
+                  </Button>
+
+                  <a
+                    id="excelExport"
+                    href="/export.xlsx"
+                    download
+                    style={{ display: "none" }}
+                  >
+                    download
+                  </a>
+                  <a
+                    id="pdfExport"
+                    href="/export.pdf"
+                    download
+                    style={{ display: "none" }}
+                  >
+                    download
+                  </a>
+                </div>
+              </div>
+
+              <div className={styles["table"]}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "left",
+                    marginTop: "18px",
+                    marginBottom: "10px",
+                    fontFamily: "Roboto",
+                  }}
+                >
+                  <p
+                    style={{
+                      marginTop: "4px",
+                      marginBottom: "0px",
+                      marginRight: "15px",
+                      marginLeft: "3px",
+                      fontFamily: "Roboto, sans-serif",
+                      color: "#807b7d",
+                      height: "30px",
+                      alignSelf: "center",
+                    }}
+                  >
+                    Weather
+                  </p>
+                  <select
+                    id="weatherID"
+                    name="weatherName"
+                    style={{
+                      fontFamily: "Roboto, sans-serif",
+                      fontSize: "medium",
+                      display: "inline-block",
+                      color: "rgb(150, 146, 149)",
+                      border: "1px solid #c8bfc4",
+                      borderRadius: "4px",
+                      boxShadow: "inset 1px 1px 2px #ddd8dc",
+                      background: "#fff",
+                      zIndex: "1",
+                      position: "relative",
+                      height: "1.5em",
+                      marginTop: "15.5px",
+                    }}
+                    value={activity.Weather}
+                    onChange={e => handleChangeWeather(e.target.value)}
+                  >
+                    <option value="">Choose here</option>
+                    <option value="Sunny">Sunny</option>
+                    <option value="Cloudy">Cloudy</option>
+                    <option value="Partly Cloudy">Partly Cloudy</option>
+                    <option value="Windy">Windy</option>
+                    <option value="Rainy">Rainy</option>
+                    <option value="Foggy">Foggy</option>
+                    <option value="Snowy">Snowy</option>
+                  </select>
+                  <div style={{ marginLeft: "80px", display: "flex" }}>
+                    <div style={{ display: "flex" }}>
+                      <TextField
+                        className={styles["table__start-time"]}
+                        label="Start Time"
+                        type="time"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        inputProps={{
+                          step: 600, // 5 min
+                        }}
+                        style={{ marginBottom: "20px" }}
+                        value={
+                          activity.StartTime !== undefined
+                            ? activity.StartTime
+                            : "07:00"
+                        }
+                        onChange={e => handleChangeStartTime(e.target.value)}
+                      />
+                    </div>
+                    <div style={{ marginLeft: "20px" }}>
+                      <TextField
+                        className={styles["table__end-time"]}
+                        label="End Time"
+                        type="time"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        inputProps={{
+                          step: 600, // 10 min
+                        }}
+                        style={{ marginBottom: "10px" }}
+                        value={
+                          activity.EndTime !== undefined
+                            ? activity.EndTime
+                            : "17:00"
+                        }
+                        onChange={e => handleChangeEndTime(e.target.value)}
+                      />
                     </div>
                   </div>
+                </div>
 
-                  <table {...getTableProps()}>
-                    <thead>
-                      {headerGroups.map((headerGroup, i) => (
-                        <tr {...headerGroup.getHeaderGroupProps()} key={i}>
-                          {headerGroup.headers.map((column, j) => (
-                            <th {...column.getHeaderProps()}>
-                              {column.render("Header")}
-                            </th>
-                          ))}
-                        </tr>
-                      ))}
-                    </thead>
-                    <tbody {...getTableBodyProps()}>
-                      {rows.map(row => {
-                        prepareRow(row);
-                        return (
-                          <tr {...row.getRowProps()}>
-                            {row.cells.map((cell, j) => {
-                              return (
-                                <td {...cell.getCellProps()}>
-                                  {cell.render("Cell")}
-                                </td>
-                              );
-                            })}
-                          </tr>
-                        );
-                      })}
-                      <tr style={{ display: "flex", width: "1130px" }}>
-                        <td
-                          className={styles["table__button-add"]}
-                          style={{
-                            boxSizing: "border-box",
-                            display: "inline-block",
-                            width: "220px",
-                            fontSize: "0.82rem",
-                          }}
-                          onClick={addActivityRow}
-                        >
-                          (+) ADD
-                        </td>
-                        <td
-                          style={{
-                            boxSizing: "border-box",
-                            display: "inline-block",
-                            width: "250px",
-                          }}
-                        ></td>
-                        <td
-                          style={{
-                            boxSizing: "border-box",
-                            display: "inline-block",
-                            width: "80px",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            color: "rgb(116, 108, 114)",
-                            fontSize: "0.82rem",
-                          }}
-                        >
-                          <div>Total</div>
-                          <div id="total-workers-id">{totalWorkers(data)}</div>
-                        </td>
-                        <td
-                          style={{
-                            boxSizing: "border-box",
-                            display: "inline-block",
-                            width: "80px",
-                          }}
-                        ></td>
-                        <td
-                          style={{
-                            boxSizing: "border-box",
-                            display: "inline-block",
-                            width: "203px",
-                          }}
-                        ></td>
-                        <td
-                          style={{
-                            boxSizing: "border-box",
-                            display: "inline-block",
-                            width: "260px",
-                          }}
-                        ></td>
-                        <td
-                          style={{
-                            boxSizing: "border-box",
-                            display: "inline-block",
-                            width: "37px",
-                          }}
-                        ></td>
+                <table {...getTableProps()}>
+                  <thead>
+                    {headerGroups.map((headerGroup, i) => (
+                      <tr {...headerGroup.getHeaderGroupProps()} key={i}>
+                        {headerGroup.headers.map((column, j) => (
+                          <th {...column.getHeaderProps()}>
+                            {column.render("Header")}
+                          </th>
+                        ))}
                       </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div>
-                  <TextField
-                    label="TESTS & INSPECTIONS"
-                    multiline
-                    rows={3}
-                    fullWidth
-                    margin="normal"
-                    InputProps={{ style: { color: "#888484" } }}
-                    InputLabelProps={{
-                      shrink: true,
-                      style: {
-                        fontWeight: 1000,
-                        fontSize: "1.2rem",
-                        color: "#1bb486",
-                      },
-                    }}
-                    variant="outlined"
-                    style={{
-                      backgroundColor: "#ececf5",
-                      width: "99%",
-                      marginLeft: "8px",
-                    }}
-                    value={activity.Tests !== undefined ? activity.Tests : ""}
-                    onChange={e => handleChangeTests(e.target.value)}
-                  />
-                  <TextField
-                    label="CORRECTIONAL ITEMS"
-                    multiline
-                    rows={3}
-                    fullWidth
-                    margin="normal"
-                    InputProps={{ style: { color: "#888484" } }}
-                    InputLabelProps={{
-                      shrink: true,
-                      style: {
-                        fontWeight: 1000,
-                        fontSize: "1.2rem",
-                        color: "#1bb486",
-                      },
-                    }}
-                    variant="outlined"
-                    style={{
-                      backgroundColor: "#ececf5",
-                      marginLeft: "8px",
-                      width: "99%",
-                    }}
-                    value={
-                      activity.Correctional !== undefined
-                        ? activity.Correctional
-                        : ""
-                    }
-                    onChange={e => handleChangeCorrectional(e.target.value)}
-                  />
-                  <TextField
-                    label="NOTE"
-                    multiline
-                    rows={3}
-                    fullWidth
-                    margin="normal"
-                    InputProps={{ style: { color: "#888484" } }}
-                    InputLabelProps={{
-                      shrink: true,
-                      style: {
-                        fontWeight: 1000,
-                        fontSize: "1.2rem",
-                        color: "#1bb486",
-                      },
-                    }}
-                    variant="outlined"
-                    style={{
-                      backgroundColor: "#ececf5",
-                      marginLeft: "8px",
-                      width: "99%",
-                    }}
-                    value={activity.Note !== undefined ? activity.Note : ""}
-                    onChange={e => handleChangeNote(e.target.value)}
-                  />
-                </div>
-              </>
-            )}
-          </div>
+                    ))}
+                  </thead>
+                  <tbody {...getTableBodyProps()}>
+                    {rows.map(row => {
+                      prepareRow(row);
+                      return (
+                        <tr {...row.getRowProps()}>
+                          {row.cells.map((cell, j) => {
+                            return (
+                              <td {...cell.getCellProps()}>
+                                {cell.render("Cell")}
+                              </td>
+                            );
+                          })}
+                        </tr>
+                      );
+                    })}
+                    <tr style={{ display: "flex", width: "1130px" }}>
+                      <td
+                        className={styles["table__button-add"]}
+                        style={{
+                          boxSizing: "border-box",
+                          display: "inline-block",
+                          width: "220px",
+                          fontSize: "0.82rem",
+                        }}
+                        onClick={addActivityRow}
+                      >
+                        (+) ADD
+                      </td>
+                      <td
+                        style={{
+                          boxSizing: "border-box",
+                          display: "inline-block",
+                          width: "250px",
+                        }}
+                      ></td>
+                      <td
+                        style={{
+                          boxSizing: "border-box",
+                          display: "inline-block",
+                          width: "80px",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          color: "rgb(116, 108, 114)",
+                          fontSize: "0.82rem",
+                        }}
+                      >
+                        <div>Total</div>
+                        <div id="total-workers-id">{totalWorkers(data)}</div>
+                      </td>
+                      <td
+                        style={{
+                          boxSizing: "border-box",
+                          display: "inline-block",
+                          width: "80px",
+                        }}
+                      ></td>
+                      <td
+                        style={{
+                          boxSizing: "border-box",
+                          display: "inline-block",
+                          width: "203px",
+                        }}
+                      ></td>
+                      <td
+                        style={{
+                          boxSizing: "border-box",
+                          display: "inline-block",
+                          width: "260px",
+                        }}
+                      ></td>
+                      <td
+                        style={{
+                          boxSizing: "border-box",
+                          display: "inline-block",
+                          width: "37px",
+                        }}
+                      ></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div>
+                <TextField
+                  label="TESTS & INSPECTIONS"
+                  multiline
+                  rows={3}
+                  fullWidth
+                  margin="normal"
+                  InputProps={{ style: { color: "#888484" } }}
+                  InputLabelProps={{
+                    shrink: true,
+                    style: {
+                      fontWeight: 1000,
+                      fontSize: "1.2rem",
+                      color: "#1bb486",
+                    },
+                  }}
+                  variant="outlined"
+                  style={{
+                    backgroundColor: "#ececf5",
+                    width: "99%",
+                    marginLeft: "8px",
+                  }}
+                  value={activity.Tests !== undefined ? activity.Tests : ""}
+                  onChange={e => handleChangeTests(e.target.value)}
+                />
+                <TextField
+                  label="CORRECTIONAL ITEMS"
+                  multiline
+                  rows={3}
+                  fullWidth
+                  margin="normal"
+                  InputProps={{ style: { color: "#888484" } }}
+                  InputLabelProps={{
+                    shrink: true,
+                    style: {
+                      fontWeight: 1000,
+                      fontSize: "1.2rem",
+                      color: "#1bb486",
+                    },
+                  }}
+                  variant="outlined"
+                  style={{
+                    backgroundColor: "#ececf5",
+                    marginLeft: "8px",
+                    width: "99%",
+                  }}
+                  value={
+                    activity.Correctional !== undefined
+                      ? activity.Correctional
+                      : ""
+                  }
+                  onChange={e => handleChangeCorrectional(e.target.value)}
+                />
+                <TextField
+                  label="NOTE"
+                  multiline
+                  rows={3}
+                  fullWidth
+                  margin="normal"
+                  InputProps={{ style: { color: "#888484" } }}
+                  InputLabelProps={{
+                    shrink: true,
+                    style: {
+                      fontWeight: 1000,
+                      fontSize: "1.2rem",
+                      color: "#1bb486",
+                    },
+                  }}
+                  variant="outlined"
+                  style={{
+                    backgroundColor: "#ececf5",
+                    marginLeft: "8px",
+                    width: "99%",
+                  }}
+                  value={activity.Note !== undefined ? activity.Note : ""}
+                  onChange={e => handleChangeNote(e.target.value)}
+                />
+              </div>
+            </div>
+          )}
         </>
       )}
     </>
