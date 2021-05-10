@@ -17,6 +17,7 @@ const exportPDFHandler = (req, res) => {
         const row4 = worksheet.getRow(4);
         const row5 = worksheet.getRow(5);
 
+        const row16 = worksheet.getRow(16);
         const row18 = worksheet.getRow(18);
         const row23 = worksheet.getRow(23);
         const row28 = worksheet.getRow(28);
@@ -54,6 +55,7 @@ const exportPDFHandler = (req, res) => {
           worksheet.getRow(8 + i).getCell(6).value = rowData[i].WorkPerformed;
         }
 
+        row16.getCell(3).value = body.totalWorkers
         row18.getCell(1).value = body.Tests;
         row23.getCell(1).value = body.Correctional;
         row28.getCell(1).value = body.Note;

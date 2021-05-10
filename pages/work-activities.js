@@ -718,6 +718,7 @@ const workActivities = () => {
       project_id.selectedIndex
     ].getAttribute("contractno");
 
+    const totalWorkers = document.getElementById("total-workers-id").innerText
     await axios({
       method: "POST",
       url: `/api/work-activities/export-pdf`,
@@ -737,6 +738,7 @@ const workActivities = () => {
         username: status.cookies.username,
         fullname: status.cookies.fullname,
         contractno: contractNo,
+        totalWorkers: totalWorkers,
       },
     });
 
@@ -1344,7 +1346,7 @@ const workActivities = () => {
                           }}
                         >
                           <div>Total</div>
-                          <div>{totalWorkers(data)}</div>
+                          <div id="total-workers-id">{totalWorkers(data)}</div>
                         </td>
                         <td
                           style={{
