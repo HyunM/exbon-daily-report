@@ -736,10 +736,6 @@ const workActivities = () => {
       // setCheckDownload(0);
       document
         .getElementById("pdfExport")
-        // .setAttribute(
-        //   "href",
-        //   "/Daily Report_" + status.cookies.username + ".xlsx"
-        // );
         .setAttribute(
           "href",
           "/Daily Report_" + status.cookies.username + ".pdf"
