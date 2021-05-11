@@ -540,6 +540,7 @@ const workActivities = () => {
             SelectedDays.push(formatDate(element.Date));
           });
           setSelectedDays(SelectedDays);
+          //changed
         });
         // setData([
         //   {
