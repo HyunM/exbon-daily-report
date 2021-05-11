@@ -638,7 +638,7 @@ const workActivities = () => {
 
   const [selectedDays, setSelectedDays] = useState([
     "04/10/2021",
-    "03/10/2021",
+    "04/11/2021",
   ]);
 
   const handleExcelExport = async () => {
