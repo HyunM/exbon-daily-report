@@ -535,6 +535,11 @@ const workActivities = () => {
             });
           }
           dataContractor = response.data.result[2];
+          let SelectedDays = [];
+          response.data.result[3].forEach(element => {
+            SelectedDays.push(formatDate(element.Date));
+          });
+          setSelectedDays(SelectedDays);
         });
         // setData([
         //   {
@@ -636,10 +641,7 @@ const workActivities = () => {
     trackPromise(Promise.all(promises).then(() => {}));
   }, [projectState, status, selectedDate, router.isReady]);
 
-  const [selectedDays, setSelectedDays] = useState([
-    "04/10/2021",
-    "04/11/2021",
-  ]);
+  const [selectedDays, setSelectedDays] = useState([]);
 
   const handleExcelExport = async () => {
     setCheckDownload(1);
@@ -1003,7 +1005,7 @@ const workActivities = () => {
   };
   return (
     <>
-      {console.log(activity)}
+      {console.log(selectedDays)}
       <Head>
         <title>Daily Report</title>
         <link rel="icon" href="/favicon.ico" />
@@ -1115,7 +1117,7 @@ const workActivities = () => {
                               isSelected
                                 ? {
                                     backgroundColor: "#61e2bb",
-                                    borderRadius: "1000px",
+                                    borderRadius: "30%",
                                   }
                                 : undefined
                             }
