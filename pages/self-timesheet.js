@@ -99,33 +99,38 @@ const SelfTimesheet = () => {
       {
         Header: "Employee Name",
         accessor: "EmployeeName",
-        width: 250,
+        width: 200,
       },
 
       {
         Header: "Work Start",
         accessor: "WorkStart",
-        width: 180,
+        width: 160,
       },
       {
         Header: "Meal Start",
         accessor: "MealStart",
-        width: 180,
+        width: 160,
       },
       {
         Header: "Meal End",
         accessor: "MealEnd",
-        width: 180,
+        width: 160,
       },
       {
         Header: "Work End",
         accessor: "WorkEnd",
-        width: 180,
+        width: 160,
       },
       {
         Header: "Labor Hours",
         accessor: "laborHours",
-        width: 130,
+        width: 120,
+      },
+      {
+        Header: "Save",
+        accessor: "Save",
+        width: 140,
       },
     ],
     []
@@ -299,6 +304,12 @@ const SelfTimesheet = () => {
           {laborDate}
         </div>
       );
+    } else if (id === "Save") {
+      return (
+        <div>
+          <span>{value}</span>
+        </div>
+      );
     }
   };
 
@@ -393,6 +404,7 @@ const SelfTimesheet = () => {
             MealStart: data[0] !== undefined ? data[0].MealStart : "12:00PM",
             MealEnd: data[0] !== undefined ? data[0].MealEnd : "01:00PM",
             WorkEnd: data[0] !== undefined ? data[0].WorkEnd : "04:00PM",
+            Save: "O",
           },
         ]);
       };
@@ -408,6 +420,7 @@ const SelfTimesheet = () => {
           MealStart: "12:00PM",
           MealEnd: "01:00PM",
           WorkEnd: "04:00PM",
+          Save: "O",
         },
       ]);
     }

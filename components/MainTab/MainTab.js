@@ -43,7 +43,13 @@ const MainTab = ({
   return (
     <AppBar position="static">
       <Tabs value={tapNo}>
-        <Link href={`/task-completion?pid=${projectState}`}>
+        <Link
+          href={
+            projectState
+              ? `/task-completion?pid=${projectState}`
+              : "/task-completion"
+          }
+        >
           <Tab
             label={main ? "" : "Task Completion"}
             // onClick={() => Router.push(`/task-completion/${projectState}`)}
@@ -52,7 +58,13 @@ const MainTab = ({
             textColor={tapNo === 0 ? "inherit" : "primary"}
           />
         </Link>
-        <Link href={`/work-activities?pid=${projectState}`}>
+        <Link
+          href={
+            projectState
+              ? `/work-activities?pid=${projectState}`
+              : "/work-activities"
+          }
+        >
           <Tab
             label={main ? "" : "Work Activities"}
             // onClick={() => Router.push(`/task-completion/${projectState}`)}
@@ -61,7 +73,7 @@ const MainTab = ({
             textColor={tapNo === 1 ? "inherit" : "primary"}
           />
         </Link>
-        <Link href={`/timesheet`}>
+        <Link href={`/self-timesheet`}>
           <Tab
             label={main ? "" : "Self Timesheet"}
             // onClick={() => Router.push(`/timesheet/${projectState}`)}
