@@ -125,7 +125,7 @@ const SelfTimesheet = () => {
       {
         Header: "Labor Hours",
         accessor: "laborHours",
-        width: 80,
+        width: 130,
       },
     ],
     []
@@ -270,7 +270,11 @@ const SelfTimesheet = () => {
         </div>
       );
     } else if (id === "EmployeeName") {
-      return <p>{value}</p>;
+      return (
+        <div>
+          <span>{value}</span>
+        </div>
+      );
     } else if (id === "laborHours") {
       let laborDate = (
         (new Date(convertInputToTime(row.values.WorkEnd).replace(" ", "T")) -
@@ -383,7 +387,7 @@ const SelfTimesheet = () => {
           {
             TimesheetID: 0,
             EmployeeID: 0,
-            EmployeeName: "",
+            EmployeeName: "Hyunmyung Kim",
             Date: formatDate(selectedDate),
             WorkStart: data[0] !== undefined ? data[0].WorkStart : "07:00AM",
             MealStart: data[0] !== undefined ? data[0].MealStart : "12:00PM",
@@ -398,7 +402,7 @@ const SelfTimesheet = () => {
         {
           TimesheetID: 0,
           EmployeeID: 0,
-          EmployeeName: "",
+          EmployeeName: "test",
           Date: formatDate(selectedDate),
           WorkStart: "07:00AM",
           MealStart: "12:00PM",
