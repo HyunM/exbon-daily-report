@@ -387,7 +387,7 @@ const SelfTimesheet = () => {
 
     if (status.permission === true && selectedDate !== undefined) {
       const fetchData = async () => {
-        let result = await axios({
+        await axios({
           method: "get",
           url: `/api/timesheets?selectedDate=02/23/2021&projectID=6141`,
           timeout: 5000, // 5 seconds timeout
@@ -399,7 +399,6 @@ const SelfTimesheet = () => {
             TimesheetID: 0,
             EmployeeID: 0,
             EmployeeName: "Hyunmyung Kim",
-            Date: formatDate(selectedDate),
             WorkStart: data[0] !== undefined ? data[0].WorkStart : "07:00AM",
             MealStart: data[0] !== undefined ? data[0].MealStart : "12:00PM",
             MealEnd: data[0] !== undefined ? data[0].MealEnd : "01:00PM",
@@ -415,7 +414,6 @@ const SelfTimesheet = () => {
           TimesheetID: 0,
           EmployeeID: 0,
           EmployeeName: "test",
-          Date: formatDate(selectedDate),
           WorkStart: "07:00AM",
           MealStart: "12:00PM",
           MealEnd: "01:00PM",
@@ -426,7 +424,22 @@ const SelfTimesheet = () => {
     }
   }, [selectedDate, status]);
 
-  const handleSaveTimesheetBtn = () => {
+  const handleSaveTimesheetBtn = async () => {
+    await axios({
+      method: "post",
+      url: `/api/self-timesheet`,
+      timeout: 5000, // 5 seconds timeout
+      headers: {},
+      data: {
+        Date: formatDate(selectedDate),
+        EmployeeID: status.cookies.employeeid,
+        WorkStart: data[0].WorkStart,
+        WorkEnd: data[0].WorkEnd,
+        MealStart: data[0].MealStart,
+        MealEnd: data[0].MealEnd,
+      },
+    });
+
     axios({
       method: "post",
       url: `/api/log-daily-reports`,
