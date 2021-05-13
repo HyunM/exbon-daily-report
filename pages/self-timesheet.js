@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import axios from "axios";
 
-import { useTable } from "react-table";
+import { useTable, useBlockLayout } from "react-table";
 import TableContainer from "@material-ui/core/TableContainer";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -15,28 +15,20 @@ import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
 import inputTime from "../components/main/inputTime";
 import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
-import AddIcon from "@material-ui/icons/Add";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import InputMask from "react-input-mask";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { formatDate } from "../components/main/formatDate";
-import Autocomplete from "react-autocomplete";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { useSelector, useDispatch } from "react-redux";
 import styles from "./SelfTimesheet.module.css";
 import classNames from "classnames/bind";
 import { usePromiseTracker, trackPromise } from "react-promise-tracker";
 import Loader from "react-loader-spinner";
-import Router, { useRouter } from "next/router";
 import Head from "next/head";
 
 import MainTab from "../components/MainTab/MainTab";
-import NotPermission from "../components/MainTab/NotPermission";
 
 import { CookiesProvider, useCookies } from "react-cookie";
 import Login from "../components/MainTab/login.js";
+
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 toast.configure();
@@ -102,77 +94,38 @@ const SelfTimesheet = () => {
     }
   };
 
-  const [checkState, setCheckState] = useState(true);
-  const checkChange = event => {
-    if (event.target.checked) {
-      for (
-        let i = 12;
-        i <
-        document.getElementsByClassName("table__time-wrapper__target-disabled")
-          .length;
-        i++
-      ) {
-        document
-          .getElementsByClassName("table__time-wrapper__target-disabled")
-          [i].setAttribute("disabled", true);
-        document
-          .getElementsByClassName("table__time-wrapper__target-disabled")
-          [i].classList.add("table__time-wrapper__target-disabled--disabled");
-      }
-      setSameTime();
-    } else {
-      for (
-        let i = 12;
-        i <
-        document.getElementsByClassName("table__time-wrapper__target-disabled")
-          .length;
-        i++
-      ) {
-        document
-          .getElementsByClassName("table__time-wrapper__target-disabled")
-          [i].removeAttribute("disabled");
-        document
-          .getElementsByClassName("table__time-wrapper__target-disabled")
-          [i].classList.remove(
-            "table__time-wrapper__target-disabled--disabled"
-          );
-      }
-    }
-    setCheckState(event.target.checked);
-  };
-
   const columns = useMemo(
     () => [
       {
         Header: "Employee Name",
         accessor: "EmployeeName",
-        width: 120,
+        width: 250,
       },
 
       {
         Header: "Work Start",
         accessor: "WorkStart",
-        width: 120,
+        width: 180,
       },
       {
         Header: "Meal Start",
         accessor: "MealStart",
-        width: 120,
+        width: 180,
       },
       {
         Header: "Meal End",
         accessor: "MealEnd",
-        width: 120,
+        width: 180,
       },
       {
         Header: "Work End",
         accessor: "WorkEnd",
-        width: 120,
+        width: 180,
       },
       {
         Header: "Labor Hours",
         accessor: "laborHours",
-        width: 40,
+        width: 80,
       },
     ],
     []
@@ -193,11 +146,6 @@ const SelfTimesheet = () => {
     const [value, setValue] = React.useState(initialValue);
 
     const onCheckHour = e => {
-      const TimesheetID =
-        e.target.parentElement.parentElement.parentElement.children[0].children[0].getAttribute(
-          "value"
-        );
-      addUpdateQueue(TimesheetID);
       if (12 < parseInt(e.target.value)) {
         toast.warning(
           <div className={styles["alert__table__hour-input"]}>
@@ -216,20 +164,10 @@ const SelfTimesheet = () => {
     };
 
     const onCheckMin = e => {
-      const TimesheetID =
-        e.target.parentElement.parentElement.parentElement.children[0].children[0].getAttribute(
-          "value"
-        );
-      addUpdateQueue(TimesheetID);
       setValue(value.slice(0, 2) + ":" + e.target.value + value.slice(5, 7));
     };
 
     const onCheckAmPm = e => {
-      const TimesheetID =
-        e.target.parentElement.parentElement.parentElement.children[0].children[0].getAttribute(
-          "value"
-        );
-      addUpdateQueue(TimesheetID);
       if (e.target.value === "AM") {
         setValue(value.slice(0, 2) + ":" + value.slice(3, 5) + "AM");
       } else if (e.target.value === "PM") {
@@ -239,27 +177,8 @@ const SelfTimesheet = () => {
       }
     };
 
-    const onChangePosition = e => {
-      const TimesheetID =
-        e.target.parentElement.parentElement.children[0].children[0].getAttribute(
-          "value"
-        );
-      addUpdateQueue(TimesheetID);
-      setValue(e.target.value);
-    };
-
     const onChange = e => {
-      const TimesheetID =
-        e.target.parentElement.parentElement.parentElement.children[0].children[0].getAttribute(
-          "value"
-        );
-      addUpdateQueue(TimesheetID);
       setValue(e.target.value);
-    };
-
-    const onChangeSelect = value => {
-      setValue(value);
-      updateEmployeeData(index, id, value);
     };
 
     // We'll only update the external data when the input is blurred
@@ -351,18 +270,7 @@ const SelfTimesheet = () => {
         </div>
       );
     } else if (id === "EmployeeName") {
-      return (
-        <input
-          className={
-            afterSundayCheck
-              ? styles["table__employee-input"]
-              : styles["table__employee-input-before-sunday"]
-          }
-          disabled={afterSundayCheck ? false : true}
-        >
-          {value}
-        </input>
-      );
+      return <p>{value}</p>;
     } else if (id === "laborHours") {
       let laborDate = (
         (new Date(convertInputToTime(row.values.WorkEnd).replace(" ", "T")) -
@@ -413,79 +321,6 @@ const SelfTimesheet = () => {
     );
   };
 
-  const updateEmployeeData = (rowIndex, columnId, value) => {
-    // We also turn on the flag to not reset the page
-    setData(old =>
-      old.map((row, index) => {
-        if (index === rowIndex) {
-          return {
-            ...old[rowIndex],
-            [columnId]: value,
-            ["EmployeeID"]: convertEmployeeNameToID(value),
-          };
-        }
-        return row;
-      })
-    );
-  };
-
-  const convertEmployeeNameToID = name => {
-    let employee = dataEmployees.find(
-      employee => name === employee.EmployeeName
-    );
-    if (employee) {
-      return employee.EmployeeID;
-    } else {
-      return 0;
-    }
-  };
-
-  const setSameTime = () => {
-    setData(old =>
-      old.map((row, index) => {
-        return {
-          ...old[index],
-          WorkStart: old[0].WorkStart,
-          MealStart: old[0].MealStart,
-          MealEnd: old[0].MealEnd,
-          WorkEnd: old[0].WorkEnd,
-        };
-      })
-    );
-  };
-
-  const getRandomIntInclusive = (min, max) => {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
-  };
-
-  const addTimesheetRow = () => {
-    setData([
-      ...data,
-      {
-        TimesheetID: 0,
-        EmployeeID: 0,
-        EmployeeName: "",
-        Date: formatDate(selectedDate),
-        Position: "Director",
-        WorkStart: data[0] !== undefined ? data[0].WorkStart : "07:00AM",
-        MealStart: data[0] !== undefined ? data[0].MealStart : "12:00PM",
-        MealEnd: data[0] !== undefined ? data[0].MealEnd : "01:00PM",
-        WorkEnd: data[0] !== undefined ? data[0].WorkEnd : "05:00PM",
-        InsertID: getRandomIntInclusive(1, 10000000),
-      },
-    ]);
-  };
-
-  const deleteTimesheetRow = (rowIndex, columnId) => {
-    setData(old =>
-      old.filter((row, index) => {
-        return index !== rowIndex;
-      })
-    );
-  };
-
   // Use the state and functions returned from useTable to build your UI
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable(
@@ -494,8 +329,8 @@ const SelfTimesheet = () => {
         data,
         defaultColumn,
         updateMyData,
-      }
-      // useBlockLayout
+      },
+      useBlockLayout
     );
   // Render the UI for your table
 
@@ -539,19 +374,38 @@ const SelfTimesheet = () => {
       const fetchData = async () => {
         let result = await axios({
           method: "get",
-          url: `/api/timesheets?selectedDate="02/23/2021"&projectID=6141`,
+          url: `/api/timesheets?selectedDate=02/23/2021&projectID=6141`,
           timeout: 5000, // 5 seconds timeout
           headers: {},
         });
-        if (result.data.result[0].length === 0) {
-          setCheckState(true);
-        } else {
-          setCheckState(false);
-        }
-        setData(result.data.result[0]);
+
+        setData([
+          {
+            TimesheetID: 0,
+            EmployeeID: 0,
+            EmployeeName: "",
+            Date: formatDate(selectedDate),
+            WorkStart: data[0] !== undefined ? data[0].WorkStart : "07:00AM",
+            MealStart: data[0] !== undefined ? data[0].MealStart : "12:00PM",
+            MealEnd: data[0] !== undefined ? data[0].MealEnd : "01:00PM",
+            WorkEnd: data[0] !== undefined ? data[0].WorkEnd : "04:00PM",
+          },
+        ]);
       };
+      fetchData();
     } else {
-      setData([]);
+      setData([
+        {
+          TimesheetID: 0,
+          EmployeeID: 0,
+          EmployeeName: "",
+          Date: formatDate(selectedDate),
+          WorkStart: "07:00AM",
+          MealStart: "12:00PM",
+          MealEnd: "01:00PM",
+          WorkEnd: "04:00PM",
+        },
+      ]);
     }
   }, [selectedDate, status]);
 
@@ -563,7 +417,7 @@ const SelfTimesheet = () => {
       headers: {},
       data: {
         EmployeeID: status.cookies.employeeid,
-        ProjectID: projectState,
+        ProjectID: 1,
         Date: formatDate(selectedDate),
         Category: "Self Timesheet",
         Action: "update",
@@ -651,7 +505,7 @@ const SelfTimesheet = () => {
             logout={logout}
           />
           <div id={styles.mainDiv}>
-            {promiseInProgress || !projectState ? (
+            {promiseInProgress ? (
               <div
                 style={{
                   width: "100%",

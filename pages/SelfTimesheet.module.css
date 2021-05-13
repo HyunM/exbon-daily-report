@@ -149,6 +149,10 @@
   color: white;
 } */
 
+.table thead tr th {
+  text-align: center;
+}
+
 .table .table__labor-hours-input {
   text-align: right;
 }
