@@ -5,6 +5,34 @@ const selfTimesheetHandler = (req, res) => {
   const { method, body } = req;
   return new Promise(resolve => {
     switch (method) {
+      case "GET":
+        mssql.connect(dbserver.dbConfig, err => {
+          if (err) {
+            console.error(err);
+            return resolve();
+          }
+          const request = new mssql.Request();
+
+          const query = `EXEC [Hammer].[dbo].[Timesheet_Self_Select]
+          '${body.Date}', ${body.EmployeeID}`;
+          /* --Params--
+            @date  date,
+	          @employeeID int
+          */
+
+          request.query(query, (err, recordset) => {
+            if (err) {
+              console.error(err);
+              return resolve();
+            }
+            res.status(200).json({
+              result: recordset.recordsets,
+            });
+            return resolve();
+          });
+        });
+        break;
+
       case "POST":
         mssql.connect(dbserver.dbConfig, err => {
           if (err) {
@@ -38,7 +66,7 @@ const selfTimesheetHandler = (req, res) => {
         break;
 
       default:
-        res.setHeader("Allow", ["POST"]);
+        res.setHeader("Allow", ["GET", "POST"]);
         res.status(405).end(`Method ${method} Not Allowed`);
         res.status(404).end(`Failed`);
         resolve();
