@@ -128,8 +128,8 @@ const SelfTimesheet = () => {
         width: 120,
       },
       {
-        Header: "Save",
-        accessor: "Save",
+        Header: "Status",
+        accessor: "Status",
         width: 140,
       },
     ],
@@ -304,10 +304,14 @@ const SelfTimesheet = () => {
           {laborDate}
         </div>
       );
-    } else if (id === "Save") {
+    } else if (id === "Status") {
       return (
         <div>
-          <span>{value}</span>
+          {value === "Saved" ? (
+            <span style={{ color: "#0ea54d", fontWeight: "500" }}>{value}</span>
+          ) : (
+            <span style={{ color: "#ec0909", fontWeight: "500" }}>{value}</span>
+          )}
         </div>
       );
     }
@@ -385,50 +389,56 @@ const SelfTimesheet = () => {
       }));
     }
 
-    if (status.permission === true && selectedDate !== undefined) {
+    if (
+      status.cookies.employeeid !== 0 &&
+      status.cookies.employeeid !== undefined &&
+      selectedDate !== undefined
+    ) {
+      const queryDate = formatDate(selectedDate);
       const fetchData = async () => {
         await axios({
           method: "get",
-          url: `/api/timesheets?selectedDate=02/23/2021&projectID=6141`,
+          url: `/api/self-timesheet?selectedDate=${queryDate}&eid=${status.cookies.employeeid}`,
           timeout: 5000, // 5 seconds timeout
           headers: {},
+        }).then(response => {
+          if (response.data.result[0].length > 0)
+            setData(response.data.result[0]);
+          else
+            setData([
+              {
+                EmployeeName: status.cookies.fullname,
+                WorkStart: "07:00AM",
+                MealStart: "12:00PM",
+                MealEnd: "01:00PM",
+                WorkEnd: "04:00PM",
+                Status: "Unsaved",
+              },
+            ]);
         });
 
-        setData([
-          {
-            TimesheetID: 0,
-            EmployeeID: 0,
-            EmployeeName: "Hyunmyung Kim",
-            WorkStart: data[0] !== undefined ? data[0].WorkStart : "07:00AM",
-            MealStart: data[0] !== undefined ? data[0].MealStart : "12:00PM",
-            MealEnd: data[0] !== undefined ? data[0].MealEnd : "01:00PM",
-            WorkEnd: data[0] !== undefined ? data[0].WorkEnd : "04:00PM",
-            Save: "O",
-          },
-        ]);
+        // setData([
+        //   {
+        //     TimesheetID: 0,
+        //     EmployeeID: 0,
+        //     EmployeeName: "Hyunmyung Kim",
+        //     WorkStart: data[0] !== undefined ? data[0].WorkStart : "07:00AM",
+        //     MealStart: data[0] !== undefined ? data[0].MealStart : "12:00PM",
+        //     MealEnd: data[0] !== undefined ? data[0].MealEnd : "01:00PM",
+        //     WorkEnd: data[0] !== undefined ? data[0].WorkEnd : "04:00PM",
+        //     Save: "O",
+        //   },
+        // ]);
       };
       fetchData();
-    } else {
-      setData([
-        {
-          TimesheetID: 0,
-          EmployeeID: 0,
-          EmployeeName: "test",
-          WorkStart: "07:00AM",
-          MealStart: "12:00PM",
-          MealEnd: "01:00PM",
-          WorkEnd: "04:00PM",
-          Save: "O",
-        },
-      ]);
     }
   }, [selectedDate, status]);
 
-  const handleSaveTimesheetBtn = async () => {
-    await axios({
+  const handleSaveTimesheetBtn = () => {
+    axios({
       method: "post",
       url: `/api/self-timesheet`,
-      timeout: 5000, // 5 seconds timeout
+      timeout: 500, // 0.5 seconds timeout
       headers: {},
       data: {
         Date: formatDate(selectedDate),
@@ -438,7 +448,32 @@ const SelfTimesheet = () => {
         MealStart: data[0].MealStart,
         MealEnd: data[0].MealEnd,
       },
-    });
+    })
+      .then(res => {
+        toast.success(
+          <div className={styles["alert__complete"]}>
+            <strong>Save Complete</strong>
+          </div>,
+          {
+            position: toast.POSITION.BOTTOM_CENTER,
+            hideProgressBar: true,
+          }
+        );
+
+        updateMyData(0, "Status", "Saved");
+      })
+      .catch(err => {
+        toast.error(
+          <div className={styles["alert__complete"]}>
+            <strong>CANNOT SAVE</strong>
+            <p>Please check the time input.</p>
+          </div>,
+          {
+            position: toast.POSITION.TOP_CENTER,
+            hideProgressBar: true,
+          }
+        );
+      });
 
     axios({
       method: "post",
@@ -455,6 +490,12 @@ const SelfTimesheet = () => {
     });
   };
 
+  const unsavedToSaved = () => {
+    let temp = data;
+    temp[0].Status = "Saved";
+
+    setData(temp);
+  };
   const { promiseInProgress } = usePromiseTracker();
 
   const signin = async (username, password) => {

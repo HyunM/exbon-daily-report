@@ -13,8 +13,11 @@ const selfTimesheetHandler = (req, res) => {
           }
           const request = new mssql.Request();
 
+          const selectedDate = req.query.selectedDate;
+          const eid = req.query.eid;
+
           const query = `EXEC [Hammer].[dbo].[Timesheet_Self_Select]
-          '${body.Date}', ${body.EmployeeID}`;
+          '${selectedDate}', ${eid}`;
           /* --Params--
             @date  date,
 	          @employeeID int
