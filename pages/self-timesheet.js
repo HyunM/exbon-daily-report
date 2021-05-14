@@ -438,59 +438,78 @@ const SelfTimesheet = () => {
   }, [selectedDate, status]);
 
   const handleSaveTimesheetBtn = () => {
-    axios({
-      method: "post",
-      url: `/api/self-timesheet`,
-      timeout: 3000, // 3 seconds timeout
-      headers: {},
-      data: {
-        Date: formatDate(selectedDate),
-        EmployeeID: status.cookies.employeeid,
-        WorkStart: data[0].WorkStart,
-        WorkEnd: data[0].WorkEnd,
-        MealStart: data[0].MealStart,
-        MealEnd: data[0].MealEnd,
-      },
-    })
-      .then(res => {
-        toast.success(
-          <div className={styles["alert__complete"]}>
-            <strong>Save Complete</strong>
-          </div>,
-          {
-            position: toast.POSITION.BOTTOM_CENTER,
-            hideProgressBar: true,
-          }
-        );
+    let mealTime = (
+      (new Date(convertInputToTime(data[0].MealEnd).replace(" ", "T")) -
+        new Date(convertInputToTime(data[0].MealStart).replace(" ", "T"))) /
+      3600000
+    ).toFixed(2);
 
-        updateMyData(0, "Status", "Saved");
+    if (parseInt(mealTime) > 5 || parseInt(mealTime) < 0) {
+      toast.error(
+        <div className={styles["alert__complete"]}>
+          <strong>CANNOT SAVE</strong>
+          <p>Please check the time input.</p>
+        </div>,
+        {
+          position: toast.POSITION.TOP_CENTER,
+          hideProgressBar: true,
+        }
+      );
+    } else {
+      axios({
+        method: "post",
+        url: `/api/self-timesheet`,
+        timeout: 3000, // 3 seconds timeout
+        headers: {},
+        data: {
+          Date: formatDate(selectedDate),
+          EmployeeID: status.cookies.employeeid,
+          WorkStart: data[0].WorkStart,
+          WorkEnd: data[0].WorkEnd,
+          MealStart: data[0].MealStart,
+          MealEnd: data[0].MealEnd,
+        },
       })
-      .catch(err => {
-        toast.error(
-          <div className={styles["alert__complete"]}>
-            <strong>CANNOT SAVE</strong>
-            <p>Please check the time input.</p>
-          </div>,
-          {
-            position: toast.POSITION.TOP_CENTER,
-            hideProgressBar: true,
-          }
-        );
-      });
+        .then(res => {
+          toast.success(
+            <div className={styles["alert__complete"]}>
+              <strong>Save Complete</strong>
+            </div>,
+            {
+              position: toast.POSITION.BOTTOM_CENTER,
+              hideProgressBar: true,
+            }
+          );
 
-    axios({
-      method: "post",
-      url: `/api/log-daily-reports`,
-      timeout: 5000, // 5 seconds timeout
-      headers: {},
-      data: {
-        EmployeeID: status.cookies.employeeid,
-        ProjectID: 1,
-        Date: formatDate(selectedDate),
-        Category: "Self Timesheet",
-        Action: "update",
-      },
-    });
+          updateMyData(0, "Status", "Saved");
+        })
+        .catch(err => {
+          toast.error(
+            <div className={styles["alert__complete"]}>
+              <strong>CANNOT SAVE</strong>
+              <p>Please check the time input.</p>
+            </div>,
+            {
+              position: toast.POSITION.TOP_CENTER,
+              hideProgressBar: true,
+            }
+          );
+        });
+
+      axios({
+        method: "post",
+        url: `/api/log-daily-reports`,
+        timeout: 5000, // 5 seconds timeout
+        headers: {},
+        data: {
+          EmployeeID: status.cookies.employeeid,
+          ProjectID: 1,
+          Date: formatDate(selectedDate),
+          Category: "Self Timesheet",
+          Action: "update",
+        },
+      });
+    }
   };
 
   const unsavedToSaved = () => {
