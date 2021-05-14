@@ -151,10 +151,10 @@ const SelfTimesheet = () => {
     const [value, setValue] = React.useState(initialValue);
 
     const onCheckHour = e => {
-      if (12 < parseInt(e.target.value)) {
+      if (12 < parseInt(e.target.value) || "00" === e.target.value) {
         toast.warning(
           <div className={styles["alert__table__hour-input"]}>
-            Only <strong>00 to 12</strong> can be entered into the time hour
+            Only <strong>01 to 12</strong> can be entered into the time hour
             input.
           </div>,
           {
