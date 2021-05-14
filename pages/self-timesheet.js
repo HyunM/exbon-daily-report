@@ -402,19 +402,22 @@ const SelfTimesheet = () => {
           timeout: 5000, // 5 seconds timeout
           headers: {},
         }).then(response => {
-          if (response.data.result[0].length > 0)
+          if (response.data.result[0].length > 0) {
             setData(response.data.result[0]);
-          else
-            setData([
-              {
-                EmployeeName: status.cookies.fullname,
-                WorkStart: "07:00AM",
-                MealStart: "12:00PM",
-                MealEnd: "01:00PM",
-                WorkEnd: "04:00PM",
-                Status: "Unsaved",
-              },
-            ]);
+          } else {
+            if (dateCheckEditable(selectedDate)) {
+              setData([
+                {
+                  EmployeeName: status.cookies.fullname,
+                  WorkStart: "07:00AM",
+                  MealStart: "12:00PM",
+                  MealEnd: "01:00PM",
+                  WorkEnd: "04:00PM",
+                  Status: "Unsaved",
+                },
+              ]);
+            } else setData([]);
+          }
         });
 
         // setData([
@@ -438,7 +441,7 @@ const SelfTimesheet = () => {
     axios({
       method: "post",
       url: `/api/self-timesheet`,
-      timeout: 500, // 0.5 seconds timeout
+      timeout: 3000, // 3 seconds timeout
       headers: {},
       data: {
         Date: formatDate(selectedDate),
