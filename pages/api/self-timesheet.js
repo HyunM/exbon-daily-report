@@ -45,14 +45,16 @@ const selfTimesheetHandler = (req, res) => {
           const request = new mssql.Request();
 
           const query = `EXEC [Hammer].[dbo].[Timesheet_DeleteAndInsert]
-          '${body.Date}', ${body.EmployeeID}, ${body.ProjectID}, '${body.WorkStart}', '${body.WorkEnd}', '${body.MealStart}', '${body.MealEnd}' `;
+          ${body.ProjectID}, ${body.EmployeeID}, '${body.Date}', '${body.WorkStart}', '${body.WorkEnd}', '${body.MealStart}', '${body.MealEnd}' `;
           /* --Params--
-            @date date,
+            @projectID int,
             @employeeID int,
+            @date date,
             @workStart time(0),
             @workEnd time(0),
             @mealStart time(0),
             @mealEnd time(0)
+           
           */
 
           request.query(query, (err, recordset) => {

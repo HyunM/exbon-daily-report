@@ -687,44 +687,46 @@ const Timesheet = () => {
         }
       );
     } else {
-      axios({
-        method: "post",
-        url: `/api/timesheets`,
-        timeout: 3000, // 3 seconds timeout
-        headers: {},
-        data: {
-          ProjectID: projectState,
-          EmployeeID: data[i].EmployeeID,
-          Date: data[i].Date,
-          WorkStart: data[i].WorkStart,
-          WorkEnd: data[i].WorkEnd,
-          MealStart: data[i].MealStart,
-          MealEnd: data[i].MealEnd,
-        },
-      })
-        .then(res => {
-          toast.success(
-            <div className={styles["alert__complete"]}>
-              <strong>Save Complete</strong>
-            </div>,
-            {
-              position: toast.POSITION.BOTTOM_CENTER,
-              hideProgressBar: true,
-            }
-          );
+      data.forEach(async element => {
+        await axios({
+          method: "post",
+          url: `/api/timesheets`,
+          timeout: 3000, // 3 seconds timeout
+          headers: {},
+          data: {
+            ProjectID: projectState,
+            EmployeeID: element.EmployeeID,
+            Date: formatDate(selectedDate),
+            WorkStart: element.WorkStart,
+            WorkEnd: element.WorkEnd,
+            MealStart: element.MealStart,
+            MealEnd: element.MealEnd,
+          },
         })
-        .catch(err => {
-          toast.error(
-            <div className={styles["alert__complete"]}>
-              <strong>CANNOT SAVE</strong>
-              <p>Please check the time input.</p>
-            </div>,
-            {
-              position: toast.POSITION.TOP_CENTER,
-              hideProgressBar: true,
-            }
-          );
-        });
+          .then(res => {
+            toast.success(
+              <div className={styles["alert__complete"]}>
+                <strong>Save Complete</strong>
+              </div>,
+              {
+                position: toast.POSITION.BOTTOM_CENTER,
+                hideProgressBar: true,
+              }
+            );
+          })
+          .catch(err => {
+            toast.error(
+              <div className={styles["alert__complete"]}>
+                <strong>CANNOT SAVE</strong>
+                <p>Please check the time input.</p>
+              </div>,
+              {
+                position: toast.POSITION.TOP_CENTER,
+                hideProgressBar: true,
+              }
+            );
+          });
+      });
 
       axios({
         method: "post",
