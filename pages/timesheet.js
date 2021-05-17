@@ -35,6 +35,7 @@ import Router, { useRouter } from "next/router";
 import NotPermission from "../components/MainTab/NotPermission";
 
 import AddIcon from "@material-ui/icons/Add";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 
 toast.configure();
 let afterSundayCheck = true;
@@ -105,6 +106,11 @@ const Timesheet = () => {
 
   const columns = useMemo(
     () => [
+      {
+        Header: " ", //Delete Timesheet
+        accessor: "TimesheetID",
+        width: 30,
+      },
       {
         Header: "Employee Name",
         accessor: "EmployeeName",
@@ -209,6 +215,11 @@ const Timesheet = () => {
       }
     };
 
+    const clickDeleteTimesheet = value => {
+      //value = TimesheetID
+      deleteTimesheetRow(index, id);
+    };
+
     // If the initialValue is changed external, sync it up with our state
     React.useEffect(() => {
       setValue(initialValue);
@@ -283,6 +294,17 @@ const Timesheet = () => {
           </select>
         </div>
       );
+    } else if (id === "TimesheetID") {
+      if (afterSundayCheck === true) {
+        return (
+          <DeleteForeverIcon
+            color="action"
+            className={styles["table__delete-icon"]}
+            value={value}
+            onClick={() => clickDeleteTimesheet(value)}
+          ></DeleteForeverIcon>
+        );
+      } else return <></>;
     } else if (id === "EmployeeName") {
       return (
         <div>
@@ -607,6 +629,14 @@ const Timesheet = () => {
         WorkEnd: data[0] !== undefined ? data[0].WorkEnd : "04:00PM",
       },
     ]);
+  };
+
+  const deleteTimesheetRow = (rowIndex, columnId) => {
+    setData(old =>
+      old.filter((row, index) => {
+        return index !== rowIndex;
+      })
+    );
   };
 
   return (
