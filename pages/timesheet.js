@@ -17,7 +17,7 @@ import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
 import InputMask from "react-input-mask";
 import { formatDate } from "../components/main/formatDate";
-import styles from "./SelfTimesheet.module.css";
+import styles from "./Timesheet.module.css";
 import classNames from "classnames/bind";
 import { usePromiseTracker, trackPromise } from "react-promise-tracker";
 import Loader from "react-loader-spinner";
@@ -31,8 +31,6 @@ import Login from "../components/MainTab/login.js";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import Router, { useRouter } from "next/router";
-
 toast.configure();
 let afterSundayCheck = true;
 
@@ -44,8 +42,7 @@ const convertInputToTime = time => {
   return match[0].time;
 };
 
-const SelfTimesheet = () => {
-  const router = useRouter();
+const Timesheet = () => {
   const [cookies, setCookie, removeCookie] = useCookies("username");
   const [status, setStatus] = useState({
     cookies: {
@@ -579,6 +576,7 @@ const SelfTimesheet = () => {
 
   return (
     <>
+      {console.log(data)}
       <Head>
         <title>Daily Report</title>
         <link rel="icon" href="/favicon.ico" />
@@ -592,16 +590,12 @@ const SelfTimesheet = () => {
         <Login signin={signin} />
       ) : (
         <>
-          {console.log(router.query.prevPid)}
           <MainTab
             tapNo={2}
             main={false}
             employeeID={status.cookies.employeeid}
             employeeName={status.cookies.fullname}
             logout={logout}
-            projectState={
-              router.query.prevPid === undefined ? 0 : router.query.prevPid
-            }
           />
           <div id={styles.mainDiv}>
             {promiseInProgress ? (
@@ -700,4 +694,4 @@ const SelfTimesheet = () => {
   );
 };
 
-export default SelfTimesheet;
+export default Timesheet;

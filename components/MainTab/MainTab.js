@@ -73,7 +73,7 @@ const MainTab = ({
             textColor={tapNo === 1 ? "inherit" : "primary"}
           />
         </Link>
-        <Link href={`/self-timesheet`}>
+        <Link href={`/self-timesheet?prevPid=${projectState}`}>
           <Tab
             label={main ? "" : "Self Timesheet"}
             // onClick={() => Router.push(`/timesheet/${projectState}`)}
