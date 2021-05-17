@@ -34,6 +34,8 @@ import "react-toastify/dist/ReactToastify.css";
 import Router, { useRouter } from "next/router";
 import NotPermission from "../components/MainTab/NotPermission";
 
+import AddIcon from "@material-ui/icons/Add";
+
 toast.configure();
 let afterSundayCheck = true;
 
@@ -108,6 +110,11 @@ const Timesheet = () => {
         accessor: "EmployeeName",
         width: 200,
       },
+      {
+        Header: "Task",
+        accessor: "Task",
+        width: 240,
+      },
 
       {
         Header: "Work Start",
@@ -133,11 +140,6 @@ const Timesheet = () => {
         Header: "Labor Hours",
         accessor: "laborHours",
         width: 120,
-      },
-      {
-        Header: "Status",
-        accessor: "Status",
-        width: 140,
       },
     ],
     []
@@ -311,14 +313,10 @@ const Timesheet = () => {
           {laborDate}
         </div>
       );
-    } else if (id === "Status") {
+    } else if (id === "Task") {
       return (
         <div>
-          {value === "Saved" ? (
-            <span style={{ color: "#0ea54d", fontWeight: "500" }}>{value}</span>
-          ) : (
-            <span style={{ color: "#ec0909", fontWeight: "500" }}>{value}</span>
-          )}
+          <span>{value}</span>
         </div>
       );
     }
@@ -508,8 +506,6 @@ const Timesheet = () => {
               hideProgressBar: true,
             }
           );
-
-          updateMyData(0, "Status", "Saved");
         })
         .catch(err => {
           toast.error(
@@ -596,9 +592,25 @@ const Timesheet = () => {
     }));
   };
 
+  const addTimesheetRow = () => {
+    setData([
+      ...data,
+      {
+        TimesheetID: 0,
+        EmployeeID: 0,
+        EmployeeName: "",
+        Date: formatDate(selectedDate),
+        Task: "",
+        WorkStart: data[0] !== undefined ? data[0].WorkStart : "07:00AM",
+        MealStart: data[0] !== undefined ? data[0].MealStart : "12:00PM",
+        MealEnd: data[0] !== undefined ? data[0].MealEnd : "01:00PM",
+        WorkEnd: data[0] !== undefined ? data[0].WorkEnd : "04:00PM",
+      },
+    ]);
+  };
+
   return (
     <>
-      {console.log(status)}
       <Head>
         <title>Daily Report</title>
         <link rel="icon" href="/favicon.ico" />
@@ -689,6 +701,20 @@ const Timesheet = () => {
                         startIcon={<SaveIcon />}
                       >
                         Save
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        size="small"
+                        className={
+                          dateCheckEditable(selectedDate)
+                            ? styles["header__right__add-btn"]
+                            : styles["header__right__add-btn-before-sunday"]
+                        }
+                        onClick={addTimesheetRow}
+                        startIcon={<AddIcon />}
+                      >
+                        Add&nbsp;Row
                       </Button>
                     </>
                     {/* )} */}
