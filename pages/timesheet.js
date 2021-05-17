@@ -36,6 +36,8 @@ import NotPermission from "../components/MainTab/NotPermission";
 
 import AddIcon from "@material-ui/icons/Add";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
 
 toast.configure();
 let afterSundayCheck = true;
@@ -52,7 +54,7 @@ const Timesheet = () => {
   const router = useRouter();
   const [projectState, setProjectState] = useState(undefined);
   const [stateAssignedProject, setStateAssignedProject] = useState([]);
-
+  const [checkState, setCheckState] = useState(true);
   const [cookies, setCookie, removeCookie] = useCookies();
   const [status, setStatus] = useState({
     cookies: {
@@ -463,7 +465,11 @@ const Timesheet = () => {
         }));
       }
 
-      if (status.permission === true && projectState !== undefined) {
+      if (
+        status.permission === true &&
+        projectState !== undefined &&
+        selectedDate !== undefined
+      ) {
         router.push(`?pid=${projectState}`);
         await axios({
           method: "get",
@@ -473,17 +479,54 @@ const Timesheet = () => {
           timeout: 5000, // 5 seconds timeout
           headers: {},
         }).then(response => {
-          if (response.data.result[0].length > 0) {
-            setData(response.data.result[0]);
+          if (result.data.result[0].length === 0) {
+            setCheckState(true);
           } else {
-            setData([]);
+            setCheckState(false);
           }
+          setData(response.data.result[0]);
         });
       }
     };
     promises.push(fetchData());
     trackPromise(Promise.all(promises).then(() => {}));
   }, [projectState, status, selectedDate, router.isReady]);
+
+  useEffect(() => {
+    if (checkState) {
+      for (
+        let i = 12;
+        i <
+        document.getElementsByClassName("table__time-wrapper__target-disabled")
+          .length;
+        i++
+      ) {
+        document
+          .getElementsByClassName("table__time-wrapper__target-disabled")
+          [i].setAttribute("disabled", true);
+        document
+          .getElementsByClassName("table__time-wrapper__target-disabled")
+          [i].classList.add("table__time-wrapper__target-disabled--disabled");
+      }
+    } else {
+      for (
+        let i = 12;
+        i <
+        document.getElementsByClassName("table__time-wrapper__target-disabled")
+          .length;
+        i++
+      ) {
+        document
+          .getElementsByClassName("table__time-wrapper__target-disabled")
+          [i].removeAttribute("disabled");
+        document
+          .getElementsByClassName("table__time-wrapper__target-disabled")
+          [i].classList.remove(
+            "table__time-wrapper__target-disabled--disabled"
+          );
+      }
+    }
+  }, [data]);
 
   const handleSaveTimesheetBtn = () => {
     let mealTime = (
@@ -631,10 +674,62 @@ const Timesheet = () => {
     ]);
   };
 
+  const checkChange = event => {
+    if (event.target.checked) {
+      for (
+        let i = 12;
+        i <
+        document.getElementsByClassName("table__time-wrapper__target-disabled")
+          .length;
+        i++
+      ) {
+        document
+          .getElementsByClassName("table__time-wrapper__target-disabled")
+          [i].setAttribute("disabled", true);
+        document
+          .getElementsByClassName("table__time-wrapper__target-disabled")
+          [i].classList.add("table__time-wrapper__target-disabled--disabled");
+      }
+      setSameTime();
+    } else {
+      for (
+        let i = 12;
+        i <
+        document.getElementsByClassName("table__time-wrapper__target-disabled")
+          .length;
+        i++
+      ) {
+        document
+          .getElementsByClassName("table__time-wrapper__target-disabled")
+          [i].removeAttribute("disabled");
+        document
+          .getElementsByClassName("table__time-wrapper__target-disabled")
+          [i].classList.remove(
+            "table__time-wrapper__target-disabled--disabled"
+          );
+      }
+    }
+    setCheckState(event.target.checked);
+  };
+
   const deleteTimesheetRow = (rowIndex, columnId) => {
     setData(old =>
       old.filter((row, index) => {
         return index !== rowIndex;
+      })
+    );
+  };
+
+  const setSameTime = () => {
+    setData(old =>
+      old.map((row, index) => {
+        return {
+          ...old[index],
+          WorkStart: old[0].WorkStart,
+          MealStart: old[0].MealStart,
+          MealEnd: old[0].MealEnd,
+          WorkEnd: old[0].WorkEnd,
+        };
       })
     );
   };
@@ -746,6 +841,23 @@ const Timesheet = () => {
                       >
                         Add&nbsp;Row
                       </Button>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={checkState}
+                            onChange={checkChange}
+                            name="checkbox"
+                            color="secondary"
+                            id="checkboxForSetSameTime"
+                          />
+                        }
+                        label="Set Same Time of All"
+                        className={
+                          dateCheckEditable(selectedDate)
+                            ? styles["header__right__checkbox"]
+                            : styles["header__right__checkbox-before-sunday"]
+                        }
+                      />
                     </>
                     {/* )} */}
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
