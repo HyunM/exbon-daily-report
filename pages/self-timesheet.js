@@ -515,12 +515,6 @@ const SelfTimesheet = () => {
     }
   };
 
-  const unsavedToSaved = () => {
-    let temp = data;
-    temp[0].Status = "Saved";
-
-    setData(temp);
-  };
   const { promiseInProgress } = usePromiseTracker();
 
   const signin = async (username, password) => {
@@ -592,7 +586,6 @@ const SelfTimesheet = () => {
         <Login signin={signin} />
       ) : (
         <>
-          {console.log(router.query.prevPid)}
           <MainTab
             tapNo={2}
             main={false}

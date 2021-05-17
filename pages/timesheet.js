@@ -31,6 +31,9 @@ import Login from "../components/MainTab/login.js";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import Router, { useRouter } from "next/router";
+import NotPermission from "../components/MainTab/NotPermission";
+
 toast.configure();
 let afterSundayCheck = true;
 
@@ -43,7 +46,11 @@ const convertInputToTime = time => {
 };
 
 const Timesheet = () => {
-  const [cookies, setCookie, removeCookie] = useCookies("username");
+  const router = useRouter();
+  const [projectState, setProjectState] = useState(undefined);
+  const [stateAssignedProject, setStateAssignedProject] = useState([]);
+
+  const [cookies, setCookie, removeCookie] = useCookies();
   const [status, setStatus] = useState({
     cookies: {
       username: 0,
@@ -364,78 +371,99 @@ const Timesheet = () => {
   };
 
   useEffect(() => {
-    if (status.cookies.username !== 0) {
-      if (status.cookies.username !== undefined) {
-        axios({
-          method: "post",
-          url: `/api/daily-report/signin`,
-          timeout: 5000, // 2 seconds timeout
-          headers: {},
-          data: {
-            Username: status.cookies.username,
-            Password: status.cookies.password,
-          },
-        });
-      }
-    } else {
-      setStatus(prevState => ({
-        ...prevState,
-        cookies: {
-          username: cookies.username,
-          password: cookies.password,
-          fullname: cookies.fullname,
-          employeeid: cookies.employeeid,
-        },
-      }));
-    }
+    let promises = [];
+    if (!router.isReady) return;
 
-    if (
-      status.cookies.employeeid !== 0 &&
-      status.cookies.employeeid !== undefined &&
-      selectedDate !== undefined
-    ) {
-      const queryDate = formatDate(selectedDate);
-      const fetchData = async () => {
+    const fetchData = async () => {
+      if (status.cookies.username !== 0) {
+        console.log("test1");
+        if (status.cookies.username !== undefined) {
+          axios({
+            method: "post",
+            url: `/api/daily-report/signin`,
+            timeout: 5000, // 2 seconds timeout
+            headers: {},
+            data: {
+              Username: status.cookies.username,
+              Password: status.cookies.password,
+            },
+          })
+            .then(response => {
+              const assignedProject = response.data.result.recordsets[1];
+              setStateAssignedProject(response.data.result.recordsets[1]);
+
+              if (
+                response.data.result.recordsets[1].length > 0 &&
+                projectState === undefined
+              ) {
+                if (router.query.pid) {
+                  setProjectState(router.query.pid);
+                } else {
+                  setProjectState(
+                    "" + response.data.result.recordsets[1][0].ProjectID
+                  );
+                }
+              }
+
+              if (status.permission === true && projectState !== undefined) {
+                let check = 0;
+                for (let i = 0; i < assignedProject.length; i++) {
+                  if (
+                    assignedProject[i].ProjectID.toString() === projectState
+                  ) {
+                    check++;
+                    break;
+                  }
+                }
+                if (check === 0) {
+                  setStatus(prevState => ({
+                    ...prevState,
+                    permission: false,
+                  }));
+                }
+              }
+            })
+            .catch(err => {
+              alert(
+                "Loading Error.(POST /api/daily-report/signin) \n\nPlease try again.\n\nPlease contact IT if the issue still persists. (Hyunmyung Kim 201-554-6666)\n\n" +
+                  err
+              );
+            });
+        }
+      } else {
+        console.log("test");
+        setStatus(prevState => ({
+          ...prevState,
+          cookies: {
+            username: cookies.username,
+            password: cookies.password,
+            fullname: cookies.fullname,
+            employeeid: cookies.employeeid,
+          },
+        }));
+      }
+
+      if (status.permission === true && projectState !== undefined) {
+        router.push(`?pid=${projectState}`);
         await axios({
           method: "get",
-          url: `/api/self-timesheet?selectedDate=${queryDate}&eid=${status.cookies.employeeid}`,
+          url: `/api/timesheets?selectedDate=${formatDate(
+            selectedDate
+          )}&projectID=${projectState}`,
           timeout: 5000, // 5 seconds timeout
           headers: {},
         }).then(response => {
           if (response.data.result[0].length > 0) {
             setData(response.data.result[0]);
           } else {
-            if (dateCheckEditable(selectedDate)) {
-              setData([
-                {
-                  EmployeeName: status.cookies.fullname,
-                  WorkStart: "07:00AM",
-                  MealStart: "12:00PM",
-                  MealEnd: "01:00PM",
-                  WorkEnd: "04:00PM",
-                  Status: "Unsaved",
-                },
-              ]);
-            } else setData([]);
+            setData([]);
           }
         });
-
-        // setData([
-        //   {
-        //     TimesheetID: 0,
-        //     EmployeeID: 0,
-        //     EmployeeName: "Hyunmyung Kim",
-        //     WorkStart: data[0] !== undefined ? data[0].WorkStart : "07:00AM",
-        //     MealStart: data[0] !== undefined ? data[0].MealStart : "12:00PM",
-        //     MealEnd: data[0] !== undefined ? data[0].MealEnd : "01:00PM",
-        //     WorkEnd: data[0] !== undefined ? data[0].WorkEnd : "04:00PM",
-        //     Save: "O",
-        //   },
-        // ]);
-      };
-      fetchData();
-    }
-  }, [selectedDate, status]);
+      }
+    };
+    promises.push(fetchData());
+    trackPromise(Promise.all(promises).then(() => {}));
+  }, [projectState, status, selectedDate, router.isReady]);
 
   const handleSaveTimesheetBtn = () => {
     let mealTime = (
@@ -503,21 +531,15 @@ const Timesheet = () => {
         headers: {},
         data: {
           EmployeeID: status.cookies.employeeid,
-          ProjectID: 1,
+          ProjectID: projectState,
           Date: formatDate(selectedDate),
-          Category: "Self Timesheet",
+          Category: "Timesheet",
           Action: "update",
         },
       });
     }
   };
 
-  const unsavedToSaved = () => {
-    let temp = data;
-    temp[0].Status = "Saved";
-
-    setData(temp);
-  };
   const { promiseInProgress } = usePromiseTracker();
 
   const signin = async (username, password) => {
@@ -576,7 +598,7 @@ const Timesheet = () => {
 
   return (
     <>
-      {console.log(data)}
+      {console.log(status)}
       <Head>
         <title>Daily Report</title>
         <link rel="icon" href="/favicon.ico" />
@@ -591,11 +613,12 @@ const Timesheet = () => {
       ) : (
         <>
           <MainTab
-            tapNo={2}
+            tapNo={3}
             main={false}
             employeeID={status.cookies.employeeid}
             employeeName={status.cookies.fullname}
             logout={logout}
+            projectState={router.query.pid}
           />
           <div id={styles.mainDiv}>
             {promiseInProgress ? (
@@ -612,10 +635,44 @@ const Timesheet = () => {
               </div>
             ) : (
               <>
-                <h1 className={styles["title"]}>Self Timesheet</h1>
+                <h1 className={styles["title"]}>Timesheet</h1>
 
                 <div className={styles["header"]}>
-                  <div className={styles["header__left"]}></div>
+                  <div className={styles["header__left"]}>
+                    <select
+                      id="project-state-id"
+                      value={projectState}
+                      onChange={e => setProjectState(e.target.value)}
+                      style={{
+                        marginBottom: "3px",
+                        fontFamily: "Roboto, sans-serif",
+                        fontSize: "medium",
+                        display: "inline-block",
+                        color: "#74646e",
+                        border: "1px solid #c8bfc4",
+                        borderRadius: "4px",
+                        boxShadow: "inset 1px 1px 2px #ddd8dc",
+                        background: "#fff",
+                        zIndex: "1",
+                        position: "relative",
+                      }}
+                    >
+                      {stateAssignedProject.map(item => {
+                        return (
+                          <option
+                            value={item.ProjectID}
+                            key={item.ProjectID}
+                            projectgroup={item.ProjectGroup}
+                            projectname={item.ProjectName}
+                            contractno={item.ContractNumber}
+                          >
+                            {item.ProjectID} &emsp;[{item.ProjectGroup}]&ensp;
+                            {item.ProjectName}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
                   <div className={styles["header__right"]}>
                     {/* {dateCheckEditable(selectedDate) && ( */}
                     <>
