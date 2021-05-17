@@ -467,6 +467,7 @@ const SelfTimesheet = () => {
         data: {
           Date: formatDate(selectedDate),
           EmployeeID: status.cookies.employeeid,
+          ProjectID: 1,
           WorkStart: data[0].WorkStart,
           WorkEnd: data[0].WorkEnd,
           MealStart: data[0].MealStart,

@@ -398,7 +398,6 @@ const Timesheet = () => {
 
     const fetchData = async () => {
       if (status.cookies.username !== 0) {
-        console.log("test1");
         if (status.cookies.username !== undefined) {
           axios({
             method: "post",
@@ -453,7 +452,6 @@ const Timesheet = () => {
             });
         }
       } else {
-        console.log("test");
         setStatus(prevState => ({
           ...prevState,
           cookies: {
@@ -478,13 +476,13 @@ const Timesheet = () => {
           )}&projectID=${projectState}`,
           timeout: 5000, // 5 seconds timeout
           headers: {},
-        }).then(response => {
+        }).then(result => {
           if (result.data.result[0].length === 0) {
             setCheckState(true);
           } else {
             setCheckState(false);
           }
-          setData(response.data.result[0]);
+          setData(result.data.result[0]);
         });
       }
     };
@@ -549,16 +547,17 @@ const Timesheet = () => {
     } else {
       axios({
         method: "post",
-        url: `/api/self-timesheet`,
+        url: `/api/timesheets`,
         timeout: 3000, // 3 seconds timeout
         headers: {},
         data: {
-          Date: formatDate(selectedDate),
-          EmployeeID: status.cookies.employeeid,
-          WorkStart: data[0].WorkStart,
-          WorkEnd: data[0].WorkEnd,
-          MealStart: data[0].MealStart,
-          MealEnd: data[0].MealEnd,
+          ProjectID: projectState,
+          EmployeeID: data[i].EmployeeID,
+          Date: data[i].Date,
+          WorkStart: data[i].WorkStart,
+          WorkEnd: data[i].WorkEnd,
+          MealStart: data[i].MealStart,
+          MealEnd: data[i].MealEnd,
         },
       })
         .then(res => {
@@ -736,6 +735,7 @@ const Timesheet = () => {
 
   return (
     <>
+      {console.log(data)}
       <Head>
         <title>Daily Report</title>
         <link rel="icon" href="/favicon.ico" />

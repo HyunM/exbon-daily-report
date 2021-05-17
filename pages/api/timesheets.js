@@ -40,12 +40,11 @@ const timesheetHandler = (req, res) => {
           }
           const request = new mssql.Request();
 
-          const query = `EXEC [Hammer].[dbo].[Timesheet_Insert]
-          ${body.ProjectID}, ${body.EmployeeID}, '${body.Position}', '${body.Date}', '${body.WorkStart}', '${body.WorkEnd}', '${body.MealStart}', '${body.MealEnd}' `;
+          const query = `EXEC [Hammer].[dbo].[Timesheet_DeleteAndInsert]
+          ${body.ProjectID}, ${body.EmployeeID}, '${body.Date}', '${body.WorkStart}', '${body.WorkEnd}', '${body.MealStart}', '${body.MealEnd}' `;
           /* --Params--
           @projectID int,
           @employeeID int,
-          @position nvarchar(100),
           @date date,
           @workStart time(0),
           @workEnd time(0),
@@ -60,7 +59,6 @@ const timesheetHandler = (req, res) => {
             }
             res.status(200).json({
               message: "Success, the timesheet has been created.",
-              TimesheetID: recordset.recordset[0].TimesheetID,
             });
             return resolve();
           });

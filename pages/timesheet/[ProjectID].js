@@ -236,9 +236,10 @@ const Timesheet = () => {
     const [value, setValue] = React.useState(initialValue);
 
     const onCheckHour = e => {
-      const TimesheetID = e.target.parentElement.parentElement.parentElement.children[0].children[0].getAttribute(
-        "value"
-      );
+      const TimesheetID =
+        e.target.parentElement.parentElement.parentElement.children[0].children[0].getAttribute(
+          "value"
+        );
       addUpdateQueue(TimesheetID);
       if (12 < parseInt(e.target.value)) {
         toast.warning(
@@ -258,17 +259,19 @@ const Timesheet = () => {
     };
 
     const onCheckMin = e => {
-      const TimesheetID = e.target.parentElement.parentElement.parentElement.children[0].children[0].getAttribute(
-        "value"
-      );
+      const TimesheetID =
+        e.target.parentElement.parentElement.parentElement.children[0].children[0].getAttribute(
+          "value"
+        );
       addUpdateQueue(TimesheetID);
       setValue(value.slice(0, 2) + ":" + e.target.value + value.slice(5, 7));
     };
 
     const onCheckAmPm = e => {
-      const TimesheetID = e.target.parentElement.parentElement.parentElement.children[0].children[0].getAttribute(
-        "value"
-      );
+      const TimesheetID =
+        e.target.parentElement.parentElement.parentElement.children[0].children[0].getAttribute(
+          "value"
+        );
       addUpdateQueue(TimesheetID);
       if (e.target.value === "AM") {
         setValue(value.slice(0, 2) + ":" + value.slice(3, 5) + "AM");
@@ -280,17 +283,19 @@ const Timesheet = () => {
     };
 
     const onChangePosition = e => {
-      const TimesheetID = e.target.parentElement.parentElement.children[0].children[0].getAttribute(
-        "value"
-      );
+      const TimesheetID =
+        e.target.parentElement.parentElement.children[0].children[0].getAttribute(
+          "value"
+        );
       addUpdateQueue(TimesheetID);
       setValue(e.target.value);
     };
 
     const onChange = e => {
-      const TimesheetID = e.target.parentElement.parentElement.parentElement.children[0].children[0].getAttribute(
-        "value"
-      );
+      const TimesheetID =
+        e.target.parentElement.parentElement.parentElement.children[0].children[0].getAttribute(
+          "value"
+        );
       addUpdateQueue(TimesheetID);
       setValue(e.target.value);
     };
@@ -597,21 +602,16 @@ const Timesheet = () => {
   };
 
   // Use the state and functions returned from useTable to build your UI
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable(
-    {
-      columns,
-      data,
-      defaultColumn,
-      updateMyData,
-    }
-    // useBlockLayout
-  );
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable(
+      {
+        columns,
+        data,
+        defaultColumn,
+        updateMyData,
+      }
+      // useBlockLayout
+    );
   // Render the UI for your table
 
   const now = new Date().toLocaleString({
@@ -689,7 +689,7 @@ const Timesheet = () => {
         }
         setData(result.data.result[0]);
         dataEmployees = result.data.result[1];
-        projectInfoTab1 = result.data.result[2];
+        // projectInfoTab1 = result.data.result[2];
       };
 
       trackPromise(fetchData());
@@ -1019,7 +1019,7 @@ const Timesheet = () => {
                       </span>
                     </h3>
 
-                    {projectInfoTab1 !== undefined &&
+                    {/* {projectInfoTab1 !== undefined &&
                     projectInfoTab1.length !== 0 ? (
                       <>
                         <h4 className={styles["header__left__project-group"]}>
@@ -1031,7 +1031,7 @@ const Timesheet = () => {
                       </>
                     ) : (
                       ""
-                    )}
+                    )} */}
                   </div>
                   <div className={styles["header__right"]}>
                     {/* {dateCheckEditable(selectedDate) && ( */}
