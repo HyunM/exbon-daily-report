@@ -437,7 +437,9 @@ const Timesheet = () => {
           renderItem={(item, isHighlighted) => (
             <div
               key={item.EmployeeID}
-              style={{ background: isHighlighted ? "lightgray" : "white" }}
+              style={{
+                background: isHighlighted ? "lightgray" : "white",
+              }}
             >
               {item.EmployeeName}
             </div>

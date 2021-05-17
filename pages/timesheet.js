@@ -39,8 +39,12 @@ import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 
+import Autocomplete from "react-autocomplete";
+
 toast.configure();
 let afterSundayCheck = true;
+let dataEmployees;
+let dataTasks;
 
 const convertInputToTime = time => {
   let match = inputTime.filter(data => data.input === time);
@@ -203,6 +207,16 @@ const Timesheet = () => {
       setValue(e.target.value);
     };
 
+    const onChangeSelectEmployee = value => {
+      setValue(value);
+      updateEmployeeData(index, id, value);
+    };
+
+    const onChangeSelectTasks = value => {
+      setValue(value);
+      updateTaskData(index, id, value);
+    };
+
     // We'll only update the external data when the input is blurred
     const onBlur = e => {
       if (document.getElementById("checkboxForSetSameTime")) {
@@ -215,6 +229,14 @@ const Timesheet = () => {
       } else {
         updateMyData(index, id, value); //important bug fix but why?
       }
+    };
+
+    const onBlurForEmployee = e => {
+      updateEmployeeData(index, id, value);
+    };
+
+    const onBlurForTasks = e => {
+      updateTaskData(index, id, value);
     };
 
     const clickDeleteTimesheet = value => {
@@ -309,9 +331,81 @@ const Timesheet = () => {
       } else return <></>;
     } else if (id === "EmployeeName") {
       return (
-        <div>
-          <span>{value}</span>
-        </div>
+        <Autocomplete
+          getItemValue={item => item.EmployeeName}
+          items={dataEmployees}
+          renderItem={(item, isHighlighted) => (
+            <div
+              key={item.EmployeeID}
+              style={{
+                background: isHighlighted ? "lightgray" : "white",
+                textAlign: "left",
+                cursor: "pointer",
+              }}
+            >
+              {item.EmployeeName}
+            </div>
+          )}
+          shouldItemRender={(item, value) =>
+            item.EmployeeName.toLowerCase().indexOf(value.toLowerCase()) > -1
+          }
+          value={value}
+          onChange={onChange}
+          inputProps={{ onBlur: onBlurForEmployee }}
+          onSelect={val => onChangeSelectEmployee(val)}
+          renderInput={props => {
+            return (
+              <input
+                className={
+                  afterSundayCheck
+                    ? styles["table__employee-input"]
+                    : styles["table__employee-input-before-sunday"]
+                }
+                disabled={afterSundayCheck ? false : true}
+                {...props}
+              ></input>
+            );
+          }}
+        />
+      );
+    } else if (id === "Task") {
+      return (
+        <Autocomplete
+          getItemValue={item => item.Name}
+          items={dataTasks}
+          renderItem={(item, isHighlighted) => (
+            <div
+              key={item.TaskID}
+              style={{
+                background: isHighlighted ? "lightgray" : "white",
+                textAlign: "left",
+                cursor: "pointer",
+              }}
+            >
+              {item.Name}
+            </div>
+          )}
+          shouldItemRender={(item, value) =>
+            item.Name.toLowerCase().indexOf(value.toLowerCase()) > -1
+          }
+          value={value}
+          onChange={onChange}
+          inputProps={{ onBlur: onBlurForTasks }}
+          onSelect={val => onChangeSelectTasks(val)}
+          renderInput={props => {
+            return (
+              <input
+                className={
+                  afterSundayCheck
+                    ? styles["table__task-input"]
+                    : styles["table__task-input-before-sunday"]
+                }
+                disabled={afterSundayCheck ? false : true}
+                {...props}
+              ></input>
+            );
+          }}
+        />
       );
     } else if (id === "laborHours") {
       let laborDate = (
@@ -335,12 +429,6 @@ const Timesheet = () => {
           ])}
         >
           {laborDate}
-        </div>
-      );
-    } else if (id === "Task") {
-      return (
-        <div>
-          <span>{value}</span>
         </div>
       );
     }
@@ -367,6 +455,58 @@ const Timesheet = () => {
         return row;
       })
     );
+  };
+
+  const updateEmployeeData = (rowIndex, columnId, value) => {
+    // We also turn on the flag to not reset the page
+    setData(old =>
+      old.map((row, index) => {
+        if (index === rowIndex) {
+          return {
+            ...old[rowIndex],
+            [columnId]: value,
+            ["EmployeeID"]: convertEmployeeNameToID(value),
+          };
+        }
+        return row;
+      })
+    );
+  };
+
+  const updateTaskData = (rowIndex, columnId, value) => {
+    // We also turn on the flag to not reset the page
+    setData(old =>
+      old.map((row, index) => {
+        if (index === rowIndex) {
+          return {
+            ...old[rowIndex],
+            [columnId]: value,
+            ["TaskID"]: convertTaskNameToID(value),
+          };
+        }
+        return row;
+      })
+    );
+  };
+
+  const convertEmployeeNameToID = name => {
+    let employee = dataEmployees.find(
+      employee => name === employee.EmployeeName
+    );
+    if (employee) {
+      return employee.EmployeeID;
+    } else {
+      return 0;
+    }
+  };
+
+  const convertTaskNameToID = name => {
+    let task = dataTasks.find(task => name === task.Name);
+    if (task) {
+      return task.TaskID;
+    } else {
+      return 0;
+    }
   };
 
   // Use the state and functions returned from useTable to build your UI
@@ -483,6 +623,8 @@ const Timesheet = () => {
             setCheckState(false);
           }
           setData(result.data.result[0]);
+          dataEmployees = result.data.result[1];
+          dataTasks = result.data.result[2];
         });
       }
     };
