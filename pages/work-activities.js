@@ -981,6 +981,7 @@ const workActivities = () => {
                       background: "#fff",
                       zIndex: "1",
                       position: "relative",
+                      maxWidth: "600px",
                     }}
                   >
                     {stateAssignedProject.map(item => {
