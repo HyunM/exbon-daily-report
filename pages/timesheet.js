@@ -891,6 +891,8 @@ const Timesheet = () => {
       {status.cookies.username === undefined ||
       status.cookies.employeeid === undefined ? (
         <Login signin={signin} />
+      ) : !status.permission ? (
+        <NotPermission path="timesheet" />
       ) : (
         <>
           <MainTab
