@@ -668,80 +668,107 @@ const Timesheet = () => {
     }
   }, [data]);
 
-  const handleSaveTimesheetBtn = () => {
-    let mealTime = (
-      (new Date(convertInputToTime(data[0].MealEnd).replace(" ", "T")) -
-        new Date(convertInputToTime(data[0].MealStart).replace(" ", "T"))) /
-      3600000
-    ).toFixed(2);
-
-    if (parseInt(mealTime) > 5 || parseInt(mealTime) < 0) {
+  const handleSaveTimesheetBtn = async () => {
+    let checkEmployeeName = data.find(employee => employee.EmployeeID === 0);
+    let checkTime = 0;
+    for (
+      let i = 0;
+      i < document.getElementsByClassName("table__labor-hours-input").length;
+      i++
+    ) {
+      if (
+        document.getElementsByClassName("table__labor-hours-input")[i]
+          .innerText === "NaN"
+      )
+        checkTime++;
+    }
+    if (checkEmployeeName) {
       toast.error(
-        <div className={styles["alert__complete"]}>
-          <strong>CANNOT SAVE</strong>
-          <p>Please check the time input.</p>
+        <div className={styles["alert__table__employee-input"]}>
+          Unable to save. <br /> Please check <strong>Employee Name </strong>.
         </div>,
         {
-          position: toast.POSITION.TOP_CENTER,
+          position: toast.POSITION.BOTTOM_CENTER,
           hideProgressBar: true,
         }
       );
-    } else {
-      data.forEach(async element => {
-        await axios({
-          method: "post",
-          url: `/api/timesheets`,
-          timeout: 3000, // 3 seconds timeout
-          headers: {},
-          data: {
-            ProjectID: projectState,
-            EmployeeID: element.EmployeeID,
-            Date: formatDate(selectedDate),
-            WorkStart: element.WorkStart,
-            WorkEnd: element.WorkEnd,
-            MealStart: element.MealStart,
-            MealEnd: element.MealEnd,
-          },
-        })
-          .then(res => {
-            toast.success(
-              <div className={styles["alert__complete"]}>
-                <strong>Save Complete</strong>
-              </div>,
-              {
-                position: toast.POSITION.BOTTOM_CENTER,
-                hideProgressBar: true,
-              }
-            );
-          })
-          .catch(err => {
-            toast.error(
-              <div className={styles["alert__complete"]}>
-                <strong>CANNOT SAVE</strong>
-                <p>Please check the time input.</p>
-              </div>,
-              {
-                position: toast.POSITION.TOP_CENTER,
-                hideProgressBar: true,
-              }
-            );
-          });
-      });
+      return null;
+    } else if (checkTime) {
+      toast.error(
+        <div className={styles["alert__table__time-wrapper"]}>
+          Unable to save. <br /> Please check the <strong>time input </strong>.
+        </div>,
+        {
+          position: toast.POSITION.BOTTOM_CENTER,
+          hideProgressBar: true,
+        }
+      );
+      return null;
+    }
 
-      axios({
+    await axios({
+      method: "delete",
+      url: `/api/timesheets`,
+      timeout: 3000, // 3 seconds timeout
+      headers: {},
+      data: {
+        ProjectID: projectState,
+        Date: formatDate(selectedDate),
+      },
+    });
+
+    data.forEach(async element => {
+      await axios({
         method: "post",
-        url: `/api/log-daily-reports`,
-        timeout: 5000, // 5 seconds timeout
+        url: `/api/timesheets`,
+        timeout: 3000, // 3 seconds timeout
         headers: {},
         data: {
-          EmployeeID: status.cookies.employeeid,
           ProjectID: projectState,
+          EmployeeID: element.EmployeeID,
           Date: formatDate(selectedDate),
-          Category: "Timesheet",
-          Action: "update",
+          WorkStart: element.WorkStart,
+          WorkEnd: element.WorkEnd,
+          MealStart: element.MealStart,
+          MealEnd: element.MealEnd,
         },
+      }).catch(err => {
+        toast.error(
+          <div className={styles["alert__complete"]}>
+            <strong>CANNOT SAVE</strong>
+            <p>Please check the time input.</p>
+          </div>,
+          {
+            position: toast.POSITION.TOP_CENTER,
+            hideProgressBar: true,
+          }
+        );
       });
-    }
+    });
+
+    toast.success(
+      <div className={styles["alert__complete"]}>
+        <strong>Save Complete</strong>
+      </div>,
+      {
+        position: toast.POSITION.BOTTOM_CENTER,
+        hideProgressBar: true,
+      }
+    );
+
+    axios({
+      method: "post",
+      url: `/api/log-daily-reports`,
+      timeout: 5000, // 5 seconds timeout
+      headers: {},
+      data: {
+        EmployeeID: status.cookies.employeeid,
+        ProjectID: projectState,
+        Date: formatDate(selectedDate),
+        Category: "Timesheet",
+        Action: "update",
+      },
+    });
   };
 
   const { promiseInProgress } = usePromiseTracker();

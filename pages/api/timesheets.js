@@ -40,7 +40,7 @@ const timesheetHandler = (req, res) => {
           }
           const request = new mssql.Request();
 
-          const query = `EXEC [Hammer].[dbo].[Timesheet_DeleteAndInsert]
+          const query = `EXEC [Hammer].[dbo].[Timesheet_Insert]
           ${body.ProjectID}, ${body.EmployeeID}, '${body.Date}', '${body.WorkStart}', '${body.WorkEnd}', '${body.MealStart}', '${body.MealEnd}' `;
           /* --Params--
           @projectID int,
@@ -65,8 +65,36 @@ const timesheetHandler = (req, res) => {
         });
         break;
 
+      case "DELETE":
+        mssql.connect(dbserver.dbConfig, err => {
+          if (err) {
+            console.error(err);
+            return resolve();
+          }
+          const request = new mssql.Request();
+
+          const query = `EXEC [Hammer].[dbo].[Timesheet_Delete]
+          ${body.ProjectID}, '${body.Date}'`;
+          /* --Params--
+          @projectID int,
+          @date date,
+          */
+
+          request.query(query, (err, recordset) => {
+            if (err) {
+              console.error(err);
+              return resolve();
+            }
+            res.status(200).json({
+              message: "Deleted.",
+            });
+            return resolve();
+          });
+        });
+        break;
+
       default:
-        res.setHeader("Allow", ["GET", "POST"]);
+        res.setHeader("Allow", ["GET", "POST", "DELETE"]);
         res.status(405).end(`Method ${method} Not Allowed`);
         res.status(404).end(`Failed`);
         resolve();
