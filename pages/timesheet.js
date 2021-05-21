@@ -941,7 +941,12 @@ const Timesheet = () => {
                   alignItems: "center",
                 }}
               >
-                <Loader type="Audio" color="#4e88de" height="100" width="100" />
+                <Loader
+                  type="Circles"
+                  color="#faea06"
+                  height="130"
+                  width="130"
+                />
               </div>
             ) : (
               <>
