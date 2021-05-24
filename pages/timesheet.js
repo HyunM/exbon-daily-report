@@ -118,23 +118,28 @@ const Timesheet = () => {
         width: 280,
         aggregate: "count",
         Aggregated: ({ value }) => `${value} Names`,
+        canGroupBy: true,
+        isGrouped: true,
       },
       {
         Header: "Task",
         accessor: "Task",
         width: 340,
+        canGroupBy: false,
       },
 
       {
         Header: "Start Time",
         accessor: "WorkStart",
         width: 160,
+        canGroupBy: false,
       },
 
       {
         Header: "End Time",
         accessor: "WorkEnd",
         width: 160,
+        canGroupBy: false,
       },
       {
         Header: "Labor Hours",
@@ -142,11 +147,13 @@ const Timesheet = () => {
         width: 120,
         aggregate: "sum",
         Aggregated: ({ value }) => `${value} (total)`,
+        canGroupBy: false,
       },
       {
         Header: "Action", //Delete Timesheet
         accessor: "TimesheetID",
         width: 90,
+        canGroupBy: false,
       },
     ],
     []
@@ -253,7 +260,6 @@ const Timesheet = () => {
       if (value === null) return <></>;
       return (
         <div className={styles["table__time-wrapper"]}>
-          {console.log(value)}
           <InputMask
             value={value.slice(0, 2)}
             onChange={onCheckHour}
@@ -514,6 +520,7 @@ const Timesheet = () => {
     headerGroups,
     rows,
     prepareRow,
+    setGroupBy,
     state: { groupBy, expanded },
   } = useTable(
     {
@@ -649,6 +656,8 @@ const Timesheet = () => {
               laborHours: "",
             },
           ]);
+          setGroupBy(["EmployeeName"]);
+
           // setData(result.data.result[0]);
           dataEmployees = result.data.result[1];
           dataTasks = result.data.result[2];
@@ -1090,6 +1099,7 @@ const Timesheet = () => {
                           <TableRow {...headerGroup.getHeaderGroupProps()}>
                             {headerGroup.headers.map(column => (
                               <TableCell {...column.getHeaderProps()}>
+                                {console.log(column)}
                                 {column.canGroupBy ? (
                                   // If the column can be grouped, let's add a toggle
                                   <span {...column.getGroupByToggleProps()}>
