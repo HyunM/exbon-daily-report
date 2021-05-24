@@ -116,6 +116,8 @@ const Timesheet = () => {
         Header: "Employee Name",
         accessor: "EmployeeName",
         width: 280,
+        aggregate: "count",
+        Aggregated: ({ value }) => `${value} Names`,
       },
       {
         Header: "Task",
@@ -138,6 +140,8 @@ const Timesheet = () => {
         Header: "Labor Hours",
         accessor: "laborHours",
         width: 120,
+        aggregate: "sum",
+        Aggregated: ({ value }) => `${value} (total)`,
       },
       {
         Header: "Action", //Delete Timesheet
@@ -248,8 +252,9 @@ const Timesheet = () => {
     ) {
       return (
         <div className={styles["table__time-wrapper"]}>
+          {console.log(value)}
           <InputMask
-            value={value.slice(0, 2)}
+            value={value == null ? "" : value.slice(0, 2)}
             onChange={onCheckHour}
             onBlur={onBlur}
             className={
@@ -273,7 +278,7 @@ const Timesheet = () => {
           />
           :
           <InputMask
-            value={value.slice(3, 5)}
+            value={value == null ? "" : value.slice(3, 5)}
             onChange={onCheckMin}
             onBlur={onBlur}
             className={
@@ -295,7 +300,7 @@ const Timesheet = () => {
             disabled={afterSundayCheck ? false : true}
           />
           <select
-            value={value.slice(5, 7)}
+            value={value == null ? "" : value.slice(5, 7)}
             onChange={onCheckAmPm}
             onBlur={onBlur}
             className={classNames(
@@ -926,7 +931,6 @@ const Timesheet = () => {
 
   return (
     <>
-      {console.log(data)}
       <Head>
         <title>Daily Report</title>
         <link rel="icon" href="/favicon.ico" />
@@ -1084,6 +1088,12 @@ const Timesheet = () => {
                           <TableRow {...headerGroup.getHeaderGroupProps()}>
                             {headerGroup.headers.map(column => (
                               <TableCell {...column.getHeaderProps()}>
+                                {column.canGroupBy ? (
+                                  // If the column can be grouped, let's add a toggle
+                                  <span {...column.getGroupByToggleProps()}>
+                                    {column.isGrouped ? "🛑 " : "👊 "}
+                                  </span>
+                                ) : null}
                                 {column.render("Header")}
                               </TableCell>
                             ))}
@@ -1098,7 +1108,25 @@ const Timesheet = () => {
                               {row.cells.map(cell => {
                                 return (
                                   <TableCell {...cell.getCellProps()}>
-                                    {cell.render("Cell")}
+                                    {cell.isGrouped ? (
+                                      // If it's a grouped cell, add an expander and row count
+                                      <>
+                                        <span
+                                          {...row.getToggleRowExpandedProps()}
+                                        >
+                                          {row.isExpanded ? "👇" : "👉"}
+                                        </span>{" "}
+                                        {cell.render("Cell")} (
+                                        {row.subRows.length})
+                                      </>
+                                    ) : cell.isAggregated ? (
+                                      // If the cell is aggregated, use the Aggregated
+                                      // renderer for cell
+                                      cell.render("Aggregated")
+                                    ) : cell.isPlaceholder ? null : ( // For cells with repeated values, render null
+                                      // Otherwise, just render the regular cell
+                                      cell.render("Cell")
+                                    )}
                                   </TableCell>
                                 );
                               })}
