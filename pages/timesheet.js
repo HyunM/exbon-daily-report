@@ -250,11 +250,12 @@ const Timesheet = () => {
       id === "MealEnd" ||
       id === "WorkEnd"
     ) {
+      if (value === null) return <></>;
       return (
         <div className={styles["table__time-wrapper"]}>
           {console.log(value)}
           <InputMask
-            value={value == null ? "" : value.slice(0, 2)}
+            value={value.slice(0, 2)}
             onChange={onCheckHour}
             onBlur={onBlur}
             className={
@@ -278,7 +279,7 @@ const Timesheet = () => {
           />
           :
           <InputMask
-            value={value == null ? "" : value.slice(3, 5)}
+            value={value.slice(3, 5)}
             onChange={onCheckMin}
             onBlur={onBlur}
             className={
@@ -300,7 +301,7 @@ const Timesheet = () => {
             disabled={afterSundayCheck ? false : true}
           />
           <select
-            value={value == null ? "" : value.slice(5, 7)}
+            value={value.slice(5, 7)}
             onChange={onCheckAmPm}
             onBlur={onBlur}
             className={classNames(
@@ -367,6 +368,7 @@ const Timesheet = () => {
         />
       );
     } else if (id === "Task") {
+      if (value === null) return <></>;
       return (
         <Autocomplete
           getItemValue={item => item.Name}
