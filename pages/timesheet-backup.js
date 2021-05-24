@@ -120,22 +120,31 @@ const Timesheet = () => {
       {
         Header: "Employee Name",
         accessor: "EmployeeName",
-        width: 280,
+        width: 200,
       },
       {
         Header: "Task",
         accessor: "Task",
-        width: 340,
+        width: 240,
       },
 
       {
-        Header: "Start Time",
+        Header: "Work Start",
         accessor: "WorkStart",
         width: 160,
       },
-
       {
-        Header: "End Time",
+        Header: "Meal Start",
+        accessor: "MealStart",
+        width: 160,
+      },
+      {
+        Header: "Meal End",
+        accessor: "MealEnd",
+        width: 160,
+      },
+      {
+        Header: "Work End",
         accessor: "WorkEnd",
         width: 160,
       },
@@ -401,9 +410,11 @@ const Timesheet = () => {
     } else if (id === "laborHours") {
       let laborDate = (
         (new Date(convertInputToTime(row.values.WorkEnd).replace(" ", "T")) -
-          new Date(
-            convertInputToTime(row.values.WorkStart).replace(" ", "T")
-          )) /
+          new Date(convertInputToTime(row.values.WorkStart).replace(" ", "T")) -
+          (new Date(convertInputToTime(row.values.MealEnd).replace(" ", "T")) -
+            new Date(
+              convertInputToTime(row.values.MealStart).replace(" ", "T")
+            ))) /
         3600000
       ).toFixed(2);
       if (parseFloat(laborDate) < 0) {
@@ -1007,9 +1018,9 @@ const Timesheet = () => {
                         onClick={addTimesheetRow}
                         startIcon={<AddIcon />}
                       >
-                        Add&nbsp;Employee
+                        Add&nbsp;Row
                       </Button>
-                      {/* <FormControlLabel
+                      <FormControlLabel
                         control={
                           <Checkbox
                             checked={checkState}
@@ -1025,7 +1036,7 @@ const Timesheet = () => {
                             ? styles["header__right__checkbox"]
                             : styles["header__right__checkbox-before-sunday"]
                         }
-                      /> */}
+                      />
                     </>
                     {/* )} */}
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
