@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import axios from "axios";
 
-import { useTable, useBlockLayout } from "react-table";
+import { useTable, useBlockLayout, useGroupBy, useExpanded } from "react-table";
 import TableContainer from "@material-ui/core/TableContainer";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -113,11 +113,6 @@ const Timesheet = () => {
   const columns = useMemo(
     () => [
       {
-        Header: " ", //Delete Timesheet
-        accessor: "TimesheetID",
-        width: 30,
-      },
-      {
         Header: "Employee Name",
         accessor: "EmployeeName",
         width: 280,
@@ -143,6 +138,11 @@ const Timesheet = () => {
         Header: "Labor Hours",
         accessor: "laborHours",
         width: 120,
+      },
+      {
+        Header: "Action", //Delete Timesheet
+        accessor: "TimesheetID",
+        width: 90,
       },
     ],
     []
@@ -312,12 +312,14 @@ const Timesheet = () => {
     } else if (id === "TimesheetID") {
       if (afterSundayCheck === true) {
         return (
-          <DeleteForeverIcon
-            color="action"
-            className={styles["table__delete-icon"]}
-            value={value}
-            onClick={() => clickDeleteTimesheet(value)}
-          ></DeleteForeverIcon>
+          <div className={styles["table__delete-input"]}>
+            <DeleteForeverIcon
+              color="action"
+              className={styles["table__delete-icon"]}
+              value={value}
+              onClick={() => clickDeleteTimesheet(value)}
+            ></DeleteForeverIcon>
+          </div>
         );
       } else return <></>;
     } else if (id === "EmployeeName") {
@@ -499,16 +501,24 @@ const Timesheet = () => {
   };
 
   // Use the state and functions returned from useTable to build your UI
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable(
-      {
-        columns,
-        data,
-        defaultColumn,
-        updateMyData,
-      },
-      useBlockLayout
-    );
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+    state: { groupBy, expanded },
+  } = useTable(
+    {
+      columns,
+      data,
+      defaultColumn,
+      updateMyData,
+    },
+    useBlockLayout,
+    useGroupBy,
+    useExpanded
+  );
   // Render the UI for your table
 
   const now = new Date().toLocaleString({
@@ -611,7 +621,33 @@ const Timesheet = () => {
           } else {
             setCheckState(false);
           }
-          setData(result.data.result[0]);
+          setData([
+            {
+              TimesheetID: "11111",
+              EmployeeName: "Hyunmyung Kim",
+              Task: "IT work",
+              WorkStart: "07:00AM",
+              WorkEnd: "05:00PM",
+              laborHours: "",
+            },
+            {
+              TimesheetID: "11112",
+              EmployeeName: "Hyunmyung Kim",
+              Task: "Meal",
+              WorkStart: "12:00PM",
+              WorkEnd: "01:00PM",
+              laborHours: "",
+            },
+            {
+              TimesheetID: "11113",
+              EmployeeName: "Sangbin Whi",
+              Task: "IT work",
+              WorkStart: "07:00AM",
+              WorkEnd: "05:00PM",
+              laborHours: "",
+            },
+          ]);
+          // setData(result.data.result[0]);
           dataEmployees = result.data.result[1];
           dataTasks = result.data.result[2];
         });

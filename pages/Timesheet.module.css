@@ -1,5 +1,5 @@
 #mainDiv {
-  width: 1100px;
+  width: 1150px;
   margin: auto;
 }
 
@@ -161,6 +161,10 @@
   text-align: right;
 }
 
+.table__delete-input {
+  text-align: center;
+}
+
 .table__ampm-dropdown {
   margin-left: 5% !important;
   width: 50px;
@@ -312,4 +316,11 @@
 
 .table__delete-icon:hover {
   color: slateblue;
+}
+
+.table tbody:before {
+  content: "-";
+  display: block;
+  line-height: 20px;
+  text-indent: -99999px;
 }
