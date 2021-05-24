@@ -58,7 +58,7 @@ const Timesheet = () => {
   const router = useRouter();
   const [projectState, setProjectState] = useState(undefined);
   const [stateAssignedProject, setStateAssignedProject] = useState([]);
-  const [checkState, setCheckState] = useState(true);
+  // const [checkState, setCheckState] = useState(true);
   const [cookies, setCookie, removeCookie] = useCookies();
   const [status, setStatus] = useState({
     cookies: {
@@ -616,11 +616,6 @@ const Timesheet = () => {
           timeout: 5000, // 5 seconds timeout
           headers: {},
         }).then(result => {
-          if (result.data.result[0].length === 0) {
-            setCheckState(true);
-          } else {
-            setCheckState(false);
-          }
           setData([
             {
               TimesheetID: "11111",
@@ -657,41 +652,41 @@ const Timesheet = () => {
     trackPromise(Promise.all(promises).then(() => {}));
   }, [projectState, status, selectedDate, router.isReady]);
 
-  useEffect(() => {
-    if (checkState) {
-      for (
-        let i = 12;
-        i <
-        document.getElementsByClassName("table__time-wrapper__target-disabled")
-          .length;
-        i++
-      ) {
-        document
-          .getElementsByClassName("table__time-wrapper__target-disabled")
-          [i].setAttribute("disabled", true);
-        document
-          .getElementsByClassName("table__time-wrapper__target-disabled")
-          [i].classList.add("table__time-wrapper__target-disabled--disabled");
-      }
-    } else {
-      for (
-        let i = 12;
-        i <
-        document.getElementsByClassName("table__time-wrapper__target-disabled")
-          .length;
-        i++
-      ) {
-        document
-          .getElementsByClassName("table__time-wrapper__target-disabled")
-          [i].removeAttribute("disabled");
-        document
-          .getElementsByClassName("table__time-wrapper__target-disabled")
-          [i].classList.remove(
-            "table__time-wrapper__target-disabled--disabled"
-          );
-      }
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (checkState) {
+  //     for (
+  //       let i = 12;
+  //       i <
+  //       document.getElementsByClassName("table__time-wrapper__target-disabled")
+  //         .length;
+  //       i++
+  //     ) {
+  //       document
+  //         .getElementsByClassName("table__time-wrapper__target-disabled")
+  //         [i].setAttribute("disabled", true);
+  //       document
+  //         .getElementsByClassName("table__time-wrapper__target-disabled")
+  //         [i].classList.add("table__time-wrapper__target-disabled--disabled");
+  //     }
+  //   } else {
+  //     for (
+  //       let i = 12;
+  //       i <
+  //       document.getElementsByClassName("table__time-wrapper__target-disabled")
+  //         .length;
+  //       i++
+  //     ) {
+  //       document
+  //         .getElementsByClassName("table__time-wrapper__target-disabled")
+  //         [i].removeAttribute("disabled");
+  //       document
+  //         .getElementsByClassName("table__time-wrapper__target-disabled")
+  //         [i].classList.remove(
+  //           "table__time-wrapper__target-disabled--disabled"
+  //         );
+  //     }
+  //   }
+  // }, [data]);
 
   const handleSaveTimesheetBtn = async () => {
     let checkEmployeeName = data.find(employee => employee.EmployeeID === 0);
