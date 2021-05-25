@@ -318,6 +318,14 @@
   color: slateblue;
 }
 
+.table__add-icon {
+  color: #8b8689;
+  cursor: pointer;
+}
+.table__add-icon:hover {
+  color: slateblue;
+}
+
 .table tbody:before {
   content: "-";
   display: block;

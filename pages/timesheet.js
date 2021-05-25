@@ -41,6 +41,8 @@ import Checkbox from "@material-ui/core/Checkbox";
 
 import Autocomplete from "react-autocomplete";
 
+import AddCircleIcon from "@material-ui/icons/AddCircle";
+
 toast.configure();
 let afterSundayCheck = true;
 let dataEmployees;
@@ -146,7 +148,9 @@ const Timesheet = () => {
         accessor: "laborHours",
         width: 120,
         aggregate: "sum",
-        Aggregated: ({ value }) => `${value} (total)`,
+        Aggregated: ({ value }) => (
+          <div style={{ textAlign: "right" }}>{value} (total)</div>
+        ),
         canGroupBy: false,
       },
       {
@@ -234,7 +238,7 @@ const Timesheet = () => {
     };
 
     const onBlurForEmployee = e => {
-      updateEmployeeData(index, id, value);
+      // updateEmployeeData(index, id, value);
     };
 
     const onBlurForTasks = e => {
@@ -323,7 +327,12 @@ const Timesheet = () => {
       );
     } else if (id === "TimesheetID") {
       if (afterSundayCheck === true) {
-        if (row.values.WorkEnd === null) return null;
+        if (row.values.WorkEnd === null)
+          return (
+            <AddCircleIcon
+              className={styles["table__add-icon"]}
+            ></AddCircleIcon>
+          );
         return (
           <div className={styles["table__delete-input"]}>
             <DeleteForeverIcon
@@ -425,7 +434,10 @@ const Timesheet = () => {
       if (parseFloat(laborDate) < 0) {
         laborDate = (parseFloat(laborDate) + 24).toFixed(2);
       }
-
+      if (row.values.Task === "Meal") {
+        laborDate *= -1;
+        laborDate = laborDate.toFixed(2);
+      }
       return (
         <div
           className={classNames([
@@ -638,7 +650,7 @@ const Timesheet = () => {
               Task: "IT work",
               WorkStart: "07:00AM",
               WorkEnd: "05:00PM",
-              laborHours: "",
+              laborHours: 10,
             },
             {
               TimesheetID: "11112",
@@ -646,15 +658,23 @@ const Timesheet = () => {
               Task: "Meal",
               WorkStart: "12:00PM",
               WorkEnd: "01:00PM",
-              laborHours: "",
+              laborHours: -1,
             },
             {
               TimesheetID: "11113",
-              EmployeeName: "Sangbin Whi",
-              Task: "IT work",
+              EmployeeName: "Field Worker A",
+              Task: "Task A",
               WorkStart: "07:00AM",
-              WorkEnd: "05:00PM",
-              laborHours: "",
+              WorkEnd: "03:30PM",
+              laborHours: 8.5,
+            },
+            {
+              TimesheetID: "11114",
+              EmployeeName: "Field Worker A",
+              Task: "Meal",
+              WorkStart: "12:00PM",
+              WorkEnd: "01:00PM",
+              laborHours: -1,
             },
           ]);
           setGroupBy(["EmployeeName"]);
