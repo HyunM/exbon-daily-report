@@ -151,9 +151,58 @@ const Timesheet = () => {
         accessor: "laborHours",
         width: 120,
         aggregate: "sum",
-        Aggregated: ({ value }) => (
-          <div style={{ textAlign: "right" }}>{value} (total)</div>
-        ),
+        Aggregated: ({ value, row }) => {
+          let sumLabor = 0;
+          row.leafRows.forEach(element => {
+            if (element.values.Task === "Meal") {
+              sumLabor -= parseFloat(
+                (
+                  (new Date(
+                    convertInputToTime(element.values.WorkEnd).replace(" ", "T")
+                  ) -
+                    new Date(
+                      convertInputToTime(element.values.WorkStart).replace(
+                        " ",
+                        "T"
+                      )
+                    )) /
+                  3600000
+                ).toFixed(2)
+              );
+            } else {
+              sumLabor += parseFloat(
+                (
+                  (new Date(
+                    convertInputToTime(element.values.WorkEnd).replace(" ", "T")
+                  ) -
+                    new Date(
+                      convertInputToTime(element.values.WorkStart).replace(
+                        " ",
+                        "T"
+                      )
+                    )) /
+                  3600000
+                ).toFixed(2)
+              );
+            }
+          });
+          debugger;
+
+          if (parseFloat(sumLabor) < 0) {
+            sumLabor = (parseFloat(sumLabor) + 24).toFixed(2);
+          }
+
+          return (
+            <div
+              className={classNames([
+                styles["table__labor-hours-input"],
+                "table__labor-hours-input",
+              ])}
+            >
+              {sumLabor}
+            </div>
+          );
+        },
         canGroupBy: false,
       },
       {
@@ -226,20 +275,20 @@ const Timesheet = () => {
 
     const onChangeSelectTasks = value => {
       setValue(value);
-      updateTaskData(index, id, value);
+      updateTaskData(row.values.TimesheetID, id, value);
     };
 
     // We'll only update the external data when the input is blurred
     const onBlur = e => {
       if (document.getElementById("checkboxForSetSameTime")) {
         if (document.getElementById("checkboxForSetSameTime").checked) {
-          updateMyData(index, id, value);
+          updateMyData(row.values.TimesheetID, id, value);
           setSameTime();
         } else {
-          updateMyData(index, id, value);
+          updateMyData(row.values.TimesheetID, id, value);
         }
       } else {
-        updateMyData(index, id, value); //important bug fix but why?
+        updateMyData(row.values.TimesheetID, id, value); //important bug fix but why?
       }
     };
 
@@ -251,7 +300,7 @@ const Timesheet = () => {
     };
 
     const onBlurForTasks = e => {
-      updateTaskData(index, id, value);
+      updateTaskData(row.values.TimesheetID, id, value);
     };
 
     const clickDeleteTimesheet = value => {
@@ -428,30 +477,61 @@ const Timesheet = () => {
         />
       );
     } else if (id === "laborHours") {
-      let laborDate = (
-        (new Date(convertInputToTime(row.values.WorkEnd).replace(" ", "T")) -
-          new Date(
-            convertInputToTime(row.values.WorkStart).replace(" ", "T")
-          )) /
-        3600000
-      ).toFixed(2);
-      if (parseFloat(laborDate) < 0) {
-        laborDate = (parseFloat(laborDate) + 24).toFixed(2);
+      if (row.leafRows !== undefined) {
+        let sumLabor = 0;
+        row.leafRows.forEach(element => {
+          sumLabor += (
+            (new Date(convertInputToTime(element.WorkEnd).replace(" ", "T")) -
+              new Date(
+                convertInputToTime(element.WorkStart).replace(" ", "T")
+              )) /
+            3600000
+          ).toFixed(2);
+        });
+
+        if (parseFloat(sumLabor) < 0) {
+          sumLabor = (parseFloat(sumLabor) + 24).toFixed(2);
+        }
+        if (row.values.Task === "Meal") {
+          sumLabor *= -1;
+          sumLabor = sumLabor.toFixed(2);
+        }
+        return (
+          <div
+            className={classNames([
+              styles["table__labor-hours-input"],
+              "table__labor-hours-input",
+            ])}
+          >
+            {sumLabor}
+          </div>
+        );
+      } else {
+        let laborDate = (
+          (new Date(convertInputToTime(row.values.WorkEnd).replace(" ", "T")) -
+            new Date(
+              convertInputToTime(row.values.WorkStart).replace(" ", "T")
+            )) /
+          3600000
+        ).toFixed(2);
+        if (parseFloat(laborDate) < 0) {
+          laborDate = (parseFloat(laborDate) + 24).toFixed(2);
+        }
+        if (row.values.Task === "Meal") {
+          laborDate *= -1;
+          laborDate = laborDate.toFixed(2);
+        }
+        return (
+          <div
+            className={classNames([
+              styles["table__labor-hours-input"],
+              "table__labor-hours-input",
+            ])}
+          >
+            {laborDate}
+          </div>
+        );
       }
-      if (row.values.Task === "Meal") {
-        laborDate *= -1;
-        laborDate = laborDate.toFixed(2);
-      }
-      return (
-        <div
-          className={classNames([
-            styles["table__labor-hours-input"],
-            "table__labor-hours-input",
-          ])}
-        >
-          {laborDate}
-        </div>
-      );
     }
   };
 
@@ -463,13 +543,13 @@ const Timesheet = () => {
   // When our cell renderer calls updateMyData, we'll use
   // the rowIndex, columnId and new value to update the
   // original data
-  const updateMyData = (rowIndex, columnId, value) => {
+  const updateMyData = (TimesheetID, columnId, value) => {
     // We also turn on the flag to not reset the page
     setData(old =>
       old.map((row, index) => {
-        if (index === rowIndex) {
+        if (row.TimesheetID === TimesheetID) {
           return {
-            ...old[rowIndex],
+            ...old[index],
             [columnId]: value,
           };
         }
@@ -495,13 +575,13 @@ const Timesheet = () => {
     );
   };
 
-  const updateTaskData = (rowIndex, columnId, value) => {
+  const updateTaskData = (TimesheetID, columnId, value) => {
     // We also turn on the flag to not reset the page
     setData(old =>
       old.map((row, index) => {
-        if (index === rowIndex) {
+        if (row.TimesheetID === TimesheetID) {
           return {
-            ...old[rowIndex],
+            ...old[index],
             [columnId]: value,
             ["TaskID"]: convertTaskNameToID(value),
           };
