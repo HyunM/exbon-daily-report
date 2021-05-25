@@ -323,6 +323,7 @@ const Timesheet = () => {
       );
     } else if (id === "TimesheetID") {
       if (afterSundayCheck === true) {
+        if (row.values.WorkEnd === null) return null;
         return (
           <div className={styles["table__delete-input"]}>
             <DeleteForeverIcon
