@@ -59,6 +59,8 @@ const convertInputToTime = time => {
 const Timesheet = () => {
   const router = useRouter();
   const [projectState, setProjectState] = useState(undefined);
+  const [checkDisableAddEmployeeButton, setCheckDisableAddEmployeeButton] =
+    useState(false);
   const [stateAssignedProject, setStateAssignedProject] = useState([]);
   // const [checkState, setCheckState] = useState(true);
   const [cookies, setCookie, removeCookie] = useCookies();
@@ -238,6 +240,7 @@ const Timesheet = () => {
     };
 
     const onBlurForEmployee = e => {
+      checkAddEmployeeStatus();
       // updateEmployeeData(index, id, value);
     };
 
@@ -903,7 +906,22 @@ const Timesheet = () => {
 
   useEffect(() => {
     setGroupBy(["EmployeeName"]);
+    // checkAddEmployeeStatus();
   }, [data]);
+
+  const checkAddEmployeeStatus = () => {
+    let check = 0;
+    data.forEach(element => {
+      if (element.EmployeeName === "") {
+        check = 1;
+      }
+    });
+    if (check) {
+      setCheckDisableAddEmployeeButton(true);
+    } else {
+      setCheckDisableAddEmployeeButton(false);
+    }
+  };
 
   const checkChange = event => {
     if (event.target.checked) {
@@ -1068,6 +1086,7 @@ const Timesheet = () => {
                         Save
                       </Button>
                       <Button
+                        id="add-employee-button-id"
                         variant="contained"
                         color="secondary"
                         size="small"
@@ -1078,6 +1097,7 @@ const Timesheet = () => {
                         }
                         onClick={addTimesheetRow}
                         startIcon={<AddIcon />}
+                        disabled={checkDisableAddEmployeeButton}
                       >
                         Add&nbsp;Employee
                       </Button>
