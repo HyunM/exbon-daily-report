@@ -47,6 +47,7 @@ toast.configure();
 let afterSundayCheck = true;
 let dataEmployees;
 let dataTasks;
+let tid = 0;
 
 const convertInputToTime = time => {
   let match = inputTime.filter(data => data.input === time);
@@ -217,7 +218,10 @@ const Timesheet = () => {
 
     const onChangeSelectEmployee = value => {
       setValue(value);
-      updateEmployeeData(index, id, value);
+
+      row.leafRows.forEach(element => {
+        updateEmployeeData(element.values.TimesheetID, id, value);
+      });
     };
 
     const onChangeSelectTasks = value => {
@@ -241,7 +245,9 @@ const Timesheet = () => {
 
     const onBlurForEmployee = e => {
       checkAddEmployeeStatus();
-      // updateEmployeeData(index, id, value);
+      row.leafRows.forEach(element => {
+        updateEmployeeData(element.values.TimesheetID, id, value);
+      });
     };
 
     const onBlurForTasks = e => {
@@ -477,13 +483,14 @@ const Timesheet = () => {
     );
   };
 
-  const updateEmployeeData = (rowIndex, columnId, value) => {
+  const updateEmployeeData = (TimesheetID, columnId, value) => {
     // We also turn on the flag to not reset the page
+
     setData(old =>
       old.map((row, index) => {
-        if (index === rowIndex) {
+        if (row.TimesheetID === TimesheetID) {
           return {
-            ...old[rowIndex],
+            ...old[index],
             [columnId]: value,
             ["EmployeeID"]: convertEmployeeNameToID(value),
           };
@@ -891,7 +898,7 @@ const Timesheet = () => {
     setData(() => [
       ...data,
       {
-        TimesheetID: 0,
+        TimesheetID: "new" + ++tid,
         EmployeeID: 0,
         EmployeeName: "",
         Date: formatDate(selectedDate),
@@ -906,7 +913,7 @@ const Timesheet = () => {
 
   useEffect(() => {
     setGroupBy(["EmployeeName"]);
-    // checkAddEmployeeStatus();
+    checkAddEmployeeStatus();
   }, [data]);
 
   const checkAddEmployeeStatus = () => {
@@ -985,6 +992,7 @@ const Timesheet = () => {
 
   return (
     <>
+      {console.log("data")}
       {console.log(data)}
       <Head>
         <title>Daily Report</title>
