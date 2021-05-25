@@ -186,7 +186,6 @@ const Timesheet = () => {
               );
             }
           });
-          debugger;
 
           if (parseFloat(sumLabor) < 0) {
             sumLabor = (parseFloat(sumLabor) + 24).toFixed(2);
@@ -199,7 +198,7 @@ const Timesheet = () => {
                 "table__labor-hours-input",
               ])}
             >
-              {sumLabor}
+              {sumLabor} (total)
             </div>
           );
         },
