@@ -864,7 +864,7 @@ const Timesheet = () => {
   };
 
   const addTimesheetRow = () => {
-    setData([
+    setData(() => [
       ...data,
       {
         TimesheetID: 0,
@@ -879,6 +879,10 @@ const Timesheet = () => {
       },
     ]);
   };
+
+  useEffect(() => {
+    setGroupBy(["EmployeeName"]);
+  }, [data]);
 
   const checkChange = event => {
     if (event.target.checked) {
@@ -942,6 +946,7 @@ const Timesheet = () => {
 
   return (
     <>
+      {console.log(data)}
       <Head>
         <title>Daily Report</title>
         <link rel="icon" href="/favicon.ico" />
@@ -1099,13 +1104,12 @@ const Timesheet = () => {
                           <TableRow {...headerGroup.getHeaderGroupProps()}>
                             {headerGroup.headers.map(column => (
                               <TableCell {...column.getHeaderProps()}>
-                                {console.log(column)}
-                                {column.canGroupBy ? (
+                                {/* {column.canGroupBy ? (
                                   // If the column can be grouped, let's add a toggle
                                   <span {...column.getGroupByToggleProps()}>
                                     {column.isGrouped ? "🛑 " : "👊 "}
                                   </span>
-                                ) : null}
+                                ) : null} */}
                                 {column.render("Header")}
                               </TableCell>
                             ))}
