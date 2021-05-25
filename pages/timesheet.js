@@ -264,12 +264,7 @@ const Timesheet = () => {
       setValue(initialValue);
     }, [initialValue]);
 
-    if (
-      id === "WorkStart" ||
-      id === "MealStart" ||
-      id === "MealEnd" ||
-      id === "WorkEnd"
-    ) {
+    if (id === "WorkStart" || id === "WorkEnd") {
       if (value === null) return <></>;
       return (
         <div className={styles["table__time-wrapper"]}>
@@ -796,8 +791,6 @@ const Timesheet = () => {
           Date: formatDate(selectedDate),
           WorkStart: element.WorkStart,
           WorkEnd: element.WorkEnd,
-          MealStart: element.MealStart,
-          MealEnd: element.MealEnd,
         },
       }).catch(err => {
         toast.error(
@@ -904,8 +897,6 @@ const Timesheet = () => {
         Date: formatDate(selectedDate),
         Task: "",
         WorkStart: data[0] !== undefined ? data[0].WorkStart : "07:00AM",
-        MealStart: data[0] !== undefined ? data[0].MealStart : "12:00PM",
-        MealEnd: data[0] !== undefined ? data[0].MealEnd : "01:00PM",
         WorkEnd: data[0] !== undefined ? data[0].WorkEnd : "04:00PM",
       },
     ]);
