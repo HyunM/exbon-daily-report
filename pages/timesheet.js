@@ -304,7 +304,7 @@ const Timesheet = () => {
 
     const clickDeleteTimesheet = value => {
       //value = TimesheetID
-      deleteTimesheetRow(index, id);
+      deleteTimesheetRow(row.values.TimesheetID);
     };
 
     const clickAddTimesheet = name => {
@@ -981,8 +981,8 @@ const Timesheet = () => {
         EmployeeName: "",
         Date: formatDate(selectedDate),
         Task: "",
-        WorkStart: data[0] !== undefined ? data[0].WorkStart : "07:00AM",
-        WorkEnd: data[0] !== undefined ? data[0].WorkEnd : "04:00PM",
+        WorkStart: "07:00AM",
+        WorkEnd: "07:00AM",
       },
     ]);
   };
@@ -996,8 +996,8 @@ const Timesheet = () => {
         EmployeeName: name,
         Date: formatDate(selectedDate),
         Task: "",
-        WorkStart: data[0] !== undefined ? data[0].WorkStart : "07:00AM",
-        WorkEnd: data[0] !== undefined ? data[0].WorkEnd : "04:00PM",
+        WorkStart: "07:00AM",
+        WorkEnd: "07:00AM",
       },
     ]);
   };
@@ -1059,10 +1059,10 @@ const Timesheet = () => {
     setCheckState(event.target.checked);
   };
 
-  const deleteTimesheetRow = (rowIndex, columnId) => {
+  const deleteTimesheetRow = TimesheetID => {
     setData(old =>
-      old.filter((row, index) => {
-        return index !== rowIndex;
+      old.filter(element => {
+        return element.TimesheetID !== TimesheetID;
       })
     );
   };
