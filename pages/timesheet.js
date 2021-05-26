@@ -631,6 +631,7 @@ const Timesheet = () => {
       data,
       defaultColumn,
       updateMyData,
+      autoResetExpanded: false,
     },
     useBlockLayout,
     useGroupBy,
