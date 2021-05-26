@@ -1105,7 +1105,7 @@ const Timesheet = () => {
                   alignItems: "center",
                 }}
               >
-                <Loader type="Oval" color="#fab906" height="130" width="130" />
+                <Loader type="Oval" color="#fab906" height="150" width="150" />
               </div>
             ) : (
               <>
