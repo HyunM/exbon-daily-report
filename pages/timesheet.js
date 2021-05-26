@@ -43,6 +43,9 @@ import Autocomplete from "react-autocomplete";
 
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 
+import ArrowRightIcon from "@material-ui/icons/ArrowRight";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+
 toast.configure();
 let afterSundayCheck = true;
 let dataEmployees;
@@ -1248,7 +1251,19 @@ const Timesheet = () => {
                                         <span
                                           {...row.getToggleRowExpandedProps()}
                                         >
-                                          {row.isExpanded ? "👇" : "👉"}
+                                          {row.isExpanded ? (
+                                            <div style={{ float: "left" }}>
+                                              <ArrowDropDownIcon
+                                                className={styles["arrow-btn"]}
+                                              />
+                                            </div>
+                                          ) : (
+                                            <div style={{ float: "left" }}>
+                                              <ArrowRightIcon
+                                                className={styles["arrow-btn"]}
+                                              />
+                                            </div>
+                                          )}
                                         </span>{" "}
                                         {cell.render("Cell")} (
                                         {row.subRows.length})

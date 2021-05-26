@@ -326,6 +326,15 @@
   color: slateblue;
 }
 
+.arrow-btn {
+  color: #4d474a;
+  cursor: pointer;
+}
+
+.arrow-btn:hover {
+  color: slateblue;
+}
+
 .table tbody:before {
   content: "-";
   display: block;
