@@ -307,6 +307,10 @@ const Timesheet = () => {
       deleteTimesheetRow(index, id);
     };
 
+    const clickAddTimesheet = name => {
+      addEmployeeRow(name);
+    };
+
     // If the initialValue is changed external, sync it up with our state
     React.useEffect(() => {
       setValue(initialValue);
@@ -379,12 +383,14 @@ const Timesheet = () => {
       );
     } else if (id === "TimesheetID") {
       if (afterSundayCheck === true) {
-        if (row.values.WorkEnd === null)
+        if (row.values.WorkEnd === null) {
           return (
             <AddCircleIcon
               className={styles["table__add-icon"]}
+              onClick={() => clickAddTimesheet(row.values.EmployeeName)}
             ></AddCircleIcon>
           );
+        }
         return (
           <div className={styles["table__delete-input"]}>
             <DeleteForeverIcon
@@ -967,12 +973,27 @@ const Timesheet = () => {
   };
 
   const addTimesheetRow = () => {
-    setData(() => [
+    setData(data => [
       ...data,
       {
         TimesheetID: "new" + ++tid,
         EmployeeID: 0,
         EmployeeName: "",
+        Date: formatDate(selectedDate),
+        Task: "",
+        WorkStart: data[0] !== undefined ? data[0].WorkStart : "07:00AM",
+        WorkEnd: data[0] !== undefined ? data[0].WorkEnd : "04:00PM",
+      },
+    ]);
+  };
+
+  const addEmployeeRow = name => {
+    setData(data => [
+      ...data,
+      {
+        TimesheetID: "new" + ++tid,
+        EmployeeID: 0,
+        EmployeeName: name,
         Date: formatDate(selectedDate),
         Task: "",
         WorkStart: data[0] !== undefined ? data[0].WorkStart : "07:00AM",
