@@ -734,40 +734,40 @@ const Timesheet = () => {
           timeout: 5000, // 5 seconds timeout
           headers: {},
         }).then(result => {
-          setData([
-            {
-              TimesheetID: "11111",
-              EmployeeName: "Hyunmyung Kim",
-              Task: "IT work",
-              WorkStart: "07:00AM",
-              WorkEnd: "05:00PM",
-              laborHours: 10,
-            },
-            {
-              TimesheetID: "11112",
-              EmployeeName: "Hyunmyung Kim",
-              Task: "Meal",
-              WorkStart: "12:00PM",
-              WorkEnd: "01:00PM",
-              laborHours: -1,
-            },
-            {
-              TimesheetID: "11113",
-              EmployeeName: "Field Worker A",
-              Task: "Task A",
-              WorkStart: "07:00AM",
-              WorkEnd: "03:30PM",
-              laborHours: 8.5,
-            },
-            {
-              TimesheetID: "11114",
-              EmployeeName: "Field Worker A",
-              Task: "Meal",
-              WorkStart: "12:00PM",
-              WorkEnd: "01:00PM",
-              laborHours: -1,
-            },
-          ]);
+          // setData([
+          //   {
+          //     TimesheetID: "11111",
+          //     EmployeeName: "Hyunmyung Kim",
+          //     Task: "IT work",
+          //     WorkStart: "07:00AM",
+          //     WorkEnd: "05:00PM",
+          //     laborHours: 10,
+          //   },
+          //   {
+          //     TimesheetID: "11112",
+          //     EmployeeName: "Hyunmyung Kim",
+          //     Task: "Meal",
+          //     WorkStart: "12:00PM",
+          //     WorkEnd: "01:00PM",
+          //     laborHours: -1,
+          //   },
+          //   {
+          //     TimesheetID: "11113",
+          //     EmployeeName: "Field Worker A",
+          //     Task: "Task A",
+          //     WorkStart: "07:00AM",
+          //     WorkEnd: "03:30PM",
+          //     laborHours: 8.5,
+          //   },
+          //   {
+          //     TimesheetID: "11114",
+          //     EmployeeName: "Field Worker A",
+          //     Task: "Meal",
+          //     WorkStart: "12:00PM",
+          //     WorkEnd: "01:00PM",
+          //     laborHours: -1,
+          //   },
+          // ]);
           setGroupBy(["EmployeeName"]);
 
           // setData(result.data.result[0]);
@@ -817,6 +817,7 @@ const Timesheet = () => {
   // }, [data]);
 
   const handleSaveTimesheetBtn = async () => {
+    return null;
     let checkEmployeeName = data.find(employee => employee.EmployeeID === 0);
     let checkTime = 0;
     for (
