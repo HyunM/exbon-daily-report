@@ -1141,7 +1141,7 @@ const Timesheet = () => {
                             projectname={item.ProjectName}
                             contractno={item.ContractNumber}
                           >
-                            {item.ProjectID} &emsp;[{item.ProjectGroup}]&ensp;
+                            {item.JobNumber} &emsp;[{item.ProjectGroup}]&ensp;
                             {item.ProjectName}
                           </option>
                         );

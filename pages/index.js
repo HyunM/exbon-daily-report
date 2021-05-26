@@ -167,7 +167,7 @@ const index = () => {
                         value={item.ProjectID}
                         // selected={state.prevProject === item.ProjectID ? true : false}
                       >
-                        {item.ProjectID}
+                        {item.JobNumber}
                       </option>
                     );
                   })}

@@ -954,12 +954,7 @@ const workActivities = () => {
                 alignItems: "center",
               }}
             >
-              <Loader
-                type="BallTriangle"
-                color="#1ec996"
-                height="150"
-                width="150"
-              />
+              <Loader type="Oval" color="#1ec996" height="150" width="150" />
             </div>
           ) : (
             <div id={styles.mainDiv}>
@@ -994,7 +989,7 @@ const workActivities = () => {
                           projectname={item.ProjectName}
                           contractno={item.ContractNumber}
                         >
-                          {item.ProjectID} &emsp;[{item.ProjectGroup}]&ensp;
+                          {item.JobNumber} &emsp;[{item.ProjectGroup}]&ensp;
                           {item.ProjectName}
                         </option>
                       );

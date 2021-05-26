@@ -1397,7 +1397,7 @@ const Task = () => {
                 alignItems: "center",
               }}
             >
-              <Loader type="Audio" color="#4e88de" height="150" width="150" />
+              <Loader type="Oval" color="#4e88de" height="150" width="150" />
             </div>
           ) : (
             <div id={styles.mainDiv}>
@@ -1430,7 +1430,7 @@ const Task = () => {
                             projectgroup={item.ProjectGroup}
                             projectname={item.ProjectName}
                           >
-                            {item.ProjectID} &emsp;[{item.ProjectGroup}]&ensp;
+                            {item.JobNumber} &emsp;[{item.ProjectGroup}]&ensp;
                             {item.ProjectName}
                           </option>
                         );
