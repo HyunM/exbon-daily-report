@@ -680,21 +680,16 @@ const Task = (
     );
   };
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable(
-    {
-      columns,
-      data,
-      defaultColumn,
-      updateMyData,
-    },
-    useBlockLayout
-  );
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable(
+      {
+        columns,
+        data,
+        defaultColumn,
+        updateMyData,
+      },
+      useBlockLayout
+    );
 
   const now = new Date().toLocaleString({
     timeZone: "America/Los_Angeles",
@@ -1492,7 +1487,7 @@ const Task = (
                         onClick={goMain}
                         className={styles["header__left__project-id__value"]}
                       >
-                        {projectState}
+                        {projectInfoTab2[0].JobNumber}
                       </span>
                     </h3>
                     {projectInfoTab2 !== undefined &&
