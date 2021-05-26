@@ -946,6 +946,7 @@ const workActivities = () => {
           {promiseInProgress || !projectState || checkDownload ? (
             <div
               style={{
+                marginTop: "30px",
                 width: "100%",
                 height: "100",
                 display: "flex",

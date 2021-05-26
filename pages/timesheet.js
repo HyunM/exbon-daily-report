@@ -154,37 +154,20 @@ const Timesheet = () => {
         Aggregated: ({ value, row }) => {
           let sumLabor = 0;
           row.leafRows.forEach(element => {
-            if (element.values.Task === "Meal") {
-              sumLabor -= parseFloat(
-                (
-                  (new Date(
-                    convertInputToTime(element.values.WorkEnd).replace(" ", "T")
-                  ) -
-                    new Date(
-                      convertInputToTime(element.values.WorkStart).replace(
-                        " ",
-                        "T"
-                      )
-                    )) /
-                  3600000
-                ).toFixed(2)
-              );
-            } else {
-              sumLabor += parseFloat(
-                (
-                  (new Date(
-                    convertInputToTime(element.values.WorkEnd).replace(" ", "T")
-                  ) -
-                    new Date(
-                      convertInputToTime(element.values.WorkStart).replace(
-                        " ",
-                        "T"
-                      )
-                    )) /
-                  3600000
-                ).toFixed(2)
-              );
-            }
+            sumLabor += parseFloat(
+              (
+                (new Date(
+                  convertInputToTime(element.values.WorkEnd).replace(" ", "T")
+                ) -
+                  new Date(
+                    convertInputToTime(element.values.WorkStart).replace(
+                      " ",
+                      "T"
+                    )
+                  )) /
+                3600000
+              ).toFixed(2)
+            );
           });
 
           if (parseFloat(sumLabor) < 0) {
@@ -497,10 +480,7 @@ const Timesheet = () => {
         if (parseFloat(sumLabor) < 0) {
           sumLabor = (parseFloat(sumLabor) + 24).toFixed(2);
         }
-        if (row.values.Task === "Meal") {
-          sumLabor *= -1;
-          sumLabor = sumLabor.toFixed(2);
-        }
+
         return (
           <div
             className={classNames([
@@ -984,7 +964,7 @@ const Timesheet = () => {
         Date: formatDate(selectedDate),
         Task: "",
         WorkStart: "07:00AM",
-        WorkEnd: "07:00AM",
+        WorkEnd: "04:00PM",
       },
     ]);
   };
@@ -999,7 +979,7 @@ const Timesheet = () => {
         Date: formatDate(selectedDate),
         Task: "",
         WorkStart: "07:00AM",
-        WorkEnd: "07:00AM",
+        WorkEnd: "04:00PM",
       },
     ]);
   };
@@ -1111,9 +1091,10 @@ const Timesheet = () => {
             projectState={router.query.pid}
           />
           <div id={styles.mainDiv}>
-            {promiseInProgress ? (
+            {promiseInProgress || !projectState ? (
               <div
                 style={{
+                  marginTop: "30px",
                   width: "100%",
                   height: "100",
                   display: "flex",
@@ -1121,12 +1102,7 @@ const Timesheet = () => {
                   alignItems: "center",
                 }}
               >
-                <Loader
-                  type="Circles"
-                  color="#faea06"
-                  height="130"
-                  width="130"
-                />
+                <Loader type="Oval" color="#fab906" height="130" width="130" />
               </div>
             ) : (
               <>
