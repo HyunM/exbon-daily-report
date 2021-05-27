@@ -140,6 +140,7 @@ const SelfTimesheet = () => {
   );
 
   const [data, setData] = useState(() => []);
+  const [history, setHistory] = useState(() => []);
   // const [dataEmployees, setDataEmployees] = useState(() => []);
 
   // Create an editable cell renderer
@@ -407,6 +408,7 @@ const SelfTimesheet = () => {
         }).then(response => {
           if (response.data.result[0].length > 0) {
             setData(response.data.result[0]);
+            setHistory(response.data.result[1]);
           } else {
             if (dateCheckEditable(selectedDate)) {
               setData([
@@ -420,6 +422,7 @@ const SelfTimesheet = () => {
                 },
               ]);
             } else setData([]);
+            setHistory([]);
           }
         });
 
@@ -684,6 +687,31 @@ const SelfTimesheet = () => {
                       </TableBody>
                     </Table>
                   </TableContainer>
+                </div>
+
+                <div className={styles["table2"]}>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Employee Name</th>
+                        <th>Work Start</th>
+                        <th>Meal Start</th>
+                        <th>Meal End</th>
+                        <th>Work End</th>
+                        <th>Labor Hours</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <td>1</td>
+                      <td>2</td>
+                      <td>3</td>
+                      <td>4</td>
+                      <td>5</td>
+                      <td>6</td>
+                      <td>7</td>
+                    </tbody>
+                  </table>
                 </div>
               </>
             )}
