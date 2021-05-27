@@ -691,7 +691,7 @@ const SelfTimesheet = () => {
                             <TableRow key={element.TimesheetID}>
                               <TableCell
                                 style={{
-                                  width: "210px",
+                                  width: "206px",
                                   padding: "16px",
                                   color: "#6c7c7c",
                                   fontWeight: "500",
@@ -701,7 +701,7 @@ const SelfTimesheet = () => {
                               </TableCell>
                               <TableCell
                                 style={{
-                                  width: "170px",
+                                  width: "163px",
                                   padding: "16px",
                                   color: "#6c7c7c",
                                   fontWeight: "500",
@@ -711,7 +711,7 @@ const SelfTimesheet = () => {
                               </TableCell>
                               <TableCell
                                 style={{
-                                  width: "170px",
+                                  width: "163px",
                                   padding: "16px",
                                   color: "#6c7c7c",
                                   fontWeight: "500",
@@ -721,7 +721,7 @@ const SelfTimesheet = () => {
                               </TableCell>
                               <TableCell
                                 style={{
-                                  width: "170px",
+                                  width: "163px",
                                   padding: "16px",
                                   color: "#6c7c7c",
                                   fontWeight: "500",
@@ -731,7 +731,7 @@ const SelfTimesheet = () => {
                               </TableCell>
                               <TableCell
                                 style={{
-                                  width: "170px",
+                                  width: "163px",
                                   padding: "16px",
                                   color: "#6c7c7c",
                                   fontWeight: "500",
@@ -741,7 +741,7 @@ const SelfTimesheet = () => {
                               </TableCell>
                               <TableCell
                                 style={{
-                                  width: "115px",
+                                  width: "100px",
                                   padding: "16px",
                                   textAlign: "right",
                                   color: "#6c7c7c",
@@ -752,7 +752,7 @@ const SelfTimesheet = () => {
                               </TableCell>
                               <TableCell
                                 style={{
-                                  width: "138px",
+                                  width: "147px",
                                   padding: "16px",
                                   color: "#6c7c7c",
                                   fontWeight: "500",
