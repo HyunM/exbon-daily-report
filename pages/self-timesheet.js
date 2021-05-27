@@ -685,87 +685,85 @@ const SelfTimesheet = () => {
                     style={{ marginTop: "50px" }}
                   >
                     <Table>
-                      <TableContainer component={Paper}>
-                        <TableBody>
-                          {history.map(element => {
-                            return (
-                              <TableRow key={element.TimesheetID}>
-                                <TableCell
-                                  style={{
-                                    width: "210px",
-                                    padding: "16px",
-                                    color: "#6c7c7c",
-                                    fontWeight: "500",
-                                  }}
-                                >
-                                  {element.Date}
-                                </TableCell>
-                                <TableCell
-                                  style={{
-                                    width: "170px",
-                                    padding: "16px",
-                                    color: "#6c7c7c",
-                                    fontWeight: "500",
-                                  }}
-                                >
-                                  {element.WorkStart}
-                                </TableCell>
-                                <TableCell
-                                  style={{
-                                    width: "170px",
-                                    padding: "16px",
-                                    color: "#6c7c7c",
-                                    fontWeight: "500",
-                                  }}
-                                >
-                                  {element.MealStart}
-                                </TableCell>
-                                <TableCell
-                                  style={{
-                                    width: "170px",
-                                    padding: "16px",
-                                    color: "#6c7c7c",
-                                    fontWeight: "500",
-                                  }}
-                                >
-                                  {element.MealEnd}
-                                </TableCell>
-                                <TableCell
-                                  style={{
-                                    width: "170px",
-                                    padding: "16px",
-                                    color: "#6c7c7c",
-                                    fontWeight: "500",
-                                  }}
-                                >
-                                  {element.WorkEnd}
-                                </TableCell>
-                                <TableCell
-                                  style={{
-                                    width: "115px",
-                                    padding: "16px",
-                                    textAlign: "right",
-                                    color: "#6c7c7c",
-                                    fontWeight: "500",
-                                  }}
-                                >
-                                  {element.LaborHours.toFixed(2)}
-                                </TableCell>
-                                <TableCell
-                                  style={{
-                                    width: "138px",
-                                    padding: "16px",
-                                    color: "#6c7c7c",
-                                    fontWeight: "500",
-                                  }}
-                                >
-                                  {element.Status}
-                                </TableCell>
-                              </TableRow>
-                            );
-                          })}
-                        </TableBody>
-                      </TableContainer>
+                      <TableBody>
+                        {history.map(element => {
+                          return (
+                            <TableRow key={element.TimesheetID}>
+                              <TableCell
+                                style={{
+                                  width: "210px",
+                                  padding: "16px",
+                                  color: "#6c7c7c",
+                                  fontWeight: "500",
+                                }}
+                              >
+                                {element.Date}
+                              </TableCell>
+                              <TableCell
+                                style={{
+                                  width: "170px",
+                                  padding: "16px",
+                                  color: "#6c7c7c",
+                                  fontWeight: "500",
+                                }}
+                              >
+                                {element.WorkStart}
+                              </TableCell>
+                              <TableCell
+                                style={{
+                                  width: "170px",
+                                  padding: "16px",
+                                  color: "#6c7c7c",
+                                  fontWeight: "500",
+                                }}
+                              >
+                                {element.MealStart}
+                              </TableCell>
+                              <TableCell
+                                style={{
+                                  width: "170px",
+                                  padding: "16px",
+                                  color: "#6c7c7c",
+                                  fontWeight: "500",
+                                }}
+                              >
+                                {element.MealEnd}
+                              </TableCell>
+                              <TableCell
+                                style={{
+                                  width: "170px",
+                                  padding: "16px",
+                                  color: "#6c7c7c",
+                                  fontWeight: "500",
+                                }}
+                              >
+                                {element.WorkEnd}
+                              </TableCell>
+                              <TableCell
+                                style={{
+                                  width: "115px",
+                                  padding: "16px",
+                                  textAlign: "right",
+                                  color: "#6c7c7c",
+                                  fontWeight: "500",
+                                }}
+                              >
+                                {element.LaborHours.toFixed(2)}
+                              </TableCell>
+                              <TableCell
+                                style={{
+                                  width: "138px",
+                                  padding: "16px",
+                                  color: "#6c7c7c",
+                                  fontWeight: "500",
+                                }}
+                              >
+                                {element.Status}
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
+                      </TableBody>
                     </Table>
                   </div>
                 )}
