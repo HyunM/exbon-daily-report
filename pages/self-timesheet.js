@@ -757,9 +757,7 @@ const SelfTimesheet = () => {
                                   color: "#6c7c7c",
                                   fontWeight: "500",
                                 }}
-                              >
-                                {element.Status}
-                              </TableCell>
+                              ></TableCell>
                             </TableRow>
                           );
                         })}
