@@ -406,9 +406,9 @@ const SelfTimesheet = () => {
           timeout: 5000, // 5 seconds timeout
           headers: {},
         }).then(response => {
+          setHistory(response.data.result[1]);
           if (response.data.result[0].length > 0) {
             setData(response.data.result[0]);
-            setHistory(response.data.result[1]);
           } else {
             if (dateCheckEditable(selectedDate)) {
               setData([
@@ -422,7 +422,6 @@ const SelfTimesheet = () => {
                 },
               ]);
             } else setData([]);
-            setHistory([]);
           }
         });
 
@@ -689,29 +688,36 @@ const SelfTimesheet = () => {
                   </TableContainer>
                 </div>
 
-                <div className={styles["table2"]}>
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Employee Name</th>
-                        <th>Work Start</th>
-                        <th>Meal Start</th>
-                        <th>Meal End</th>
-                        <th>Work End</th>
-                        <th>Labor Hours</th>
-                        <th>Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <td>1</td>
-                      <td>2</td>
-                      <td>3</td>
-                      <td>4</td>
-                      <td>5</td>
-                      <td>6</td>
-                      <td>7</td>
-                    </tbody>
-                  </table>
+                <div className={styles["table"]} style={{ marginTop: "50px" }}>
+                  <Table>
+                    <TableBody>
+                      {history.map(element => {
+                        return (
+                          <TableRow key={element.TimesheetID}>
+                            <TableCell width="200px">{element.Date}</TableCell>
+                            <TableCell width="160px">
+                              {element.WorkStart}
+                            </TableCell>
+                            <TableCell width="160px">
+                              {element.MealStart}
+                            </TableCell>
+                            <TableCell width="160px">
+                              {element.MealEnd}
+                            </TableCell>
+                            <TableCell width="160px">
+                              {element.WorkEnd}
+                            </TableCell>
+                            <TableCell width="120px">
+                              {element.LaborHours.toFixed(2)}
+                            </TableCell>
+                            <TableCell width="140px">
+                              {element.Status}
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                    </TableBody>
+                  </Table>
                 </div>
               </>
             )}
