@@ -368,38 +368,40 @@ const SelfTimesheet = () => {
   };
 
   useEffect(() => {
-    if (status.cookies.username !== 0) {
-      if (status.cookies.username !== undefined) {
-        axios({
-          method: "post",
-          url: `/api/daily-report/signin`,
-          timeout: 5000, // 2 seconds timeout
-          headers: {},
-          data: {
-            Username: status.cookies.username,
-            Password: status.cookies.password,
-          },
-        });
-      }
-    } else {
-      setStatus(prevState => ({
-        ...prevState,
-        cookies: {
-          username: cookies.username,
-          password: cookies.password,
-          fullname: cookies.fullname,
-          employeeid: cookies.employeeid,
-        },
-      }));
-    }
+    let promises = [];
 
-    if (
-      status.cookies.employeeid !== 0 &&
-      status.cookies.employeeid !== undefined &&
-      selectedDate !== undefined
-    ) {
-      const queryDate = formatDate(selectedDate);
-      const fetchData = async () => {
+    const fetchData = async () => {
+      if (status.cookies.username !== 0) {
+        if (status.cookies.username !== undefined) {
+          axios({
+            method: "post",
+            url: `/api/daily-report/signin`,
+            timeout: 5000, // 2 seconds timeout
+            headers: {},
+            data: {
+              Username: status.cookies.username,
+              Password: status.cookies.password,
+            },
+          });
+        }
+      } else {
+        setStatus(prevState => ({
+          ...prevState,
+          cookies: {
+            username: cookies.username,
+            password: cookies.password,
+            fullname: cookies.fullname,
+            employeeid: cookies.employeeid,
+          },
+        }));
+      }
+
+      if (
+        status.cookies.employeeid !== 0 &&
+        status.cookies.employeeid !== undefined &&
+        selectedDate !== undefined
+      ) {
+        const queryDate = formatDate(selectedDate);
         await axios({
           method: "get",
           url: `/api/self-timesheet?selectedDate=${queryDate}&eid=${status.cookies.employeeid}`,
@@ -424,22 +426,11 @@ const SelfTimesheet = () => {
             } else setData([]);
           }
         });
+      }
+    };
 
-        // setData([
-        //   {
-        //     TimesheetID: 0,
-        //     EmployeeID: 0,
-        //     EmployeeName: "Hyunmyung Kim",
-        //     WorkStart: data[0] !== undefined ? data[0].WorkStart : "07:00AM",
-        //     MealStart: data[0] !== undefined ? data[0].MealStart : "12:00PM",
-        //     MealEnd: data[0] !== undefined ? data[0].MealEnd : "01:00PM",
-        //     WorkEnd: data[0] !== undefined ? data[0].WorkEnd : "04:00PM",
-        //     Save: "O",
-        //   },
-        // ]);
-      };
-      fetchData();
-    }
+    promises.push(fetchData());
+    trackPromise(Promise.all(promises).then(() => {}));
   }, [selectedDate, status]);
 
   const handleSaveTimesheetBtn = () => {
@@ -603,6 +594,7 @@ const SelfTimesheet = () => {
             {promiseInProgress ? (
               <div
                 style={{
+                  marginTop: "30px",
                   width: "100%",
                   height: "100",
                   display: "flex",
@@ -610,7 +602,7 @@ const SelfTimesheet = () => {
                   alignItems: "center",
                 }}
               >
-                <Loader type="Audio" color="#4e88de" height="100" width="100" />
+                <Loader type="Oval" color="#c05582" height="150" width="150" />
               </div>
             ) : (
               <>
