@@ -34,7 +34,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Router, { useRouter } from "next/router";
 
 toast.configure();
-let afterSundayCheck = true;
+let afterMondayCheck = true;
 
 const convertInputToTime = time => {
   let match = inputTime.filter(data => data.input === time);
@@ -60,9 +60,16 @@ const SelfTimesheet = () => {
   const getSunday = d => {
     d = new Date(d);
     let day = d.getDay(),
-      diff = d.getDate() - day;
+      diff = d.getDate() - day + 1;
     return new Date(d.setDate(diff));
   };
+
+  function getMonday(d) {
+    d = new Date(d);
+    var day = d.getDay(),
+      diff = d.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
+    return new Date(d.setDate(diff));
+  }
 
   const date_diff_indays = (date1, date2) => {
     return Math.floor(
@@ -81,18 +88,18 @@ const SelfTimesheet = () => {
       "/" +
       toStr.split("/")[2].slice(0, 4);
     const dateFromStr = new Date(newStr);
-    const sundayOfSelected = getSunday(dateFromStr);
-    const sundayOfToday = getSunday(now);
-    if (date_diff_indays(sundayOfToday, sundayOfSelected) >= 0) {
-      afterSundayCheck = true;
+    const mondayOfSelected = getMonday(dateFromStr);
+    const mondayOfToday = getMonday(now);
+    if (date_diff_indays(mondayOfToday, mondayOfSelected) >= 0) {
+      afterMondayCheck = true;
       return true;
     } else {
       //Turning on the lockout
-      afterSundayCheck = false;
+      afterMondayCheck = false;
       return false;
 
       //Turning off the lockout
-      // afterSundayCheck = true;
+      // afterMondayCheck = true;
       // return true;
     }
   };
@@ -222,7 +229,7 @@ const SelfTimesheet = () => {
             onChange={onCheckHour}
             onBlur={onBlur}
             className={
-              afterSundayCheck
+              afterMondayCheck
                 ? classNames(
                     "table__time-wrapper__target-disabled",
                     styles["table__time-wrapper__hour-input"]
@@ -238,7 +245,7 @@ const SelfTimesheet = () => {
               2: "[0-1]",
               9: "[0-9]",
             }}
-            disabled={afterSundayCheck ? false : true}
+            disabled={afterMondayCheck ? false : true}
           />
           :
           <InputMask
@@ -246,7 +253,7 @@ const SelfTimesheet = () => {
             onChange={onCheckMin}
             onBlur={onBlur}
             className={
-              afterSundayCheck
+              afterMondayCheck
                 ? classNames(
                     "table__time-wrapper__target-disabled",
                     styles["table__time-wrapper__min-input"]
@@ -261,7 +268,7 @@ const SelfTimesheet = () => {
             formatChars={{
               5: "[0-5]",
             }}
-            disabled={afterSundayCheck ? false : true}
+            disabled={afterMondayCheck ? false : true}
           />
           <select
             value={value.slice(5, 7)}
@@ -271,7 +278,7 @@ const SelfTimesheet = () => {
               "table__time-wrapper__target-disabled",
               styles["table__ampm-dropdown"]
             )}
-            disabled={afterSundayCheck ? false : true}
+            disabled={afterMondayCheck ? false : true}
           >
             <option value="AM">AM</option>
             <option value="PM">PM</option>
