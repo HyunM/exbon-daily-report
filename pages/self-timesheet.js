@@ -64,12 +64,12 @@ const SelfTimesheet = () => {
     return new Date(d.setDate(diff));
   };
 
-  function getMonday(d) {
+  const getMonday = d => {
     d = new Date(d);
     var day = d.getDay(),
       diff = d.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
     return new Date(d.setDate(diff));
-  }
+  };
 
   const date_diff_indays = (date1, date2) => {
     return Math.floor(
