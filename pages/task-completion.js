@@ -26,6 +26,7 @@ import NotPermission from "../components/MainTab/NotPermission";
 import { CookiesProvider, useCookies } from "react-cookie";
 import Login from "../components/MainTab/login.js";
 import "react-toastify/dist/ReactToastify.css";
+import { useMediaQuery } from "react-responsive";
 
 let noWorkMapKey = -1;
 
@@ -55,6 +56,11 @@ const themeForNoWork = createMuiTheme({
 });
 
 const Task = () => {
+  const resolution1334 = useMediaQuery({
+    maxWidth: "1334px",
+    minWidth: "800px",
+  });
+
   const router = useRouter();
   const [projectState, setProjectState] = useState(undefined);
   const [cookies, setCookie, removeCookie] = useCookies();
@@ -73,9 +79,9 @@ const Task = () => {
   const columns = useMemo(
     () => [
       {
-        Header: "Section",
+        Header: resolution1334 ? "§" : "Section",
         accessor: "Section",
-        width: 65,
+        width: resolution1334 ? 30 : 65,
       },
       {
         Header: "Summary Task",
@@ -86,32 +92,32 @@ const Task = () => {
       {
         Header: "Task",
         accessor: "TaskName",
-        width: 360,
+        width: resolution1334 ? 355 : 360,
       },
       {
         Header: "Resource",
         accessor: "Company",
-        width: 260,
+        width: resolution1334 ? 235 : 260,
       },
       {
         Header: "Start Date",
         accessor: "StartDate",
-        width: 100,
+        width: resolution1334 ? 85 : 100,
       },
       {
         Header: "Finish Date",
         accessor: "FinishDate",
-        width: 100,
+        width: resolution1334 ? 85 : 100,
       },
       {
-        Header: "Request Start Date",
+        Header: resolution1334 ? "Req. Start Date" : "Request Start Date",
         accessor: "ReqStartDate",
-        width: 100,
+        width: resolution1334 ? 85 : 100,
       },
       {
-        Header: "Request Finish Date",
+        Header: resolution1334 ? "Req. Finish Date" : "Request Finish Date",
         accessor: "ReqFinishDate",
-        width: 100,
+        width: resolution1334 ? 85 : 100,
       },
       // {
       //   Header: "Finish Date",
@@ -119,14 +125,14 @@ const Task = () => {
       //   width: 90,
       // },
       {
-        Header: "Previous Work %",
+        Header: resolution1334 ? "Prev. Work %" : "Previous Work %",
         accessor: "PreviousWork",
-        width: 73,
+        width: resolution1334 ? 63 : 73,
       },
       {
-        Header: "Current Work %",
+        Header: resolution1334 ? "Curr. Work %" : "Current Work %",
         accessor: "CurrentWork",
-        width: 73,
+        width: resolution1334 ? 63 : 73,
       },
       // {
       //   Header: "Message",

@@ -41,7 +41,7 @@
     "react-modal": "^3.12.1",
     "react-promise-tracker": "^2.1.0",
     "react-redux": "^7.2.1",
-    "react-responsive": "^8.1.0",
+    "react-responsive": "^8.2.0",
     "react-table": "^7.5.1",
     "react-toastify": "^6.2.0",
     "react-tooltip": "^4.2.10",

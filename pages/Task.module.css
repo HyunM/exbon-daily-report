@@ -600,29 +600,64 @@
     width: 1250px;
   }
 
-  .task__table thead td {
-    font-size: smaller;
+  .table thead td {
+    font-size: 0.8rem !important;
     display: block;
   }
 
-  .task__header {
+  .table tbody {
+    font-size: 0.8rem !important;
+    display: block;
+  }
+
+  .header {
     display: flex;
     justify-content: space-between;
     margin-top: -3px !important;
     z-index: 0;
     position: relative;
   }
+  .table__section-wrapper__data {
+    font-size: 0.8rem;
+  }
 
-  .task__table__start-date-wrapper__data {
+  .table__task-name-wrapper__data {
     font-size: 0.8rem;
   }
-  .task__table__finish-date-wrapper__data {
+
+  .table__company-wrapper__data {
     font-size: 0.8rem;
   }
-  .task__table__req-start-date-wrapper div {
+  .table__trade-wrapper__data {
     font-size: 0.8rem;
   }
-  .task__table__req-finish-date-wrapper div {
+
+  .table__start-date-wrapper__data {
+    font-size: 0.8rem;
+  }
+  .table__finish-date-wrapper__data {
+    font-size: 0.8rem;
+  }
+  .table__req-start-date-wrapper div {
+    font-size: 0.8rem;
+  }
+  .table__req-finish-date-wrapper div {
+    font-size: 0.8rem;
+  }
+  .table__previous-work-wrapper__data {
+    font-size: 0.8rem;
+  }
+
+  .table__current-work-wrapper__data {
+    font-size: 0.8rem;
+  }
+
+  .table__current-work-wrapper__input__previous-work {
+    width: 33px !important;
+  }
+
+  .table__current-work-wrapper__input__current-work {
+    width: 33px !important;
     font-size: 0.8rem;
   }
 }
