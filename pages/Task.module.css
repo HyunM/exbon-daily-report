@@ -594,3 +594,35 @@
   text-align: center;
   color: gray;
 }
+
+@media screen and (max-width: 1334px) {
+  #mainDiv {
+    width: 1250px;
+  }
+
+  .task__table thead td {
+    font-size: smaller;
+    display: block;
+  }
+
+  .task__header {
+    display: flex;
+    justify-content: space-between;
+    margin-top: -3px !important;
+    z-index: 0;
+    position: relative;
+  }
+
+  .task__table__start-date-wrapper__data {
+    font-size: 0.8rem;
+  }
+  .task__table__finish-date-wrapper__data {
+    font-size: 0.8rem;
+  }
+  .task__table__req-start-date-wrapper div {
+    font-size: 0.8rem;
+  }
+  .task__table__req-finish-date-wrapper div {
+    font-size: 0.8rem;
+  }
+}
