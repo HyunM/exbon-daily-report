@@ -65,9 +65,25 @@
   visibility: hidden;
 }
 
+.before-table input {
+  text-align: center;
+  width: 150px;
+  color: rgb(168, 164, 167);
+  border: 1px solid rgb(200, 191, 196);
+  border-radius: 4px;
+  box-shadow: rgb(221, 216, 220) 1px 1px 2px inset;
+  background: rgb(255, 255, 255);
+  padding: 4px;
+  font-family: "Roboto" !important;
+}
+
+.before-table input:focus {
+  color: rgb(15, 14, 15);
+}
+
 .table {
-  overflow: auto;
   margin-left: 4px;
+  overflow: auto;
 }
 
 .table__start-time input {
@@ -232,4 +248,18 @@
 
 .alert__complete {
   text-align: center;
+}
+
+@media screen and (max-width: 800px) {
+  #mainDiv {
+    width: 750px;
+  }
+  .header {
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .header__left {
+    margin-top: 20px;
+  }
 }

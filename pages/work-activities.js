@@ -1071,104 +1071,103 @@ const workActivities = () => {
                   </Button>
                 </div>
               </div>
-
-              <div className={styles["table"]}>
-                <div
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "left",
+                  marginTop: "18px",
+                  marginBottom: "10px",
+                  fontFamily: "Roboto",
+                }}
+                className={styles["before-table"]}
+              >
+                <p
                   style={{
-                    display: "flex",
-                    justifyContent: "left",
-                    marginTop: "18px",
-                    marginBottom: "10px",
-                    fontFamily: "Roboto",
+                    marginTop: "4px",
+                    marginBottom: "0px",
+                    marginRight: "15px",
+                    marginLeft: "3px",
+                    fontFamily: "Roboto, sans-serif",
+                    color: "#807b7d",
+                    height: "30px",
+                    alignSelf: "center",
                   }}
                 >
-                  <p
-                    style={{
-                      marginTop: "4px",
-                      marginBottom: "0px",
-                      marginRight: "15px",
-                      marginLeft: "3px",
-                      fontFamily: "Roboto, sans-serif",
-                      color: "#807b7d",
-                      height: "30px",
-                      alignSelf: "center",
-                    }}
-                  >
-                    Weather
-                  </p>
-                  <select
-                    id="weatherID"
-                    name="weatherName"
-                    style={{
-                      fontFamily: "Roboto, sans-serif",
-                      fontSize: "medium",
-                      display: "inline-block",
-                      color: "rgb(150, 146, 149)",
-                      border: "1px solid #c8bfc4",
-                      borderRadius: "4px",
-                      boxShadow: "inset 1px 1px 2px #ddd8dc",
-                      background: "#fff",
-                      zIndex: "1",
-                      position: "relative",
-                      height: "1.5em",
-                      marginTop: "15.5px",
-                    }}
-                    value={activity.Weather}
-                    onChange={e => handleChangeWeather(e.target.value)}
-                  >
-                    <option value="">Choose here</option>
-                    <option value="Sunny">Sunny</option>
-                    <option value="Cloudy">Cloudy</option>
-                    <option value="Partly Cloudy">Partly Cloudy</option>
-                    <option value="Windy">Windy</option>
-                    <option value="Rainy">Rainy</option>
-                    <option value="Foggy">Foggy</option>
-                    <option value="Snowy">Snowy</option>
-                  </select>
-                  <div style={{ marginLeft: "80px", display: "flex" }}>
-                    <div style={{ display: "flex" }}>
-                      <TextField
-                        className={styles["table__start-time"]}
-                        label="Start Time"
-                        type="time"
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        inputProps={{
-                          step: 600, // 5 min
-                        }}
-                        style={{ marginBottom: "20px" }}
-                        value={
-                          activity.StartTime !== undefined
-                            ? activity.StartTime
-                            : "07:00"
-                        }
-                        onChange={e => handleChangeStartTime(e.target.value)}
-                      />
-                    </div>
-                    <div style={{ marginLeft: "20px" }}>
-                      <TextField
-                        className={styles["table__end-time"]}
-                        label="End Time"
-                        type="time"
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        inputProps={{
-                          step: 600, // 10 min
-                        }}
-                        style={{ marginBottom: "10px" }}
-                        value={
-                          activity.EndTime !== undefined
-                            ? activity.EndTime
-                            : "17:00"
-                        }
-                        onChange={e => handleChangeEndTime(e.target.value)}
-                      />
-                    </div>
+                  Weather
+                </p>
+                <select
+                  id="weatherID"
+                  name="weatherName"
+                  style={{
+                    fontFamily: "Roboto, sans-serif",
+                    fontSize: "medium",
+                    display: "inline-block",
+                    color: "rgb(150, 146, 149)",
+                    border: "1px solid #c8bfc4",
+                    borderRadius: "4px",
+                    boxShadow: "inset 1px 1px 2px #ddd8dc",
+                    background: "#fff",
+                    zIndex: "1",
+                    position: "relative",
+                    height: "1.5em",
+                    marginTop: "15.5px",
+                  }}
+                  value={activity.Weather}
+                  onChange={e => handleChangeWeather(e.target.value)}
+                >
+                  <option value="">Choose here</option>
+                  <option value="Sunny">Sunny</option>
+                  <option value="Cloudy">Cloudy</option>
+                  <option value="Partly Cloudy">Partly Cloudy</option>
+                  <option value="Windy">Windy</option>
+                  <option value="Rainy">Rainy</option>
+                  <option value="Foggy">Foggy</option>
+                  <option value="Snowy">Snowy</option>
+                </select>
+                <div style={{ marginLeft: "80px", display: "flex" }}>
+                  <div style={{ display: "flex" }}>
+                    <TextField
+                      className={styles["table__start-time"]}
+                      label="Start Time"
+                      type="time"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      inputProps={{
+                        step: 600, // 5 min
+                      }}
+                      style={{ marginBottom: "20px" }}
+                      value={
+                        activity.StartTime !== undefined
+                          ? activity.StartTime
+                          : "07:00"
+                      }
+                      onChange={e => handleChangeStartTime(e.target.value)}
+                    />
+                  </div>
+                  <div style={{ marginLeft: "20px" }}>
+                    <TextField
+                      className={styles["table__end-time"]}
+                      label="End Time"
+                      type="time"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      inputProps={{
+                        step: 600, // 10 min
+                      }}
+                      style={{ marginBottom: "10px" }}
+                      value={
+                        activity.EndTime !== undefined
+                          ? activity.EndTime
+                          : "17:00"
+                      }
+                      onChange={e => handleChangeEndTime(e.target.value)}
+                    />
                   </div>
                 </div>
-
+              </div>
+              <div className={styles["table"]}>
                 <table {...getTableProps()}>
                   <thead>
                     {headerGroups.map((headerGroup, i) => (
