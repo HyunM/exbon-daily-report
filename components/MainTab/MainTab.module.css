@@ -70,3 +70,20 @@
 .wrapper-logout__btn {
   padding: 0 !important;
 }
+
+@media screen and (max-width: 800px) {
+  .right-tab {
+    max-width: 80px !important;
+  }
+
+  .wrapper-right-tab {
+    width: 80% !important;
+  }
+  .wrapper-right-tab__employee-name {
+    display: none;
+  }
+
+  .wrapper-right-tab {
+    flex-direction: row-reverse;
+  }
+}

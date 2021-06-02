@@ -61,6 +61,11 @@ const Task = () => {
     minWidth: "800px",
   });
 
+  const resolution800 = useMediaQuery({
+    maxWidth: "800px",
+    minWidth: "1334px",
+  });
+
   const router = useRouter();
   const [projectState, setProjectState] = useState(undefined);
   const [cookies, setCookie, removeCookie] = useCookies();
@@ -1390,6 +1395,7 @@ const Task = () => {
             employeeID={status.cookies.employeeid}
             employeeName={status.cookies.fullname}
             logout={logout}
+            style={{ display: "none" }}
           />
 
           {promiseInProgress || !projectState || !(data.length > 0) ? (

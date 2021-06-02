@@ -661,3 +661,79 @@
     font-size: 0.8rem;
   }
 }
+
+@media screen and (max-width: 800px) {
+  #mainDiv {
+    width: 750px;
+  }
+
+  .header {
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .header__left {
+    margin-top: 20px;
+  }
+
+  .table thead td {
+    font-size: 0.8rem !important;
+    display: block;
+  }
+
+  .table tbody {
+    font-size: 0.8rem !important;
+    display: block;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    margin-top: -3px !important;
+    z-index: 0;
+    position: relative;
+  }
+  .table__section-wrapper__data {
+    font-size: 0.8rem;
+  }
+
+  .table__task-name-wrapper__data {
+    font-size: 0.8rem;
+  }
+
+  .table__company-wrapper__data {
+    font-size: 0.8rem;
+  }
+  .table__trade-wrapper__data {
+    font-size: 0.8rem;
+  }
+
+  .table__start-date-wrapper__data {
+    font-size: 0.8rem;
+  }
+  .table__finish-date-wrapper__data {
+    font-size: 0.8rem;
+  }
+  .table__req-start-date-wrapper div {
+    font-size: 0.8rem;
+  }
+  .table__req-finish-date-wrapper div {
+    font-size: 0.8rem;
+  }
+  .table__previous-work-wrapper__data {
+    font-size: 0.8rem;
+  }
+
+  .table__current-work-wrapper__data {
+    font-size: 0.8rem;
+  }
+
+  .table__current-work-wrapper__input__previous-work {
+    width: 33px !important;
+  }
+
+  .table__current-work-wrapper__input__current-work {
+    width: 33px !important;
+    font-size: 0.8rem;
+  }
+}
