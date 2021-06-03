@@ -106,7 +106,7 @@ const Task = (
       },
       {
         Header: "Summary Task",
-        accessor: "Trade",
+        accessor: "License",
         width: 160,
       },
 
@@ -455,7 +455,7 @@ const Task = (
     //       <ReactTooltip />
     //     </>
     //   );
-    if (id === "Trade") {
+    if (id === "License") {
       return (
         <div className={styles["table__trade-wrapper"]}>
           <span className={styles["table__trade-wrapper__data"]}>{value}</span>
