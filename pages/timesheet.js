@@ -138,20 +138,20 @@ const Timesheet = () => {
 
       {
         Header: "Start Time",
-        accessor: "WorkStart",
+        accessor: "Start",
         width: 160,
         canGroupBy: false,
       },
 
       {
         Header: "End Time",
-        accessor: "WorkEnd",
+        accessor: "Finish",
         width: 160,
         canGroupBy: false,
       },
       {
-        Header: "Labor Hours",
-        accessor: "laborHours",
+        Header: "Length",
+        accessor: "Length",
         width: 120,
         aggregate: "sum",
         Aggregated: ({ value, row }) => {
@@ -160,13 +160,10 @@ const Timesheet = () => {
             sumLabor += parseFloat(
               (
                 (new Date(
-                  convertInputToTime(element.values.WorkEnd).replace(" ", "T")
+                  convertInputToTime(element.values.Finish).replace(" ", "T")
                 ) -
                   new Date(
-                    convertInputToTime(element.values.WorkStart).replace(
-                      " ",
-                      "T"
-                    )
+                    convertInputToTime(element.values.Start).replace(" ", "T")
                   )) /
                 3600000
               ).toFixed(2)
@@ -302,7 +299,7 @@ const Timesheet = () => {
       setValue(initialValue);
     }, [initialValue]);
 
-    if (id === "WorkStart" || id === "WorkEnd") {
+    if (id === "Start" || id === "Finish") {
       if (value === null) return <></>;
       return (
         <div className={styles["table__time-wrapper"]}>
@@ -369,7 +366,7 @@ const Timesheet = () => {
       );
     } else if (id === "TimesheetID") {
       if (afterSundayCheck === true) {
-        if (row.values.WorkEnd === null) {
+        if (row.values.Finish === null) {
           return (
             <AddCircleIcon
               className={styles["table__add-icon"]}
@@ -487,15 +484,13 @@ const Timesheet = () => {
           }}
         />
       );
-    } else if (id === "laborHours") {
+    } else if (id === "Length") {
       if (row.leafRows !== undefined) {
         let sumLabor = 0;
         row.leafRows.forEach(element => {
           sumLabor += (
-            (new Date(convertInputToTime(element.WorkEnd).replace(" ", "T")) -
-              new Date(
-                convertInputToTime(element.WorkStart).replace(" ", "T")
-              )) /
+            (new Date(convertInputToTime(element.Finish).replace(" ", "T")) -
+              new Date(convertInputToTime(element.Start).replace(" ", "T"))) /
             3600000
           ).toFixed(2);
         });
@@ -516,10 +511,8 @@ const Timesheet = () => {
         );
       } else {
         let laborDate = (
-          (new Date(convertInputToTime(row.values.WorkEnd).replace(" ", "T")) -
-            new Date(
-              convertInputToTime(row.values.WorkStart).replace(" ", "T")
-            )) /
+          (new Date(convertInputToTime(row.values.Finish).replace(" ", "T")) -
+            new Date(convertInputToTime(row.values.Start).replace(" ", "T"))) /
           3600000
         ).toFixed(2);
         if (parseFloat(laborDate) < 0) {
@@ -737,40 +730,6 @@ const Timesheet = () => {
           timeout: 5000, // 5 seconds timeout
           headers: {},
         }).then(result => {
-          // setData([
-          //   {
-          //     TimesheetID: "11111",
-          //     EmployeeName: "Hyunmyung Kim",
-          //     Task: "IT work",
-          //     WorkStart: "07:00AM",
-          //     WorkEnd: "05:00PM",
-          //     laborHours: 10,
-          //   },
-          //   {
-          //     TimesheetID: "11112",
-          //     EmployeeName: "Hyunmyung Kim",
-          //     Task: "Meal",
-          //     WorkStart: "12:00PM",
-          //     WorkEnd: "01:00PM",
-          //     laborHours: -1,
-          //   },
-          //   {
-          //     TimesheetID: "11113",
-          //     EmployeeName: "Field Worker A",
-          //     Task: "Task A",
-          //     WorkStart: "07:00AM",
-          //     WorkEnd: "03:30PM",
-          //     laborHours: 8.5,
-          //   },
-          //   {
-          //     TimesheetID: "11114",
-          //     EmployeeName: "Field Worker A",
-          //     Task: "Meal",
-          //     WorkStart: "12:00PM",
-          //     WorkEnd: "01:00PM",
-          //     laborHours: -1,
-          //   },
-          // ]);
           setGroupBy(["EmployeeName"]);
 
           // setData(result.data.result[0]);
@@ -879,8 +838,8 @@ const Timesheet = () => {
           ProjectID: projectState,
           EmployeeID: element.EmployeeID,
           Date: formatDate(selectedDate),
-          WorkStart: element.WorkStart,
-          WorkEnd: element.WorkEnd,
+          Start: element.Start,
+          Finish: element.Finish,
         },
       }).catch(err => {
         toast.error(
@@ -986,8 +945,8 @@ const Timesheet = () => {
         EmployeeName: "",
         Date: formatDate(selectedDate),
         Task: "",
-        WorkStart: "07:00AM",
-        WorkEnd: "04:00PM",
+        Start: "07:00AM",
+        Finish: "04:00PM",
       },
     ]);
   };
@@ -1001,8 +960,8 @@ const Timesheet = () => {
         EmployeeName: name,
         Date: formatDate(selectedDate),
         Task: "",
-        WorkStart: "07:00AM",
-        WorkEnd: "04:00PM",
+        Start: "07:00AM",
+        Finish: "04:00PM",
       },
     ]);
   };
@@ -1077,10 +1036,8 @@ const Timesheet = () => {
       old.map((row, index) => {
         return {
           ...old[index],
-          WorkStart: old[0].WorkStart,
-          MealStart: old[0].MealStart,
-          MealEnd: old[0].MealEnd,
-          WorkEnd: old[0].WorkEnd,
+          Start: old[0].Start,
+          Finish: old[0].Finish,
         };
       })
     );
