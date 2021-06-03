@@ -150,7 +150,7 @@ const Timesheet = () => {
         canGroupBy: false,
       },
       {
-        Header: "Length",
+        Header: "Labor Hours",
         accessor: "Length",
         width: 120,
         aggregate: "sum",

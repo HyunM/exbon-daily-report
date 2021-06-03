@@ -134,7 +134,7 @@ const SelfTimesheet = () => {
       },
       {
         Header: "Labor Hours",
-        accessor: "laborHours",
+        accessor: "LaborHours",
         width: 120,
       },
       {
@@ -291,7 +291,7 @@ const SelfTimesheet = () => {
           <span>{value}</span>
         </div>
       );
-    } else if (id === "laborHours") {
+    } else if (id === "LaborHours") {
       let laborDate = (
         (new Date(convertInputToTime(row.values.WorkEnd).replace(" ", "T")) -
           new Date(convertInputToTime(row.values.WorkStart).replace(" ", "T")) -
