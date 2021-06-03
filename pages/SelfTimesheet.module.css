@@ -290,3 +290,9 @@
 .table__delete-icon:hover {
   color: slateblue;
 }
+
+@media screen and (max-width: 800px) {
+  #mainDiv {
+    width: 750px;
+  }
+}
