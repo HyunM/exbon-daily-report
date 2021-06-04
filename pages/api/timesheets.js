@@ -41,15 +41,14 @@ const timesheetHandler = (req, res) => {
           const request = new mssql.Request();
 
           const query = `EXEC [Hammer].[dbo].[Timesheet_Insert]
-          ${body.ProjectID}, ${body.EmployeeID}, '${body.Date}', '${body.WorkStart}', '${body.WorkEnd}', '${body.MealStart}', '${body.MealEnd}' `;
+          ${body.ProjectID}, '${body.Date}', ${body.EmployeeID}, ${body.TaskID}, '${body.Start}', '${body.End}'`;
           /* --Params--
           @projectID int,
-          @employeeID int,
           @date date,
-          @workStart time(0),
-          @workEnd time(0),
-          @mealStart time(0),
-          @mealEnd time(0)
+          @employeeID int,
+          @taskID int,
+          @start time(0),
+          @end time(0)
           */
 
           request.query(query, (err, recordset) => {

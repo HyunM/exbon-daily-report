@@ -391,7 +391,7 @@ const Timesheet = () => {
           style={{
             marginBottom: "3px",
             fontFamily: "Roboto, sans-serif",
-            fontSize: "0.95rem",
+            fontSize: "0.9rem",
             display: "inline-block",
             color: "#241f22",
             border: "1px solid #c8bfc4",
@@ -401,6 +401,7 @@ const Timesheet = () => {
             zIndex: "1",
             position: "relative",
             width: "200px",
+            height: "25px",
           }}
           value={value}
         >
@@ -471,7 +472,7 @@ const Timesheet = () => {
           style={{
             marginBottom: "3px",
             fontFamily: "Roboto, sans-serif",
-            fontSize: "0.95rem",
+            fontSize: "0.9rem",
             display: "inline-block",
             color: "#74646e",
             border: "1px solid #c8bfc4",
@@ -481,6 +482,7 @@ const Timesheet = () => {
             zIndex: "1",
             position: "relative",
             width: "300px",
+            height: "25px",
           }}
           value={value}
         >
@@ -841,7 +843,6 @@ const Timesheet = () => {
   // }, [data]);
 
   const handleSaveTimesheetBtn = async () => {
-    return null;
     let checkEmployeeName = data.find(employee => employee.EmployeeID === 0);
     let checkTime = 0;
     for (
@@ -898,34 +899,43 @@ const Timesheet = () => {
         headers: {},
         data: {
           ProjectID: projectState,
-          EmployeeID: element.EmployeeID,
           Date: formatDate(selectedDate),
+          EmployeeID: element.EmployeeID,
+          TaskID: element.TaskID,
           Start: element.Start,
           Finish: element.Finish,
         },
-      }).catch(err => {
-        toast.error(
-          <div className={styles["alert__complete"]}>
-            <strong>CANNOT SAVE</strong>
-            <p>Please check the time input.</p>
-          </div>,
-          {
-            position: toast.POSITION.TOP_CENTER,
-            hideProgressBar: true,
-          }
-        );
-      });
+        //   @projectID int,
+        //   @date date,
+        //   @employeeID int,
+        //   @taskID int,
+        //   @start time(0),
+        //   @end time(0)
+      })
+        .catch(err => {
+          toast.error(
+            <div className={styles["alert__complete"]}>
+              <strong>CANNOT SAVE</strong>
+              <p>Please check the time input.</p>
+            </div>,
+            {
+              position: toast.POSITION.TOP_CENTER,
+              hideProgressBar: true,
+            }
+          );
+        })
+        .then(() => {
+          toast.success(
+            <div className={styles["alert__complete"]}>
+              <strong>Save Complete</strong>
+            </div>,
+            {
+              position: toast.POSITION.BOTTOM_CENTER,
+              hideProgressBar: true,
+            }
+          );
+        });
     });
-
-    toast.success(
-      <div className={styles["alert__complete"]}>
-        <strong>Save Complete</strong>
-      </div>,
-      {
-        position: toast.POSITION.BOTTOM_CENTER,
-        hideProgressBar: true,
-      }
-    );
 
     axios({
       method: "post",
