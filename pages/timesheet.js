@@ -71,7 +71,10 @@ const Timesheet = () => {
   const [projectState, setProjectState] = useState(undefined);
   const [checkDisableAddEmployeeButton, setCheckDisableAddEmployeeButton] =
     useState(false);
-  const [stateAssignedProject, setStateAssignedProject] = useState([]);
+  const [stateAssignedProject, setStateAssignedProject] = useState([
+    { ProjectID: 0 },
+  ]);
+  const [stateNoAssigned, setStateNoAssigned] = useState([]);
   // const [checkState, setCheckState] = useState(true);
   const [cookies, setCookie, removeCookie] = useCookies();
   const [status, setStatus] = useState({
@@ -631,7 +634,6 @@ const Timesheet = () => {
             .then(response => {
               const assignedProject = response.data.result.recordsets[1];
               setStateAssignedProject(response.data.result.recordsets[1]);
-
               if (
                 response.data.result.recordsets[1].length > 0 &&
                 projectState === undefined
@@ -1041,6 +1043,16 @@ const Timesheet = () => {
     );
   };
 
+  useEffect(() => {
+    if (typeof stateAssignedProject[0] == "undefined") {
+      setTimeout(() => {
+        setStateNoAssigned(true);
+      }, 3000);
+    } else {
+      setStateNoAssigned(false);
+    }
+  }, [stateAssignedProject]);
+
   return (
     <>
       {console.log("data")}
@@ -1056,7 +1068,7 @@ const Timesheet = () => {
       {status.cookies.username === undefined ||
       status.cookies.employeeid === undefined ? (
         <Login signin={signin} />
-      ) : !status.permission ? (
+      ) : !status.permission || stateNoAssigned === true ? (
         <NotPermission path="timesheet" />
       ) : (
         <>
