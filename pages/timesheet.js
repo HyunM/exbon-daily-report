@@ -954,7 +954,7 @@ const Timesheet = () => {
       ...data,
       {
         TimesheetID: "new" + ++tid,
-        EmployeeID: 0,
+        EmployeeID: convertEmployeeNameToID(name),
         EmployeeName: name,
         Date: formatDate(selectedDate),
         TaskID: 0,
