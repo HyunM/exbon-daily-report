@@ -1,7 +1,13 @@
 import { useState, useMemo, useEffect } from "react";
 import axios from "axios";
 
-import { useTable, useBlockLayout, useGroupBy, useExpanded } from "react-table";
+import {
+  useTable,
+  useBlockLayout,
+  useGroupBy,
+  useExpanded,
+  useSortBy,
+} from "react-table";
 import TableContainer from "@material-ui/core/TableContainer";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -249,10 +255,9 @@ const Timesheet = () => {
 
     const onChangeSelectEmployee = value => {
       setValue(value);
-
-      row.leafRows.forEach(element => {
-        updateEmployeeData(element.values.TimesheetID, id, value);
-      });
+      // row.leafRows.forEach(element => {
+      //   updateEmployeeData(element.values.TimesheetID, id, value);
+      // });
     };
 
     const onChangeSelectTasks = value => {
@@ -262,27 +267,28 @@ const Timesheet = () => {
 
     // We'll only update the external data when the input is blurred
     const onBlur = e => {
-      if (document.getElementById("checkboxForSetSameTime")) {
-        if (document.getElementById("checkboxForSetSameTime").checked) {
-          updateMyData(row.values.TimesheetID, id, value);
-          setSameTime();
-        } else {
-          updateMyData(row.values.TimesheetID, id, value);
-        }
-      } else {
-        updateMyData(row.values.TimesheetID, id, value); //important bug fix but why?
-      }
+      updateMyData(row.values.TimesheetID, id, value);
+      // if (document.getElementById("checkboxForSetSameTime")) {
+      //   if (document.getElementById("checkboxForSetSameTime").checked) {
+      //     updateMyData(row.values.TimesheetID, id, value);
+      //     setSameTime();
+      //   } else {
+      //     updateMyData(row.values.TimesheetID, id, value);
+      //   }
+      // } else {
+      //   updateMyData(row.values.TimesheetID, id, value); //important bug fix but why?
+      // }
     };
 
     const onBlurForEmployee = e => {
       checkAddEmployeeStatus();
       row.leafRows.forEach(element => {
-        updateEmployeeData(element.values.TimesheetID, id, value);
+        updateMyData(element.values.TimesheetID, id, parseInt(value));
       });
     };
 
     const onBlurForTasks = e => {
-      updateTaskData(row.values.TimesheetID, id, value);
+      updateMyData(row.values.TimesheetID, id, parseInt(value));
     };
 
     const clickDeleteTimesheet = value => {
@@ -290,8 +296,8 @@ const Timesheet = () => {
       deleteTimesheetRow(row.values.TimesheetID);
     };
 
-    const clickAddTimesheet = name => {
-      addEmployeeRow(name);
+    const clickAddTimesheet = id => {
+      addEmployeeRow(id);
     };
 
     // If the initialValue is changed external, sync it up with our state
@@ -370,7 +376,7 @@ const Timesheet = () => {
           return (
             <AddCircleIcon
               className={styles["table__add-icon"]}
-              onClick={() => clickAddTimesheet(row.values.EmployeeName)}
+              onClick={() => clickAddTimesheet(row.values.EmployeeID)}
             ></AddCircleIcon>
           );
         }
@@ -386,6 +392,7 @@ const Timesheet = () => {
         );
       } else return <></>;
     } else if (id === "EmployeeID") {
+      if (value === null) return <></>;
       return (
         <select
           style={{
@@ -404,16 +411,14 @@ const Timesheet = () => {
             height: "25px",
           }}
           value={value}
+          onChange={onChange}
+          onBlur={onBlurForEmployee}
         >
           <option value="0">----------Choose here----------</option>
           {dataEmployees.map(item => {
             return (
-              <option
-                value={item.EmployeeID}
-                key={item.EmployeeID}
-                employeeName={item.EmployeeName}
-              >
-                {item.EmployeeName}
+              <option value={item.EmployeeID} key={item.EmployeeID}>
+                {item.EmployeeID}
               </option>
             );
           })}
@@ -485,6 +490,8 @@ const Timesheet = () => {
             height: "25px",
           }}
           value={value}
+          onChange={onChange}
+          onBlur={onBlurForTasks}
         >
           <option value="0">
             --------------------Choose here--------------------
@@ -494,7 +501,7 @@ const Timesheet = () => {
               <option
                 value={item.TaskID}
                 key={item.TaskID}
-                taskName={item.Name}
+                taskname={item.Name}
               >
                 {item.Name}
               </option>
@@ -632,7 +639,6 @@ const Timesheet = () => {
           return {
             ...old[index],
             [columnId]: value,
-            ["EmployeeID"]: convertEmployeeNameToID(value),
           };
         }
         return row;
@@ -654,17 +660,6 @@ const Timesheet = () => {
         return row;
       })
     );
-  };
-
-  const convertEmployeeNameToID = name => {
-    let employee = dataEmployees.find(
-      employee => name === employee.EmployeeName
-    );
-    if (employee) {
-      return employee.EmployeeID;
-    } else {
-      return 0;
-    }
   };
 
   const convertTaskNameToID = name => {
@@ -843,7 +838,8 @@ const Timesheet = () => {
   // }, [data]);
 
   const handleSaveTimesheetBtn = async () => {
-    let checkEmployeeName = data.find(employee => employee.EmployeeID === 0);
+    let checkEmployeeName = data.find(element => element.EmployeeID === 0);
+    let checkTaskName = data.find(element => element.TaskID === 0);
     let checkTime = 0;
     for (
       let i = 0;
@@ -878,6 +874,17 @@ const Timesheet = () => {
         }
       );
       return null;
+    } else if (checkTaskName) {
+      toast.error(
+        <div className={styles["alert__table__employee-input"]}>
+          Unable to save. <br /> Please check <strong>Task Name </strong>.
+        </div>,
+        {
+          position: toast.POSITION.BOTTOM_CENTER,
+          hideProgressBar: true,
+        }
+      );
+      return null;
     }
 
     await axios({
@@ -903,7 +910,7 @@ const Timesheet = () => {
           EmployeeID: element.EmployeeID,
           TaskID: element.TaskID,
           Start: element.Start,
-          Finish: element.Finish,
+          End: element.Finish,
         },
         //   @projectID int,
         //   @date date,
@@ -911,30 +918,27 @@ const Timesheet = () => {
         //   @taskID int,
         //   @start time(0),
         //   @end time(0)
-      })
-        .catch(err => {
-          toast.error(
-            <div className={styles["alert__complete"]}>
-              <strong>CANNOT SAVE</strong>
-              <p>Please check the time input.</p>
-            </div>,
-            {
-              position: toast.POSITION.TOP_CENTER,
-              hideProgressBar: true,
-            }
-          );
-        })
-        .then(() => {
-          toast.success(
-            <div className={styles["alert__complete"]}>
-              <strong>Save Complete</strong>
-            </div>,
-            {
-              position: toast.POSITION.BOTTOM_CENTER,
-              hideProgressBar: true,
-            }
-          );
-        });
+      }).catch(err => {
+        toast.error(
+          <div className={styles["alert__complete"]}>
+            <strong>CANNOT SAVE</strong>
+            <p>Please check the time input.</p>
+          </div>,
+          {
+            position: toast.POSITION.TOP_CENTER,
+            hideProgressBar: true,
+          }
+        );
+      });
+      toast.success(
+        <div className={styles["alert__complete"]}>
+          <strong>Save Complete</strong>
+        </div>,
+        {
+          position: toast.POSITION.BOTTOM_CENTER,
+          hideProgressBar: true,
+        }
+      );
     });
 
     axios({
@@ -1014,24 +1018,22 @@ const Timesheet = () => {
       {
         TimesheetID: "new" + ++tid,
         EmployeeID: 0,
-        EmployeeName: "",
         Date: formatDate(selectedDate),
-        Task: "",
+        TaskID: 0,
         Start: "07:00AM",
         Finish: "04:00PM",
       },
     ]);
   };
 
-  const addEmployeeRow = name => {
+  const addEmployeeRow = id => {
     setData(data => [
       ...data,
       {
         TimesheetID: "new" + ++tid,
-        EmployeeID: 0,
-        EmployeeName: name,
+        EmployeeID: id,
         Date: formatDate(selectedDate),
-        Task: "",
+        TaskID: 0,
         Start: "07:00AM",
         Finish: "04:00PM",
       },
@@ -1039,14 +1041,14 @@ const Timesheet = () => {
   };
 
   useEffect(() => {
-    setGroupBy(["EmployeeID"]);
+    // setGroupBy(["EmployeeName"]);
     checkAddEmployeeStatus();
   }, [data]);
 
   const checkAddEmployeeStatus = () => {
     let check = 0;
     data.forEach(element => {
-      if (element.EmployeeName === "") {
+      if (element.EmployeeID === 0) {
         check = 1;
       }
     });
