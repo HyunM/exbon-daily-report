@@ -48,7 +48,7 @@ import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 
 toast.configure();
 let afterSundayCheck = true;
-let dataEmployees;
+let dataEmployees = [];
 let dataTasks;
 let tid = 0;
 
@@ -150,7 +150,7 @@ const Timesheet = () => {
         canGroupBy: false,
       },
       {
-        Header: "Labor Hours",
+        Header: "Hours",
         accessor: "Length",
         width: 120,
         aggregate: "sum",
@@ -387,52 +387,81 @@ const Timesheet = () => {
       } else return <></>;
     } else if (id === "EmployeeName") {
       return (
-        <Autocomplete
-          getItemValue={item => item.EmployeeName}
-          items={dataEmployees}
-          renderItem={(item, isHighlighted) => (
-            <div
-              key={item.EmployeeID}
-              style={{
-                background: isHighlighted ? "lightgray" : "white",
-                textAlign: "left",
-                cursor: "pointer",
-              }}
-            >
-              {item.EmployeeName}
-            </div>
-          )}
-          shouldItemRender={(item, value) =>
-            item.EmployeeName.toLowerCase().indexOf(value.toLowerCase()) > -1
-          }
-          value={value}
-          onChange={onChange}
-          inputProps={{ onBlur: onBlurForEmployee }}
-          onSelect={val => onChangeSelectEmployee(val)}
-          renderInput={props => {
+        <select
+          style={{
+            marginBottom: "3px",
+            fontFamily: "Roboto, sans-serif",
+            fontSize: "medium",
+            display: "inline-block",
+            color: "#74646e",
+            border: "1px solid #c8bfc4",
+            borderRadius: "4px",
+            boxShadow: "inset 1px 1px 2px #ddd8dc",
+            background: "#fff",
+            zIndex: "1",
+            position: "relative",
+            width: "200px",
+          }}
+        >
+          <option value="0">Choose here</option>
+          {dataEmployees.map(item => {
             return (
-              <input
-                className={
-                  afterSundayCheck
-                    ? styles["table__employee-input"]
-                    : styles["table__employee-input-before-sunday"]
-                }
-                disabled={afterSundayCheck ? false : true}
-                {...props}
-              ></input>
+              <option
+                value={item.EmployeeID}
+                key={item.EmployeeID}
+                employeeName={item.EmployeeName}
+              >
+                {item.EmployeeName}
+              </option>
             );
-          }}
-          menuStyle={{
-            borderRadius: "3px",
-            boxShadow: "0 2px 12px rgba(0, 0, 0, 0.1)",
-            background: "rgba(255, 255, 255, 0.9)",
-            padding: "2px 0",
-            fontSize: "90%",
-            position: "fixed",
-            overflow: "auto",
-            maxHeight: "150px",
-          }}
-        />
+          })}
+        </select>
+        // <Autocomplete
+        //   getItemValue={item => item.EmployeeName}
+        //   items={dataEmployees}
+        //   renderItem={(item, isHighlighted) => (
+        //     <div
+        //       key={item.EmployeeID}
+        //       style={{
+        //         background: isHighlighted ? "lightgray" : "white",
+        //         textAlign: "left",
+        //         cursor: "pointer",
+        //       }}
+        //     >
+        //       {item.EmployeeName}
+        //     </div>
+        //   )}
+        //   shouldItemRender={(item, value) =>
+        //     item.EmployeeName.toLowerCase().indexOf(value.toLowerCase()) > -1
+        //   }
+        //   value={value}
+        //   onChange={onChange}
+        //   inputProps={{ onBlur: onBlurForEmployee }}
+        //   onSelect={val => onChangeSelectEmployee(val)}
+        //   renderInput={props => {
+        //     return (
+        //       <input
+        //         className={
+        //           afterSundayCheck
+        //             ? styles["table__employee-input"]
+        //             : styles["table__employee-input-before-sunday"]
+        //         }
+        //         disabled={afterSundayCheck ? false : true}
+        //         {...props}
+        //       ></input>
+        //     );
+        //   }}
+        //   menuStyle={{
+        //     borderRadius: "3px",
+        //     boxShadow: "0 2px 12px rgba(0, 0, 0, 0.1)",
+        //     background: "rgba(255, 255, 255, 0.9)",
+        //     padding: "2px 0",
+        //     fontSize: "90%",
+        //     position: "fixed",
+        //     overflow: "auto",
+        //     maxHeight: "150px",
+        //   }}
+        // />
       );
     } else if (id === "Task") {
       if (value === null) return <></>;
