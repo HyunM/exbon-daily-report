@@ -128,10 +128,10 @@ const Timesheet = () => {
     () => [
       {
         Header: "Employee Name",
-        accessor: "EmployeeID",
+        accessor: "EmployeeName",
         width: 280,
         aggregate: "count",
-        Aggregated: ({ value }) => `${value} Names`,
+        // Aggregated: ({ value }) => `${value} Names`,
         canGroupBy: true,
         isGrouped: true,
       },
@@ -253,11 +253,11 @@ const Timesheet = () => {
       setValue(e.target.value);
     };
 
-    const onChangeSelectEmployee = value => {
-      setValue(value);
-      // row.leafRows.forEach(element => {
-      //   updateEmployeeData(element.values.TimesheetID, id, value);
-      // });
+    const onChangeSelectEmployee = e => {
+      setValue(e.target.value);
+      row.leafRows.forEach(element => {
+        updateEmployeeData(element.values.TimesheetID, id, e.target.value);
+      });
     };
 
     const onChangeSelectTasks = value => {
@@ -283,7 +283,7 @@ const Timesheet = () => {
     const onBlurForEmployee = e => {
       checkAddEmployeeStatus();
       row.leafRows.forEach(element => {
-        updateMyData(element.values.TimesheetID, id, parseInt(value));
+        updateEmployeeData(element.values.TimesheetID, id, parseInt(value));
       });
     };
 
@@ -296,8 +296,8 @@ const Timesheet = () => {
       deleteTimesheetRow(row.values.TimesheetID);
     };
 
-    const clickAddTimesheet = id => {
-      addEmployeeRow(id);
+    const clickAddTimesheet = name => {
+      addEmployeeRow(name);
     };
 
     // If the initialValue is changed external, sync it up with our state
@@ -376,7 +376,7 @@ const Timesheet = () => {
           return (
             <AddCircleIcon
               className={styles["table__add-icon"]}
-              onClick={() => clickAddTimesheet(row.values.EmployeeID)}
+              onClick={() => clickAddTimesheet(row.values.EmployeeName)}
             ></AddCircleIcon>
           );
         }
@@ -391,7 +391,7 @@ const Timesheet = () => {
           </div>
         );
       } else return <></>;
-    } else if (id === "EmployeeID") {
+    } else if (id === "EmployeeName") {
       if (value === null) return <></>;
       return (
         <select
@@ -411,14 +411,14 @@ const Timesheet = () => {
             height: "25px",
           }}
           value={value}
-          onChange={onChange}
+          onChange={onChangeSelectEmployee}
           onBlur={onBlurForEmployee}
         >
           <option value="0">----------Choose here----------</option>
           {dataEmployees.map(item => {
             return (
-              <option value={item.EmployeeID} key={item.EmployeeID}>
-                {item.EmployeeID}
+              <option value={item.EmployeeName} key={item.EmployeeID}>
+                {item.EmployeeName}
               </option>
             );
           })}
@@ -639,6 +639,7 @@ const Timesheet = () => {
           return {
             ...old[index],
             [columnId]: value,
+            ["EmployeeID"]: convertEmployeeNameToID(value),
           };
         }
         return row;
@@ -666,6 +667,17 @@ const Timesheet = () => {
     let task = dataTasks.find(task => name === task.Name);
     if (task) {
       return task.TaskID;
+    } else {
+      return 0;
+    }
+  };
+
+  const convertEmployeeNameToID = name => {
+    let employee = dataEmployees.find(
+      employee => name === employee.EmployeeName
+    );
+    if (employee) {
+      return employee.EmployeeID;
     } else {
       return 0;
     }
@@ -1018,6 +1030,7 @@ const Timesheet = () => {
       {
         TimesheetID: "new" + ++tid,
         EmployeeID: 0,
+        EmployeeName: "",
         Date: formatDate(selectedDate),
         TaskID: 0,
         Start: "07:00AM",
@@ -1026,12 +1039,13 @@ const Timesheet = () => {
     ]);
   };
 
-  const addEmployeeRow = id => {
+  const addEmployeeRow = name => {
     setData(data => [
       ...data,
       {
         TimesheetID: "new" + ++tid,
-        EmployeeID: id,
+        EmployeeID: 0,
+        EmployeeName: name,
         Date: formatDate(selectedDate),
         TaskID: 0,
         Start: "07:00AM",
@@ -1041,7 +1055,7 @@ const Timesheet = () => {
   };
 
   useEffect(() => {
-    // setGroupBy(["EmployeeName"]);
+    setGroupBy(["EmployeeName"]);
     checkAddEmployeeStatus();
   }, [data]);
 
