@@ -79,7 +79,10 @@ const Task = () => {
     permission: true,
   });
 
-  const [stateAssignedProject, setStateAssignedProject] = useState([]);
+  const [stateAssignedProject, setStateAssignedProject] = useState([
+    { ProjectID: 0 },
+  ]);
+  const [stateNoAssigned, setStateNoAssigned] = useState([]);
 
   const columns = useMemo(
     () => [
@@ -1371,6 +1374,16 @@ const Task = () => {
     }));
   };
 
+  useEffect(() => {
+    if (typeof stateAssignedProject[0] == "undefined") {
+      setTimeout(() => {
+        setStateNoAssigned(true);
+      }, 3000);
+    } else {
+      setStateNoAssigned(false);
+    }
+  }, [stateAssignedProject]);
+
   return (
     <>
       <Head>
@@ -1384,7 +1397,7 @@ const Task = () => {
       {status.cookies.username === undefined ||
       status.cookies.employeeid === undefined ? (
         <Login signin={signin} />
-      ) : !status.permission ? (
+      ) : !status.permission || stateNoAssigned === true ? (
         <NotPermission path="task-completion" />
       ) : (
         <>

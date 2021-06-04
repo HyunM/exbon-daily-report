@@ -86,7 +86,10 @@ const materialTheme = createMuiTheme({
 const workActivities = () => {
   const router = useRouter();
   const [projectState, setProjectState] = useState(undefined);
-  const [stateAssignedProject, setStateAssignedProject] = useState([]);
+  const [stateAssignedProject, setStateAssignedProject] = useState([
+    { ProjectID: 0 },
+  ]);
+  const [stateNoAssigned, setStateNoAssigned] = useState([]);
   const [cookies, setCookie, removeCookie] = useCookies();
   const [status, setStatus] = useState({
     cookies: {
@@ -917,6 +920,17 @@ const workActivities = () => {
       }));
     }
   };
+
+  useEffect(() => {
+    if (typeof stateAssignedProject[0] == "undefined") {
+      setTimeout(() => {
+        setStateNoAssigned(true);
+      }, 3000);
+    } else {
+      setStateNoAssigned(false);
+    }
+  }, [stateAssignedProject]);
+
   return (
     <>
       {console.log(selectedDays)}
@@ -931,7 +945,7 @@ const workActivities = () => {
       {status.cookies.username === undefined ||
       status.cookies.employeeid === undefined ? (
         <Login signin={signin} />
-      ) : !status.permission ? (
+      ) : !status.permission || stateNoAssigned === true ? (
         <NotPermission path="work-activities" />
       ) : (
         <>
