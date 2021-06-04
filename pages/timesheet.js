@@ -746,6 +746,7 @@ const Timesheet = () => {
 
   const handleSaveTimesheetBtn = async () => {
     let promises = [];
+    let checkSave = 0;
 
     const fetchData = async () => {
       let checkEmployeeName = data.find(element => element.EmployeeID === 0);
@@ -763,6 +764,7 @@ const Timesheet = () => {
           checkTime++;
       }
       if (checkEmployeeName) {
+        checkSave += 1;
         toast.error(
           <div className={styles["alert__table__employee-input"]}>
             Unable to save. <br /> Please check <strong>Employee Name </strong>.
@@ -774,6 +776,7 @@ const Timesheet = () => {
         );
         return null;
       } else if (checkTime) {
+        checkSave += 1;
         toast.error(
           <div className={styles["alert__table__time-wrapper"]}>
             Unable to save. <br /> Please check the <strong>time input </strong>
@@ -786,6 +789,7 @@ const Timesheet = () => {
         );
         return null;
       } else if (checkTaskName) {
+        checkSave += 1;
         toast.error(
           <div className={styles["alert__table__employee-input"]}>
             Unable to save. <br /> Please check <strong>Task Name </strong>.
@@ -846,15 +850,17 @@ const Timesheet = () => {
     trackPromise(fetchData());
     trackPromise(
       Promise.all(promises).then(() => {
-        toast.success(
-          <div className={styles["alert__complete"]}>
-            <strong>Save Complete</strong>
-          </div>,
-          {
-            position: toast.POSITION.BOTTOM_CENTER,
-            hideProgressBar: true,
-          }
-        );
+        if (checkSave === 0) {
+          toast.success(
+            <div className={styles["alert__complete"]}>
+              <strong>Save Complete</strong>
+            </div>,
+            {
+              position: toast.POSITION.BOTTOM_CENTER,
+              hideProgressBar: true,
+            }
+          );
+        }
       })
     );
     axios({
