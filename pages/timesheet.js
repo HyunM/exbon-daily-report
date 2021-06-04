@@ -122,7 +122,7 @@ const Timesheet = () => {
     () => [
       {
         Header: "Employee Name",
-        accessor: "EmployeeName",
+        accessor: "EmployeeID",
         width: 280,
         aggregate: "count",
         Aggregated: ({ value }) => `${value} Names`,
@@ -131,7 +131,7 @@ const Timesheet = () => {
       },
       {
         Header: "Task",
-        accessor: "Task",
+        accessor: "TaskID",
         width: 340,
         canGroupBy: false,
       },
@@ -385,15 +385,15 @@ const Timesheet = () => {
           </div>
         );
       } else return <></>;
-    } else if (id === "EmployeeName") {
+    } else if (id === "EmployeeID") {
       return (
         <select
           style={{
             marginBottom: "3px",
             fontFamily: "Roboto, sans-serif",
-            fontSize: "medium",
+            fontSize: "0.95rem",
             display: "inline-block",
-            color: "#74646e",
+            color: "#241f22",
             border: "1px solid #c8bfc4",
             borderRadius: "4px",
             boxShadow: "inset 1px 1px 2px #ddd8dc",
@@ -402,6 +402,7 @@ const Timesheet = () => {
             position: "relative",
             width: "200px",
           }}
+          value={value}
         >
           <option value="0">----------Choose here----------</option>
           {dataEmployees.map(item => {
@@ -463,14 +464,14 @@ const Timesheet = () => {
         //   }}
         // />
       );
-    } else if (id === "Task") {
+    } else if (id === "TaskID") {
       if (value === null) return <></>;
       return (
         <select
           style={{
             marginBottom: "3px",
             fontFamily: "Roboto, sans-serif",
-            fontSize: "medium",
+            fontSize: "0.95rem",
             display: "inline-block",
             color: "#74646e",
             border: "1px solid #c8bfc4",
@@ -481,6 +482,7 @@ const Timesheet = () => {
             position: "relative",
             width: "300px",
           }}
+          value={value}
         >
           <option value="0">
             --------------------Choose here--------------------
@@ -790,9 +792,9 @@ const Timesheet = () => {
           timeout: 5000, // 5 seconds timeout
           headers: {},
         }).then(result => {
-          setGroupBy(["EmployeeName"]);
+          setGroupBy(["EmployeeID"]);
 
-          // setData(result.data.result[0]);
+          setData(result.data.result[0]);
           dataEmployees = result.data.result[1];
           dataTasks = result.data.result[2];
         });
@@ -1027,7 +1029,7 @@ const Timesheet = () => {
   };
 
   useEffect(() => {
-    setGroupBy(["EmployeeName"]);
+    setGroupBy(["EmployeeID"]);
     checkAddEmployeeStatus();
   }, [data]);
 
