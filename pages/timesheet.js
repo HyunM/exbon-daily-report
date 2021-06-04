@@ -163,7 +163,7 @@ const Timesheet = () => {
         Aggregated: ({ value, row }) => {
           let sumLabor = 0;
           row.leafRows.forEach(element => {
-            sumLabor += parseFloat(
+            let x = parseFloat(
               (
                 (new Date(
                   convertInputToTime(element.values.Finish).replace(" ", "T")
@@ -174,11 +174,9 @@ const Timesheet = () => {
                 3600000
               ).toFixed(2)
             );
+            if (x < 0) x += 24;
+            sumLabor += x;
           });
-
-          if (parseFloat(sumLabor) < 0) {
-            sumLabor = (parseFloat(sumLabor) + 24).toFixed(2);
-          }
 
           return (
             <div
@@ -260,35 +258,24 @@ const Timesheet = () => {
       });
     };
 
-    const onChangeSelectTasks = value => {
-      setValue(value);
-      updateTaskData(row.values.TimesheetID, id, value);
-    };
-
     // We'll only update the external data when the input is blurred
     const onBlur = e => {
+      updateMyData(row.values.TimesheetID, id, e.target.value);
+    };
+
+    const onBlurForTime = e => {
       updateMyData(row.values.TimesheetID, id, value);
-      // if (document.getElementById("checkboxForSetSameTime")) {
-      //   if (document.getElementById("checkboxForSetSameTime").checked) {
-      //     updateMyData(row.values.TimesheetID, id, value);
-      //     setSameTime();
-      //   } else {
-      //     updateMyData(row.values.TimesheetID, id, value);
-      //   }
-      // } else {
-      //   updateMyData(row.values.TimesheetID, id, value); //important bug fix but why?
-      // }
     };
 
     const onBlurForEmployee = e => {
       checkAddEmployeeStatus();
       row.leafRows.forEach(element => {
-        updateEmployeeData(element.values.TimesheetID, id, parseInt(value));
+        updateEmployeeData(element.values.TimesheetID, id, e.target.value);
       });
     };
 
     const onBlurForTasks = e => {
-      updateMyData(row.values.TimesheetID, id, parseInt(value));
+      updateMyData(row.values.TimesheetID, id, parseInt(e.target.value));
     };
 
     const clickDeleteTimesheet = value => {
@@ -312,7 +299,7 @@ const Timesheet = () => {
           <InputMask
             value={value.slice(0, 2)}
             onChange={onCheckHour}
-            onBlur={onBlur}
+            onBlur={onBlurForTime}
             className={
               afterSundayCheck
                 ? classNames(
@@ -336,7 +323,7 @@ const Timesheet = () => {
           <InputMask
             value={value.slice(3, 5)}
             onChange={onCheckMin}
-            onBlur={onBlur}
+            onBlur={onBlurForTime}
             className={
               afterSundayCheck
                 ? classNames(
@@ -358,7 +345,7 @@ const Timesheet = () => {
           <select
             value={value.slice(5, 7)}
             onChange={onCheckAmPm}
-            onBlur={onBlur}
+            onBlur={onBlurForTime}
             className={classNames(
               "table__time-wrapper__target-disabled",
               styles["table__ampm-dropdown"]
@@ -423,52 +410,6 @@ const Timesheet = () => {
             );
           })}
         </select>
-        // <Autocomplete
-        //   getItemValue={item => item.EmployeeName}
-        //   items={dataEmployees}
-        //   renderItem={(item, isHighlighted) => (
-        //     <div
-        //       key={item.EmployeeID}
-        //       style={{
-        //         background: isHighlighted ? "lightgray" : "white",
-        //         textAlign: "left",
-        //         cursor: "pointer",
-        //       }}
-        //     >
-        //       {item.EmployeeName}
-        //     </div>
-        //   )}
-        //   shouldItemRender={(item, value) =>
-        //     item.EmployeeName.toLowerCase().indexOf(value.toLowerCase()) > -1
-        //   }
-        //   value={value}
-        //   onChange={onChange}
-        //   inputProps={{ onBlur: onBlurForEmployee }}
-        //   onSelect={val => onChangeSelectEmployee(val)}
-        //   renderInput={props => {
-        //     return (
-        //       <input
-        //         className={
-        //           afterSundayCheck
-        //             ? styles["table__employee-input"]
-        //             : styles["table__employee-input-before-sunday"]
-        //         }
-        //         disabled={afterSundayCheck ? false : true}
-        //         {...props}
-        //       ></input>
-        //     );
-        //   }}
-        //   menuStyle={{
-        //     borderRadius: "3px",
-        //     boxShadow: "0 2px 12px rgba(0, 0, 0, 0.1)",
-        //     background: "rgba(255, 255, 255, 0.9)",
-        //     padding: "2px 0",
-        //     fontSize: "90%",
-        //     position: "fixed",
-        //     overflow: "auto",
-        //     maxHeight: "150px",
-        //   }}
-        // />
       );
     } else if (id === "TaskID") {
       if (value === null) return <></>;
@@ -508,52 +449,6 @@ const Timesheet = () => {
             );
           })}
         </select>
-        /* <Autocomplete
-            getItemValue={item => item.Name}
-            items={dataTasks}
-            renderItem={(item, isHighlighted) => (
-              <div
-                key={item.TaskID}
-                style={{
-                  background: isHighlighted ? "lightgray" : "white",
-                  textAlign: "left",
-                  cursor: "pointer",
-                }}
-              >
-                {item.Name}
-              </div>
-            )}
-            shouldItemRender={(item, value) =>
-              item.Name.toLowerCase().indexOf(value.toLowerCase()) > -1
-            }
-            value={value}
-            onChange={onChange}
-            inputProps={{ onBlur: onBlurForTasks }}
-            onSelect={val => onChangeSelectTasks(val)}
-            renderInput={props => {
-              return (
-                <input
-                  className={
-                    afterSundayCheck
-                      ? styles["table__task-input"]
-                      : styles["table__task-input-before-sunday"]
-                  }
-                  disabled={afterSundayCheck ? false : true}
-                  {...props}
-                ></input>
-              );
-            }}
-            menuStyle={{
-              borderRadius: "3px",
-              boxShadow: "0 2px 12px rgba(0, 0, 0, 0.1)",
-              background: "rgba(255, 255, 255, 0.9)",
-              padding: "2px 0",
-              fontSize: "90%",
-              position: "fixed",
-              overflow: "auto",
-              maxHeight: "150px",
-            }}
-          /> */
       );
     } else if (id === "Length") {
       if (row.leafRows !== undefined) {
@@ -850,109 +745,118 @@ const Timesheet = () => {
   // }, [data]);
 
   const handleSaveTimesheetBtn = async () => {
-    let checkEmployeeName = data.find(element => element.EmployeeID === 0);
-    let checkTaskName = data.find(element => element.TaskID === 0);
-    let checkTime = 0;
-    for (
-      let i = 0;
-      i < document.getElementsByClassName("table__labor-hours-input").length;
-      i++
-    ) {
-      if (
-        document.getElementsByClassName("table__labor-hours-input")[i]
-          .innerText === "NaN"
-      )
-        checkTime++;
-    }
-    if (checkEmployeeName) {
-      toast.error(
-        <div className={styles["alert__table__employee-input"]}>
-          Unable to save. <br /> Please check <strong>Employee Name </strong>.
-        </div>,
-        {
-          position: toast.POSITION.BOTTOM_CENTER,
-          hideProgressBar: true,
-        }
-      );
-      return null;
-    } else if (checkTime) {
-      toast.error(
-        <div className={styles["alert__table__time-wrapper"]}>
-          Unable to save. <br /> Please check the <strong>time input </strong>.
-        </div>,
-        {
-          position: toast.POSITION.BOTTOM_CENTER,
-          hideProgressBar: true,
-        }
-      );
-      return null;
-    } else if (checkTaskName) {
-      toast.error(
-        <div className={styles["alert__table__employee-input"]}>
-          Unable to save. <br /> Please check <strong>Task Name </strong>.
-        </div>,
-        {
-          position: toast.POSITION.BOTTOM_CENTER,
-          hideProgressBar: true,
-        }
-      );
-      return null;
-    }
+    let promises = [];
 
-    await axios({
-      method: "delete",
-      url: `/api/timesheets`,
-      timeout: 3000, // 3 seconds timeout
-      headers: {},
-      data: {
-        ProjectID: projectState,
-        Date: formatDate(selectedDate),
-      },
-    });
+    const fetchData = async () => {
+      let checkEmployeeName = data.find(element => element.EmployeeID === 0);
+      let checkTaskName = data.find(element => element.TaskID === 0);
+      let checkTime = 0;
+      for (
+        let i = 0;
+        i < document.getElementsByClassName("table__labor-hours-input").length;
+        i++
+      ) {
+        if (
+          document.getElementsByClassName("table__labor-hours-input")[i]
+            .innerText === "NaN"
+        )
+          checkTime++;
+      }
+      if (checkEmployeeName) {
+        toast.error(
+          <div className={styles["alert__table__employee-input"]}>
+            Unable to save. <br /> Please check <strong>Employee Name </strong>.
+          </div>,
+          {
+            position: toast.POSITION.BOTTOM_CENTER,
+            hideProgressBar: true,
+          }
+        );
+        return null;
+      } else if (checkTime) {
+        toast.error(
+          <div className={styles["alert__table__time-wrapper"]}>
+            Unable to save. <br /> Please check the <strong>time input </strong>
+            .
+          </div>,
+          {
+            position: toast.POSITION.BOTTOM_CENTER,
+            hideProgressBar: true,
+          }
+        );
+        return null;
+      } else if (checkTaskName) {
+        toast.error(
+          <div className={styles["alert__table__employee-input"]}>
+            Unable to save. <br /> Please check <strong>Task Name </strong>.
+          </div>,
+          {
+            position: toast.POSITION.BOTTOM_CENTER,
+            hideProgressBar: true,
+          }
+        );
+        return null;
+      }
 
-    data.forEach(async element => {
       await axios({
-        method: "post",
+        method: "delete",
         url: `/api/timesheets`,
         timeout: 3000, // 3 seconds timeout
         headers: {},
         data: {
           ProjectID: projectState,
           Date: formatDate(selectedDate),
-          EmployeeID: element.EmployeeID,
-          TaskID: element.TaskID,
-          Start: element.Start,
-          End: element.Finish,
         },
-        //   @projectID int,
-        //   @date date,
-        //   @employeeID int,
-        //   @taskID int,
-        //   @start time(0),
-        //   @end time(0)
-      }).catch(err => {
-        toast.error(
+      });
+
+      data.forEach(async element => {
+        await axios({
+          method: "post",
+          url: `/api/timesheets`,
+          timeout: 3000, // 3 seconds timeout
+          headers: {},
+          data: {
+            ProjectID: projectState,
+            Date: formatDate(selectedDate),
+            EmployeeID: element.EmployeeID,
+            TaskID: element.TaskID,
+            Start: element.Start,
+            End: element.Finish,
+          },
+          //   @projectID int,
+          //   @date date,
+          //   @employeeID int,
+          //   @taskID int,
+          //   @start time(0),
+          //   @end time(0)
+        }).catch(err => {
+          toast.error(
+            <div className={styles["alert__complete"]}>
+              <strong>CANNOT SAVE</strong>
+              <p>Please check the time input.</p>
+            </div>,
+            {
+              position: toast.POSITION.TOP_CENTER,
+              hideProgressBar: true,
+            }
+          );
+        });
+      });
+    };
+    trackPromise(fetchData());
+    trackPromise(
+      Promise.all(promises).then(() => {
+        toast.success(
           <div className={styles["alert__complete"]}>
-            <strong>CANNOT SAVE</strong>
-            <p>Please check the time input.</p>
+            <strong>Save Complete</strong>
           </div>,
           {
-            position: toast.POSITION.TOP_CENTER,
+            position: toast.POSITION.BOTTOM_CENTER,
             hideProgressBar: true,
           }
         );
-      });
-      toast.success(
-        <div className={styles["alert__complete"]}>
-          <strong>Save Complete</strong>
-        </div>,
-        {
-          position: toast.POSITION.BOTTOM_CENTER,
-          hideProgressBar: true,
-        }
-      );
-    });
-
+      })
+    );
     axios({
       method: "post",
       url: `/api/log-daily-reports`,
