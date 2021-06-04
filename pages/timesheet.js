@@ -49,7 +49,7 @@ import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 toast.configure();
 let afterSundayCheck = true;
 let dataEmployees = [];
-let dataTasks;
+let dataTasks = [];
 let tid = 0;
 
 const convertInputToTime = time => {
@@ -403,7 +403,7 @@ const Timesheet = () => {
             width: "200px",
           }}
         >
-          <option value="0">Choose here</option>
+          <option value="0">----------Choose here----------</option>
           {dataEmployees.map(item => {
             return (
               <option
@@ -466,52 +466,83 @@ const Timesheet = () => {
     } else if (id === "Task") {
       if (value === null) return <></>;
       return (
-        <Autocomplete
-          getItemValue={item => item.Name}
-          items={dataTasks}
-          renderItem={(item, isHighlighted) => (
-            <div
-              key={item.TaskID}
-              style={{
-                background: isHighlighted ? "lightgray" : "white",
-                textAlign: "left",
-                cursor: "pointer",
-              }}
-            >
-              {item.Name}
-            </div>
-          )}
-          shouldItemRender={(item, value) =>
-            item.Name.toLowerCase().indexOf(value.toLowerCase()) > -1
-          }
-          value={value}
-          onChange={onChange}
-          inputProps={{ onBlur: onBlurForTasks }}
-          onSelect={val => onChangeSelectTasks(val)}
-          renderInput={props => {
+        <select
+          style={{
+            marginBottom: "3px",
+            fontFamily: "Roboto, sans-serif",
+            fontSize: "medium",
+            display: "inline-block",
+            color: "#74646e",
+            border: "1px solid #c8bfc4",
+            borderRadius: "4px",
+            boxShadow: "inset 1px 1px 2px #ddd8dc",
+            background: "#fff",
+            zIndex: "1",
+            position: "relative",
+            width: "300px",
+          }}
+        >
+          <option value="0">
+            --------------------Choose here--------------------
+          </option>
+          {dataTasks.map(item => {
             return (
-              <input
-                className={
-                  afterSundayCheck
-                    ? styles["table__task-input"]
-                    : styles["table__task-input-before-sunday"]
-                }
-                disabled={afterSundayCheck ? false : true}
-                {...props}
-              ></input>
+              <option
+                value={item.TaskID}
+                key={item.TaskID}
+                taskName={item.Name}
+              >
+                {item.Name}
+              </option>
             );
-          }}
-          menuStyle={{
-            borderRadius: "3px",
-            boxShadow: "0 2px 12px rgba(0, 0, 0, 0.1)",
-            background: "rgba(255, 255, 255, 0.9)",
-            padding: "2px 0",
-            fontSize: "90%",
-            position: "fixed",
-            overflow: "auto",
-            maxHeight: "150px",
-          }}
-        />
+          })}
+        </select>
+        /* <Autocomplete
+            getItemValue={item => item.Name}
+            items={dataTasks}
+            renderItem={(item, isHighlighted) => (
+              <div
+                key={item.TaskID}
+                style={{
+                  background: isHighlighted ? "lightgray" : "white",
+                  textAlign: "left",
+                  cursor: "pointer",
+                }}
+              >
+                {item.Name}
+              </div>
+            )}
+            shouldItemRender={(item, value) =>
+              item.Name.toLowerCase().indexOf(value.toLowerCase()) > -1
+            }
+            value={value}
+            onChange={onChange}
+            inputProps={{ onBlur: onBlurForTasks }}
+            onSelect={val => onChangeSelectTasks(val)}
+            renderInput={props => {
+              return (
+                <input
+                  className={
+                    afterSundayCheck
+                      ? styles["table__task-input"]
+                      : styles["table__task-input-before-sunday"]
+                  }
+                  disabled={afterSundayCheck ? false : true}
+                  {...props}
+                ></input>
+              );
+            }}
+            menuStyle={{
+              borderRadius: "3px",
+              boxShadow: "0 2px 12px rgba(0, 0, 0, 0.1)",
+              background: "rgba(255, 255, 255, 0.9)",
+              padding: "2px 0",
+              fontSize: "90%",
+              position: "fixed",
+              overflow: "auto",
+              maxHeight: "150px",
+            }}
+          /> */
       );
     } else if (id === "Length") {
       if (row.leafRows !== undefined) {
