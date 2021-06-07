@@ -342,3 +342,17 @@
   line-height: 20px;
   text-indent: -99999px;
 }
+
+@media screen and (max-width: 800px) {
+  #mainDiv {
+    width: 750px;
+  }
+  .header {
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .header__left {
+    margin-top: 20px;
+  }
+}

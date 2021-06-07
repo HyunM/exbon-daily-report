@@ -35,6 +35,7 @@ import Router, { useRouter } from "next/router";
 
 toast.configure();
 let afterMondayCheck = true;
+let uniqueKey = 0;
 
 const convertInputToTime = time => {
   let match = inputTime.filter(data => data.input === time);
@@ -695,7 +696,7 @@ const SelfTimesheet = () => {
                       <TableBody>
                         {history.map(element => {
                           return (
-                            <TableRow key={element.TimesheetID}>
+                            <TableRow key={uniqueKey++}>
                               <TableCell
                                 style={{
                                   width: "206px",
