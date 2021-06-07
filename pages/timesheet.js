@@ -159,27 +159,58 @@ const Timesheet = () => {
         canGroupBy: false,
       },
       {
-        Header: "Hours",
+        Header: "Labor Hours",
         accessor: "Length",
         width: 120,
         aggregate: "sum",
         Aggregated: ({ value, row }) => {
           let sumLabor = 0;
+          let min = [];
+          let max = [];
+          let meal = { start: 0, finish: 0 };
+
           row.leafRows.forEach(element => {
-            let x = parseFloat(
-              (
-                (new Date(
-                  convertInputToTime(element.values.Finish).replace(" ", "T")
-                ) -
-                  new Date(
-                    convertInputToTime(element.values.Start).replace(" ", "T")
-                  )) /
-                3600000
-              ).toFixed(2)
+            min.push(
+              new Date(
+                convertInputToTime(element.values.Start).replace(" ", "T")
+              )
             );
-            if (x < 0) x += 24;
-            sumLabor += x;
+            max.push(
+              new Date(
+                convertInputToTime(element.values.Finish).replace(" ", "T")
+              )
+            );
+            if (element.values.TaskID === -2) {
+              meal.start = new Date(
+                convertInputToTime(element.values.Start).replace(" ", "T")
+              );
+
+              meal.finish = new Date(
+                convertInputToTime(element.values.Finish).replace(" ", "T")
+              );
+            }
           });
+
+          sumLabor = (
+            (Math.max(...max) - Math.min(...min) - (meal.finish - meal.start)) /
+            3600000
+          ).toFixed(2);
+
+          // row.leafRows.forEach(element => {
+          //   let x = parseFloat(
+          //     (
+          //       (new Date(
+          //         convertInputToTime(element.values.Finish).replace(" ", "T")
+          //       ) -
+          //         new Date(
+          //           convertInputToTime(element.values.Start).replace(" ", "T")
+          //         )) /
+          //       3600000
+          //     ).toFixed(2)
+          //   );
+          //   if (x < 0) x += 24;
+          //   sumLabor += x;
+          // });
 
           return (
             <div
