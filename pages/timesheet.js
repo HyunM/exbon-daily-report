@@ -1307,10 +1307,10 @@ const Timesheet = () => {
                   </TableContainer>
                 </div>
                 <Button
-                  onClick={() => setData(dataLatest)}
+                  // onClick={() => setData(dataLatest)}
                   style={{ float: "right", marginTop: "20px", color: "grey" }}
                 >
-                  Get Latest Data
+                  Get The Latest Data
                 </Button>
               </>
             )}
