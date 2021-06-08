@@ -56,6 +56,7 @@ toast.configure();
 let afterSundayCheck = true;
 let dataEmployees = [];
 let dataTasks = [];
+let dataLatest = [];
 let tid = 0;
 
 const convertInputToTime = time => {
@@ -734,6 +735,7 @@ const Timesheet = () => {
           setData(result.data.result[0]);
           dataEmployees = result.data.result[1];
           dataTasks = result.data.result[2];
+          dataLatest = result.data.result[3];
         });
       }
     };
@@ -1304,6 +1306,12 @@ const Timesheet = () => {
                     </Table>
                   </TableContainer>
                 </div>
+                <Button
+                  onClick={() => setData(dataLatest)}
+                  style={{ float: "right", marginTop: "20px", color: "grey" }}
+                >
+                  Get Latest Data
+                </Button>
               </>
             )}
           </div>
