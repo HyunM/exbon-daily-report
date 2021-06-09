@@ -1086,6 +1086,12 @@ const Timesheet = () => {
     }
   }, [stateAssignedProject]);
 
+  const clickGetTheLatestData = () => {
+    if (dataLatest.length !== 0) {
+      setData(dataLatest);
+    }
+  };
+
   return (
     <>
       {console.log("data")}
@@ -1307,7 +1313,7 @@ const Timesheet = () => {
                   </TableContainer>
                 </div>
                 <Button
-                  // onClick={() => setData(dataLatest)}
+                  onClick={clickGetTheLatestData}
                   style={{ float: "right", marginTop: "20px", color: "grey" }}
                 >
                   Get The Latest Data
