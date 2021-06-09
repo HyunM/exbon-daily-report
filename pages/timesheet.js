@@ -1089,6 +1089,16 @@ const Timesheet = () => {
   const clickGetTheLatestData = () => {
     if (dataLatest.length !== 0) {
       setData(dataLatest);
+    } else {
+      toast.warning(
+        <div className={styles["alert__table__hour-input"]}>
+          No data found.
+        </div>,
+        {
+          position: toast.POSITION.TOP_CENTER,
+          hideProgressBar: true,
+        }
+      );
     }
   };
 
