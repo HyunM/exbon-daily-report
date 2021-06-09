@@ -1325,6 +1325,7 @@ const Timesheet = () => {
                 <Button
                   onClick={clickGetTheLatestData}
                   style={{ float: "right", marginTop: "20px", color: "grey" }}
+                  disabled={afterSundayCheck ? false : true}
                 >
                   Get The Latest Data
                 </Button>
