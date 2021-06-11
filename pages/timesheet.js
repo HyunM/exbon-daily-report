@@ -1163,7 +1163,7 @@ const Timesheet = () => {
                         background: "#fff",
                         zIndex: "1",
                         position: "relative",
-                        maxWidth: "450px",
+                        maxWidth: "390px",
                         height: "30px",
                       }}
                     >
@@ -1250,7 +1250,7 @@ const Timesheet = () => {
                         }}
                         onClick={setSameTime}
                       >
-                        Set Same Time
+                        Set Same Time of All
                       </Button>
                       {/* <FormControlLabel
                         control={
