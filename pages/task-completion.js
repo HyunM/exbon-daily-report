@@ -1445,6 +1445,7 @@ const Task = () => {
                         zIndex: modalNoWork.isOpen ? "0" : "1",
                         position: "relative",
                         height: "30px",
+                        marginBottom: "3px",
                       }}
                     >
                       {stateAssignedProject.map(item => {

@@ -119,11 +119,11 @@
 }
 
 .table table th {
-  padding: 9px;
+  padding: 5px;
 }
 
 .table table td {
-  padding: 9px;
+  padding: 5px;
 }
 
 .table table td:nth-child(1) {
@@ -383,8 +383,9 @@
 .table tbody:before {
   content: "-";
   display: block;
-  line-height: 20px;
-  text-indent: -99999px;
+  line-height: 10px;
+  text-indent: -9999px;
+  overflow: hidden;
 }
 
 @media screen and (max-width: 800px) {
