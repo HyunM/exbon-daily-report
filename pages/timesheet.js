@@ -418,7 +418,6 @@ const Timesheet = () => {
       return (
         <select
           style={{
-            marginBottom: "3px",
             fontFamily: "Roboto, sans-serif",
             fontSize: "0.9rem",
             display: "inline-block",
