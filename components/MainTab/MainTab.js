@@ -73,7 +73,7 @@ const MainTab = ({
             textColor={tapNo === 1 ? "inherit" : "primary"}
           />
         </Link>
-        <Link href={`/self-timesheet?prevPid=${projectState}`}>
+        {/* <Link href={`/self-timesheet?prevPid=${projectState}`}>
           <Tab
             label={main ? "" : "Self Timesheet"}
             // onClick={() => Router.push(`/timesheet/${projectState}`)}
@@ -81,14 +81,14 @@ const MainTab = ({
             disabled={main}
             textColor={tapNo === 2 ? "inherit" : "primary"}
           />
-        </Link>
+        </Link> */}
         <Link href={`/timesheet?pid=${projectState}`}>
           <Tab
             label={main ? "" : "Timesheet"}
             // onClick={() => Router.push(`/timesheet/${projectState}`)}
             disableRipple={true}
             disabled={main}
-            textColor={tapNo === 3 ? "inherit" : "primary"}
+            textColor={tapNo === 2 ? "inherit" : "primary"}
           />
         </Link>
         {/* <Link href={`/deficiency-log/${projectState}`}>
