@@ -1434,7 +1434,6 @@ const Task = () => {
                       value={projectState}
                       onChange={e => setProjectState(e.target.value)}
                       style={{
-                        marginBottom: "3px",
                         fontFamily: "Roboto, sans-serif",
                         fontSize: "medium",
                         display: "inline-block",
@@ -1445,6 +1444,7 @@ const Task = () => {
                         background: "#fff",
                         zIndex: modalNoWork.isOpen ? "0" : "1",
                         position: "relative",
+                        height: "30px",
                       }}
                     >
                       {stateAssignedProject.map(item => {
@@ -1495,9 +1495,7 @@ const Task = () => {
                         okLabel=""
                       />
                     </MuiPickersUtilsProvider>
-                    <p className={styles["header__right__label-date-picker"]}>
-                      Date
-                    </p>
+
                     <Modal
                       isOpen={modalNoWork.isOpen}
                       onRequestClose={closeModalNoWork}

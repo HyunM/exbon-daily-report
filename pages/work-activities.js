@@ -980,7 +980,6 @@ const workActivities = () => {
                     value={projectState}
                     onChange={e => setProjectState(e.target.value)}
                     style={{
-                      marginBottom: "3px",
                       fontFamily: "Roboto, sans-serif",
                       fontSize: "medium",
                       display: "inline-block",
@@ -992,6 +991,7 @@ const workActivities = () => {
                       zIndex: "1",
                       position: "relative",
                       maxWidth: "600px",
+                      height: "30px",
                     }}
                   >
                     {stateAssignedProject.map(item => {
@@ -1011,9 +1011,6 @@ const workActivities = () => {
                   </select>
                 </div>
                 <div className={styles["header__right"]}>
-                  <p className={styles["header__right__label-date-picker"]}>
-                    Date
-                  </p>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <DatePicker
                       className={styles["header__right__date-picker"]}
