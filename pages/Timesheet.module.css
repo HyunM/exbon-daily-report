@@ -126,6 +126,12 @@
   padding: 10px;
 }
 
+.table table td:nth-child(5) {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end;
+}
+
 /* .table table {
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
