@@ -76,7 +76,7 @@ const Timesheet = () => {
     { ProjectID: 0 },
   ]);
   const [stateNoAssigned, setStateNoAssigned] = useState([]);
-  // const [checkState, setCheckState] = useState(true);
+  const [checkState, setCheckState] = useState(true);
   const [cookies, setCookie, removeCookie] = useCookies();
   const [status, setStatus] = useState({
     cookies: {
@@ -1163,7 +1163,7 @@ const Timesheet = () => {
                         background: "#fff",
                         zIndex: "1",
                         position: "relative",
-                        maxWidth: "600px",
+                        maxWidth: "350px",
                         height: "30px",
                       }}
                     >
@@ -1215,6 +1215,43 @@ const Timesheet = () => {
                         disabled={checkDisableAddEmployeeButton}
                       >
                         Add&nbsp;Employee
+                      </Button>
+                      <Button
+                        onClick={clickGetTheLatestData}
+                        variant="contained"
+                        color="secondary"
+                        size="small"
+                        className={
+                          dateCheckEditable(selectedDate)
+                            ? styles["header__right__save-btn"]
+                            : styles["header__right__save-btn-before-sunday"]
+                        }
+                        disabled={afterSundayCheck ? false : true}
+                        style={{
+                          background: "#43b6d3",
+                          color: "#ffffff",
+                          marginRight: "10px",
+                        }}
+                      >
+                        Import Last Timesheet
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        size="small"
+                        className={
+                          dateCheckEditable(selectedDate)
+                            ? styles["header__right__save-btn"]
+                            : styles["header__right__save-btn-before-sunday"]
+                        }
+                        disabled={afterSundayCheck ? false : true}
+                        style={{
+                          background: "#25a37d",
+                          color: "#ffffff",
+                          marginRight: "10px",
+                        }}
+                      >
+                        Set Same Time
                       </Button>
                       {/* <FormControlLabel
                         control={
@@ -1318,13 +1355,6 @@ const Timesheet = () => {
                     </Table>
                   </TableContainer>
                 </div>
-                <Button
-                  onClick={clickGetTheLatestData}
-                  style={{ float: "right", marginTop: "20px", color: "grey" }}
-                  disabled={afterSundayCheck ? false : true}
-                >
-                  Get The Latest Data
-                </Button>
               </>
             )}
           </div>
