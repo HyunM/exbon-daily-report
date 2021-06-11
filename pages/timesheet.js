@@ -1120,7 +1120,7 @@ const Timesheet = () => {
       ) : (
         <>
           <MainTab
-            tapNo={1}
+            tapNo={2}
             main={false}
             employeeID={status.cookies.employeeid}
             employeeName={status.cookies.fullname}
