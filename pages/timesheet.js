@@ -1163,7 +1163,7 @@ const Timesheet = () => {
                         background: "#fff",
                         zIndex: "1",
                         position: "relative",
-                        maxWidth: "350px",
+                        maxWidth: "450px",
                         height: "30px",
                       }}
                     >
@@ -1219,25 +1219,6 @@ const Timesheet = () => {
                       <Button
                         onClick={clickGetTheLatestData}
                         variant="contained"
-                        color="secondary"
-                        size="small"
-                        className={
-                          dateCheckEditable(selectedDate)
-                            ? styles["header__right__save-btn"]
-                            : styles["header__right__save-btn-before-sunday"]
-                        }
-                        disabled={afterSundayCheck ? false : true}
-                        style={{
-                          background: "#43b6d3",
-                          color: "#ffffff",
-                          marginRight: "10px",
-                        }}
-                      >
-                        Import Last Timesheet
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color="secondary"
                         size="small"
                         className={
                           dateCheckEditable(selectedDate)
@@ -1250,6 +1231,24 @@ const Timesheet = () => {
                           color: "#ffffff",
                           marginRight: "10px",
                         }}
+                      >
+                        Import Last Timesheet
+                      </Button>
+                      <Button
+                        variant="contained"
+                        size="small"
+                        className={
+                          dateCheckEditable(selectedDate)
+                            ? styles["header__right__save-btn"]
+                            : styles["header__right__save-btn-before-sunday"]
+                        }
+                        disabled={afterSundayCheck ? false : true}
+                        style={{
+                          background: "#43b6d3",
+                          color: "#ffffff",
+                          marginRight: "10px",
+                        }}
+                        onClick={setSameTime}
                       >
                         Set Same Time
                       </Button>
