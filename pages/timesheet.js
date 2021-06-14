@@ -52,6 +52,8 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 
+import moment from "moment";
+
 toast.configure();
 let afterSundayCheck = true;
 let dataEmployees = [];
@@ -237,6 +239,7 @@ const Timesheet = () => {
   );
 
   const [data, setData] = useState(() => []);
+  const [dataView, setDataView] = useState(() => []);
   // const [dataEmployees, setDataEmployees] = useState(() => []);
 
   // Create an editable cell renderer
@@ -1000,6 +1003,68 @@ const Timesheet = () => {
   useEffect(() => {
     setGroupBy(["EmployeeName"]);
     checkAddEmployeeStatus();
+
+    let tempData = [];
+    data.forEach(element => {
+      tempData.push({
+        Name: element.EmployeeName,
+        Start: element.TaskID === -2 ? 0 : toMilli(element.Start),
+        Finish: element.TaskID === -2 ? 0 : toMilli(element.Finish),
+        IsMeal: element.IsMeal,
+        MealStart: element.TaskID === -2 ? toMilli(element.Start) : 0,
+        MealFinish: element.TaskID === -2 ? toMilli(element.Finish) : 0,
+      });
+    });
+
+    let realData = [];
+    for (let i = 0; i < tempData.length; i++) {
+      if (i === 0) {
+        realData.push({
+          Name: tempData[i].Name,
+          Start: tempData[i].Start,
+          Finish: tempData[i].Finish,
+          MealStart: tempData[i].MealStart,
+          MealFinish: tempData[i].MealFinish,
+        });
+      }
+      let check = 0;
+      for (let j = 0; j < realData.length; j++) {
+        if (tempData[i].Name === realData[j].Name) {
+          realData[j].Start =
+            realData[j].Start > tempData[i].Start && tempData[i].Start !== 0
+              ? tempData[i].Start
+              : realData[j].Start;
+          realData[j].Finish =
+            (realData[j].Finish > tempData[i].Finish ||
+              tempData[i].Finish === 0) &&
+            realData[j].Finish !== 0
+              ? realData[j].Finish
+              : tempData[i].Finish;
+          realData[j].MealStart =
+            realData[j].MealStart > tempData[i].MealStart &&
+            tempData[i].MealStart !== 0
+              ? tempData[i].MealStart
+              : realData[j].MealStart;
+          realData[j].MealFinish =
+            (realData[j].MealFinish > tempData[i].MealFinish ||
+              tempData[i].MealFinish === 0) &&
+            realData[j].MealFinish !== 0
+              ? realData[j].MealFinish
+              : tempData[i].MealFinish;
+          check += 1;
+        }
+      }
+      if (check === 0) {
+        realData.push({
+          Name: tempData[i].Name,
+          Start: tempData[i].Start,
+          Finish: tempData[i].Finish,
+          MealStart: tempData[i].MealStart,
+          MealFinish: tempData[i].MealFinish,
+        });
+      }
+    }
+    setDataView(realData);
   }, [data]);
 
   const checkAddEmployeeStatus = () => {
@@ -1100,10 +1165,14 @@ const Timesheet = () => {
     }
   };
 
+  const toMilli = dataTime => {
+    return new Date(convertInputToTime(dataTime).replace(" ", "T"));
+  };
+
   return (
     <>
-      {console.log("data")}
-      {console.log(data)}
+      {console.log("dataView")}
+      {console.log(dataView)}
       <Head>
         <title>Daily Report</title>
         <link rel="icon" href="/favicon.ico" />
@@ -1352,6 +1421,41 @@ const Timesheet = () => {
                       </TableBody>
                     </Table>
                   </TableContainer>
+                </div>
+                <div className={styles["second-table"]}>
+                  <table {...getTableProps()}>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Start</th>
+                        <th>Finish</th>
+                        <th>Meal Start</th>
+                        <th>Meal Finish</th>
+                        <th>Labor Hours</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {dataView.map(cell => {
+                        return (
+                          <tr>
+                            <td>{cell.Name}</td>
+                            <td>{moment(cell.Start).format("LT")}</td>
+                            <td>{moment(cell.Finish).format("LT")}</td>
+                            <td>{moment(cell.MealStart).format("LT")}</td>
+                            <td>{moment(cell.MealFinish).format("LT")}</td>
+                            <td>
+                              {(
+                                (cell.Finish -
+                                  cell.Start -
+                                  (cell.MealFinish - cell.MealStart)) /
+                                3600000
+                              ).toFixed(2)}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
                 </div>
               </>
             )}
