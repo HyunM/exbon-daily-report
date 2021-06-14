@@ -53,6 +53,7 @@ import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 
 import moment from "moment";
+import Modal from "react-modal";
 
 toast.configure();
 let afterSundayCheck = true;
@@ -429,7 +430,7 @@ const Timesheet = () => {
             borderRadius: "4px",
             boxShadow: "inset 1px 1px 2px #ddd8dc",
             background: "#fff",
-            zIndex: "1",
+            zIndex: "0",
             position: "relative",
             width: "200px",
             height: "25px",
@@ -461,7 +462,7 @@ const Timesheet = () => {
             borderRadius: "4px",
             boxShadow: "inset 1px 1px 2px #ddd8dc",
             background: "#fff",
-            zIndex: "1",
+            zIndex: "0",
             position: "relative",
             width: "300px",
             height: "25px",
@@ -1169,6 +1170,15 @@ const Timesheet = () => {
     return new Date(convertInputToTime(dataTime).replace(" ", "T"));
   };
 
+  const [modalIsOpen, setIsOpen] = React.useState(false);
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
   return (
     <>
       {console.log("dataView")}
@@ -1229,7 +1239,7 @@ const Timesheet = () => {
                         borderRadius: "4px",
                         boxShadow: "inset 1px 1px 2px #ddd8dc",
                         background: "#fff",
-                        zIndex: "1",
+                        zIndex: "0",
                         position: "relative",
                         maxWidth: "390px",
                         height: "30px",
@@ -1457,6 +1467,49 @@ const Timesheet = () => {
                     </tbody>
                   </table>
                 </div>
+                <button onClick={openModal}>Tablet only</button>
+                <Modal
+                  isOpen={modalIsOpen}
+                  onRequestClose={closeModal}
+                  contentLabel="Example Modal"
+                >
+                  <h2>View Only</h2>
+                  <div className={styles["modal-table"]}>
+                    <table {...getTableProps()}>
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>Start</th>
+                          <th>Finish</th>
+                          <th>Meal Start</th>
+                          <th>Meal Finish</th>
+                          <th>Labor Hours</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {dataView.map(cell => {
+                          return (
+                            <tr>
+                              <td>{cell.Name}</td>
+                              <td>{moment(cell.Start).format("LT")}</td>
+                              <td>{moment(cell.Finish).format("LT")}</td>
+                              <td>{moment(cell.MealStart).format("LT")}</td>
+                              <td>{moment(cell.MealFinish).format("LT")}</td>
+                              <td>
+                                {(
+                                  (cell.Finish -
+                                    cell.Start -
+                                    (cell.MealFinish - cell.MealStart)) /
+                                  3600000
+                                ).toFixed(2)}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                </Modal>
               </>
             )}
           </div>
