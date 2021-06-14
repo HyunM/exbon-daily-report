@@ -400,4 +400,26 @@
   .header__left {
     margin-top: 20px;
   }
+  .tablet-button {
+    visibility: visible !important;
+  }
+  .second-table {
+    visibility: hidden !important;
+  }
+}
+
+@media screen and (max-width: 1334px) {
+  .tablet-button {
+    visibility: visible !important;
+  }
+  .second-table {
+    visibility: hidden !important;
+  }
+}
+.tablet-button {
+  visibility: hidden;
+}
+
+.second-table {
+  visibility: visible;
 }

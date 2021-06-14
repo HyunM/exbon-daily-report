@@ -1447,7 +1447,7 @@ const Timesheet = () => {
                     <tbody>
                       {dataView.map(cell => {
                         return (
-                          <tr>
+                          <tr key={cell.Name}>
                             <td>{cell.Name}</td>
                             <td>{moment(cell.Start).format("LT")}</td>
                             <td>{moment(cell.Finish).format("LT")}</td>
@@ -1467,7 +1467,9 @@ const Timesheet = () => {
                     </tbody>
                   </table>
                 </div>
-                <button onClick={openModal}>Tablet only</button>
+                <button className={styles["tablet-button"]} onClick={openModal}>
+                  Tablet only
+                </button>
                 <Modal
                   isOpen={modalIsOpen}
                   onRequestClose={closeModal}
@@ -1489,7 +1491,7 @@ const Timesheet = () => {
                       <tbody>
                         {dataView.map(cell => {
                           return (
-                            <tr>
+                            <tr key={cell.Name}>
                               <td>{cell.Name}</td>
                               <td>{moment(cell.Start).format("LT")}</td>
                               <td>{moment(cell.Finish).format("LT")}</td>
