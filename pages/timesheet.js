@@ -1192,8 +1192,8 @@ const Timesheet = () => {
 
   return (
     <>
-      {console.log("dataView")}
-      {console.log(dataView)}
+      {console.log("data")}
+      {console.log(data)}
       <Head>
         <title>Daily Report</title>
         <link rel="icon" href="/favicon.ico" />
@@ -1443,61 +1443,65 @@ const Timesheet = () => {
                     </Table>
                   </TableContainer>
                 </div>
-                <div className={styles["second-table"]}>
-                  <table {...getTableProps()}>
-                    <thead>
-                      <tr>
-                        <th>Name</th>
-                        <th>Start</th>
-                        <th>Finish</th>
-                        <th>Meal Start</th>
-                        <th>Meal Finish</th>
-                        <th>Labor Hours</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {dataView.map(cell => {
-                        return (
-                          <tr key={cell.Name}>
-                            <td>{cell.Name}</td>
-                            <td style={{ textAlign: "right", width: "80px" }}>
-                              {moment(cell.Start).format("LT") ===
-                              moment(cell.Finish).format("LT")
-                                ? ""
-                                : moment(cell.Start).format("LT")}
-                            </td>
-                            <td style={{ textAlign: "right", width: "80px" }}>
-                              {moment(cell.Start).format("LT") ===
-                              moment(cell.Finish).format("LT")
-                                ? ""
-                                : moment(cell.Finish).format("LT")}
-                            </td>
-                            <td style={{ textAlign: "right", width: "80px" }}>
-                              {moment(cell.MealStart).format("LT") ===
-                              moment(cell.MealFinish).format("LT")
-                                ? ""
-                                : moment(cell.MealStart).format("LT")}
-                            </td>
-                            <td style={{ textAlign: "right", width: "80px" }}>
-                              {moment(cell.MealStart).format("LT") ===
-                              moment(cell.MealFinish).format("LT")
-                                ? ""
-                                : moment(cell.MealFinish).format("LT")}
-                            </td>
-                            <td style={{ textAlign: "right", width: "90px" }}>
-                              {(
-                                (cell.Finish -
-                                  cell.Start -
-                                  (cell.MealFinish - cell.MealStart)) /
-                                3600000
-                              ).toFixed(2)}
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
+                {dataView.length === 0 ? (
+                  <></>
+                ) : (
+                  <div className={styles["second-table"]}>
+                    <table {...getTableProps()}>
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>Start</th>
+                          <th>Finish</th>
+                          <th>Meal Start</th>
+                          <th>Meal Finish</th>
+                          <th>Labor Hours</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {dataView.map(cell => {
+                          return (
+                            <tr key={cell.Name}>
+                              <td>{cell.Name}</td>
+                              <td style={{ textAlign: "right", width: "80px" }}>
+                                {moment(cell.Start).format("LT") ===
+                                moment(cell.Finish).format("LT")
+                                  ? ""
+                                  : moment(cell.Start).format("LT")}
+                              </td>
+                              <td style={{ textAlign: "right", width: "80px" }}>
+                                {moment(cell.Start).format("LT") ===
+                                moment(cell.Finish).format("LT")
+                                  ? ""
+                                  : moment(cell.Finish).format("LT")}
+                              </td>
+                              <td style={{ textAlign: "right", width: "80px" }}>
+                                {moment(cell.MealStart).format("LT") ===
+                                moment(cell.MealFinish).format("LT")
+                                  ? ""
+                                  : moment(cell.MealStart).format("LT")}
+                              </td>
+                              <td style={{ textAlign: "right", width: "80px" }}>
+                                {moment(cell.MealStart).format("LT") ===
+                                moment(cell.MealFinish).format("LT")
+                                  ? ""
+                                  : moment(cell.MealFinish).format("LT")}
+                              </td>
+                              <td style={{ textAlign: "right", width: "90px" }}>
+                                {(
+                                  (cell.Finish -
+                                    cell.Start -
+                                    (cell.MealFinish - cell.MealStart)) /
+                                  3600000
+                                ).toFixed(2)}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
                 <div className={styles["tablet-button-wrapper"]}>
                   <Button
                     className={styles["tablet-button"]}
