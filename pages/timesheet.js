@@ -1447,15 +1447,15 @@ const Timesheet = () => {
                   <></>
                 ) : (
                   <div className={styles["second-table"]}>
-                    <h2
+                    <h3
                       style={{
                         textAlign: "center",
                         fontFamily: "sans-serif",
-                        color: "#65a1f0",
+                        color: "#9d9ce7",
                       }}
                     >
-                      Summary
-                    </h2>
+                      Timesheet Summary
+                    </h3>
                     <table {...getTableProps()}>
                       <thead>
                         <tr>
