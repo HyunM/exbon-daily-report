@@ -1461,10 +1461,16 @@ const Timesheet = () => {
                           <tr key={cell.Name}>
                             <td>{cell.Name}</td>
                             <td style={{ textAlign: "right", width: "80px" }}>
-                              {moment(cell.Start).format("LT")}
+                              {moment(cell.Start).format("LT") ===
+                              moment(cell.Finish).format("LT")
+                                ? ""
+                                : moment(cell.Start).format("LT")}
                             </td>
                             <td style={{ textAlign: "right", width: "80px" }}>
-                              {moment(cell.Finish).format("LT")}
+                              {moment(cell.Start).format("LT") ===
+                              moment(cell.Finish).format("LT")
+                                ? ""
+                                : moment(cell.Finish).format("LT")}
                             </td>
                             <td style={{ textAlign: "right", width: "80px" }}>
                               {moment(cell.MealStart).format("LT") ===
