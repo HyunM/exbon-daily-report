@@ -405,6 +405,11 @@
   }
   .second-table {
     visibility: hidden !important;
+    display: none !important;
+  }
+  .second-table table {
+    display: none;
+    visibility: hidden;
   }
 }
 
@@ -414,12 +419,85 @@
   }
   .second-table {
     visibility: hidden !important;
+    display: none !important;
+  }
+  .second-table table {
+    display: none;
+    visibility: hidden;
   }
 }
-.tablet-button {
+
+.tablet-button-wrapper {
   visibility: hidden;
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
 }
 
-.second-table {
+.tablet-button {
+  color: #f1f1f1 !important;
+  background-color: #92858d !important;
+}
+
+.second-table,
+.modal-table {
+  margin-top: 30px;
   visibility: visible;
+  overflow: auto;
+  margin-left: 4px;
+}
+
+.second-table table,
+.modal-table table {
+  font-family: "Roboto", sans-serif;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.second-table td,
+.modal-table td {
+  border: 1px solid #ddd;
+  font-family: "Roboto";
+  font-size: 0.95rem;
+  color: #5f685b;
+}
+
+.second-table thead th,
+.modal-table thead th {
+  text-align: center;
+  padding: 4px;
+  font-size: 0.9rem;
+}
+
+.second-table tr:nth-child(even),
+.modal-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.second-table tr,
+.modal-table tr {
+  background-color: #ffffff;
+}
+
+.second-table tbody tr:hover,
+.modal-table tbody tr:hover {
+  /* background-color: #ddd; */
+  background-color: #bee9f0;
+  border: 1px solid #6ea7ec;
+  cursor: default;
+}
+
+.second-table thead th,
+.modal-table thead th {
+  background-color: #64c9e2;
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 400;
+}
+
+.second-table tbody td,
+.modal-table tbody td {
+  padding: 5px;
+  font-size: 0.9rem;
 }

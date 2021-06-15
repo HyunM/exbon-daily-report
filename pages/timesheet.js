@@ -70,6 +70,17 @@ const convertInputToTime = time => {
   return match[0].time;
 };
 
+// const customStylesModal = {
+//   content: {
+//     top: "40%",
+//     left: "50%",
+//     right: "auto",
+//     bottom: "auto",
+//     marginRight: "-50%",
+//     transform: "translate(-50%, -50%)",
+//   },
+// };
+
 const Timesheet = () => {
   const router = useRouter();
   const [projectState, setProjectState] = useState(undefined);
@@ -1449,11 +1460,25 @@ const Timesheet = () => {
                         return (
                           <tr key={cell.Name}>
                             <td>{cell.Name}</td>
-                            <td>{moment(cell.Start).format("LT")}</td>
-                            <td>{moment(cell.Finish).format("LT")}</td>
-                            <td>{moment(cell.MealStart).format("LT")}</td>
-                            <td>{moment(cell.MealFinish).format("LT")}</td>
-                            <td>
+                            <td style={{ textAlign: "right", width: "80px" }}>
+                              {moment(cell.Start).format("LT")}
+                            </td>
+                            <td style={{ textAlign: "right", width: "80px" }}>
+                              {moment(cell.Finish).format("LT")}
+                            </td>
+                            <td style={{ textAlign: "right", width: "80px" }}>
+                              {moment(cell.MealStart).format("LT") ===
+                              moment(cell.MealFinish).format("LT")
+                                ? ""
+                                : moment(cell.MealStart).format("LT")}
+                            </td>
+                            <td style={{ textAlign: "right", width: "80px" }}>
+                              {moment(cell.MealStart).format("LT") ===
+                              moment(cell.MealFinish).format("LT")
+                                ? ""
+                                : moment(cell.MealFinish).format("LT")}
+                            </td>
+                            <td style={{ textAlign: "right", width: "90px" }}>
                               {(
                                 (cell.Finish -
                                   cell.Start -
@@ -1467,15 +1492,30 @@ const Timesheet = () => {
                     </tbody>
                   </table>
                 </div>
-                <button className={styles["tablet-button"]} onClick={openModal}>
-                  Tablet only
-                </button>
+                <div className={styles["tablet-button-wrapper"]}>
+                  <Button
+                    className={styles["tablet-button"]}
+                    onClick={openModal}
+                    variant="contained"
+                    size="small"
+                  >
+                    Summary
+                  </Button>
+                </div>
                 <Modal
                   isOpen={modalIsOpen}
                   onRequestClose={closeModal}
-                  contentLabel="Example Modal"
+                  // style={customStylesModal}
                 >
-                  <h2>View Only</h2>
+                  <h2
+                    style={{
+                      textAlign: "center",
+                      fontFamily: "sans-serif",
+                      color: "#1c73e6",
+                    }}
+                  >
+                    Timesheet Summary
+                  </h2>
                   <div className={styles["modal-table"]}>
                     <table {...getTableProps()}>
                       <thead>
@@ -1493,11 +1533,19 @@ const Timesheet = () => {
                           return (
                             <tr key={cell.Name}>
                               <td>{cell.Name}</td>
-                              <td>{moment(cell.Start).format("LT")}</td>
-                              <td>{moment(cell.Finish).format("LT")}</td>
-                              <td>{moment(cell.MealStart).format("LT")}</td>
-                              <td>{moment(cell.MealFinish).format("LT")}</td>
-                              <td>
+                              <td style={{ textAlign: "right", width: "80px" }}>
+                                {moment(cell.Start).format("LT")}
+                              </td>
+                              <td style={{ textAlign: "right", width: "80px" }}>
+                                {moment(cell.Finish).format("LT")}
+                              </td>
+                              <td style={{ textAlign: "right", width: "80px" }}>
+                                {moment(cell.MealStart).format("LT")}
+                              </td>
+                              <td style={{ textAlign: "right", width: "80px" }}>
+                                {moment(cell.MealFinish).format("LT")}
+                              </td>
+                              <td style={{ textAlign: "right", width: "90px" }}>
                                 {(
                                   (cell.Finish -
                                     cell.Start -
