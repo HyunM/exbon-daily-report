@@ -760,6 +760,168 @@ const Timesheet = () => {
                     </MuiPickersUtilsProvider>
                   </div>
                 </div>
+                <div>
+                  <select>
+                    <option>----Select Employee----</option>
+                    <option>2</option>
+                  </select>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Task</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Hours</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <div>
+                            <select>
+                              <option>----Select Task----</option>
+                              <option>1</option>
+                            </select>
+                          </div>
+                        </td>
+                        <td>
+                          <div className={styles["table__time-wrapper"]}>
+                            <InputMask
+                              className={
+                                afterSundayCheck
+                                  ? classNames(
+                                      "table__time-wrapper__target-disabled",
+                                      styles["table__time-wrapper__hour-input"]
+                                    )
+                                  : classNames(
+                                      "table__time-wrapper__target-disabled",
+                                      styles[
+                                        "table__time-wrapper__hour-input-before-sunday"
+                                      ]
+                                    )
+                              }
+                              mask="29"
+                              placeholder="01~12"
+                              formatChars={{
+                                2: "[0-1]",
+                                9: "[0-9]",
+                              }}
+                              disabled={afterSundayCheck ? false : true}
+                              defaultValue="07"
+                            />
+                            :
+                            <InputMask
+                              className={
+                                afterSundayCheck
+                                  ? classNames(
+                                      "table__time-wrapper__target-disabled",
+                                      styles["table__time-wrapper__min-input"]
+                                    )
+                                  : classNames(
+                                      "table__time-wrapper__target-disabled",
+                                      styles[
+                                        "table__time-wrapper__min-input-before-sunday"
+                                      ]
+                                    )
+                              }
+                              placeholder="00~50"
+                              mask="50"
+                              formatChars={{
+                                5: "[0-5]",
+                              }}
+                              disabled={afterSundayCheck ? false : true}
+                              defaultValue="00"
+                            />
+                            <select
+                              className={classNames(
+                                "table__time-wrapper__target-disabled",
+                                styles["table__ampm-dropdown"]
+                              )}
+                              disabled={afterSundayCheck ? false : true}
+                            >
+                              <option value="AM">AM</option>
+                              <option value="PM">PM</option>
+                            </select>
+                          </div>
+                        </td>
+                        <td>
+                          <div className={styles["table__time-wrapper"]}>
+                            <InputMask
+                              className={
+                                afterSundayCheck
+                                  ? classNames(
+                                      "table__time-wrapper__target-disabled",
+                                      styles["table__time-wrapper__hour-input"]
+                                    )
+                                  : classNames(
+                                      "table__time-wrapper__target-disabled",
+                                      styles[
+                                        "table__time-wrapper__hour-input-before-sunday"
+                                      ]
+                                    )
+                              }
+                              mask="29"
+                              placeholder="01~12"
+                              formatChars={{
+                                2: "[0-1]",
+                                9: "[0-9]",
+                              }}
+                              disabled={afterSundayCheck ? false : true}
+                              defaultValue="07"
+                            />
+                            :
+                            <InputMask
+                              className={
+                                afterSundayCheck
+                                  ? classNames(
+                                      "table__time-wrapper__target-disabled",
+                                      styles["table__time-wrapper__min-input"]
+                                    )
+                                  : classNames(
+                                      "table__time-wrapper__target-disabled",
+                                      styles[
+                                        "table__time-wrapper__min-input-before-sunday"
+                                      ]
+                                    )
+                              }
+                              placeholder="00~50"
+                              mask="50"
+                              formatChars={{
+                                5: "[0-5]",
+                              }}
+                              disabled={afterSundayCheck ? false : true}
+                              defaultValue="00"
+                            />
+                            <select
+                              className={classNames(
+                                "table__time-wrapper__target-disabled",
+                                styles["table__ampm-dropdown"]
+                              )}
+                              disabled={afterSundayCheck ? false : true}
+                            >
+                              <option value="AM">AM</option>
+                              <option value="PM">PM</option>
+                            </select>
+                          </div>
+                        </td>
+                        <td>
+                          <div>
+                            <span>8.00</span>
+                          </div>
+                        </td>
+                        <td>
+                          <div className={styles["table__delete-input"]}>
+                            <DeleteForeverIcon
+                              color="action"
+                              className={styles["table__delete-icon"]}
+                            ></DeleteForeverIcon>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
 
                 {dataView.length === 0 ? (
                   <></>
