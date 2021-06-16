@@ -252,359 +252,6 @@ const Timesheet = () => {
 
   const [data, setData] = useState(() => []);
   const [dataView, setDataView] = useState(() => []);
-  // const [dataEmployees, setDataEmployees] = useState(() => []);
-
-  // Create an editable cell renderer
-  const EditableCell = ({
-    value: initialValue,
-    row: { index },
-    column: { id },
-    row,
-    updateMyData, // This is a custom function that we supplied to our table instance
-  }) => {
-    // We need to keep and update the state of the cell normally
-    const [value, setValue] = React.useState(initialValue);
-
-    const onCheckHour = e => {
-      if (12 < parseInt(e.target.value) || "00" === e.target.value) {
-        toast.warning(
-          <div className={styles["alert__table__hour-input"]}>
-            Only <strong>01 to 12</strong> can be entered into the time hour
-            input.
-          </div>,
-          {
-            position: toast.POSITION.BOTTOM_CENTER,
-            hideProgressBar: true,
-          }
-        );
-        setValue("  :" + value.slice(3, 5) + value.slice(5, 7));
-      } else {
-        setValue(e.target.value + ":" + value.slice(3, 5) + value.slice(5, 7));
-      }
-    };
-
-    const onCheckMin = e => {
-      setValue(value.slice(0, 2) + ":" + e.target.value + value.slice(5, 7));
-    };
-
-    const onCheckAmPm = e => {
-      if (e.target.value === "AM") {
-        setValue(value.slice(0, 2) + ":" + value.slice(3, 5) + "AM");
-      } else if (e.target.value === "PM") {
-        setValue(value.slice(0, 2) + ":" + value.slice(3, 5) + "PM");
-      } else {
-        setValue(value.slice(0, 2) + ":" + value.slice(3, 5) + e.target.value);
-      }
-    };
-
-    const onChange = e => {
-      setValue(e.target.value);
-    };
-
-    const onChangeSelectEmployee = e => {
-      setValue(e.target.value);
-      row.leafRows.forEach(element => {
-        updateEmployeeData(element.values.TimesheetID, id, e.target.value);
-      });
-    };
-
-    // We'll only update the external data when the input is blurred
-    const onBlur = e => {
-      updateMyData(row.values.TimesheetID, id, e.target.value);
-    };
-
-    const onBlurForTime = e => {
-      updateMyData(row.values.TimesheetID, id, value);
-    };
-
-    const onBlurForEmployee = e => {
-      checkAddEmployeeStatus();
-      row.leafRows.forEach(element => {
-        updateEmployeeData(element.values.TimesheetID, id, e.target.value);
-      });
-    };
-
-    const onBlurForTasks = e => {
-      updateMyData(row.values.TimesheetID, id, parseInt(e.target.value));
-    };
-
-    const clickDeleteTimesheet = value => {
-      //value = TimesheetID
-      deleteTimesheetRow(row.values.TimesheetID);
-    };
-
-    const clickAddTimesheet = name => {
-      addEmployeeRow(name);
-    };
-
-    // If the initialValue is changed external, sync it up with our state
-    React.useEffect(() => {
-      setValue(initialValue);
-    }, [initialValue]);
-
-    if (id === "Start" || id === "Finish") {
-      if (value === null) return <></>;
-      return (
-        <div className={styles["table__time-wrapper"]}>
-          <InputMask
-            value={value.slice(0, 2)}
-            onChange={onCheckHour}
-            onBlur={onBlurForTime}
-            className={
-              afterSundayCheck
-                ? classNames(
-                    "table__time-wrapper__target-disabled",
-                    styles["table__time-wrapper__hour-input"]
-                  )
-                : classNames(
-                    "table__time-wrapper__target-disabled",
-                    styles["table__time-wrapper__hour-input-before-sunday"]
-                  )
-            }
-            mask="29"
-            placeholder="01~12"
-            formatChars={{
-              2: "[0-1]",
-              9: "[0-9]",
-            }}
-            disabled={afterSundayCheck ? false : true}
-          />
-          :
-          <InputMask
-            value={value.slice(3, 5)}
-            onChange={onCheckMin}
-            onBlur={onBlurForTime}
-            className={
-              afterSundayCheck
-                ? classNames(
-                    "table__time-wrapper__target-disabled",
-                    styles["table__time-wrapper__min-input"]
-                  )
-                : classNames(
-                    "table__time-wrapper__target-disabled",
-                    styles["table__time-wrapper__min-input-before-sunday"]
-                  )
-            }
-            placeholder="00~50"
-            mask="50"
-            formatChars={{
-              5: "[0-5]",
-            }}
-            disabled={afterSundayCheck ? false : true}
-          />
-          <select
-            value={value.slice(5, 7)}
-            onChange={onCheckAmPm}
-            onBlur={onBlurForTime}
-            className={classNames(
-              "table__time-wrapper__target-disabled",
-              styles["table__ampm-dropdown"]
-            )}
-            disabled={afterSundayCheck ? false : true}
-          >
-            <option value="AM">AM</option>
-            <option value="PM">PM</option>
-          </select>
-        </div>
-      );
-    } else if (id === "TimesheetID") {
-      if (afterSundayCheck === true) {
-        if (row.values.Finish === null) {
-          return (
-            <AddCircleIcon
-              className={styles["table__add-icon"]}
-              onClick={() => clickAddTimesheet(row.values.EmployeeName)}
-            ></AddCircleIcon>
-          );
-        }
-        return (
-          <div className={styles["table__delete-input"]}>
-            <DeleteForeverIcon
-              color="action"
-              className={styles["table__delete-icon"]}
-              value={value}
-              onClick={() => clickDeleteTimesheet(value)}
-            ></DeleteForeverIcon>
-          </div>
-        );
-      } else return <></>;
-    } else if (id === "EmployeeName") {
-      if (value === null) return <></>;
-      return (
-        <select
-          style={{
-            fontFamily: "Roboto, sans-serif",
-            fontSize: "0.9rem",
-            display: "inline-block",
-            color: "#241f22",
-            border: "1px solid #c8bfc4",
-            borderRadius: "4px",
-            boxShadow: "inset 1px 1px 2px #ddd8dc",
-            background: "#fff",
-            zIndex: "0",
-            position: "relative",
-            width: "200px",
-            height: "25px",
-          }}
-          value={value}
-          onChange={onChangeSelectEmployee}
-          onBlur={onBlurForEmployee}
-        >
-          <option value="0">----------Choose here----------</option>
-          {dataEmployees.map(item => {
-            return (
-              <option value={item.EmployeeName} key={item.EmployeeID}>
-                {item.EmployeeName}
-              </option>
-            );
-          })}
-        </select>
-      );
-    } else if (id === "TaskID") {
-      if (value === null) return <></>;
-      return (
-        <select
-          style={{
-            fontFamily: "Roboto, sans-serif",
-            fontSize: "0.9rem",
-            display: "inline-block",
-            color: "#74646e",
-            border: "1px solid #c8bfc4",
-            borderRadius: "4px",
-            boxShadow: "inset 1px 1px 2px #ddd8dc",
-            background: "#fff",
-            zIndex: "0",
-            position: "relative",
-            width: "300px",
-            height: "25px",
-          }}
-          value={value}
-          onChange={onChange}
-          onBlur={onBlurForTasks}
-        >
-          <option value="0">
-            --------------------Choose here--------------------
-          </option>
-          {dataTasks.map(item => {
-            return (
-              <option
-                value={item.TaskID}
-                key={item.TaskID}
-                taskname={item.Name}
-              >
-                {item.Name}
-              </option>
-            );
-          })}
-        </select>
-      );
-    } else if (id === "Length") {
-      if (row.leafRows !== undefined) {
-        let sumLabor = 0;
-        row.leafRows.forEach(element => {
-          sumLabor += (
-            (new Date(convertInputToTime(element.Finish).replace(" ", "T")) -
-              new Date(convertInputToTime(element.Start).replace(" ", "T"))) /
-            3600000
-          ).toFixed(2);
-        });
-
-        if (parseFloat(sumLabor) < 0) {
-          sumLabor = (parseFloat(sumLabor) + 24).toFixed(2);
-        }
-
-        return (
-          <div
-            className={classNames([
-              styles["table__labor-hours-input"],
-              "table__labor-hours-input",
-            ])}
-          >
-            {sumLabor}
-          </div>
-        );
-      } else {
-        let laborDate = (
-          (new Date(convertInputToTime(row.values.Finish).replace(" ", "T")) -
-            new Date(convertInputToTime(row.values.Start).replace(" ", "T"))) /
-          3600000
-        ).toFixed(2);
-        if (parseFloat(laborDate) < 0) {
-          laborDate = (parseFloat(laborDate) + 24).toFixed(2);
-        }
-        if (row.values.Task === "Meal") {
-          laborDate *= -1;
-          laborDate = laborDate.toFixed(2);
-        }
-        return (
-          <div
-            className={classNames([
-              styles["table__labor-hours-input"],
-              "table__labor-hours-input",
-            ])}
-          >
-            {laborDate}
-          </div>
-        );
-      }
-    }
-  };
-
-  // Set our editable cell renderer as the default Cell renderer
-  const defaultColumn = {
-    Cell: EditableCell,
-  };
-
-  // When our cell renderer calls updateMyData, we'll use
-  // the rowIndex, columnId and new value to update the
-  // original data
-  const updateMyData = (TimesheetID, columnId, value) => {
-    // We also turn on the flag to not reset the page
-    setData(old =>
-      old.map((row, index) => {
-        if (row.TimesheetID === TimesheetID) {
-          return {
-            ...old[index],
-            [columnId]: value,
-          };
-        }
-        return row;
-      })
-    );
-  };
-
-  const updateEmployeeData = (TimesheetID, columnId, value) => {
-    // We also turn on the flag to not reset the page
-
-    setData(old =>
-      old.map((row, index) => {
-        if (row.TimesheetID === TimesheetID) {
-          return {
-            ...old[index],
-            [columnId]: value,
-            ["EmployeeID"]: convertEmployeeNameToID(value),
-          };
-        }
-        return row;
-      })
-    );
-  };
-
-  const updateTaskData = (TimesheetID, columnId, value) => {
-    // We also turn on the flag to not reset the page
-    setData(old =>
-      old.map((row, index) => {
-        if (row.TimesheetID === TimesheetID) {
-          return {
-            ...old[index],
-            [columnId]: value,
-            ["TaskID"]: convertTaskNameToID(value),
-          };
-        }
-        return row;
-      })
-    );
-  };
 
   const convertTaskNameToID = name => {
     let task = dataTasks.find(task => name === task.Name);
@@ -625,29 +272,6 @@ const Timesheet = () => {
       return 0;
     }
   };
-
-  // Use the state and functions returned from useTable to build your UI
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-    setGroupBy,
-    state: { groupBy, expanded },
-  } = useTable(
-    {
-      columns,
-      data,
-      defaultColumn,
-      updateMyData,
-      autoResetExpanded: false,
-    },
-    useBlockLayout,
-    useGroupBy,
-    useExpanded
-  );
-  // Render the UI for your table
 
   const now = new Date().toLocaleString({
     timeZone: "America/Los_Angeles",
@@ -755,42 +379,6 @@ const Timesheet = () => {
     promises.push(fetchData());
     trackPromise(Promise.all(promises).then(() => {}));
   }, [projectState, status, selectedDate, router.isReady]);
-
-  // useEffect(() => {
-  //   if (checkState) {
-  //     for (
-  //       let i = 12;
-  //       i <
-  //       document.getElementsByClassName("table__time-wrapper__target-disabled")
-  //         .length;
-  //       i++
-  //     ) {
-  //       document
-  //         .getElementsByClassName("table__time-wrapper__target-disabled")
-  //         [i].setAttribute("disabled", true);
-  //       document
-  //         .getElementsByClassName("table__time-wrapper__target-disabled")
-  //         [i].classList.add("table__time-wrapper__target-disabled--disabled");
-  //     }
-  //   } else {
-  //     for (
-  //       let i = 12;
-  //       i <
-  //       document.getElementsByClassName("table__time-wrapper__target-disabled")
-  //         .length;
-  //       i++
-  //     ) {
-  //       document
-  //         .getElementsByClassName("table__time-wrapper__target-disabled")
-  //         [i].removeAttribute("disabled");
-  //       document
-  //         .getElementsByClassName("table__time-wrapper__target-disabled")
-  //         [i].classList.remove(
-  //           "table__time-wrapper__target-disabled--disabled"
-  //         );
-  //     }
-  //   }
-  // }, [data]);
 
   const handleSaveTimesheetBtn = async () => {
     let promises = [];
@@ -1013,145 +601,6 @@ const Timesheet = () => {
   };
 
   useEffect(() => {
-    setGroupBy(["EmployeeName"]);
-    checkAddEmployeeStatus();
-
-    let tempData = [];
-    data.forEach(element => {
-      tempData.push({
-        Name: element.EmployeeName,
-        Start: element.TaskID === -2 ? 0 : toMilli(element.Start),
-        Finish: element.TaskID === -2 ? 0 : toMilli(element.Finish),
-        IsMeal: element.IsMeal,
-        MealStart: element.TaskID === -2 ? toMilli(element.Start) : 0,
-        MealFinish: element.TaskID === -2 ? toMilli(element.Finish) : 0,
-      });
-    });
-
-    let realData = [];
-    for (let i = 0; i < tempData.length; i++) {
-      if (i === 0) {
-        realData.push({
-          Name: tempData[i].Name,
-          Start: tempData[i].Start,
-          Finish: tempData[i].Finish,
-          MealStart: tempData[i].MealStart,
-          MealFinish: tempData[i].MealFinish,
-        });
-      }
-      let check = 0;
-      for (let j = 0; j < realData.length; j++) {
-        if (tempData[i].Name === realData[j].Name) {
-          realData[j].Start =
-            realData[j].Start > tempData[i].Start && tempData[i].Start !== 0
-              ? tempData[i].Start
-              : realData[j].Start;
-          realData[j].Finish =
-            (realData[j].Finish > tempData[i].Finish ||
-              tempData[i].Finish === 0) &&
-            realData[j].Finish !== 0
-              ? realData[j].Finish
-              : tempData[i].Finish;
-          realData[j].MealStart =
-            realData[j].MealStart > tempData[i].MealStart &&
-            tempData[i].MealStart !== 0
-              ? tempData[i].MealStart
-              : realData[j].MealStart;
-          realData[j].MealFinish =
-            (realData[j].MealFinish > tempData[i].MealFinish ||
-              tempData[i].MealFinish === 0) &&
-            realData[j].MealFinish !== 0
-              ? realData[j].MealFinish
-              : tempData[i].MealFinish;
-          check += 1;
-        }
-      }
-      if (check === 0) {
-        realData.push({
-          Name: tempData[i].Name,
-          Start: tempData[i].Start,
-          Finish: tempData[i].Finish,
-          MealStart: tempData[i].MealStart,
-          MealFinish: tempData[i].MealFinish,
-        });
-      }
-    }
-    setDataView(realData);
-  }, [data]);
-
-  const checkAddEmployeeStatus = () => {
-    let check = 0;
-    data.forEach(element => {
-      if (element.EmployeeID === 0) {
-        check = 1;
-      }
-    });
-    if (check) {
-      setCheckDisableAddEmployeeButton(true);
-    } else {
-      setCheckDisableAddEmployeeButton(false);
-    }
-  };
-
-  const checkChange = event => {
-    if (event.target.checked) {
-      for (
-        let i = 12;
-        i <
-        document.getElementsByClassName("table__time-wrapper__target-disabled")
-          .length;
-        i++
-      ) {
-        document
-          .getElementsByClassName("table__time-wrapper__target-disabled")
-          [i].setAttribute("disabled", true);
-        document
-          .getElementsByClassName("table__time-wrapper__target-disabled")
-          [i].classList.add("table__time-wrapper__target-disabled--disabled");
-      }
-      setSameTime();
-    } else {
-      for (
-        let i = 12;
-        i <
-        document.getElementsByClassName("table__time-wrapper__target-disabled")
-          .length;
-        i++
-      ) {
-        document
-          .getElementsByClassName("table__time-wrapper__target-disabled")
-          [i].removeAttribute("disabled");
-        document
-          .getElementsByClassName("table__time-wrapper__target-disabled")
-          [i].classList.remove(
-            "table__time-wrapper__target-disabled--disabled"
-          );
-      }
-    }
-    setCheckState(event.target.checked);
-  };
-
-  const deleteTimesheetRow = TimesheetID => {
-    setData(old =>
-      old.filter(element => {
-        return element.TimesheetID !== TimesheetID;
-      })
-    );
-  };
-
-  const setSameTime = () => {
-    setData(old =>
-      old.map((row, index) => {
-        return {
-          ...old[index],
-          Start: old[0].Start,
-          Finish: old[0].Finish,
-        };
-      })
-    );
-  };
-
-  useEffect(() => {
     if (typeof stateAssignedProject[0] == "undefined") {
       setTimeout(() => {
         setStateNoAssigned(true);
@@ -1182,13 +631,13 @@ const Timesheet = () => {
   };
 
   const [modalIsOpen, setIsOpen] = React.useState(false);
-  function openModal() {
+  const openModal = () => {
     setIsOpen(true);
-  }
+  };
 
-  function closeModal() {
+  const closeModal = () => {
     setIsOpen(false);
-  }
+  };
 
   return (
     <>
@@ -1273,7 +722,6 @@ const Timesheet = () => {
                     </select>
                   </div>
                   <div className={styles["header__right"]}>
-                    {/* {dateCheckEditable(selectedDate) && ( */}
                     <>
                       <Button
                         variant="contained"
@@ -1337,29 +785,11 @@ const Timesheet = () => {
                           color: "#ffffff",
                           marginRight: "10px",
                         }}
-                        onClick={setSameTime}
                       >
                         Set Same Time of All
                       </Button>
-                      {/* <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={checkState}
-                            onChange={checkChange}
-                            name="checkbox"
-                            color="secondary"
-                            id="checkboxForSetSameTime"
-                          />
-                        }
-                        label="Set Same Time of All"
-                        className={
-                          dateCheckEditable(selectedDate)
-                            ? styles["header__right__checkbox"]
-                            : styles["header__right__checkbox-before-sunday"]
-                        }
-                      /> */}
                     </>
-                    {/* )} */}
+
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <DatePicker
                         margin="normal"
@@ -1374,75 +804,7 @@ const Timesheet = () => {
                     </MuiPickersUtilsProvider>
                   </div>
                 </div>
-                <div className={styles["table"]}>
-                  <TableContainer component={Paper}>
-                    <Table>
-                      <TableHead>
-                        {headerGroups.map(headerGroup => (
-                          <TableRow {...headerGroup.getHeaderGroupProps()}>
-                            {headerGroup.headers.map(column => (
-                              <TableCell {...column.getHeaderProps()}>
-                                {/* {column.canGroupBy ? (
-                                  // If the column can be grouped, let's add a toggle
-                                  <span {...column.getGroupByToggleProps()}>
-                                    {column.isGrouped ? "🛑 " : "👊 "}
-                                  </span>
-                                ) : null} */}
-                                {column.render("Header")}
-                              </TableCell>
-                            ))}
-                          </TableRow>
-                        ))}
-                      </TableHead>
-                      <TableBody>
-                        {rows.map((row, i) => {
-                          prepareRow(row);
-                          return (
-                            <TableRow {...row.getRowProps()}>
-                              {row.cells.map(cell => {
-                                return (
-                                  <TableCell {...cell.getCellProps()}>
-                                    {cell.isGrouped ? (
-                                      // If it's a grouped cell, add an expander and row count
-                                      <>
-                                        <span
-                                          {...row.getToggleRowExpandedProps()}
-                                        >
-                                          {row.isExpanded ? (
-                                            <div style={{ float: "left" }}>
-                                              <ArrowDropDownIcon
-                                                className={styles["arrow-btn"]}
-                                              />
-                                            </div>
-                                          ) : (
-                                            <div style={{ float: "left" }}>
-                                              <ArrowRightIcon
-                                                className={styles["arrow-btn"]}
-                                              />
-                                            </div>
-                                          )}
-                                        </span>{" "}
-                                        {cell.render("Cell")} (
-                                        {row.subRows.length})
-                                      </>
-                                    ) : cell.isAggregated ? (
-                                      // If the cell is aggregated, use the Aggregated
-                                      // renderer for cell
-                                      cell.render("Aggregated")
-                                    ) : cell.isPlaceholder ? null : ( // For cells with repeated values, render null
-                                      // Otherwise, just render the regular cell
-                                      cell.render("Cell")
-                                    )}
-                                  </TableCell>
-                                );
-                              })}
-                            </TableRow>
-                          );
-                        })}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                </div>
+                <div className={styles["table"]}></div>
                 {dataView.length === 0 ? (
                   <></>
                 ) : (
@@ -1456,7 +818,7 @@ const Timesheet = () => {
                     >
                       Timesheet Summary
                     </h3>
-                    <table {...getTableProps()}>
+                    <table>
                       <thead>
                         <tr>
                           <th>Name</th>
@@ -1536,7 +898,7 @@ const Timesheet = () => {
                     Timesheet Summary
                   </h2>
                   <div className={styles["modal-table"]}>
-                    <table {...getTableProps()}>
+                    <table>
                       <thead>
                         <tr>
                           <th>Name</th>
