@@ -142,114 +142,6 @@ const Timesheet = () => {
     }
   };
 
-  const columns = useMemo(
-    () => [
-      {
-        Header: "Employee Name",
-        accessor: "EmployeeName",
-        width: 280,
-        aggregate: "count",
-        // Aggregated: ({ value }) => `${value} Names`,
-        canGroupBy: true,
-        isGrouped: true,
-      },
-      {
-        Header: "Task",
-        accessor: "TaskID",
-        width: 340,
-        canGroupBy: false,
-      },
-
-      {
-        Header: "Start Time",
-        accessor: "Start",
-        width: 160,
-        canGroupBy: false,
-      },
-
-      {
-        Header: "End Time",
-        accessor: "Finish",
-        width: 160,
-        canGroupBy: false,
-      },
-      {
-        Header: "Labor Hours",
-        accessor: "Length",
-        width: 120,
-        aggregate: "sum",
-        Aggregated: ({ value, row }) => {
-          let sumLabor = 0;
-          let min = [];
-          let max = [];
-          let meal = { start: 0, finish: 0 };
-
-          row.leafRows.forEach(element => {
-            min.push(
-              new Date(
-                convertInputToTime(element.values.Start).replace(" ", "T")
-              )
-            );
-            max.push(
-              new Date(
-                convertInputToTime(element.values.Finish).replace(" ", "T")
-              )
-            );
-            if (element.values.TaskID === -2) {
-              meal.start = new Date(
-                convertInputToTime(element.values.Start).replace(" ", "T")
-              );
-
-              meal.finish = new Date(
-                convertInputToTime(element.values.Finish).replace(" ", "T")
-              );
-            }
-          });
-
-          sumLabor = (
-            (Math.max(...max) - Math.min(...min) - (meal.finish - meal.start)) /
-            3600000
-          ).toFixed(2);
-
-          // row.leafRows.forEach(element => {
-          //   let x = parseFloat(
-          //     (
-          //       (new Date(
-          //         convertInputToTime(element.values.Finish).replace(" ", "T")
-          //       ) -
-          //         new Date(
-          //           convertInputToTime(element.values.Start).replace(" ", "T")
-          //         )) /
-          //       3600000
-          //     ).toFixed(2)
-          //   );
-          //   if (x < 0) x += 24;
-          //   sumLabor += x;
-          // });
-
-          return (
-            <div
-              className={classNames([
-                styles["table__labor-hours-input"],
-                "table__labor-hours-input",
-              ])}
-            >
-              {sumLabor} (total)
-            </div>
-          );
-        },
-        canGroupBy: false,
-      },
-      {
-        Header: "Action", //Delete Timesheet
-        accessor: "TimesheetID",
-        width: 90,
-        canGroupBy: false,
-      },
-    ],
-    []
-  );
-
   const [data, setData] = useState(() => []);
   const [dataView, setDataView] = useState(() => []);
 
@@ -367,8 +259,6 @@ const Timesheet = () => {
           timeout: 5000, // 5 seconds timeout
           headers: {},
         }).then(result => {
-          setGroupBy(["EmployeeID"]);
-
           setData(result.data.result[0]);
           dataEmployees = result.data.result[1];
           dataTasks = result.data.result[2];
@@ -639,10 +529,76 @@ const Timesheet = () => {
     setIsOpen(false);
   };
 
+  useEffect(() => {
+    let tempData = [];
+    data.forEach(element => {
+      tempData.push({
+        Name: element.EmployeeName,
+        Start: element.TaskID === -2 ? 0 : toMilli(element.Start),
+        Finish: element.TaskID === -2 ? 0 : toMilli(element.Finish),
+        IsMeal: element.IsMeal,
+        MealStart: element.TaskID === -2 ? toMilli(element.Start) : 0,
+        MealFinish: element.TaskID === -2 ? toMilli(element.Finish) : 0,
+      });
+    });
+
+    let realData = [];
+    for (let i = 0; i < tempData.length; i++) {
+      if (i === 0) {
+        realData.push({
+          Name: tempData[i].Name,
+          Start: tempData[i].Start,
+          Finish: tempData[i].Finish,
+          MealStart: tempData[i].MealStart,
+          MealFinish: tempData[i].MealFinish,
+        });
+      }
+      let check = 0;
+      for (let j = 0; j < realData.length; j++) {
+        if (tempData[i].Name === realData[j].Name) {
+          realData[j].Start =
+            realData[j].Start > tempData[i].Start && tempData[i].Start !== 0
+              ? tempData[i].Start
+              : realData[j].Start;
+          realData[j].Finish =
+            (realData[j].Finish > tempData[i].Finish ||
+              tempData[i].Finish === 0) &&
+            realData[j].Finish !== 0
+              ? realData[j].Finish
+              : tempData[i].Finish;
+          realData[j].MealStart =
+            realData[j].MealStart > tempData[i].MealStart &&
+            tempData[i].MealStart !== 0
+              ? tempData[i].MealStart
+              : realData[j].MealStart;
+          realData[j].MealFinish =
+            (realData[j].MealFinish > tempData[i].MealFinish ||
+              tempData[i].MealFinish === 0) &&
+            realData[j].MealFinish !== 0
+              ? realData[j].MealFinish
+              : tempData[i].MealFinish;
+          check += 1;
+        }
+      }
+      if (check === 0) {
+        realData.push({
+          Name: tempData[i].Name,
+          Start: tempData[i].Start,
+          Finish: tempData[i].Finish,
+          MealStart: tempData[i].MealStart,
+          MealFinish: tempData[i].MealFinish,
+        });
+      }
+    }
+    setDataView(realData);
+  }, [data]);
+
   return (
     <>
       {console.log("data")}
       {console.log(data)}
+      {console.log("dataView")}
+      {console.log(dataView)}
       <Head>
         <title>Daily Report</title>
         <link rel="icon" href="/favicon.ico" />
@@ -786,7 +742,7 @@ const Timesheet = () => {
                           marginRight: "10px",
                         }}
                       >
-                        Set Same Time of All
+                        Set Same Task
                       </Button>
                     </>
 
@@ -804,7 +760,7 @@ const Timesheet = () => {
                     </MuiPickersUtilsProvider>
                   </div>
                 </div>
-                <div className={styles["table"]}></div>
+
                 {dataView.length === 0 ? (
                   <></>
                 ) : (
@@ -873,74 +829,6 @@ const Timesheet = () => {
                     </table>
                   </div>
                 )}
-                <div className={styles["tablet-button-wrapper"]}>
-                  <Button
-                    className={styles["tablet-button"]}
-                    onClick={openModal}
-                    variant="contained"
-                    size="small"
-                  >
-                    Summary
-                  </Button>
-                </div>
-                <Modal
-                  isOpen={modalIsOpen}
-                  onRequestClose={closeModal}
-                  // style={customStylesModal}
-                >
-                  <h2
-                    style={{
-                      textAlign: "center",
-                      fontFamily: "sans-serif",
-                      color: "#1c73e6",
-                    }}
-                  >
-                    Timesheet Summary
-                  </h2>
-                  <div className={styles["modal-table"]}>
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>Name</th>
-                          <th>Start</th>
-                          <th>Finish</th>
-                          <th>Meal Start</th>
-                          <th>Meal Finish</th>
-                          <th>Labor Hours</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {dataView.map(cell => {
-                          return (
-                            <tr key={cell.Name}>
-                              <td>{cell.Name}</td>
-                              <td style={{ textAlign: "right", width: "80px" }}>
-                                {moment(cell.Start).format("LT")}
-                              </td>
-                              <td style={{ textAlign: "right", width: "80px" }}>
-                                {moment(cell.Finish).format("LT")}
-                              </td>
-                              <td style={{ textAlign: "right", width: "80px" }}>
-                                {moment(cell.MealStart).format("LT")}
-                              </td>
-                              <td style={{ textAlign: "right", width: "80px" }}>
-                                {moment(cell.MealFinish).format("LT")}
-                              </td>
-                              <td style={{ textAlign: "right", width: "90px" }}>
-                                {(
-                                  (cell.Finish -
-                                    cell.Start -
-                                    (cell.MealFinish - cell.MealStart)) /
-                                  3600000
-                                ).toFixed(2)}
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-                </Modal>
               </>
             )}
           </div>

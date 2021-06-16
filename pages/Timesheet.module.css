@@ -485,7 +485,7 @@
   /* background-color: #ddd; */
   background-color: #bee9f0;
   border: 1px solid #6ea7ec;
-  cursor: default;
+  cursor: pointer;
 }
 
 .second-table thead th,
