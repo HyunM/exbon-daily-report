@@ -60,7 +60,7 @@ let afterSundayCheck = true;
 let dataEmployees = [];
 let dataTasks = [];
 let dataLatest = [];
-let tid = 0;
+let id = 0;
 
 const convertInputToTime = time => {
   let match = inputTime.filter(data => data.input === time);
@@ -143,6 +143,15 @@ const Timesheet = () => {
   };
 
   const [data, setData] = useState(() => []);
+  const [dataTable, setDataTable] = useState(() => [
+    {
+      Id: id++,
+      EmployeeID: 0,
+      TaskID: 0,
+      StartTime: "07:00AM",
+      EndTime: "04:00PM",
+    },
+  ]);
   const [dataView, setDataView] = useState(() => []);
 
   const convertTaskNameToID = name => {
@@ -460,36 +469,6 @@ const Timesheet = () => {
     }));
   };
 
-  const addTimesheetRow = () => {
-    setData(data => [
-      ...data,
-      {
-        TimesheetID: "new" + ++tid,
-        EmployeeID: 0,
-        EmployeeName: "",
-        Date: formatDate(selectedDate),
-        TaskID: 0,
-        Start: "07:00AM",
-        Finish: "04:00PM",
-      },
-    ]);
-  };
-
-  const addEmployeeRow = name => {
-    setData(data => [
-      ...data,
-      {
-        TimesheetID: "new" + ++tid,
-        EmployeeID: convertEmployeeNameToID(name),
-        EmployeeName: name,
-        Date: formatDate(selectedDate),
-        TaskID: 0,
-        Start: "07:00AM",
-        Finish: "04:00PM",
-      },
-    ]);
-  };
-
   useEffect(() => {
     if (typeof stateAssignedProject[0] == "undefined") {
       setTimeout(() => {
@@ -593,12 +572,82 @@ const Timesheet = () => {
     setDataView(realData);
   }, [data]);
 
+  const clickAddTaskBtn = () => {
+    setDataTable(old => [
+      ...old,
+      {
+        Id: id++,
+        EmployeeID: 0,
+        TaskID: 0,
+        StartTime: "07:00AM",
+        EndTime: "04:00PM",
+      },
+    ]);
+  };
+
+  const clickDeleteTaskBtn = Id => {
+    setDataTable(old =>
+      old.filter(element => {
+        return element.Id !== Id;
+      })
+    );
+  };
+
+  const changeTaskID = (Id, value) => {
+    // let tempData = dataTable;
+
+    // tempData.forEach(element => {
+    //   if (element.Id == Id) {
+    //     element.TaskID = value;
+    //   }
+    // });
+    // console.log(tempData);
+
+    setDataTable(
+      [...dataTable].map(object => {
+        if (object.Id === Id) {
+          return {
+            ...object,
+            TaskID: value,
+          };
+        } else return object;
+      })
+    );
+
+    // setData(
+    //   [...data].map(object => {
+    //     if (object.username === user.username) {
+    //       return {
+    //         ...object,
+    //         favoriteFood: "Potatos",
+    //         someNewRandomAttribute: "X",
+    //       };
+    //     } else return object;
+    //   })
+    // );
+    // setData(old =>
+    //   old.map((row, index) => {
+    //     if (row.TimesheetID === TimesheetID) {
+    //       return {
+    //         ...old[index],
+    //         [columnId]: value,
+    //       };
+    //     }
+    //     return row;
+    //   })
+    // );
+  };
+
   return (
     <>
-      {console.log("data")}
+      {/* {console.log("data")}
       {console.log(data)}
       {console.log("dataView")}
       {console.log(dataView)}
+      {console.log("dataTable")}
+      {console.log(dataTable)} */}
+      {console.log("dataTable")}
+      {console.log(dataTable)}
       <Head>
         <title>Daily Report</title>
         <link rel="icon" href="/favicon.ico" />
@@ -703,7 +752,6 @@ const Timesheet = () => {
                             ? styles["header__right__add-btn"]
                             : styles["header__right__add-btn-before-sunday"]
                         }
-                        onClick={addTimesheetRow}
                         startIcon={<AddIcon />}
                         disabled={checkDisableAddEmployeeButton}
                       >
@@ -763,7 +811,7 @@ const Timesheet = () => {
                 <div>
                   <div className={styles["employee-dropdown-wrapper"]}>
                     <select className={styles["employee-dropdown"]}>
-                      <option>--------Choose Employee--------</option>
+                      <option value="0">--------Choose Employee--------</option>
                       {dataEmployees.map(element => {
                         return (
                           <option key={element.EmployeeID}>
@@ -772,7 +820,7 @@ const Timesheet = () => {
                         );
                       })}
                     </select>
-                    <Button>Add Task</Button>
+                    <Button onClick={clickAddTaskBtn}>Add Task</Button>
                   </div>
                   <div className={styles["table"]}>
                     <TableContainer component={Paper}>
@@ -787,167 +835,195 @@ const Timesheet = () => {
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          <TableRow>
-                            <TableCell>
-                              <div>
-                                <select className={styles["task-dropdown"]}>
-                                  <option>
-                                    -----------------------Choose
-                                    Task----------------------
-                                  </option>
-
-                                  {dataTasks.map(element => {
-                                    return (
-                                      <option key={element.TaskID}>
-                                        {element.Name}
+                          {dataTable.map(element => {
+                            return (
+                              <TableRow key={element.Id}>
+                                <TableCell>
+                                  <div>
+                                    <select
+                                      className={styles["task-dropdown"]}
+                                      value={element.TaskID}
+                                      onChange={e =>
+                                        changeTaskID(element.Id, e.target.value)
+                                      }
+                                    >
+                                      <option value="0">
+                                        -----------------------Choose
+                                        Task----------------------
                                       </option>
-                                    );
-                                  })}
-                                </select>
-                              </div>
-                            </TableCell>
-                            <TableCell>
-                              <div className={styles["table__time-wrapper"]}>
-                                <InputMask
-                                  className={
-                                    afterSundayCheck
-                                      ? classNames(
-                                          "table__time-wrapper__target-disabled",
-                                          styles[
-                                            "table__time-wrapper__hour-input"
-                                          ]
-                                        )
-                                      : classNames(
-                                          "table__time-wrapper__target-disabled",
-                                          styles[
-                                            "table__time-wrapper__hour-input-before-sunday"
-                                          ]
-                                        )
-                                  }
-                                  mask="29"
-                                  placeholder="01~12"
-                                  formatChars={{
-                                    2: "[0-1]",
-                                    9: "[0-9]",
-                                  }}
-                                  disabled={afterSundayCheck ? false : true}
-                                  defaultValue="07"
-                                />
-                                :
-                                <InputMask
-                                  className={
-                                    afterSundayCheck
-                                      ? classNames(
-                                          "table__time-wrapper__target-disabled",
-                                          styles[
-                                            "table__time-wrapper__min-input"
-                                          ]
-                                        )
-                                      : classNames(
-                                          "table__time-wrapper__target-disabled",
-                                          styles[
-                                            "table__time-wrapper__min-input-before-sunday"
-                                          ]
-                                        )
-                                  }
-                                  placeholder="00~50"
-                                  mask="50"
-                                  formatChars={{
-                                    5: "[0-5]",
-                                  }}
-                                  disabled={afterSundayCheck ? false : true}
-                                  defaultValue="00"
-                                />
-                                <select
-                                  className={classNames(
-                                    "table__time-wrapper__target-disabled",
-                                    styles["table__ampm-dropdown"]
-                                  )}
-                                  disabled={afterSundayCheck ? false : true}
-                                >
-                                  <option value="AM">AM</option>
-                                  <option value="PM">PM</option>
-                                </select>
-                              </div>
-                            </TableCell>
-                            <TableCell>
-                              <div className={styles["table__time-wrapper"]}>
-                                <InputMask
-                                  className={
-                                    afterSundayCheck
-                                      ? classNames(
-                                          "table__time-wrapper__target-disabled",
-                                          styles[
-                                            "table__time-wrapper__hour-input"
-                                          ]
-                                        )
-                                      : classNames(
-                                          "table__time-wrapper__target-disabled",
-                                          styles[
-                                            "table__time-wrapper__hour-input-before-sunday"
-                                          ]
-                                        )
-                                  }
-                                  mask="29"
-                                  placeholder="01~12"
-                                  formatChars={{
-                                    2: "[0-1]",
-                                    9: "[0-9]",
-                                  }}
-                                  disabled={afterSundayCheck ? false : true}
-                                  defaultValue="07"
-                                />
-                                :
-                                <InputMask
-                                  className={
-                                    afterSundayCheck
-                                      ? classNames(
-                                          "table__time-wrapper__target-disabled",
-                                          styles[
-                                            "table__time-wrapper__min-input"
-                                          ]
-                                        )
-                                      : classNames(
-                                          "table__time-wrapper__target-disabled",
-                                          styles[
-                                            "table__time-wrapper__min-input-before-sunday"
-                                          ]
-                                        )
-                                  }
-                                  placeholder="00~50"
-                                  mask="50"
-                                  formatChars={{
-                                    5: "[0-5]",
-                                  }}
-                                  disabled={afterSundayCheck ? false : true}
-                                  defaultValue="00"
-                                />
-                                <select
-                                  className={classNames(
-                                    "table__time-wrapper__target-disabled",
-                                    styles["table__ampm-dropdown"]
-                                  )}
-                                  disabled={afterSundayCheck ? false : true}
-                                >
-                                  <option value="AM">AM</option>
-                                  <option value="PM">PM</option>
-                                </select>
-                              </div>
-                            </TableCell>
-                            <TableCell>
-                              <div>
-                                <span>8.00</span>
-                              </div>
-                            </TableCell>
-                            <TableCell>
-                              <div className={styles["table__delete-input"]}>
-                                <DeleteForeverIcon
-                                  color="action"
-                                  className={styles["table__delete-icon"]}
-                                ></DeleteForeverIcon>
-                              </div>
-                            </TableCell>
-                          </TableRow>
+
+                                      {dataTasks.map(elementTask => {
+                                        return (
+                                          <option
+                                            key={elementTask.TaskID}
+                                            value={elementTask.TaskID}
+                                          >
+                                            {elementTask.Name}
+                                          </option>
+                                        );
+                                      })}
+                                    </select>
+                                  </div>
+                                </TableCell>
+                                <TableCell>
+                                  <div
+                                    className={styles["table__time-wrapper"]}
+                                  >
+                                    <InputMask
+                                      className={
+                                        afterSundayCheck
+                                          ? classNames(
+                                              "table__time-wrapper__target-disabled",
+                                              styles[
+                                                "table__time-wrapper__hour-input"
+                                              ]
+                                            )
+                                          : classNames(
+                                              "table__time-wrapper__target-disabled",
+                                              styles[
+                                                "table__time-wrapper__hour-input-before-sunday"
+                                              ]
+                                            )
+                                      }
+                                      mask="29"
+                                      placeholder="01~12"
+                                      formatChars={{
+                                        2: "[0-1]",
+                                        9: "[0-9]",
+                                      }}
+                                      disabled={afterSundayCheck ? false : true}
+                                      defaultValue="07"
+                                      value={element.StartTime.slice(0, 2)}
+                                    />
+                                    :
+                                    <InputMask
+                                      className={
+                                        afterSundayCheck
+                                          ? classNames(
+                                              "table__time-wrapper__target-disabled",
+                                              styles[
+                                                "table__time-wrapper__min-input"
+                                              ]
+                                            )
+                                          : classNames(
+                                              "table__time-wrapper__target-disabled",
+                                              styles[
+                                                "table__time-wrapper__min-input-before-sunday"
+                                              ]
+                                            )
+                                      }
+                                      placeholder="00~50"
+                                      mask="50"
+                                      formatChars={{
+                                        5: "[0-5]",
+                                      }}
+                                      disabled={afterSundayCheck ? false : true}
+                                      defaultValue="00"
+                                      value={element.StartTime.slice(3, 5)}
+                                    />
+                                    <select
+                                      className={classNames(
+                                        "table__time-wrapper__target-disabled",
+                                        styles["table__ampm-dropdown"]
+                                      )}
+                                      disabled={afterSundayCheck ? false : true}
+                                      value={element.StartTime.slice(5, 7)}
+                                    >
+                                      <option value="AM">AM</option>
+                                      <option value="PM">PM</option>
+                                    </select>
+                                  </div>
+                                </TableCell>
+                                <TableCell>
+                                  <div
+                                    className={styles["table__time-wrapper"]}
+                                  >
+                                    <InputMask
+                                      className={
+                                        afterSundayCheck
+                                          ? classNames(
+                                              "table__time-wrapper__target-disabled",
+                                              styles[
+                                                "table__time-wrapper__hour-input"
+                                              ]
+                                            )
+                                          : classNames(
+                                              "table__time-wrapper__target-disabled",
+                                              styles[
+                                                "table__time-wrapper__hour-input-before-sunday"
+                                              ]
+                                            )
+                                      }
+                                      mask="29"
+                                      placeholder="01~12"
+                                      formatChars={{
+                                        2: "[0-1]",
+                                        9: "[0-9]",
+                                      }}
+                                      disabled={afterSundayCheck ? false : true}
+                                      defaultValue="04"
+                                      value={element.EndTime.slice(0, 2)}
+                                    />
+                                    :
+                                    <InputMask
+                                      className={
+                                        afterSundayCheck
+                                          ? classNames(
+                                              "table__time-wrapper__target-disabled",
+                                              styles[
+                                                "table__time-wrapper__min-input"
+                                              ]
+                                            )
+                                          : classNames(
+                                              "table__time-wrapper__target-disabled",
+                                              styles[
+                                                "table__time-wrapper__min-input-before-sunday"
+                                              ]
+                                            )
+                                      }
+                                      placeholder="00~50"
+                                      mask="50"
+                                      formatChars={{
+                                        5: "[0-5]",
+                                      }}
+                                      disabled={afterSundayCheck ? false : true}
+                                      defaultValue="00"
+                                      value={element.EndTime.slice(3, 5)}
+                                    />
+                                    <select
+                                      className={classNames(
+                                        "table__time-wrapper__target-disabled",
+                                        styles["table__ampm-dropdown"]
+                                      )}
+                                      disabled={afterSundayCheck ? false : true}
+                                      value={element.EndTime.slice(5, 7)}
+                                    >
+                                      <option value="AM">AM</option>
+                                      <option value="PM">PM</option>
+                                    </select>
+                                  </div>
+                                </TableCell>
+                                <TableCell>
+                                  <div>
+                                    <span>8.00</span>
+                                  </div>
+                                </TableCell>
+                                <TableCell>
+                                  <div
+                                    className={styles["table__delete-input"]}
+                                  >
+                                    <DeleteForeverIcon
+                                      color="action"
+                                      className={styles["table__delete-icon"]}
+                                      onClick={() =>
+                                        clickDeleteTaskBtn(element.Id)
+                                      }
+                                    ></DeleteForeverIcon>
+                                  </div>
+                                </TableCell>
+                              </TableRow>
+                            );
+                          })}
                         </TableBody>
                       </Table>
                     </TableContainer>
