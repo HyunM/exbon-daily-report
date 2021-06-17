@@ -1113,7 +1113,51 @@ const Timesheet = () => {
                                 </TableCell>
                                 <TableCell>
                                   <div>
-                                    <span>8.00</span>
+                                    <span>
+                                      {(
+                                        (new Date(
+                                          convertInputToTime(
+                                            element.EndTime
+                                          ).replace(" ", "T")
+                                        ) -
+                                          new Date(
+                                            convertInputToTime(
+                                              element.StartTime
+                                            ).replace(" ", "T")
+                                          )) /
+                                        3600000
+                                      ).toFixed(2) > 0
+                                        ? (
+                                            (new Date(
+                                              convertInputToTime(
+                                                element.EndTime
+                                              ).replace(" ", "T")
+                                            ) -
+                                              new Date(
+                                                convertInputToTime(
+                                                  element.StartTime
+                                                ).replace(" ", "T")
+                                              )) /
+                                            3600000
+                                          ).toFixed(2)
+                                        : (
+                                            parseFloat(
+                                              (
+                                                (new Date(
+                                                  convertInputToTime(
+                                                    element.EndTime
+                                                  ).replace(" ", "T")
+                                                ) -
+                                                  new Date(
+                                                    convertInputToTime(
+                                                      element.StartTime
+                                                    ).replace(" ", "T")
+                                                  )) /
+                                                3600000
+                                              ).toFixed(2)
+                                            ) + 24
+                                          ).toFixed(2)}
+                                    </span>
                                   </div>
                                 </TableCell>
                                 <TableCell>
