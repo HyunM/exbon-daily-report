@@ -154,6 +154,9 @@ const Timesheet = () => {
   ]);
   const [dataView, setDataView] = useState(() => []);
   const [selectedEmployee, setSelectedEmployee] = useState(() => 0);
+  const [selectedSummaryEmployee, setSelectedSummaryEmployee] = useState(
+    () => 0
+  );
 
   const convertTaskNameToID = name => {
     let task = dataTasks.find(task => name === task.Name);
@@ -270,6 +273,15 @@ const Timesheet = () => {
           headers: {},
         }).then(result => {
           setData(result.data.result[0]);
+          setDataTable([
+            {
+              Id: id++,
+              EmployeeID: 0,
+              TaskID: 0,
+              StartTime: "07:00AM",
+              EndTime: "04:00PM",
+            },
+          ]);
           dataEmployees = result.data.result[1];
           dataTasks = result.data.result[2];
           dataLatest = result.data.result[3];
@@ -513,6 +525,7 @@ const Timesheet = () => {
     let tempData = [];
     data.forEach(element => {
       tempData.push({
+        EmployeeID: element.EmployeeID,
         Name: element.EmployeeName,
         Start: element.TaskID === -2 ? 0 : toMilli(element.Start),
         Finish: element.TaskID === -2 ? 0 : toMilli(element.Finish),
@@ -526,6 +539,7 @@ const Timesheet = () => {
     for (let i = 0; i < tempData.length; i++) {
       if (i === 0) {
         realData.push({
+          EmployeeID: tempData[i].EmployeeID,
           Name: tempData[i].Name,
           Start: tempData[i].Start,
           Finish: tempData[i].Finish,
@@ -562,6 +576,7 @@ const Timesheet = () => {
       }
       if (check === 0) {
         realData.push({
+          EmployeeID: tempData[i].EmployeeID,
           Name: tempData[i].Name,
           Start: tempData[i].Start,
           Finish: tempData[i].Finish,
@@ -1209,8 +1224,31 @@ const Timesheet = () => {
                       <tbody>
                         {dataView.map(cell => {
                           return (
-                            <tr key={cell.Name}>
-                              <td>{cell.Name}</td>
+                            <tr
+                              key={cell.Name}
+                              style={
+                                cell.EmployeeID === selectedSummaryEmployee
+                                  ? {
+                                      backgroundColor: "#95b5e0",
+                                    }
+                                  : {}
+                              }
+                            >
+                              <td
+                                onClick={() =>
+                                  setSelectedSummaryEmployee(cell.EmployeeID)
+                                }
+                                style={
+                                  cell.EmployeeID === selectedSummaryEmployee
+                                    ? {
+                                        color: "#ffffff",
+                                        fontWeight: "500",
+                                      }
+                                    : {}
+                                }
+                              >
+                                {cell.Name}
+                              </td>
                               <td style={{ textAlign: "right", width: "80px" }}>
                                 {moment(cell.Start).format("LT") ===
                                 moment(cell.Finish).format("LT")

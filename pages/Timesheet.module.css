@@ -410,7 +410,7 @@
 .second-table tbody tr:hover,
 .modal-table tbody tr:hover {
   /* background-color: #ddd; */
-  background-color: #bee9f0;
+  /* background-color: #bee9f0; */
   border: 1px solid #6ea7ec;
   cursor: pointer;
 }
