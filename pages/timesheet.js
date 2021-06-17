@@ -1235,9 +1235,15 @@ const Timesheet = () => {
                               }
                             >
                               <td
-                                onClick={() =>
-                                  setSelectedSummaryEmployee(cell.EmployeeID)
-                                }
+                                onClick={() => {
+                                  if (
+                                    cell.EmployeeID === selectedSummaryEmployee
+                                  ) {
+                                    setSelectedSummaryEmployee(0);
+                                  } else {
+                                    setSelectedSummaryEmployee(cell.EmployeeID);
+                                  }
+                                }}
                                 style={
                                   cell.EmployeeID === selectedSummaryEmployee
                                     ? {
