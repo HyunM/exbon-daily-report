@@ -113,7 +113,7 @@
 }
 
 .table {
-  width: 800px;
+  width: 730px;
   margin-left: auto;
   margin-right: auto;
   overflow: auto;
@@ -367,10 +367,11 @@
 
 .second-table,
 .modal-table {
+  width: 730px;
   margin-top: 30px;
   visibility: visible;
-  overflow: auto;
-  margin-left: 4px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .second-table table,
@@ -429,9 +430,33 @@
 }
 
 .employee-dropdown-wrapper {
-  width: 800px;
+  width: 730px;
   margin-left: auto;
   margin-right: auto;
   margin-top: 20px;
   margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.employee-dropdown {
+  display: inline-block;
+  height: 25px;
+  width: 200px;
+  color: #74646e;
+  border: 1px solid #c8bfc4;
+  border-radius: 4px;
+  box-shadow: inset 1px 1px 2px #ddd8dc;
+  background: #fff;
+}
+
+.task-dropdown {
+  display: inline-block;
+  height: 25px;
+  width: 300px;
+  color: #74646e;
+  border: 1px solid #c8bfc4;
+  border-radius: 4px;
+  box-shadow: inset 1px 1px 2px #ddd8dc;
+  background: #fff;
 }

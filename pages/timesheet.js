@@ -762,30 +762,47 @@ const Timesheet = () => {
                 </div>
                 <div>
                   <div className={styles["employee-dropdown-wrapper"]}>
-                    <select>
-                      <option>----Select Employee----</option>
-                      <option>2</option>
+                    <select className={styles["employee-dropdown"]}>
+                      <option>--------Choose Employee--------</option>
+                      {dataEmployees.map(element => {
+                        return (
+                          <option key={element.EmployeeID}>
+                            {element.EmployeeName}
+                          </option>
+                        );
+                      })}
                     </select>
+                    <Button>Add Task</Button>
                   </div>
                   <div className={styles["table"]}>
                     <TableContainer component={Paper}>
                       <Table>
                         <TableHead>
                           <TableRow>
-                            <TableCell>Task</TableCell>
-                            <TableCell>Start Time</TableCell>
-                            <TableCell>End Time</TableCell>
-                            <TableCell>Hours</TableCell>
-                            <TableCell>Action</TableCell>
+                            <TableCell width={300}>Task</TableCell>
+                            <TableCell widht={100}>Start Time</TableCell>
+                            <TableCell widht={100}>End Time</TableCell>
+                            <TableCell widht={70}>Hours</TableCell>
+                            <TableCell widht={10}></TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
                           <TableRow>
                             <TableCell>
                               <div>
-                                <select>
-                                  <option>----Select Task----</option>
-                                  <option>1</option>
+                                <select className={styles["task-dropdown"]}>
+                                  <option>
+                                    -----------------------Choose
+                                    Task----------------------
+                                  </option>
+
+                                  {dataTasks.map(element => {
+                                    return (
+                                      <option key={element.TaskID}>
+                                        {element.Name}
+                                      </option>
+                                    );
+                                  })}
                                 </select>
                               </div>
                             </TableCell>
@@ -950,7 +967,7 @@ const Timesheet = () => {
                     >
                       Timesheet Summary
                     </h3>
-                    <table>
+                    <table style={{ width: "100%" }}>
                       <thead>
                         <tr>
                           <th>Name</th>
