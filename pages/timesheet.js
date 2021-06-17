@@ -587,17 +587,6 @@ const Timesheet = () => {
   };
 
   const clickDeleteTaskBtn = Id => {
-    // if (dataTable.length === 1) {
-    //   setDataTable(old => [
-    //     {
-    //       Id: id++,
-    //       EmployeeID: old[0].EmployeeID,
-    //       TaskID: 0,
-    //       StartTime: "07:00AM",
-    //       EndTime: "04:00PM",
-    //     },
-    //   ]);
-    // }
     setDataTable(old =>
       old.filter(element => {
         return element.Id !== Id;
@@ -618,15 +607,84 @@ const Timesheet = () => {
     );
   };
 
-  const changeEmployee = value => {
-    setDataTable(
-      [...dataTable].map(object => {
-        return {
-          ...object,
-          EmployeeID: value,
-        };
-      })
-    );
+  const changeTime = (Id, when, format, timeValue) => {
+    if (when === "start") {
+      if (format === "hh") {
+        setDataTable(
+          [...dataTable].map(object => {
+            if (object.Id === Id) {
+              return {
+                ...object,
+                StartTime: timeValue + object.StartTime.slice(2, 7),
+              };
+            } else return object;
+          })
+        );
+      } else if (format === "mm") {
+        setDataTable(
+          [...dataTable].map(object => {
+            if (object.Id === Id) {
+              return {
+                ...object,
+                StartTime:
+                  object.StartTime.slice(0, 3) +
+                  timeValue +
+                  object.StartTime.slice(5, 7),
+              };
+            } else return object;
+          })
+        );
+      } else {
+        setDataTable(
+          [...dataTable].map(object => {
+            if (object.Id === Id) {
+              return {
+                ...object,
+                StartTime: object.StartTime.slice(0, 5) + timeValue,
+              };
+            } else return object;
+          })
+        );
+      }
+    } else {
+      if (format === "hh") {
+        setDataTable(
+          [...dataTable].map(object => {
+            if (object.Id === Id) {
+              return {
+                ...object,
+                EndTime: timeValue + object.EndTime.slice(2, 7),
+              };
+            } else return object;
+          })
+        );
+      } else if (format === "mm") {
+        setDataTable(
+          [...dataTable].map(object => {
+            if (object.Id === Id) {
+              return {
+                ...object,
+                EndTime:
+                  object.EndTime.slice(0, 3) +
+                  timeValue +
+                  object.EndTime.slice(5, 7),
+              };
+            } else return object;
+          })
+        );
+      } else {
+        setDataTable(
+          [...dataTable].map(object => {
+            if (object.Id === Id) {
+              return {
+                ...object,
+                EndTime: object.EndTime.slice(0, 5) + timeValue,
+              };
+            } else return object;
+          })
+        );
+      }
+    }
   };
 
   return (
@@ -808,6 +866,10 @@ const Timesheet = () => {
                     >
                       <option value="0">--------Choose Employee--------</option>
                       {dataEmployees.map(element => {
+                        for (let i = 0; i < data.length; i++) {
+                          if (element.EmployeeID === data[i].EmployeeID)
+                            return <></>;
+                        }
                         return (
                           <option
                             key={element.EmployeeID}
@@ -892,6 +954,14 @@ const Timesheet = () => {
                                       disabled={afterSundayCheck ? false : true}
                                       defaultValue="07"
                                       value={element.StartTime.slice(0, 2)}
+                                      onChange={e =>
+                                        changeTime(
+                                          element.Id,
+                                          "start",
+                                          "hh",
+                                          e.target.value
+                                        )
+                                      }
                                     />
                                     :
                                     <InputMask
@@ -918,6 +988,14 @@ const Timesheet = () => {
                                       disabled={afterSundayCheck ? false : true}
                                       defaultValue="00"
                                       value={element.StartTime.slice(3, 5)}
+                                      onChange={e =>
+                                        changeTime(
+                                          element.Id,
+                                          "start",
+                                          "mm",
+                                          e.target.value
+                                        )
+                                      }
                                     />
                                     <select
                                       className={classNames(
@@ -926,6 +1004,14 @@ const Timesheet = () => {
                                       )}
                                       disabled={afterSundayCheck ? false : true}
                                       value={element.StartTime.slice(5, 7)}
+                                      onChange={e =>
+                                        changeTime(
+                                          element.Id,
+                                          "start",
+                                          "AP",
+                                          e.target.value
+                                        )
+                                      }
                                     >
                                       <option value="AM">AM</option>
                                       <option value="PM">PM</option>
@@ -961,6 +1047,14 @@ const Timesheet = () => {
                                       disabled={afterSundayCheck ? false : true}
                                       defaultValue="04"
                                       value={element.EndTime.slice(0, 2)}
+                                      onChange={e =>
+                                        changeTime(
+                                          element.Id,
+                                          "end",
+                                          "hh",
+                                          e.target.value
+                                        )
+                                      }
                                     />
                                     :
                                     <InputMask
@@ -987,6 +1081,14 @@ const Timesheet = () => {
                                       disabled={afterSundayCheck ? false : true}
                                       defaultValue="00"
                                       value={element.EndTime.slice(3, 5)}
+                                      onChange={e =>
+                                        changeTime(
+                                          element.Id,
+                                          "end",
+                                          "mm",
+                                          e.target.value
+                                        )
+                                      }
                                     />
                                     <select
                                       className={classNames(
@@ -995,6 +1097,14 @@ const Timesheet = () => {
                                       )}
                                       disabled={afterSundayCheck ? false : true}
                                       value={element.EndTime.slice(5, 7)}
+                                      onChange={e =>
+                                        changeTime(
+                                          element.Id,
+                                          "end",
+                                          "AP",
+                                          e.target.value
+                                        )
+                                      }
                                     >
                                       <option value="AM">AM</option>
                                       <option value="PM">PM</option>
