@@ -874,27 +874,53 @@ const Timesheet = () => {
                 </div>
                 <div>
                   <div className={styles["employee-dropdown-wrapper"]}>
-                    <select
-                      className={styles["employee-dropdown"]}
-                      value={selectedEmployee}
-                      onChange={e => setSelectedEmployee(e.target.value)}
-                    >
-                      <option value="0">--------Choose Employee--------</option>
-                      {dataEmployees.map(element => {
-                        for (let i = 0; i < data.length; i++) {
-                          if (element.EmployeeID === data[i].EmployeeID)
-                            return <></>;
-                        }
-                        return (
-                          <option
-                            key={element.EmployeeID}
-                            value={element.EmployeeID}
-                          >
-                            {element.EmployeeName}
-                          </option>
-                        );
-                      })}
-                    </select>
+                    {!selectedSummaryEmployee ? (
+                      <select
+                        className={styles["employee-dropdown"]}
+                        value={selectedEmployee}
+                        onChange={e => setSelectedEmployee(e.target.value)}
+                      >
+                        <option value="0">
+                          --------Choose Employee--------
+                        </option>
+                        {dataEmployees.map(element => {
+                          for (let i = 0; i < data.length; i++) {
+                            if (element.EmployeeID === data[i].EmployeeID)
+                              return <></>;
+                          }
+                          return (
+                            <option
+                              key={element.EmployeeID}
+                              value={element.EmployeeID}
+                            >
+                              {element.EmployeeName}
+                            </option>
+                          );
+                        })}
+                      </select>
+                    ) : (
+                      <select
+                        className={styles["employee-dropdown"]}
+                        value={selectedSummaryEmployee}
+                        onChange={e => setSelectedEmployee(e.target.value)}
+                        disabled={true}
+                      >
+                        <option value="0">
+                          --------Choose Employee--------
+                        </option>
+                        {dataEmployees.map(element => {
+                          return (
+                            <option
+                              key={element.EmployeeID}
+                              value={element.EmployeeID}
+                            >
+                              {element.EmployeeName}
+                            </option>
+                          );
+                        })}
+                      </select>
+                    )}
+
                     <Button onClick={clickAddTaskBtn}>Add Task</Button>
                   </div>
                   <div className={styles["table"]}>
@@ -1240,8 +1266,10 @@ const Timesheet = () => {
                                     cell.EmployeeID === selectedSummaryEmployee
                                   ) {
                                     setSelectedSummaryEmployee(0);
+                                    setSelectedEmployee(0);
                                   } else {
                                     setSelectedSummaryEmployee(cell.EmployeeID);
+                                    setSelectedEmployee(cell.EmployeeID);
                                   }
                                 }}
                                 style={
