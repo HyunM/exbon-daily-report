@@ -153,6 +153,7 @@ const Timesheet = () => {
     },
   ]);
   const [dataView, setDataView] = useState(() => []);
+  const [selectedEmployee, setSelectedEmployee] = useState(() => 0);
 
   const convertTaskNameToID = name => {
     let task = dataTasks.find(task => name === task.Name);
@@ -577,7 +578,7 @@ const Timesheet = () => {
       ...old,
       {
         Id: id++,
-        EmployeeID: old[0].EmployeeID,
+        EmployeeID: old[0] !== undefined ? old[0].EmployeeID : 0,
         TaskID: 0,
         StartTime: "07:00AM",
         EndTime: "04:00PM",
@@ -586,6 +587,17 @@ const Timesheet = () => {
   };
 
   const clickDeleteTaskBtn = Id => {
+    // if (dataTable.length === 1) {
+    //   setDataTable(old => [
+    //     {
+    //       Id: id++,
+    //       EmployeeID: old[0].EmployeeID,
+    //       TaskID: 0,
+    //       StartTime: "07:00AM",
+    //       EndTime: "04:00PM",
+    //     },
+    //   ]);
+    // }
     setDataTable(old =>
       old.filter(element => {
         return element.Id !== Id;
@@ -791,8 +803,8 @@ const Timesheet = () => {
                   <div className={styles["employee-dropdown-wrapper"]}>
                     <select
                       className={styles["employee-dropdown"]}
-                      value={dataTable[0].EmployeeID}
-                      onChange={e => changeEmployee(e.target.value)}
+                      value={selectedEmployee}
+                      onChange={e => setSelectedEmployee(e.target.value)}
                     >
                       <option value="0">--------Choose Employee--------</option>
                       {dataEmployees.map(element => {
