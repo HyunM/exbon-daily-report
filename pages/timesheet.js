@@ -761,10 +761,12 @@ const Timesheet = () => {
                   </div>
                 </div>
                 <div>
-                  <select>
-                    <option>----Select Employee----</option>
-                    <option>2</option>
-                  </select>
+                  <div className={styles["employee-dropdown-wrapper"]}>
+                    <select>
+                      <option>----Select Employee----</option>
+                      <option>2</option>
+                    </select>
+                  </div>
                   <div className={styles["table"]}>
                     <TableContainer component={Paper}>
                       <Table>

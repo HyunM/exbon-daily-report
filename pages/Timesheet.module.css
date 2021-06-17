@@ -113,6 +113,9 @@
 }
 
 .table {
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
   overflow: auto;
   box-shadow: 1px 1px 2px -1px rgba(0, 0, 0, 0.2),
     1px 2px 3px 3px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12) !important;
@@ -125,75 +128,6 @@
 .table table td {
   padding: 3px;
 }
-
-.table table td:nth-child(1) {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-.table table td:nth-child(2) {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-.table table td:nth-child(3) {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-.table table td:nth-child(4) {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-.table table td:nth-child(5) {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: flex-end;
-}
-
-.table table td:nth-child(6) {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-/* .table table {
-  font-family: Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
-
-.table td,
-.table th {
-  border: 1px solid #ddd;
-  padding: 8px;
-}
-
-.table tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-.table tr {
-  background-color: #ffffff;
-}
-
-.table tr:hover {
-  background-color: #ddd;
-}
-
-.table thead td {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-  background-color: #4caf50;
-  color: white;
-} */
-
 .table thead tr th {
   text-align: center;
 }
@@ -380,14 +314,6 @@
   color: slateblue;
 }
 
-.table tbody:before {
-  content: "-";
-  display: block;
-  line-height: 5px;
-  text-indent: -9999px;
-  overflow: hidden;
-}
-
 @media screen and (max-width: 800px) {
   #mainDiv {
     width: 750px;
@@ -500,4 +426,12 @@
 .modal-table tbody td {
   padding: 5px;
   font-size: 0.9rem;
+}
+
+.employee-dropdown-wrapper {
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
