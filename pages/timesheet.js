@@ -577,7 +577,7 @@ const Timesheet = () => {
       ...old,
       {
         Id: id++,
-        EmployeeID: 0,
+        EmployeeID: old[0].EmployeeID,
         TaskID: 0,
         StartTime: "07:00AM",
         EndTime: "04:00PM",
@@ -594,15 +594,6 @@ const Timesheet = () => {
   };
 
   const changeTaskID = (Id, value) => {
-    // let tempData = dataTable;
-
-    // tempData.forEach(element => {
-    //   if (element.Id == Id) {
-    //     element.TaskID = value;
-    //   }
-    // });
-    // console.log(tempData);
-
     setDataTable(
       [...dataTable].map(object => {
         if (object.Id === Id) {
@@ -613,29 +604,17 @@ const Timesheet = () => {
         } else return object;
       })
     );
+  };
 
-    // setData(
-    //   [...data].map(object => {
-    //     if (object.username === user.username) {
-    //       return {
-    //         ...object,
-    //         favoriteFood: "Potatos",
-    //         someNewRandomAttribute: "X",
-    //       };
-    //     } else return object;
-    //   })
-    // );
-    // setData(old =>
-    //   old.map((row, index) => {
-    //     if (row.TimesheetID === TimesheetID) {
-    //       return {
-    //         ...old[index],
-    //         [columnId]: value,
-    //       };
-    //     }
-    //     return row;
-    //   })
-    // );
+  const changeEmployee = value => {
+    setDataTable(
+      [...dataTable].map(object => {
+        return {
+          ...object,
+          EmployeeID: value,
+        };
+      })
+    );
   };
 
   return (
@@ -810,11 +789,18 @@ const Timesheet = () => {
                 </div>
                 <div>
                   <div className={styles["employee-dropdown-wrapper"]}>
-                    <select className={styles["employee-dropdown"]}>
+                    <select
+                      className={styles["employee-dropdown"]}
+                      value={dataTable[0].EmployeeID}
+                      onChange={e => changeEmployee(e.target.value)}
+                    >
                       <option value="0">--------Choose Employee--------</option>
                       {dataEmployees.map(element => {
                         return (
-                          <option key={element.EmployeeID}>
+                          <option
+                            key={element.EmployeeID}
+                            value={element.EmployeeID}
+                          >
                             {element.EmployeeName}
                           </option>
                         );
