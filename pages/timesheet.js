@@ -60,7 +60,7 @@ let afterSundayCheck = true;
 let dataEmployees = [];
 let dataTasks = [];
 let dataLatest = [];
-let id = 0;
+let id = -1000000;
 
 const convertInputToTime = time => {
   let match = inputTime.filter(data => data.input === time);
