@@ -770,34 +770,32 @@ const Timesheet = () => {
   };
 
   const handleClickUpdateEmployee = () => {
-    let tempData = [];
-    data.forEach(element => {
-      if (element.EmployeeID != selectedEmployee) tempData.push(element);
-    });
-    let tempDataTable = dataTable;
-    let check = 0;
-    tempDataTable.forEach(element => {
-      if (element.TaskID == 0) {
-        check += 1;
-      }
-      element.EmployeeID = selectedEmployee;
-      element.EmployeeName = convertEmployeeIDtoEmployeeName(selectedEmployee);
-    });
-
-    if (check > 0) {
-      toast.error(
-        <div className={styles["alert__table__employee-input"]}>
-          Unable to add. <br /> Please choose <strong>Task</strong>.
-        </div>,
-        {
-          position: toast.POSITION.BOTTOM_CENTER,
-          hideProgressBar: true,
-        }
-      );
-      return null;
-    }
-
-    setData(() => [...tempData, ...tempDataTable]);
+    // let tempData = [];
+    // data.forEach(element => {
+    //   if (element.EmployeeID != selectedEmployee) tempData.push(element);
+    // });
+    // let tempDataTable = dataTable;
+    // let check = 0;
+    // tempDataTable.forEach(element => {
+    //   if (element.TaskID == 0) {
+    //     check += 1;
+    //   }
+    //   element.EmployeeID = selectedEmployee;
+    //   element.EmployeeName = convertEmployeeIDtoEmployeeName(selectedEmployee);
+    // });
+    // if (check > 0) {
+    //   toast.error(
+    //     <div className={styles["alert__table__employee-input"]}>
+    //       Unable to add. <br /> Please choose <strong>Task</strong>.
+    //     </div>,
+    //     {
+    //       position: toast.POSITION.BOTTOM_CENTER,
+    //       hideProgressBar: true,
+    //     }
+    //   );
+    //   return null;
+    // }
+    // setData(() => [...tempData, ...tempDataTable]);
   };
 
   return (
@@ -898,7 +896,7 @@ const Timesheet = () => {
                             ? styles["header__right__save-btn"]
                             : styles["header__right__save-btn-before-sunday"]
                         }
-                        onClick={handleSaveTimesheetBtn}
+                        // onClick={handleSaveTimesheetBtn}
                         startIcon={<SaveIcon />}
                       >
                         Save
