@@ -741,6 +741,20 @@ const Timesheet = () => {
     setSelectedSummaryEmployee(selectedEmployee);
   };
 
+  const handleClickUpdateEmployee = () => {
+    let tempData = [];
+    data.forEach(element => {
+      if (element.EmployeeID != selectedEmployee) tempData.push(element);
+    });
+    let tempDataTable = dataTable;
+    tempDataTable.forEach(element => {
+      element.EmployeeID = selectedEmployee;
+      element.EmployeeName = convertEmployeeIDtoEmployeeName(selectedEmployee);
+    });
+
+    setData(() => [...tempData, ...tempDataTable]);
+  };
+
   return (
     <>
       {console.log("data")}
@@ -859,6 +873,7 @@ const Timesheet = () => {
                           }
                           startIcon={<AddIcon />}
                           disabled={checkDisableAddEmployeeButton}
+                          onClick={handleClickUpdateEmployee}
                         >
                           Update&nbsp;Employee
                         </Button>
