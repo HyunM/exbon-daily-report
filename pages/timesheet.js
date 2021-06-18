@@ -730,6 +730,18 @@ const Timesheet = () => {
   };
 
   const handleClickAddEmployee = () => {
+    if (!selectedEmployee) {
+      toast.error(
+        <div className={styles["alert__table__employee-input"]}>
+          Unable to add. <br /> Please choose <strong>Employee</strong>.
+        </div>,
+        {
+          position: toast.POSITION.BOTTOM_CENTER,
+          hideProgressBar: true,
+        }
+      );
+      return null;
+    }
     let tempData = dataTable;
 
     tempData.forEach(element => {
@@ -961,7 +973,7 @@ const Timesheet = () => {
                         {dataEmployees.map(element => {
                           for (let i = 0; i < data.length; i++) {
                             if (element.EmployeeID == data[i].EmployeeID)
-                              return <></>;
+                              return null;
                           }
                           return (
                             <option
@@ -1068,7 +1080,6 @@ const Timesheet = () => {
                                         9: "[0-9]",
                                       }}
                                       disabled={afterSundayCheck ? false : true}
-                                      defaultValue="07"
                                       value={element.StartTime.slice(0, 2)}
                                       onChange={e =>
                                         changeTime(
@@ -1102,7 +1113,6 @@ const Timesheet = () => {
                                         5: "[0-5]",
                                       }}
                                       disabled={afterSundayCheck ? false : true}
-                                      defaultValue="00"
                                       value={element.StartTime.slice(3, 5)}
                                       onChange={e =>
                                         changeTime(
@@ -1161,7 +1171,6 @@ const Timesheet = () => {
                                         9: "[0-9]",
                                       }}
                                       disabled={afterSundayCheck ? false : true}
-                                      defaultValue="04"
                                       value={element.EndTime.slice(0, 2)}
                                       onChange={e =>
                                         changeTime(
@@ -1195,7 +1204,6 @@ const Timesheet = () => {
                                         5: "[0-5]",
                                       }}
                                       disabled={afterSundayCheck ? false : true}
-                                      defaultValue="00"
                                       value={element.EndTime.slice(3, 5)}
                                       onChange={e =>
                                         changeTime(
