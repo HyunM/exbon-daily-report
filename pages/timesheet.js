@@ -733,12 +733,12 @@ const Timesheet = () => {
     let tempData = dataTable;
 
     tempData.forEach(element => {
-      debugger;
       element.EmployeeID = selectedEmployee;
       element.EmployeeName = convertEmployeeIDtoEmployeeName(selectedEmployee);
     });
 
     setData(old => [...old, ...tempData]);
+    setSelectedSummaryEmployee(selectedEmployee);
   };
 
   return (
@@ -844,22 +844,43 @@ const Timesheet = () => {
                       >
                         Save
                       </Button>
-                      <Button
-                        id="add-employee-button-id"
-                        variant="contained"
-                        color="secondary"
-                        size="small"
-                        className={
-                          dateCheckEditable(selectedDate)
-                            ? styles["header__right__add-btn"]
-                            : styles["header__right__add-btn-before-sunday"]
-                        }
-                        startIcon={<AddIcon />}
-                        disabled={checkDisableAddEmployeeButton}
-                        onClick={handleClickAddEmployee}
-                      >
-                        Add&nbsp;Employee
-                      </Button>
+                      {selectedSummaryEmployee ? (
+                        <Button
+                          id="add-employee-button-id"
+                          variant="contained"
+                          color="secondary"
+                          size="small"
+                          className={
+                            dateCheckEditable(selectedDate)
+                              ? styles["header__right__update-btn"]
+                              : styles[
+                                  "header__right__update-btn-before-sunday"
+                                ]
+                          }
+                          startIcon={<AddIcon />}
+                          disabled={checkDisableAddEmployeeButton}
+                        >
+                          Update&nbsp;Employee
+                        </Button>
+                      ) : (
+                        <Button
+                          id="add-employee-button-id"
+                          variant="contained"
+                          color="secondary"
+                          size="small"
+                          className={
+                            dateCheckEditable(selectedDate)
+                              ? styles["header__right__add-btn"]
+                              : styles["header__right__add-btn-before-sunday"]
+                          }
+                          startIcon={<AddIcon />}
+                          disabled={checkDisableAddEmployeeButton}
+                          onClick={handleClickAddEmployee}
+                        >
+                          Add&nbsp;Employee
+                        </Button>
+                      )}
+
                       <Button
                         onClick={clickGetTheLatestData}
                         variant="contained"
@@ -924,7 +945,7 @@ const Timesheet = () => {
                         </option>
                         {dataEmployees.map(element => {
                           for (let i = 0; i < data.length; i++) {
-                            if (element.EmployeeID === data[i].EmployeeID)
+                            if (element.EmployeeID == data[i].EmployeeID)
                               return <></>;
                           }
                           return (

@@ -65,9 +65,21 @@
 
 .header__right__add-btn {
   margin-right: 10px !important;
+  width: 160px;
 }
 
 .header__right__add-btn-before-sunday {
+  margin-right: 10px !important;
+  visibility: hidden;
+}
+
+.header__right__update-btn {
+  margin-right: 10px !important;
+  width: 160px;
+  background-color: #ee7504 !important;
+}
+
+.header__right__update-btn-before-sunday {
   margin-right: 10px !important;
   visibility: hidden;
 }
