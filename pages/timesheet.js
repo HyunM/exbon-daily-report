@@ -361,8 +361,8 @@ const Timesheet = () => {
             Date: formatDate(selectedDate),
             EmployeeID: element.EmployeeID,
             TaskID: element.TaskID,
-            Start: element.Start,
-            End: element.Finish,
+            Start: element.StartTime,
+            End: element.EndTime,
           },
           //   @projectID int,
           //   @date date,
@@ -516,11 +516,11 @@ const Timesheet = () => {
       tempData.push({
         EmployeeID: element.EmployeeID,
         Name: element.EmployeeName,
-        Start: element.TaskID === -2 ? 0 : toMilli(element.Start),
-        Finish: element.TaskID === -2 ? 0 : toMilli(element.Finish),
+        StartTime: element.TaskID === -2 ? 0 : toMilli(element.StartTime),
+        EndTime: element.TaskID === -2 ? 0 : toMilli(element.EndTime),
         IsMeal: element.IsMeal,
-        MealStart: element.TaskID === -2 ? toMilli(element.Start) : 0,
-        MealFinish: element.TaskID === -2 ? toMilli(element.Finish) : 0,
+        MealStart: element.TaskID === -2 ? toMilli(element.StartTime) : 0,
+        MealFinish: element.TaskID === -2 ? toMilli(element.EndTime) : 0,
       });
     });
 
@@ -530,8 +530,8 @@ const Timesheet = () => {
         realData.push({
           EmployeeID: tempData[i].EmployeeID,
           Name: tempData[i].Name,
-          Start: tempData[i].Start,
-          Finish: tempData[i].Finish,
+          StartTime: tempData[i].StartTime,
+          EndTime: tempData[i].EndTime,
           MealStart: tempData[i].MealStart,
           MealFinish: tempData[i].MealFinish,
         });
@@ -539,16 +539,17 @@ const Timesheet = () => {
       let check = 0;
       for (let j = 0; j < realData.length; j++) {
         if (tempData[i].Name === realData[j].Name) {
-          realData[j].Start =
-            realData[j].Start > tempData[i].Start && tempData[i].Start !== 0
-              ? tempData[i].Start
-              : realData[j].Start;
-          realData[j].Finish =
-            (realData[j].Finish > tempData[i].Finish ||
-              tempData[i].Finish === 0) &&
-            realData[j].Finish !== 0
-              ? realData[j].Finish
-              : tempData[i].Finish;
+          realData[j].StartTime =
+            realData[j].StartTime > tempData[i].StartTime &&
+            tempData[i].StartTime !== 0
+              ? tempData[i].StartTime
+              : realData[j].StartTime;
+          realData[j].EndTime =
+            (realData[j].EndTime > tempData[i].EndTime ||
+              tempData[i].EndTime === 0) &&
+            realData[j].EndTime !== 0
+              ? realData[j].EndTime
+              : tempData[i].EndTime;
           realData[j].MealStart =
             realData[j].MealStart > tempData[i].MealStart &&
             tempData[i].MealStart !== 0
@@ -567,8 +568,8 @@ const Timesheet = () => {
         realData.push({
           EmployeeID: tempData[i].EmployeeID,
           Name: tempData[i].Name,
-          Start: tempData[i].Start,
-          Finish: tempData[i].Finish,
+          StartTime: tempData[i].StartTime,
+          EndTime: tempData[i].EndTime,
           MealStart: tempData[i].MealStart,
           MealFinish: tempData[i].MealFinish,
         });
