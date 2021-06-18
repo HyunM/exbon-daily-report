@@ -730,7 +730,7 @@ const Timesheet = () => {
   };
 
   const handleClickAddEmployee = () => {
-    if (!selectedEmployee) {
+    if (selectedEmployee == 0) {
       toast.error(
         <div className={styles["alert__table__employee-input"]}>
           Unable to add. <br /> Please choose <strong>Employee</strong>.
@@ -743,11 +743,27 @@ const Timesheet = () => {
       return null;
     }
     let tempData = dataTable;
-
+    let check = 0;
     tempData.forEach(element => {
+      if (element.TaskID == 0) {
+        check += 1;
+      }
       element.EmployeeID = selectedEmployee;
       element.EmployeeName = convertEmployeeIDtoEmployeeName(selectedEmployee);
     });
+
+    if (check > 0) {
+      toast.error(
+        <div className={styles["alert__table__employee-input"]}>
+          Unable to add. <br /> Please choose <strong>Task</strong>.
+        </div>,
+        {
+          position: toast.POSITION.BOTTOM_CENTER,
+          hideProgressBar: true,
+        }
+      );
+      return null;
+    }
 
     setData(old => [...old, ...tempData]);
     setSelectedSummaryEmployee(selectedEmployee);
@@ -759,10 +775,27 @@ const Timesheet = () => {
       if (element.EmployeeID != selectedEmployee) tempData.push(element);
     });
     let tempDataTable = dataTable;
+    let check = 0;
     tempDataTable.forEach(element => {
+      if (element.TaskID == 0) {
+        check += 1;
+      }
       element.EmployeeID = selectedEmployee;
       element.EmployeeName = convertEmployeeIDtoEmployeeName(selectedEmployee);
     });
+
+    if (check > 0) {
+      toast.error(
+        <div className={styles["alert__table__employee-input"]}>
+          Unable to add. <br /> Please choose <strong>Task</strong>.
+        </div>,
+        {
+          position: toast.POSITION.BOTTOM_CENTER,
+          hideProgressBar: true,
+        }
+      );
+      return null;
+    }
 
     setData(() => [...tempData, ...tempDataTable]);
   };
