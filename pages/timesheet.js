@@ -70,17 +70,6 @@ const convertInputToTime = time => {
   return match[0].time;
 };
 
-// const customStylesModal = {
-//   content: {
-//     top: "40%",
-//     left: "50%",
-//     right: "auto",
-//     bottom: "auto",
-//     marginRight: "-50%",
-//     transform: "translate(-50%, -50%)",
-//   },
-// };
-
 const Timesheet = () => {
   const router = useRouter();
   const [projectState, setProjectState] = useState(undefined);
@@ -702,6 +691,29 @@ const Timesheet = () => {
     }
   };
 
+  useEffect(() => {
+    let tempData = [];
+    if (selectedSummaryEmployee !== 0) {
+      data.forEach(element => {
+        if (element.EmployeeID === selectedSummaryEmployee) {
+          tempData.push(element);
+        }
+      });
+    } else {
+      tempData = [
+        {
+          Id: id++,
+          EmployeeID: 0,
+          TaskID: 0,
+          StartTime: "07:00AM",
+          EndTime: "04:00PM",
+        },
+      ];
+    }
+
+    setDataTable(tempData);
+  }, [selectedSummaryEmployee]);
+
   return (
     <>
       {/* {console.log("data")}
@@ -1259,19 +1271,19 @@ const Timesheet = () => {
                                     }
                                   : {}
                               }
+                              onClick={() => {
+                                if (
+                                  cell.EmployeeID === selectedSummaryEmployee
+                                ) {
+                                  setSelectedSummaryEmployee(0);
+                                  setSelectedEmployee(0);
+                                } else {
+                                  setSelectedSummaryEmployee(cell.EmployeeID);
+                                  setSelectedEmployee(cell.EmployeeID);
+                                }
+                              }}
                             >
                               <td
-                                onClick={() => {
-                                  if (
-                                    cell.EmployeeID === selectedSummaryEmployee
-                                  ) {
-                                    setSelectedSummaryEmployee(0);
-                                    setSelectedEmployee(0);
-                                  } else {
-                                    setSelectedSummaryEmployee(cell.EmployeeID);
-                                    setSelectedEmployee(cell.EmployeeID);
-                                  }
-                                }}
                                 style={
                                   cell.EmployeeID === selectedSummaryEmployee
                                     ? {
@@ -1284,16 +1296,16 @@ const Timesheet = () => {
                                 {cell.Name}
                               </td>
                               <td style={{ textAlign: "right", width: "80px" }}>
-                                {moment(cell.Start).format("LT") ===
-                                moment(cell.Finish).format("LT")
+                                {moment(cell.StartTime).format("LT") ===
+                                moment(cell.EndTime).format("LT")
                                   ? ""
-                                  : moment(cell.Start).format("LT")}
+                                  : moment(cell.StartTime).format("LT")}
                               </td>
                               <td style={{ textAlign: "right", width: "80px" }}>
-                                {moment(cell.Start).format("LT") ===
-                                moment(cell.Finish).format("LT")
+                                {moment(cell.StartTime).format("LT") ===
+                                moment(cell.EndTime).format("LT")
                                   ? ""
-                                  : moment(cell.Finish).format("LT")}
+                                  : moment(cell.EndTime).format("LT")}
                               </td>
                               <td style={{ textAlign: "right", width: "80px" }}>
                                 {moment(cell.MealStart).format("LT") ===
@@ -1309,8 +1321,8 @@ const Timesheet = () => {
                               </td>
                               <td style={{ textAlign: "right", width: "90px" }}>
                                 {(
-                                  (cell.Finish -
-                                    cell.Start -
+                                  (cell.EndTime -
+                                    cell.StartTime -
                                     (cell.MealFinish - cell.MealStart)) /
                                   3600000
                                 ).toFixed(2)}
