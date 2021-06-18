@@ -136,6 +136,7 @@ const Timesheet = () => {
     {
       Id: id++,
       EmployeeID: 0,
+      EmployeeName: "",
       TaskID: 0,
       StartTime: "07:00AM",
       EndTime: "04:00PM",
@@ -266,6 +267,7 @@ const Timesheet = () => {
             {
               Id: id++,
               EmployeeID: 0,
+              EmployeeName: "",
               TaskID: 0,
               StartTime: "07:00AM",
               EndTime: "04:00PM",
@@ -516,11 +518,11 @@ const Timesheet = () => {
       tempData.push({
         EmployeeID: element.EmployeeID,
         Name: element.EmployeeName,
-        StartTime: element.TaskID === -2 ? 0 : toMilli(element.StartTime),
-        EndTime: element.TaskID === -2 ? 0 : toMilli(element.EndTime),
+        StartTime: element.TaskID == -2 ? 0 : toMilli(element.StartTime),
+        EndTime: element.TaskID == -2 ? 0 : toMilli(element.EndTime),
         IsMeal: element.IsMeal,
-        MealStart: element.TaskID === -2 ? toMilli(element.StartTime) : 0,
-        MealFinish: element.TaskID === -2 ? toMilli(element.EndTime) : 0,
+        MealStart: element.TaskID == -2 ? toMilli(element.StartTime) : 0,
+        MealFinish: element.TaskID == -2 ? toMilli(element.EndTime) : 0,
       });
     });
 
@@ -584,6 +586,7 @@ const Timesheet = () => {
       {
         Id: id++,
         EmployeeID: old[0] !== undefined ? old[0].EmployeeID : 0,
+        EmployeeName: "",
         TaskID: 0,
         StartTime: "07:00AM",
         EndTime: "04:00PM",
@@ -705,6 +708,7 @@ const Timesheet = () => {
         {
           Id: id++,
           EmployeeID: 0,
+          EmployeeName: "",
           TaskID: 0,
           StartTime: "07:00AM",
           EndTime: "04:00PM",
@@ -715,16 +719,37 @@ const Timesheet = () => {
     setDataTable(tempData);
   }, [selectedSummaryEmployee]);
 
+  const convertEmployeeIDtoEmployeeName = id => {
+    let employeeName = "";
+    dataEmployees.forEach(element => {
+      if (element.EmployeeID == id) {
+        employeeName = element.EmployeeName;
+      }
+    });
+    return employeeName;
+  };
+
+  const handleClickAddEmployee = () => {
+    let tempData = dataTable;
+
+    tempData.forEach(element => {
+      debugger;
+      element.EmployeeID = selectedEmployee;
+      element.EmployeeName = convertEmployeeIDtoEmployeeName(selectedEmployee);
+    });
+
+    setData(old => [...old, ...tempData]);
+  };
+
   return (
     <>
-      {/* {console.log("data")}
+      {console.log("data")}
       {console.log(data)}
       {console.log("dataView")}
       {console.log(dataView)}
       {console.log("dataTable")}
-      {console.log(dataTable)} */}
-      {console.log("dataTable")}
       {console.log(dataTable)}
+
       <Head>
         <title>Daily Report</title>
         <link rel="icon" href="/favicon.ico" />
@@ -831,6 +856,7 @@ const Timesheet = () => {
                         }
                         startIcon={<AddIcon />}
                         disabled={checkDisableAddEmployeeButton}
+                        onClick={handleClickAddEmployee}
                       >
                         Add&nbsp;Employee
                       </Button>
