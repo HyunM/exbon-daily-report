@@ -143,7 +143,7 @@ const Timesheet = () => {
     },
   ]);
   const [dataView, setDataView] = useState(() => []);
-  const [selectedEmployee, setSelectedEmployee] = useState(() => 0);
+  const [selectedInputEmployee, setSelectedInputEmployee] = useState(() => 0);
   const [selectedSummaryEmployee, setSelectedSummaryEmployee] = useState(
     () => 0
   );
@@ -276,6 +276,8 @@ const Timesheet = () => {
           dataEmployees = result.data.result[1];
           dataTasks = result.data.result[2];
           dataLatest = result.data.result[3];
+          setSelectedSummaryEmployee(0);
+          setSelectedInputEmployee(0);
         });
       }
     };
@@ -730,7 +732,7 @@ const Timesheet = () => {
   };
 
   const handleClickAddEmployee = () => {
-    if (selectedEmployee == 0) {
+    if (selectedInputEmployee == 0) {
       toast.error(
         <div className={styles["alert__table__employee-input"]}>
           Unable to add. <br /> Please choose <strong>Employee</strong>.
@@ -748,8 +750,10 @@ const Timesheet = () => {
       if (element.TaskID == 0) {
         check += 1;
       }
-      element.EmployeeID = selectedEmployee;
-      element.EmployeeName = convertEmployeeIDtoEmployeeName(selectedEmployee);
+      element.EmployeeID = selectedInputEmployee;
+      element.EmployeeName = convertEmployeeIDtoEmployeeName(
+        selectedInputEmployee
+      );
     });
 
     if (check > 0) {
@@ -766,13 +770,13 @@ const Timesheet = () => {
     }
 
     setData(old => [...old, ...tempData]);
-    setSelectedSummaryEmployee(selectedEmployee);
+    setSelectedSummaryEmployee(selectedInputEmployee);
   };
 
   const handleClickUpdateEmployee = () => {
     let tempData = [];
     data.forEach(element => {
-      if (element.EmployeeID != selectedEmployee) tempData.push(element);
+      if (element.EmployeeID != selectedInputEmployee) tempData.push(element);
     });
     let tempDataTable = dataTable;
     let check = 0;
@@ -780,8 +784,10 @@ const Timesheet = () => {
       if (element.TaskID == 0) {
         check += 1;
       }
-      element.EmployeeID = selectedEmployee;
-      element.EmployeeName = convertEmployeeIDtoEmployeeName(selectedEmployee);
+      element.EmployeeID = selectedInputEmployee;
+      element.EmployeeName = convertEmployeeIDtoEmployeeName(
+        selectedInputEmployee
+      );
     });
     if (check > 0) {
       toast.error(
@@ -995,8 +1001,8 @@ const Timesheet = () => {
                     {!selectedSummaryEmployee ? (
                       <select
                         className={styles["employee-dropdown"]}
-                        value={selectedEmployee}
-                        onChange={e => setSelectedEmployee(e.target.value)}
+                        value={selectedInputEmployee}
+                        onChange={e => setSelectedInputEmployee(e.target.value)}
                       >
                         <option value="0">
                           --------Choose Employee--------
@@ -1020,7 +1026,7 @@ const Timesheet = () => {
                       <select
                         className={styles["employee-dropdown"]}
                         value={selectedSummaryEmployee}
-                        onChange={e => setSelectedEmployee(e.target.value)}
+                        onChange={e => setSelectedInputEmployee(e.target.value)}
                         disabled={true}
                       >
                         <option value="0">
@@ -1378,10 +1384,10 @@ const Timesheet = () => {
                                   cell.EmployeeID === selectedSummaryEmployee
                                 ) {
                                   setSelectedSummaryEmployee(0);
-                                  setSelectedEmployee(0);
+                                  setSelectedInputEmployee(0);
                                 } else {
                                   setSelectedSummaryEmployee(cell.EmployeeID);
-                                  setSelectedEmployee(cell.EmployeeID);
+                                  setSelectedInputEmployee(cell.EmployeeID);
                                 }
                               }}
                             >
