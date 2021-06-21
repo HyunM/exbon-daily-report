@@ -804,6 +804,38 @@ const Timesheet = () => {
     setData(() => [...tempData, ...tempDataTable]);
   };
 
+  const handleSetSameTask = () => {
+    let tempEmployeeID = [];
+    let tempDataTask = [];
+    for (let i = 0; i < data.length; i++) {
+      if (i === 0) {
+        tempEmployeeID.push(data[0].EmployeeID);
+      } else {
+        if (data[i].EmployeeID != data[i - 1].EmployeeID) {
+          tempEmployeeID.push(data[i].EmployeeID);
+        }
+      }
+
+      if (data[i].EmployeeID == data[0].EmployeeID) {
+        tempDataTask.push(data[i]);
+      }
+    }
+
+    let tempData = [];
+    tempEmployeeID.forEach(element => {
+      tempDataTask.forEach(task => {
+        tempData.push({
+          ...task,
+          EmployeeID: element,
+          Id: id++,
+          EmployeeName: convertEmployeeIDtoEmployeeName(element),
+        });
+      });
+    });
+
+    setData(() => tempData);
+  };
+
   return (
     <>
       {console.log("data")}
@@ -977,6 +1009,7 @@ const Timesheet = () => {
                           color: "#ffffff",
                           marginRight: "10px",
                         }}
+                        onClick={handleSetSameTask}
                       >
                         Set Same Task
                       </Button>
