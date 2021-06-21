@@ -805,6 +805,19 @@ const Timesheet = () => {
   };
 
   const handleSetSameTask = () => {
+    if (data.length === 0) {
+      toast.warning(
+        <div className={styles["alert__table__hour-input"]}>
+          No task found.
+        </div>,
+        {
+          position: toast.POSITION.TOP_CENTER,
+          hideProgressBar: true,
+        }
+      );
+      return null;
+    }
+
     let tempEmployeeID = [];
     let tempDataTask = [];
     for (let i = 0; i < data.length; i++) {
