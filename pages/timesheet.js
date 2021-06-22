@@ -285,15 +285,19 @@ const Timesheet = () => {
     trackPromise(Promise.all(promises).then(() => {}));
   }, [projectState, status, selectedDate, router.isReady]);
 
-  const handleSaveTimesheetBtn = async () => {
+  const handleSaveTimesheetBtn = () => {
     let promises = [];
-    let checkSave = 0;
 
     let checkEmployeeName = data.find(element => element.EmployeeID == 0);
     let checkTaskName = data.find(element => element.TaskID == 0);
     let checkTime = 0;
     for (let i = 0; i < data.length; i++) {
-      if (data[i].StartTime.includes("_") || data[i].EndTime.includes("_"))
+      if (
+        data[i].StartTime.includes("_") ||
+        data[i].EndTime.includes("_") ||
+        data[i].StartTime.length != 7 ||
+        data[i].EndTime.length != 7
+      )
         checkTime++;
     }
     if (checkEmployeeName) {
@@ -309,7 +313,6 @@ const Timesheet = () => {
       );
       return null;
     } else if (checkTime) {
-      checkSave += 1;
       toast.error(
         <div className={styles["alert__table__time-wrapper"]}>
           Unable to save. <br /> Please check the <strong>time input </strong>.
@@ -321,7 +324,6 @@ const Timesheet = () => {
       );
       return null;
     } else if (checkTaskName) {
-      checkSave += 1;
       toast.error(
         <div className={styles["alert__table__employee-input"]}>
           Unable to save. <br /> Please check <strong>Task Name </strong>.
@@ -332,56 +334,54 @@ const Timesheet = () => {
         }
       );
       return null;
-    }
-
-    const fetchData = async () => {
-      await axios({
-        method: "delete",
-        url: `/api/timesheets`,
-        timeout: 3000, // 3 seconds timeout
-        headers: {},
-        data: {
-          ProjectID: projectState,
-          Date: formatDate(selectedDate),
-        },
-      });
-
-      data.forEach(async element => {
+    } else {
+      const fetchData = async () => {
         await axios({
-          method: "post",
+          method: "delete",
           url: `/api/timesheets`,
           timeout: 3000, // 3 seconds timeout
           headers: {},
           data: {
             ProjectID: projectState,
             Date: formatDate(selectedDate),
-            EmployeeID: element.EmployeeID,
-            TaskID: element.TaskID,
-            Start: element.StartTime,
-            End: element.EndTime,
           },
-          //   @projectID int,
-          //   @date date,
-          //   @employeeID int,
-          //   @taskID int,
-          //   @start time(0),
-          //   @end time(0)
-        }).catch(err => {
-          toast.error(
-            <div className={styles["alert__complete"]}>
-              <strong>CANNOT SAVE</strong>
-              <p>Please check the time input.</p>
-            </div>,
-            {
-              position: toast.POSITION.TOP_CENTER,
-              hideProgressBar: true,
-            }
-          );
         });
-      });
-    };
 
-    if (check === 0) {
+        data.forEach(async element => {
+          await axios({
+            method: "post",
+            url: `/api/timesheets`,
+            timeout: 3000, // 3 seconds timeout
+            headers: {},
+            data: {
+              ProjectID: projectState,
+              Date: formatDate(selectedDate),
+              EmployeeID: element.EmployeeID,
+              TaskID: element.TaskID,
+              Start: element.StartTime,
+              End: element.EndTime,
+            },
+            //   @projectID int,
+            //   @date date,
+            //   @employeeID int,
+            //   @taskID int,
+            //   @start time(0),
+            //   @end time(0)
+          }).catch(err => {
+            toast.error(
+              <div className={styles["alert__complete"]}>
+                <strong>CANNOT SAVE</strong>
+                <p>Please check the time input.</p>
+              </div>,
+              {
+                position: toast.POSITION.TOP_CENTER,
+                hideProgressBar: true,
+              }
+            );
+          });
+        });
+      };
+
       trackPromise(fetchData());
       trackPromise(
         Promise.all(promises).then(() => {
@@ -396,23 +396,22 @@ const Timesheet = () => {
           );
         })
       );
+      setSelectedSummaryEmployee(0);
+      setSelectedInputEmployee(0);
+      axios({
+        method: "post",
+        url: `/api/log-daily-reports`,
+        timeout: 5000, // 5 seconds timeout
+        headers: {},
+        data: {
+          EmployeeID: status.cookies.employeeid,
+          ProjectID: projectState,
+          Date: formatDate(selectedDate),
+          Category: "Timesheet",
+          Action: "update",
+        },
+      });
     }
-
-    setSelectedSummaryEmployee(0);
-    setSelectedInputEmployee(0);
-    axios({
-      method: "post",
-      url: `/api/log-daily-reports`,
-      timeout: 5000, // 5 seconds timeout
-      headers: {},
-      data: {
-        EmployeeID: status.cookies.employeeid,
-        ProjectID: projectState,
-        Date: formatDate(selectedDate),
-        Category: "Timesheet",
-        Action: "update",
-      },
-    });
   };
 
   const { promiseInProgress } = usePromiseTracker();
