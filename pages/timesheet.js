@@ -1115,8 +1115,8 @@ const Timesheet = () => {
                                       }
                                     >
                                       <option value="0">
-                                        -----------------------Choose
-                                        Task----------------------
+                                        ------------------Choose
+                                        Task------------------
                                       </option>
 
                                       {dataTasks.map(elementTask => {
@@ -1136,7 +1136,37 @@ const Timesheet = () => {
                                   <div
                                     className={styles["table__time-wrapper"]}
                                   >
-                                    <InputMask
+                                    <select
+                                      className={classNames(
+                                        "table__time-wrapper__target-disabled",
+                                        styles["table__hour-dropdown"]
+                                      )}
+                                      disabled={afterSundayCheck ? false : true}
+                                      value={element.StartTime.slice(0, 2)}
+                                      onChange={e =>
+                                        changeTime(
+                                          element.Id,
+                                          "start",
+                                          "hh",
+                                          e.target.value
+                                        )
+                                      }
+                                    >
+                                      <option value="00">00</option>
+                                      <option value="01">01</option>
+                                      <option value="02">02</option>
+                                      <option value="03">03</option>
+                                      <option value="04">04</option>
+                                      <option value="05">05</option>
+                                      <option value="06">06</option>
+                                      <option value="07">07</option>
+                                      <option value="08">08</option>
+                                      <option value="09">09</option>
+                                      <option value="10">10</option>
+                                      <option value="11">11</option>
+                                      <option value="12">12</option>
+                                    </select>
+                                    {/* <InputMask
                                       className={
                                         afterSundayCheck
                                           ? classNames(
@@ -1168,9 +1198,32 @@ const Timesheet = () => {
                                           e.target.value
                                         )
                                       }
-                                    />
+                                    /> */}
                                     :
-                                    <InputMask
+                                    <select
+                                      className={classNames(
+                                        "table__time-wrapper__target-disabled",
+                                        styles["table__min-dropdown"]
+                                      )}
+                                      disabled={afterSundayCheck ? false : true}
+                                      value={element.StartTime.slice(3, 5)}
+                                      onChange={e =>
+                                        changeTime(
+                                          element.Id,
+                                          "start",
+                                          "mm",
+                                          e.target.value
+                                        )
+                                      }
+                                    >
+                                      <option value="00">00</option>
+                                      <option value="10">10</option>
+                                      <option value="20">20</option>
+                                      <option value="30">30</option>
+                                      <option value="40">40</option>
+                                      <option value="50">50</option>
+                                    </select>
+                                    {/* <InputMask
                                       className={
                                         afterSundayCheck
                                           ? classNames(
@@ -1201,7 +1254,7 @@ const Timesheet = () => {
                                           e.target.value
                                         )
                                       }
-                                    />
+                                    /> */}
                                     <select
                                       className={classNames(
                                         "table__time-wrapper__target-disabled",
@@ -1227,7 +1280,37 @@ const Timesheet = () => {
                                   <div
                                     className={styles["table__time-wrapper"]}
                                   >
-                                    <InputMask
+                                    <select
+                                      className={classNames(
+                                        "table__time-wrapper__target-disabled",
+                                        styles["table__hour-dropdown"]
+                                      )}
+                                      disabled={afterSundayCheck ? false : true}
+                                      value={element.EndTime.slice(0, 2)}
+                                      onChange={e =>
+                                        changeTime(
+                                          element.Id,
+                                          "end",
+                                          "hh",
+                                          e.target.value
+                                        )
+                                      }
+                                    >
+                                      <option value="00">00</option>
+                                      <option value="01">01</option>
+                                      <option value="02">02</option>
+                                      <option value="03">03</option>
+                                      <option value="04">04</option>
+                                      <option value="05">05</option>
+                                      <option value="06">06</option>
+                                      <option value="07">07</option>
+                                      <option value="08">08</option>
+                                      <option value="09">09</option>
+                                      <option value="10">10</option>
+                                      <option value="11">11</option>
+                                      <option value="12">12</option>
+                                    </select>
+                                    {/* <InputMask
                                       className={
                                         afterSundayCheck
                                           ? classNames(
@@ -1259,9 +1342,32 @@ const Timesheet = () => {
                                           e.target.value
                                         )
                                       }
-                                    />
+                                    /> */}
                                     :
-                                    <InputMask
+                                    <select
+                                      className={classNames(
+                                        "table__time-wrapper__target-disabled",
+                                        styles["table__min-dropdown"]
+                                      )}
+                                      disabled={afterSundayCheck ? false : true}
+                                      value={element.EndTime.slice(3, 5)}
+                                      onChange={e =>
+                                        changeTime(
+                                          element.Id,
+                                          "end",
+                                          "mm",
+                                          e.target.value
+                                        )
+                                      }
+                                    >
+                                      <option value="00">00</option>
+                                      <option value="10">10</option>
+                                      <option value="20">20</option>
+                                      <option value="30">30</option>
+                                      <option value="40">40</option>
+                                      <option value="50">50</option>
+                                    </select>
+                                    {/* <InputMask
                                       className={
                                         afterSundayCheck
                                           ? classNames(
@@ -1292,7 +1398,7 @@ const Timesheet = () => {
                                           e.target.value
                                         )
                                       }
-                                    />
+                                    /> */}
                                     <select
                                       className={classNames(
                                         "table__time-wrapper__target-disabled",
