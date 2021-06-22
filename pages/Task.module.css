@@ -72,15 +72,12 @@
 .header__right__date-picker {
   width: 120px;
   margin-bottom: 17px !important;
-  margin-right: 20px !important;
+  margin-left: 20px !important;
 }
 
 .header__right__date-picker input {
   text-align: center;
   padding-bottom: 4px;
-}
-
-.header__right__save-btn {
 }
 
 .header__right__no-work-btn {
@@ -89,6 +86,7 @@
 }
 
 .table {
+  margin-top: 20px;
   overflow: auto;
   margin-left: 4px;
 }
@@ -596,11 +594,14 @@
   color: gray;
 }
 
-@media screen and (max-width: 1334px) {
+@media screen and (max-width: 1080px) {
   #mainDiv {
-    width: 1250px;
+    width: 1020px;
   }
 
+  .header {
+    display: block !important;
+  }
   .table thead td {
     font-size: 0.8rem !important;
     display: block;
@@ -663,7 +664,7 @@
   }
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 810px) {
   #mainDiv {
     width: 750px;
   }

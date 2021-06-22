@@ -251,7 +251,7 @@
   text-align: center;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 810px) {
   #mainDiv {
     width: 750px;
   }
@@ -262,5 +262,6 @@
 
   .header__left {
     margin-top: 20px;
+    margin-bottom: 15px;
   }
 }

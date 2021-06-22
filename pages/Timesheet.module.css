@@ -157,7 +157,7 @@
 .table__hour-dropdown {
   margin-left: 5px !important;
   margin-right: 3px !important;
-  width: 40px;
+  width: 30px;
   display: inline-block;
   height: 25px;
   color: #74646e;
@@ -165,12 +165,16 @@
   border-radius: 4px;
   box-shadow: inset 1px 1px 2px #ddd8dc;
   background: #fff;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-overflow: inherit;
+  text-align-last: center;
 }
 
 .table__min-dropdown {
   margin-left: 3px !important;
   margin-right: 3px !important;
-  width: 40px;
+  width: 30px;
   display: inline-block;
   height: 25px;
   color: #74646e;
@@ -178,11 +182,15 @@
   border-radius: 4px;
   box-shadow: inset 1px 1px 2px #ddd8dc;
   background: #fff;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-align-last: center;
+  text-overflow: inherit;
 }
 
 .table__ampm-dropdown {
   margin-left: 5px !important;
-  width: 45px;
+  width: 35px;
   display: inline-block;
   height: 25px;
   color: #74646e;
@@ -190,6 +198,10 @@
   border-radius: 4px;
   box-shadow: inset 1px 1px 2px #ddd8dc;
   background: #fff;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-align-last: center;
+  text-overflow: inherit;
 }
 
 .table__position-dropdown {
@@ -350,7 +362,7 @@
   color: slateblue;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 810px) {
   #mainDiv {
     width: 750px;
   }
@@ -365,27 +377,28 @@
   .tablet-button {
     visibility: visible !important;
   }
-  .second-table {
-    visibility: hidden !important;
-    display: none !important;
+
+  .table {
+    width: 750px !important;
   }
+  .employee-dropdown-wrapper {
+    width: 750px !important;
+  }
+
   .second-table table {
-    display: none;
-    visibility: hidden;
+    margin-left: 0px !important;
+    width: 750px !important;
+  }
+  .table__hour-dropdown,
+  .table__min-dropdown,
+  .table__ampm-dropdown {
+    text-indent: 4px !important;
   }
 }
 
-@media screen and (max-width: 1334px) {
+@media screen and (max-width: 1080px) {
   .tablet-button {
     visibility: visible !important;
-  }
-  .second-table {
-    visibility: hidden !important;
-    display: none !important;
-  }
-  .second-table table {
-    display: none;
-    visibility: hidden;
   }
 }
 

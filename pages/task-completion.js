@@ -56,14 +56,14 @@ const themeForNoWork = createMuiTheme({
 });
 
 const Task = () => {
-  const resolution1334 = useMediaQuery({
-    maxWidth: "1334px",
-    minWidth: "800px",
+  const resolution1080 = useMediaQuery({
+    maxWidth: "1080px",
+    minWidth: "810px",
   });
 
-  const resolution800 = useMediaQuery({
-    maxWidth: "800px",
-    minWidth: "1334px",
+  const resolution810 = useMediaQuery({
+    maxWidth: "810px",
+    minWidth: "1080px",
   });
 
   const router = useRouter();
@@ -87,45 +87,45 @@ const Task = () => {
   const columns = useMemo(
     () => [
       {
-        Header: resolution1334 ? "§" : "Section",
+        Header: resolution1080 ? "§" : "Section",
         accessor: "Section",
-        width: resolution1334 ? 30 : 65,
+        width: resolution1080 ? 20 : 65,
       },
       {
         Header: "Summary Task",
         accessor: "License",
-        width: 160,
+        width: resolution1080 ? 100 : 160,
       },
 
       {
         Header: "Task",
         accessor: "TaskName",
-        width: resolution1334 ? 355 : 360,
+        width: resolution1080 ? 280 : 360,
       },
       {
         Header: "Resource",
         accessor: "Company",
-        width: resolution1334 ? 235 : 260,
+        width: resolution1080 ? 150 : 260,
       },
       {
         Header: "Start Date",
         accessor: "StartDate",
-        width: resolution1334 ? 85 : 100,
+        width: resolution1080 ? 85 : 100,
       },
       {
         Header: "Finish Date",
         accessor: "FinishDate",
-        width: resolution1334 ? 85 : 100,
+        width: resolution1080 ? 85 : 100,
       },
       {
-        Header: resolution1334 ? "Req. Start Date" : "Request Start Date",
+        Header: resolution1080 ? "Req. Start Date" : "Request Start Date",
         accessor: "ReqStartDate",
-        width: resolution1334 ? 85 : 100,
+        width: resolution1080 ? 85 : 100,
       },
       {
-        Header: resolution1334 ? "Req. Finish Date" : "Request Finish Date",
+        Header: resolution1080 ? "Req. Finish Date" : "Request Finish Date",
         accessor: "ReqFinishDate",
-        width: resolution1334 ? 85 : 100,
+        width: resolution1080 ? 85 : 100,
       },
       // {
       //   Header: "Finish Date",
@@ -133,14 +133,14 @@ const Task = () => {
       //   width: 90,
       // },
       {
-        Header: resolution1334 ? "Prev. Work %" : "Previous Work %",
+        Header: resolution1080 ? "Prev. Work %" : "Previous Work %",
         accessor: "PreviousWork",
-        width: resolution1334 ? 63 : 73,
+        width: resolution1080 ? 63 : 73,
       },
       {
-        Header: resolution1334 ? "Curr. Work %" : "Current Work %",
+        Header: resolution1080 ? "Curr. Work %" : "Current Work %",
         accessor: "CurrentWork",
-        width: resolution1334 ? 63 : 73,
+        width: resolution1080 ? 63 : 73,
       },
       // {
       //   Header: "Message",
@@ -1462,6 +1462,18 @@ const Task = () => {
                         );
                       })}
                     </select>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <DatePicker
+                        margin="normal"
+                        id="datePickerDialog"
+                        format="MM/dd/yyyy"
+                        value={selectedDate}
+                        onChange={handleDateChange}
+                        className={styles["header__right__date-picker"]}
+                        autoOk={true}
+                        okLabel=""
+                      />
+                    </MuiPickersUtilsProvider>
                   </div>
                   <div className={styles["header__right"]}>
                     <Button
@@ -1484,18 +1496,6 @@ const Task = () => {
                     >
                       Set No Work Days
                     </Button>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                      <DatePicker
-                        margin="normal"
-                        id="datePickerDialog"
-                        format="MM/dd/yyyy"
-                        value={selectedDate}
-                        onChange={handleDateChange}
-                        className={styles["header__right__date-picker"]}
-                        autoOk={true}
-                        okLabel=""
-                      />
-                    </MuiPickersUtilsProvider>
 
                     <Modal
                       isOpen={modalNoWork.isOpen}
