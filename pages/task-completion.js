@@ -1055,7 +1055,7 @@ const Task = () => {
   // Set No Work
   const customStylesNoWork = {
     content: {
-      top: "40%",
+      top: "49%",
       left: "50%",
       right: "auto",
       bottom: "auto",
