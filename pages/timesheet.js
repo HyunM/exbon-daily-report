@@ -915,7 +915,8 @@ const Timesheet = () => {
                         background: "#fff",
                         zIndex: "0",
                         position: "relative",
-                        maxWidth: "390px",
+                        width: "450px",
+                        maxWidth: "700px",
                         height: "30px",
                       }}
                     >

@@ -374,6 +374,9 @@
   .header__left {
     margin-top: 20px;
   }
+  .header__left select {
+    width: 600px !important;
+  }
   .tablet-button {
     visibility: visible !important;
   }

@@ -678,6 +678,10 @@
     margin-top: 20px;
   }
 
+  .header__left select {
+    width: 600px;
+  }
+
   .table thead td {
     font-size: 0.8rem !important;
     display: block;
