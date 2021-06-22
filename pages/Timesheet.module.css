@@ -400,6 +400,11 @@
   .tablet-button {
     visibility: visible !important;
   }
+  .table__hour-dropdown,
+  .table__min-dropdown,
+  .table__ampm-dropdown {
+    text-indent: 4px !important;
+  }
 }
 
 .tablet-button-wrapper {

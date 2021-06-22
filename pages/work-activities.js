@@ -30,6 +30,7 @@ import DescriptionIcon from "@material-ui/icons/Description";
 import { RiFileExcel2Fill } from "react-icons/ri";
 import { FaFilePdf } from "react-icons/fa";
 import InputMask from "react-input-mask";
+import { useMediaQuery } from "react-responsive";
 
 toast.configure();
 let dataContractor = [{ Name: "" }];
@@ -106,17 +107,22 @@ const workActivities = () => {
   const [checkDownload, setCheckDownload] = useState(0);
   const { promiseInProgress } = usePromiseTracker();
 
+  const resolution1080 = useMediaQuery({
+    maxWidth: "1080px",
+    minWidth: "810px",
+  });
+
   const columns = React.useMemo(
     () => [
       {
         Header: "Contractor",
         accessor: "Contractor",
-        width: 220,
+        width: resolution1080 ? 180 : 220,
       },
       {
         Header: "Trade",
         accessor: "Trade",
-        width: 250,
+        width: resolution1080 ? 210 : 250,
       },
       {
         Header: "Manpower",
@@ -137,12 +143,12 @@ const workActivities = () => {
       {
         Header: "Equipment Utilization",
         accessor: "Equipment",
-        width: 203,
+        width: resolution1080 ? 185 : 203,
       },
       {
         Header: "Work Performed",
         accessor: "WorkPerformed",
-        width: 260,
+        width: resolution1080 ? 230 : 260,
       },
       {
         Header: "",
@@ -1009,8 +1015,6 @@ const workActivities = () => {
                       );
                     })}
                   </select>
-                </div>
-                <div className={styles["header__right"]}>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <DatePicker
                       className={styles["header__right__date-picker"]}
@@ -1050,6 +1054,8 @@ const workActivities = () => {
                       }}
                     />
                   </MuiPickersUtilsProvider>
+                </div>
+                <div className={styles["header__right"]}>
                   <Button
                     variant="contained"
                     size="small"
@@ -1209,65 +1215,19 @@ const workActivities = () => {
                     <tr style={{ display: "flex", width: "1130px" }}>
                       <td
                         className={styles["table__button-add"]}
-                        style={{
-                          boxSizing: "border-box",
-                          display: "inline-block",
-                          width: "220px",
-                          fontSize: "0.82rem",
-                        }}
                         onClick={addActivityRow}
                       >
                         (+) ADD
                       </td>
-                      <td
-                        style={{
-                          boxSizing: "border-box",
-                          display: "inline-block",
-                          width: "250px",
-                        }}
-                      ></td>
-                      <td
-                        style={{
-                          boxSizing: "border-box",
-                          display: "inline-block",
-                          width: "80px",
-                          display: "flex",
-                          justifyContent: "space-between",
-                          color: "rgb(116, 108, 114)",
-                          fontSize: "0.82rem",
-                        }}
-                      >
+                      <td className={styles["table__trade-column"]}></td>
+                      <td className={styles["table__worker-column"]}>
                         <div>Total</div>
                         <div id="total-workers-id">{totalWorkers(data)}</div>
                       </td>
-                      <td
-                        style={{
-                          boxSizing: "border-box",
-                          display: "inline-block",
-                          width: "80px",
-                        }}
-                      ></td>
-                      <td
-                        style={{
-                          boxSizing: "border-box",
-                          display: "inline-block",
-                          width: "203px",
-                        }}
-                      ></td>
-                      <td
-                        style={{
-                          boxSizing: "border-box",
-                          display: "inline-block",
-                          width: "260px",
-                        }}
-                      ></td>
-                      <td
-                        style={{
-                          boxSizing: "border-box",
-                          display: "inline-block",
-                          width: "37px",
-                        }}
-                      ></td>
+                      <td className={styles["table__hours-column"]}></td>
+                      <td className={styles["table__equipment-column"]}></td>
+                      <td className={styles["table__perform-column"]}></td>
+                      <td className={styles["table__delete-column"]}></td>
                     </tr>
                   </tbody>
                 </table>

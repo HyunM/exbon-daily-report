@@ -38,7 +38,7 @@
 
 .header__right__date-picker {
   width: 120px;
-  margin-right: 20px !important;
+  margin-left: 20px !important;
 }
 
 .header__right__date-picker input {
@@ -239,6 +239,10 @@
 .table__button-add {
   color: rgb(116, 108, 114);
   text-align: center;
+  box-sizing: border-box;
+  display: inline-block;
+  width: 220px;
+  font-size: 0.82rem;
 }
 
 .table__button-add:hover {
@@ -247,8 +251,129 @@
   cursor: pointer;
 }
 
+.table__trade-column {
+  box-sizing: border-box;
+  display: inline-block;
+  width: 250px;
+}
+
+.table__worker-column {
+  box-sizing: border-box;
+  display: inline-block;
+  width: 80px;
+  display: flex;
+  justify-content: space-between;
+  color: rgb(116, 108, 114);
+  font-size: 0.82rem;
+}
+
+.table__hours-column {
+  box-sizing: border-box;
+  display: inline-block;
+  width: 80px;
+}
+.table__equipment-column {
+  box-sizing: border-box;
+  display: inline-block;
+  width: 203px;
+}
+
+.table__perform-column {
+  box-sizing: border-box;
+  display: inline-block;
+  width: 260px;
+}
+
+.table__delete-column {
+  box-sizing: border-box;
+  display: inline-block;
+  width: 37px;
+}
+
 .alert__complete {
   text-align: center;
+}
+
+@media screen and (max-width: 1080px) {
+  #mainDiv {
+    width: 1000px;
+  }
+  .header {
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .header__left {
+    margin-top: 20px;
+    margin-bottom: 15px;
+  }
+
+  .table__button-add {
+    width: 180px;
+  }
+
+  .table__trade-column {
+    width: 210px;
+  }
+
+  .table__worker-column {
+    width: 80px;
+  }
+
+  .table__hours-column {
+    width: 80px;
+  }
+  .table__equipment-column {
+    width: 185px;
+  }
+
+  .table__perform-column {
+    width: 230px;
+  }
+
+  .table__delete-column {
+    width: 37px;
+  }
+
+  .table__contractor__input {
+    width: 160px !important;
+    text-align: left !important;
+  }
+
+  .table__contractor__input + div {
+    z-index: 9999;
+  }
+
+  .table__trade__input {
+    width: 190px !important;
+    text-align: left !important;
+  }
+
+  .table__workers__input {
+    width: 60px !important;
+    text-align: right !important;
+  }
+
+  .table__hours__input {
+    width: 60px !important;
+    text-align: right !important;
+  }
+
+  .table__equipment__input {
+    width: 165px !important;
+    text-align: left !important;
+  }
+
+  .table__work-performed__input {
+    width: 210px !important;
+    text-align: left !important;
+  }
+
+  .table__is-deleted__icon {
+    color: rgb(163, 159, 159);
+    cursor: pointer;
+    text-align: center !important;
+  }
 }
 
 @media screen and (max-width: 810px) {
