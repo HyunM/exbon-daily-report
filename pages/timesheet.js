@@ -799,6 +799,8 @@ const Timesheet = () => {
       return null;
     }
     setData(() => [...tempData, ...tempDataTable]);
+    setSelectedInputEmployee(0);
+    setSelectedSummaryEmployee(0);
   };
 
   const handleSetSameTask = () => {
