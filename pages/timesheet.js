@@ -289,60 +289,52 @@ const Timesheet = () => {
     let promises = [];
     let checkSave = 0;
 
-    const fetchData = async () => {
-      let checkEmployeeName = data.find(element => element.EmployeeID === 0);
-      let checkTaskName = data.find(element => element.TaskID === 0);
-      let checkTime = 0;
-      for (
-        let i = 0;
-        i < document.getElementsByClassName("table__labor-hours-input").length;
-        i++
-      ) {
-        if (
-          document.getElementsByClassName("table__labor-hours-input")[i]
-            .innerText === "NaN"
-        )
-          checkTime++;
-      }
-      if (checkEmployeeName) {
-        checkSave += 1;
-        toast.error(
-          <div className={styles["alert__table__employee-input"]}>
-            Unable to save. <br /> Please check <strong>Employee Name </strong>.
-          </div>,
-          {
-            position: toast.POSITION.BOTTOM_CENTER,
-            hideProgressBar: true,
-          }
-        );
-        return null;
-      } else if (checkTime) {
-        checkSave += 1;
-        toast.error(
-          <div className={styles["alert__table__time-wrapper"]}>
-            Unable to save. <br /> Please check the <strong>time input </strong>
-            .
-          </div>,
-          {
-            position: toast.POSITION.BOTTOM_CENTER,
-            hideProgressBar: true,
-          }
-        );
-        return null;
-      } else if (checkTaskName) {
-        checkSave += 1;
-        toast.error(
-          <div className={styles["alert__table__employee-input"]}>
-            Unable to save. <br /> Please check <strong>Task Name </strong>.
-          </div>,
-          {
-            position: toast.POSITION.BOTTOM_CENTER,
-            hideProgressBar: true,
-          }
-        );
-        return null;
-      }
+    let checkEmployeeName = data.find(element => element.EmployeeID == 0);
+    let checkTaskName = data.find(element => element.TaskID == 0);
+    let checkTime = 0;
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].StartTime.includes("_") || data[i].EndTime.includes("_"))
+        checkTime++;
+    }
+    if (checkEmployeeName) {
+      checkSave += 1;
+      toast.error(
+        <div className={styles["alert__table__employee-input"]}>
+          Unable to save. <br /> Please check <strong>Employee Name </strong>.
+        </div>,
+        {
+          position: toast.POSITION.BOTTOM_CENTER,
+          hideProgressBar: true,
+        }
+      );
+      return null;
+    } else if (checkTime) {
+      checkSave += 1;
+      toast.error(
+        <div className={styles["alert__table__time-wrapper"]}>
+          Unable to save. <br /> Please check the <strong>time input </strong>.
+        </div>,
+        {
+          position: toast.POSITION.BOTTOM_CENTER,
+          hideProgressBar: true,
+        }
+      );
+      return null;
+    } else if (checkTaskName) {
+      checkSave += 1;
+      toast.error(
+        <div className={styles["alert__table__employee-input"]}>
+          Unable to save. <br /> Please check <strong>Task Name </strong>.
+        </div>,
+        {
+          position: toast.POSITION.BOTTOM_CENTER,
+          hideProgressBar: true,
+        }
+      );
+      return null;
+    }
 
+    const fetchData = async () => {
       await axios({
         method: "delete",
         url: `/api/timesheets`,
@@ -388,10 +380,11 @@ const Timesheet = () => {
         });
       });
     };
-    trackPromise(fetchData());
-    trackPromise(
-      Promise.all(promises).then(() => {
-        if (checkSave === 0) {
+
+    if (check === 0) {
+      trackPromise(fetchData());
+      trackPromise(
+        Promise.all(promises).then(() => {
           toast.success(
             <div className={styles["alert__complete"]}>
               <strong>Save Complete</strong>
@@ -401,9 +394,12 @@ const Timesheet = () => {
               hideProgressBar: true,
             }
           );
-        }
-      })
-    );
+        })
+      );
+    }
+
+    setSelectedSummaryEmployee(0);
+    setSelectedInputEmployee(0);
     axios({
       method: "post",
       url: `/api/log-daily-reports`,
@@ -488,6 +484,8 @@ const Timesheet = () => {
   const clickGetTheLatestData = () => {
     if (dataLatest.length !== 0) {
       setData(dataLatest);
+      setSelectedSummaryEmployee(0);
+      setSelectedInputEmployee(0);
     } else {
       toast.warning(
         <div className={styles["alert__table__hour-input"]}>
@@ -935,6 +933,18 @@ const Timesheet = () => {
                         );
                       })}
                     </select>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <DatePicker
+                        margin="normal"
+                        id="datePickerDialog"
+                        format="MM/dd/yyyy"
+                        value={selectedDate}
+                        onChange={handleDateChange}
+                        className={styles["header__right__date-picker"]}
+                        autoOk={true}
+                        okLabel=""
+                      />
+                    </MuiPickersUtilsProvider>
                   </div>
                   <div className={styles["header__right"]}>
                     <>
@@ -1027,19 +1037,6 @@ const Timesheet = () => {
                         Set Same Task
                       </Button>
                     </>
-
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                      <DatePicker
-                        margin="normal"
-                        id="datePickerDialog"
-                        format="MM/dd/yyyy"
-                        value={selectedDate}
-                        onChange={handleDateChange}
-                        className={styles["header__right__date-picker"]}
-                        autoOk={true}
-                        okLabel=""
-                      />
-                    </MuiPickersUtilsProvider>
                   </div>
                 </div>
                 <div>
@@ -1393,15 +1390,6 @@ const Timesheet = () => {
                   <></>
                 ) : (
                   <div className={styles["second-table"]}>
-                    <h3
-                      style={{
-                        textAlign: "center",
-                        fontFamily: "sans-serif",
-                        color: "#9d9ce7",
-                      }}
-                    >
-                      Timesheet Summary
-                    </h3>
                     <table style={{ width: "100%" }}>
                       <thead>
                         <tr>

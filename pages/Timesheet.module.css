@@ -1,11 +1,11 @@
 #mainDiv {
-  width: 1150px;
+  width: 730px;
   margin: auto;
   margin-bottom: 150px;
 }
 
 .header {
-  display: flex;
+  display: block;
   justify-content: space-between;
 }
 .title {
@@ -13,6 +13,7 @@
   font-family: "Roboto";
   color: darkblue;
   margin-bottom: 0;
+  visibility: hidden;
 }
 
 .header__left {
@@ -44,7 +45,6 @@
   font-family: "Roboto";
   color: #50474c;
   margin-bottom: 20px !important;
-  margin-left: 10px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -84,8 +84,6 @@
   visibility: hidden;
 }
 
-.header__right__save-btn {
-}
 
 .header__right__save-btn-before-sunday {
   visibility: hidden;
@@ -113,6 +111,7 @@
   color: #534f51;
 }
 .header__right__date-picker {
+  margin-left: 20px !important;
   width: 120px;
   margin-right: 20px !important;
   margin-bottom: 17px !important;
@@ -445,8 +444,8 @@
   width: 730px;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 50px;
+  margin-bottom: 10px;
   display: flex;
   justify-content: space-between;
 }
