@@ -1495,9 +1495,10 @@ const Timesheet = () => {
                                     <DeleteForeverIcon
                                       color="action"
                                       className={styles["table__delete-icon"]}
-                                      onClick={() =>
-                                        clickDeleteTaskBtn(element.Id)
-                                      }
+                                      onClick={() => {
+                                        afterSundayCheck &&
+                                          clickDeleteTaskBtn(element.Id);
+                                      }}
                                     ></DeleteForeverIcon>
                                   </div>
                                 </TableCell>
