@@ -1048,6 +1048,12 @@ const Timesheet = () => {
                         className={styles["employee-dropdown"]}
                         value={selectedInputEmployee}
                         onChange={e => setSelectedInputEmployee(e.target.value)}
+                        disabled={afterSundayCheck ? false : true}
+                        style={
+                          !afterSundayCheck && data.length === 0
+                            ? { display: "none" }
+                            : {}
+                        }
                       >
                         <option value="0">
                           --------Choose Employee--------
@@ -1090,9 +1096,18 @@ const Timesheet = () => {
                       </select>
                     )}
 
-                    <Button onClick={clickAddTaskBtn}>Add Task</Button>
+                    {afterSundayCheck && (
+                      <Button onClick={clickAddTaskBtn}>Add Task</Button>
+                    )}
                   </div>
-                  <div className={styles["table"]}>
+                  <div
+                    className={styles["table"]}
+                    style={
+                      !afterSundayCheck && data.length === 0
+                        ? { display: "none" }
+                        : {}
+                    }
+                  >
                     <TableContainer component={Paper}>
                       <Table>
                         <TableHead>
@@ -1116,6 +1131,7 @@ const Timesheet = () => {
                                       onChange={e =>
                                         changeTaskID(element.Id, e.target.value)
                                       }
+                                      disabled={afterSundayCheck ? false : true}
                                     >
                                       <option value="0">
                                         ------------------Choose
