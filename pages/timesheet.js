@@ -502,26 +502,17 @@ const Timesheet = () => {
     return new Date(convertInputToTime(dataTime).replace(" ", "T"));
   };
 
-  const [modalIsOpen, setIsOpen] = React.useState(false);
-  const openModal = () => {
-    setIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsOpen(false);
-  };
-
   useEffect(() => {
     let tempData = [];
     data.forEach(element => {
       tempData.push({
         EmployeeID: element.EmployeeID,
         Name: element.EmployeeName,
-        StartTime: element.TaskID == -2 ? 0 : toMilli(element.StartTime),
-        EndTime: element.TaskID == -2 ? 0 : toMilli(element.EndTime),
+        StartTime: element.TaskID == -1 ? 0 : toMilli(element.StartTime),
+        EndTime: element.TaskID == -1 ? 0 : toMilli(element.EndTime),
         IsMeal: element.IsMeal,
-        MealStart: element.TaskID == -2 ? toMilli(element.StartTime) : 0,
-        MealFinish: element.TaskID == -2 ? toMilli(element.EndTime) : 0,
+        MealStart: element.TaskID == -1 ? toMilli(element.StartTime) : 0,
+        MealFinish: element.TaskID == -1 ? toMilli(element.EndTime) : 0,
       });
     });
 
