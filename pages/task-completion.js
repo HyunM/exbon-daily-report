@@ -660,8 +660,8 @@ const Task = () => {
     let indexNo = 0;
     data.forEach((element, index) => {
       if (new Date(element.ReqStartDate) > new Date(element.ReqFinishDate)) {
-        console.log(new Date(element.ReqStartDate));
-        console.log(new Date(element.ReqFinishDate));
+        // console.log(new Date(element.ReqStartDate));
+        // console.log(new Date(element.ReqFinishDate));
         checkDate++;
         indexNo = index + 1;
         return null;

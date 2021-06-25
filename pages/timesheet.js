@@ -833,6 +833,7 @@ const Timesheet = () => {
       }
     }
 
+    tempEmployeeID = new Set(tempEmployeeID);
     let tempData = [];
     tempEmployeeID.forEach(element => {
       tempDataTask.forEach(task => {
@@ -850,12 +851,12 @@ const Timesheet = () => {
 
   return (
     <>
-      {console.log("data")}
+      {/* {console.log("data")}
       {console.log(data)}
       {console.log("dataView")}
       {console.log(dataView)}
       {console.log("dataTable")}
-      {console.log(dataTable)}
+      {console.log(dataTable)} */}
 
       <Head>
         <title>Daily Report</title>
