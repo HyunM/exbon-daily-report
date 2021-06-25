@@ -40,12 +40,10 @@ const timesheetHandler = (req, res) => {
           }
           const request = new mssql.Request();
 
-          const query = `EXEC [Hammer].[dbo].[Timesheet_Insert]
-          ${body.ProjectID}, '${body.Date}', ${body.EmployeeID}, ${body.TaskID}, '${body.Start}', '${body.End}'`;
+          const query = `EXEC [Hammer].[dbo].[TimesheetItems_Insert]
+          ${body.TimesheetID}, ${body.TaskID}, '${body.Start}', '${body.End}'`;
           /* --Params--
-          @projectID int,
-          @date date,
-          @employeeID int,
+          @timesheetID int,
           @taskID int,
           @start time(0),
           @end time(0)
@@ -72,11 +70,12 @@ const timesheetHandler = (req, res) => {
           }
           const request = new mssql.Request();
 
-          const query = `EXEC [Hammer].[dbo].[Timesheet_Delete]
-          ${body.ProjectID}, '${body.Date}'`;
+          const query = `EXEC [Hammer].[dbo].[Timesheet_DeleteAndInsert]
+          ${body.ProjectID}, '${body.Date}', ${body.EmployeeID}`;
           /* --Params--
           @projectID int,
           @date date,
+          @employeeID int
           */
 
           request.query(query, (err, recordset) => {
@@ -85,7 +84,8 @@ const timesheetHandler = (req, res) => {
               return resolve();
             }
             res.status(200).json({
-              message: "Deleted.",
+              message: "Deleted and Inserted.",
+              result: recordset,
             });
             return resolve();
           });
