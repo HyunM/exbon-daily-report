@@ -330,16 +330,16 @@ const Timesheet = () => {
         console.log("save");
         console.log(dataView);
 
-        // await axios({
-        //   method: "delete",
-        //   url: `/api/timesheets`,
-        //   timeout: 3000, // 3 seconds timeout
-        //   headers: {},
-        //   data: {
-        //     ProjectID: projectState,
-        //     Date: formatDate(selectedDate),
-        //   },
-        // });
+        await axios({
+          method: "delete",
+          url: `/api/timesheets`,
+          timeout: 3000, // 3 seconds timeout
+          headers: {},
+          data: {
+            ProjectID: projectState,
+            Date: formatDate(selectedDate),
+          },
+        });
         // data.forEach(async element => {
         //   await axios({
         //     method: "post",

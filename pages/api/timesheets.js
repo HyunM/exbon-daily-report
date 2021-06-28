@@ -40,13 +40,29 @@ const timesheetHandler = (req, res) => {
           }
           const request = new mssql.Request();
 
-          const query = `EXEC [Hammer].[dbo].[TimesheetItems_Insert]
-          ${body.TimesheetID}, ${body.TaskID}, '${body.Start}', '${body.End}'`;
+          const query = `EXEC [Hammer].[dbo].[Timesheet_Insert]
+          ${body.ProjectID},
+          '${body.Date}',
+          ${body.EmployeeID},
+          '${body.Start}',
+          '${body.Finish}',
+          '${body.MealStart}',
+          '${body.MealFinish}',
+          '${body.TravelStart}',
+          '${body.TravelFinish}',
+          '${body.Type}'`;
+
           /* --Params--
-          @timesheetID int,
-          @taskID int,
+          @projectID int,
+          @date date,
+          @employeeID int,
           @start time(0),
-          @end time(0)
+          @finish time(0),
+          @mealStart time(0),
+          @mealFinish time(0),
+          @travelStart time(0),
+          @travelFinish time(0),
+          @type nvarchar(20)
           */
 
           request.query(query, (err, recordset) => {
@@ -56,6 +72,7 @@ const timesheetHandler = (req, res) => {
             }
             res.status(200).json({
               message: "Success, the timesheet has been created.",
+              result: recordset,
             });
             return resolve();
           });
@@ -70,12 +87,11 @@ const timesheetHandler = (req, res) => {
           }
           const request = new mssql.Request();
 
-          const query = `EXEC [Hammer].[dbo].[Timesheet_DeleteAndInsert]
-          ${body.ProjectID}, '${body.Date}', ${body.EmployeeID}`;
+          const query = `EXEC [Hammer].[dbo].[Timesheet_Delete]
+          ${body.ProjectID}, '${body.Date}'`;
           /* --Params--
           @projectID int,
-          @date date,
-          @employeeID int
+	        @date date
           */
 
           request.query(query, (err, recordset) => {
@@ -84,7 +100,7 @@ const timesheetHandler = (req, res) => {
               return resolve();
             }
             res.status(200).json({
-              message: "Deleted and Inserted.",
+              message: "Deleted",
               result: recordset,
             });
             return resolve();
