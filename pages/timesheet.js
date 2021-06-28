@@ -285,37 +285,27 @@ const Timesheet = () => {
     trackPromise(Promise.all(promises).then(() => {}));
   }, [projectState, status, selectedDate, router.isReady]);
 
+  function compare(a, b) {
+    if (a.last_nom < b.last_nom) {
+      return -1;
+    }
+    if (a.last_nom > b.last_nom) {
+      return 1;
+    }
+    return 0;
+  }
+
   const handleSaveTimesheetBtn = () => {
     let promises = [];
 
     let checkEmployeeName = data.find(element => element.EmployeeID == 0);
     let checkTaskName = data.find(element => element.TaskID == 0);
-    let checkTime = 0;
-    for (let i = 0; i < data.length; i++) {
-      if (
-        data[i].StartTime.includes("_") ||
-        data[i].EndTime.includes("_") ||
-        data[i].StartTime.length != 7 ||
-        data[i].EndTime.length != 7
-      )
-        checkTime++;
-    }
+
     if (checkEmployeeName) {
       checkSave += 1;
       toast.error(
         <div className={styles["alert__table__employee-input"]}>
           Unable to save. <br /> Please check <strong>Employee Name </strong>.
-        </div>,
-        {
-          position: toast.POSITION.BOTTOM_CENTER,
-          hideProgressBar: true,
-        }
-      );
-      return null;
-    } else if (checkTime) {
-      toast.error(
-        <div className={styles["alert__table__time-wrapper"]}>
-          Unable to save. <br /> Please check the <strong>time input </strong>.
         </div>,
         {
           position: toast.POSITION.BOTTOM_CENTER,
@@ -336,50 +326,53 @@ const Timesheet = () => {
       return null;
     } else {
       const fetchData = async () => {
-        await axios({
-          method: "delete",
-          url: `/api/timesheets`,
-          timeout: 3000, // 3 seconds timeout
-          headers: {},
-          data: {
-            ProjectID: projectState,
-            Date: formatDate(selectedDate),
-          },
-        });
+        dataView.sort(compare);
+        console.log("save");
+        console.log(dataView);
 
-        data.forEach(async element => {
-          await axios({
-            method: "post",
-            url: `/api/timesheets`,
-            timeout: 3000, // 3 seconds timeout
-            headers: {},
-            data: {
-              ProjectID: projectState,
-              Date: formatDate(selectedDate),
-              EmployeeID: element.EmployeeID,
-              TaskID: element.TaskID,
-              Start: element.StartTime,
-              End: element.EndTime,
-            },
-            //   @projectID int,
-            //   @date date,
-            //   @employeeID int,
-            //   @taskID int,
-            //   @start time(0),
-            //   @end time(0)
-          }).catch(err => {
-            toast.error(
-              <div className={styles["alert__complete"]}>
-                <strong>CANNOT SAVE</strong>
-                <p>Please check the time input.</p>
-              </div>,
-              {
-                position: toast.POSITION.TOP_CENTER,
-                hideProgressBar: true,
-              }
-            );
-          });
-        });
+        // await axios({
+        //   method: "delete",
+        //   url: `/api/timesheets`,
+        //   timeout: 3000, // 3 seconds timeout
+        //   headers: {},
+        //   data: {
+        //     ProjectID: projectState,
+        //     Date: formatDate(selectedDate),
+        //   },
+        // });
+        // data.forEach(async element => {
+        //   await axios({
+        //     method: "post",
+        //     url: `/api/timesheets`,
+        //     timeout: 3000, // 3 seconds timeout
+        //     headers: {},
+        //     data: {
+        //       ProjectID: projectState,
+        //       Date: formatDate(selectedDate),
+        //       EmployeeID: element.EmployeeID,
+        //       TaskID: element.TaskID,
+        //       Start: element.StartTime,
+        //       End: element.EndTime,
+        //     },
+        //     //   @projectID int,
+        //     //   @date date,
+        //     //   @employeeID int,
+        //     //   @taskID int,
+        //     //   @start time(0),
+        //     //   @end time(0)
+        //   }).catch(err => {
+        //     toast.error(
+        //       <div className={styles["alert__complete"]}>
+        //         <strong>CANNOT SAVE</strong>
+        //         <p>Please check the time input.</p>
+        //       </div>,
+        //       {
+        //         position: toast.POSITION.TOP_CENTER,
+        //         hideProgressBar: true,
+        //       }
+        //     );
+        //   });
+        // });
       };
 
       trackPromise(fetchData());
@@ -505,15 +498,16 @@ const Timesheet = () => {
   useEffect(() => {
     let tempData = [];
     data.forEach(element => {
-      tempData.push({
-        EmployeeID: element.EmployeeID,
-        Name: element.EmployeeName,
-        StartTime: element.TaskID == -1 ? 0 : toMilli(element.StartTime),
-        EndTime: element.TaskID == -1 ? 0 : toMilli(element.EndTime),
-        IsMeal: element.IsMeal,
-        MealStart: element.TaskID == -1 ? toMilli(element.StartTime) : 0,
-        MealFinish: element.TaskID == -1 ? toMilli(element.EndTime) : 0,
-      });
+      if (element.TaskID != -3) {
+        tempData.push({
+          EmployeeID: element.EmployeeID,
+          Name: element.EmployeeName,
+          StartTime: element.TaskID == -2 ? 0 : toMilli(element.StartTime),
+          EndTime: element.TaskID == -2 ? 0 : toMilli(element.EndTime),
+          MealStart: element.TaskID == -2 ? toMilli(element.StartTime) : 0,
+          MealFinish: element.TaskID == -2 ? toMilli(element.EndTime) : 0,
+        });
+      }
     });
 
     let realData = [];
@@ -842,12 +836,12 @@ const Timesheet = () => {
 
   return (
     <>
-      {/* {console.log("data")}
+      {console.log("data")}
       {console.log(data)}
       {console.log("dataView")}
       {console.log(dataView)}
       {console.log("dataTable")}
-      {console.log(dataTable)} */}
+      {console.log(dataTable)}
 
       <Head>
         <title>Daily Report</title>
@@ -1579,12 +1573,32 @@ const Timesheet = () => {
                                   : moment(cell.MealFinish).format("LT")}
                               </td>
                               <td style={{ textAlign: "right", width: "90px" }}>
-                                {(
+                                {cell.StartTime <= cell.MealFinish &&
+                                cell.EndTime >= cell.MealStart
+                                  ? (
+                                      (cell.EndTime -
+                                        cell.StartTime -
+                                        (Math.min(
+                                          cell.EndTime,
+                                          cell.MealFinish
+                                        ) -
+                                          Math.max(
+                                            cell.StartTime,
+                                            cell.MealStart
+                                          ))) /
+                                      3600000
+                                    ).toFixed(2)
+                                  : (
+                                      (cell.EndTime - cell.StartTime) /
+                                      3600000
+                                    ).toFixed(2)}
+
+                                {/* {(
                                   (cell.EndTime -
                                     cell.StartTime -
                                     (cell.MealFinish - cell.MealStart)) /
                                   3600000
-                                ).toFixed(2)}
+                                ).toFixed(2)} */}
                               </td>
                             </tr>
                           );
