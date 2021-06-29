@@ -422,65 +422,118 @@ const Timesheet = () => {
               timesheetID = result.data.result.recordsets[0][0].TimesheetID;
             });
 
-            await data.forEach(
-              async (taskElement, idx_taskElement, array_taskElement) => {
-                if (taskElement.EmployeeID == employeeElement.EmployeeID) {
-                  if (taskElement.TaskID != -2 && taskElement.TaskID != -3) {
-                    await axios({
-                      method: "post",
-                      url: `/api/timesheet-items`,
-                      timeout: 3000, // 3 seconds timeout
-                      headers: {},
-                      data: {
-                        TimesheetID: parseInt(timesheetID),
-                        TaskID: parseInt(taskElement.TaskID),
-                        Start: taskElement.StartTime,
-                        End: taskElement.EndTime,
-                        ProjectID: parseInt(projectState),
-                        LaborHours: taskElement.TotalHours,
+            for (let i = 0; i < data.length; i++) {
+              if (data[i].EmployeeID == employeeElement.EmployeeID) {
+                if (data[i].TaskID != -2 && data[i].TaskID != -3) {
+                  axios({
+                    method: "post",
+                    url: `/api/timesheet-items`,
+                    timeout: 3000, // 3 seconds timeout
+                    headers: {},
+                    data: {
+                      TimesheetID: parseInt(timesheetID),
+                      TaskID: parseInt(data[i].TaskID),
+                      Start: data[i].StartTime,
+                      End: data[i].EndTime,
+                      ProjectID: parseInt(projectState),
+                      LaborHours: data[i].TotalHours,
 
-                        /* --Params--
+                      /* --Params--
                         ${body.TimesheetID},
                         ${body.TaskID},
                         '${body.Start}',
                         '${body.End}',
                         ${body.ProjectID}
                         */
-                      },
-                    });
-                  }
-                }
-
-                if (
-                  idx_employeeElement == array_employeeElement.length - 1 &&
-                  idx_taskElement == array_taskElement.length - 1
-                ) {
-                  await param_CalculateHours.forEach(async elementParam => {
-                    await axios({
-                      method: "post",
-                      url: `/api/timesheets/calculate-hours`,
-                      timeout: 5000, // 5 seconds timeout
-                      headers: {},
-                      data: {
-                        StartDate: moment(selectedDate)
-                          .startOf("isoweek")
-                          .toDate(),
-                        EndDate: moment(selectedDate).endOf("week").toDate(),
-                        ProjectID: parseInt(projectState),
-                        EmployeeID: elementParam.EmployeeID,
-                        IsOfficer: elementParam.Type == "Officer" ? 1 : 0,
-                      },
-                    });
-
-                    // '${body.StartDate}',
-                    // '${body.EndDate}',
-                    // ${body.ProjectID},
-                    // ${body.EmployeeID},
-                    // '${body.IsOfficer}'
+                    },
                   });
                 }
               }
-            );
+
+              if (
+                idx_employeeElement == array_employeeElement.length - 1 &&
+                data[i] == data.length - 1
+              ) {
+                for (let k = 0; param_CalculateHours.length; k++) {
+                  axios({
+                    method: "post",
+                    url: `/api/timesheets/calculate-hours`,
+                    timeout: 5000, // 5 seconds timeout
+                    headers: {},
+                    data: {
+                      StartDate: moment(selectedDate)
+                        .startOf("isoweek")
+                        .toDate(),
+                      EndDate: moment(selectedDate).endOf("week").toDate(),
+                      ProjectID: parseInt(projectState),
+                      EmployeeID: param_CalculateHours[k].EmployeeID,
+                      IsOfficer:
+                        aram_CalculateHours[k].Type == "Officer" ? 1 : 0,
+                    },
+                  });
+                }
+              }
+            }
+
+            // await data.forEach(
+            //   async (taskElement, idx_taskElement, array_taskElement) => {
+            //     if (taskElement.EmployeeID == employeeElement.EmployeeID) {
+            //       if (taskElement.TaskID != -2 && taskElement.TaskID != -3) {
+            //         await axios({
+            //           method: "post",
+            //           url: `/api/timesheet-items`,
+            //           timeout: 3000, // 3 seconds timeout
+            //           headers: {},
+            //           data: {
+            //             TimesheetID: parseInt(timesheetID),
+            //             TaskID: parseInt(taskElement.TaskID),
+            //             Start: taskElement.StartTime,
+            //             End: taskElement.EndTime,
+            //             ProjectID: parseInt(projectState),
+            //             LaborHours: taskElement.TotalHours,
+
+            //             /* --Params--
+            //             ${body.TimesheetID},
+            //             ${body.TaskID},
+            //             '${body.Start}',
+            //             '${body.End}',
+            //             ${body.ProjectID}
+            //             */
+            //           },
+            //         });
+            //       }
+            //     }
+
+            //     if (
+            //       idx_employeeElement == array_employeeElement.length - 1 &&
+            //       idx_taskElement == array_taskElement.length - 1
+            //     ) {
+            //       await param_CalculateHours.forEach(async elementParam => {
+            //         await axios({
+            //           method: "post",
+            //           url: `/api/timesheets/calculate-hours`,
+            //           timeout: 5000, // 5 seconds timeout
+            //           headers: {},
+            //           data: {
+            //             StartDate: moment(selectedDate)
+            //               .startOf("isoweek")
+            //               .toDate(),
+            //             EndDate: moment(selectedDate).endOf("week").toDate(),
+            //             ProjectID: parseInt(projectState),
+            //             EmployeeID: elementParam.EmployeeID,
+            //             IsOfficer: elementParam.Type == "Officer" ? 1 : 0,
+            //           },
+            //         });
+
+            //         // '${body.StartDate}',
+            //         // '${body.EndDate}',
+            //         // ${body.ProjectID},
+            //         // ${body.EmployeeID},
+            //         // '${body.IsOfficer}'
+            //       });
+            //     }
+            //   }
+            // );
           }
         );
       };
