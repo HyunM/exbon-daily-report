@@ -18,15 +18,18 @@ const timesheetItemHandler = (req, res) => {
           ${body.TaskID},
           '${body.Start}',
           '${body.End}',
-          ${body.ProjectID}
-          `;
+          ${body.ProjectID},
+          '${body.MealStart}',
+          '${body.MealEnd}'`;
 
           /* --Params--
           @timesheetID int,
           @taskID int,
           @start time(0),
           @end time(0),
-          @projectID int
+          @projectID int,
+          @mealStart time(0),
+          @mealEnd time(0),
           */
 
           request.query(query, (err, recordset) => {

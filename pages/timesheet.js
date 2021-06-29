@@ -297,6 +297,7 @@ const Timesheet = () => {
 
   const handleSaveTimesheetBtn = () => {
     let promises = [];
+    let param_CalculateHours = [];
 
     let checkEmployeeName = data.find(element => element.EmployeeID == 0);
     let checkTaskName = data.find(element => element.TaskID == 0);
@@ -330,8 +331,6 @@ const Timesheet = () => {
         console.log("save");
         console.log(tempDataView);
 
-        let param_CalculateHours = [];
-
         await axios({
           method: "delete",
           url: `/api/timesheets`,
@@ -342,10 +341,11 @@ const Timesheet = () => {
             Date: formatDate(selectedDate),
           },
         }).then(result => {
+          console.log("delete api/timesheets");
           param_CalculateHours = result.data.result.recordsets[0];
         });
 
-        tempDataView.forEach(async employeeElement => {
+        await tempDataView.forEach(async employeeElement => {
           let timesheetID = 0;
           await axios({
             method: "post",
@@ -390,12 +390,13 @@ const Timesheet = () => {
               */
             },
           }).then(result => {
+            console.log("post api/timesheets");
             timesheetID = result.data.result.recordsets[0][0].TimesheetID;
             console.log("TimesheetID");
             console.log(timesheetID);
           });
 
-          data.forEach(async taskElement => {
+          await data.forEach(async taskElement => {
             if (taskElement.EmployeeID == employeeElement.EmployeeID) {
               if (taskElement.TaskID != -2 && taskElement.TaskID != -3) {
                 await axios({
@@ -409,6 +410,14 @@ const Timesheet = () => {
                     Start: taskElement.StartTime,
                     End: taskElement.EndTime,
                     ProjectID: parseInt(projectState),
+                    MealStart:
+                      employeeElement.MealStart == employeeElement.MealFinish
+                        ? "12:00:00"
+                        : moment(employeeElement.MealStart).format("LT"),
+                    MealEnd:
+                      employeeElement.MealStart == employeeElement.MealFinish
+                        ? "12:00:00"
+                        : moment(employeeElement.MealFinish).format("LT"),
 
                     /* --Params--
                   ${body.TimesheetID},
@@ -418,45 +427,32 @@ const Timesheet = () => {
                   ${body.ProjectID}
                   */
                   },
+                }).then(result => {
+                  console.log("post api/timesheet-items");
                 });
               }
             }
           });
         });
 
-        // data.forEach(async element => {
-        //   await axios({
-        //     method: "post",
-        //     url: `/api/timesheets`,
-        //     timeout: 3000, // 3 seconds timeout
-        //     headers: {},
-        //     data: {
-        //       ProjectID: projectState,
-        //       Date: formatDate(selectedDate),
-        //       EmployeeID: element.EmployeeID,
-        //       TaskID: element.TaskID,
-        //       Start: element.StartTime,
-        //       End: element.EndTime,
-        //     },
-        //     //   @projectID int,
-        //     //   @date date,
-        //     //   @employeeID int,
-        //     //   @taskID int,
-        //     //   @start time(0),
-        //     //   @end time(0)
-        //   }).catch(err => {
-        //     toast.error(
-        //       <div className={styles["alert__complete"]}>
-        //         <strong>CANNOT SAVE</strong>
-        //         <p>Please check the time input.</p>
-        //       </div>,
-        //       {
-        //         position: toast.POSITION.TOP_CENTER,
-        //         hideProgressBar: true,
-        //       }
-        //     );
-        //   });
-        // });
+        console.log("param_CalculateHours");
+        console.log(param_CalculateHours);
+        await param_CalculateHours.forEach(elementParam => {
+          // axios({
+          //   method: "post",
+          //   url: `/api/timesheets/calculate-hours`,
+          //   timeout: 5000, // 5 seconds timeout
+          //   headers: {},
+          //   data: {
+          //     StartDate: '2021-06-28',
+          //     EndDate: '2021-07-04',
+          //     ProjectID: projectState,
+          //     EmployeeID: elementParam.EmployeeID,
+          //     IsOfficer: elementParam.Type,
+          //   },
+          // });
+          console.log("api-calculate-hours");
+        });
       };
 
       trackPromise(fetchData());
@@ -475,6 +471,7 @@ const Timesheet = () => {
       );
       setSelectedSummaryEmployee(0);
       setSelectedInputEmployee(0);
+
       axios({
         method: "post",
         url: `/api/log-daily-reports`,
