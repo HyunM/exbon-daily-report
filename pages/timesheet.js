@@ -286,10 +286,10 @@ const Timesheet = () => {
   }, [projectState, status, selectedDate, router.isReady]);
 
   function compare(a, b) {
-    if (a.last_nom < b.last_nom) {
+    if (a.EmployeeID < b.EmployeeID) {
       return -1;
     }
-    if (a.last_nom > b.last_nom) {
+    if (a.EmployeeID > b.EmployeeID) {
       return 1;
     }
     return 0;
@@ -326,9 +326,11 @@ const Timesheet = () => {
       return null;
     } else {
       const fetchData = async () => {
-        dataView.sort(compare);
+        let tempDataView = dataView.sort(compare);
         console.log("save");
-        console.log(dataView);
+        console.log(tempDataView);
+
+        let param_CalculateHours = [];
 
         await axios({
           method: "delete",
@@ -339,7 +341,73 @@ const Timesheet = () => {
             ProjectID: projectState,
             Date: formatDate(selectedDate),
           },
+        }).then(result => {
+          param_CalculateHours = result.data.result.recordsets[0];
         });
+
+        tempDataView.forEach(async employeeElement => {
+          let timesheetID = 0;
+          await axios({
+            method: "post",
+            url: `/api/timesheets`,
+            timeout: 3000, // 3 seconds timeout
+            headers: {},
+            data: {
+              ProjectID: projectState,
+              Date: formatDate(selectedDate),
+              EmployeeID: employeeElement.EmployeeID,
+              Start: employeeElement.StartTime,
+              Finish: employeeElement.EndTime,
+              MealStart: employeeElement.MealStart,
+              MealFinish: employeeElement.MealFinish,
+              TravelStart: employeeElement.TravelStart,
+              TravelFinish: employeeElement.TravelFinish,
+              Type: employeeElement.Type,
+
+              /* --Params--
+              ${body.ProjectID},
+              '${body.Date}',
+              ${body.EmployeeID},
+              '${body.Start}',
+              '${body.Finish}',
+              '${body.MealStart}',
+              '${body.MealFinish}',
+              '${body.TravelStart}',
+              '${body.TravelFinish}',
+              '${body.Type}'
+              */
+            },
+          }).then(result => {
+            timesheetID = result.data.result.recordsets[0][0];
+          });
+
+          data.forEach(async taskElement => {
+            if (taskElement.EmployeeID == employeeElement.EmployeeID) {
+              await axios({
+                method: "post",
+                url: `/api/timesheet-items`,
+                timeout: 3000, // 3 seconds timeout
+                headers: {},
+                data: {
+                  TimesheetID: timesheetID,
+                  TaskID: employeeElement.TaskID,
+                  Start: employeeElement.StartTime,
+                  End: employeeElement.EndTime,
+                  ProjectID: projectState,
+
+                  /* --Params--
+                  ${body.TimesheetID},
+                  ${body.TaskID},
+                  '${body.Start}',
+                  '${body.End}',
+                  ${body.ProjectID}
+                  */
+                },
+              });
+            }
+          });
+        });
+
         // data.forEach(async element => {
         //   await axios({
         //     method: "post",
