@@ -148,9 +148,9 @@ const Timesheet = () => {
       TaskID: 0,
       StartTime: "07:00AM",
       EndTime: "04:00PM",
-      TotalHours: 9,
     },
   ]);
+  const [dataLaborHours, setDataLaborHours] = useState(() => []);
   const [dataView, setDataView] = useState(() => []);
   const [selectedInputEmployee, setSelectedInputEmployee] = useState(() => 0);
   const [selectedSummaryEmployee, setSelectedSummaryEmployee] = useState(
@@ -280,7 +280,6 @@ const Timesheet = () => {
               TaskID: 0,
               StartTime: "07:00AM",
               EndTime: "04:00PM",
-              TotalHours: 9,
             },
           ]);
           dataEmployees = result.data.result[1];
@@ -438,7 +437,7 @@ const Timesheet = () => {
                         Start: taskElement.StartTime,
                         End: taskElement.EndTime,
                         ProjectID: parseInt(projectState),
-                        LaborHours: taskElement.LaborHours,
+                        LaborHours: taskElement.TotalHours,
 
                         /* --Params--
                         ${body.TimesheetID},
@@ -759,7 +758,6 @@ const Timesheet = () => {
         TaskID: 0,
         StartTime: "07:00AM",
         EndTime: "04:00PM",
-        TotalHours: taskLaborHour.toFixed(2),
       },
     ]);
   };
@@ -775,71 +773,51 @@ const Timesheet = () => {
   const changeTaskID = (Id, value) => {
     if (value == -2) {
       if (hasMealCheck()) {
-        alert("You cannot select 2 Meals.");
+        toast.error(
+          <div className={styles["alert__table__employee-input"]}>
+            You cannot select 2 Meals.
+          </div>,
+          {
+            position: toast.POSITION.TOP_CENTER,
+            hideProgressBar: true,
+          }
+        );
         return;
       }
     }
-    // setDataTable(old => [
-    //   ...old,
-    //   {
-    //     Id: id++,
-    //     EmployeeID: old[0] !== undefined ? old[0].EmployeeID : 0,
-    //     EmployeeName: "",
-    //     TaskID: 0,
-    //     StartTime: "07:00AM",
-    //     EndTime: "04:00PM",
-    //     TotalHours: taskLaborHour.toFixed(2),
-    //   },
-    // ]);
-
-    // let taskLaborHour = 9;
-    // dataTable.forEach(element => {
-    //   if (element.TaskID == -2) {
-    //     let overlap =
-    //       (Math.min(
-    //         moment("04:00PM", "h:mma")._d,
-    //         moment(element.EndTime, "h:mma")._d
-    //       ) -
-    //         Math.max(
-    //           moment("07:00AM", "h:mma")._d,
-    //           moment(element.StartTime, "h:mma")._d
-    //         )) /
-    //       3600000;
-    //     taskLaborHour = 9 - overlap;
-    //   }
-    // });
 
     setDataTable(
       [...dataTable].map(object => {
-        let taskLaborHour =
-          (moment(object.EndTime, "h:mma")._d -
-            moment(object.StartTime, "h:mma")._d) /
-          3600000;
-        if (object.TaskID != -2) {
-          dataTable.forEach(element => {
-            if (element.TaskID == -2) {
-              let overlap =
-                (Math.min(
-                  moment(object.EndTime, "h:mma")._d,
-                  moment(element.EndTime, "h:mma")._d
-                ) -
-                  Math.max(
-                    moment(object.StartTime, "h:mma")._d,
-                    moment(element.StartTime, "h:mma")._d
-                  )) /
-                3600000;
-              taskLaborHour = taskLaborHour - overlap;
-            }
-          });
-        }
+        // let taskLaborHour =
+        //   (moment(object.EndTime, "h:mma")._d -
+        //     moment(object.StartTime, "h:mma")._d) /
+        //   3600000;
+        // if (object.TaskID != -2) {
+        //   dataTable.forEach(element => {
+        //     if (element.TaskID == -2) {
+        //       let overlap =
+        //         (Math.min(
+        //           moment(object.EndTime, "h:mma")._d,
+        //           moment(element.EndTime, "h:mma")._d
+        //         ) -
+        //           Math.max(
+        //             moment(object.StartTime, "h:mma")._d,
+        //             moment(element.StartTime, "h:mma")._d
+        //           )) /
+        //         3600000;
+        //       taskLaborHour = taskLaborHour - overlap;
+        //     }
+        //   });
+        // }
 
         if (object.Id === Id) {
           return {
             ...object,
             TaskID: value,
-            TotalHours: taskLaborHour,
+            // TotalHours: taskLaborHour,
           };
-        } else return { ...object, TotalHours: taskLaborHour };
+          // } else return { ...object, TotalHours: taskLaborHour };
+        } else return object;
       })
     );
   };
@@ -925,10 +903,6 @@ const Timesheet = () => {
   };
 
   useEffect(() => {
-    setDataTable();
-  }, [checkUseEffectDataTable]);
-
-  useEffect(() => {
     let tempData = [];
     if (selectedSummaryEmployee !== 0) {
       data.forEach(element => {
@@ -945,7 +919,6 @@ const Timesheet = () => {
           TaskID: 0,
           StartTime: "07:00AM",
           EndTime: "04:00PM",
-          TotalHours: 9,
         },
       ];
     }
@@ -976,9 +949,22 @@ const Timesheet = () => {
       );
       return null;
     }
+
     let tempData = dataTable;
+    let resultData = [];
+    tempData.forEach(el1 => {
+      dataLaborHours.forEach(el2 => {
+        if (el1.Id == el2.Id) {
+          resultData.push({
+            ...el1,
+            TotalHours: el2.TaskLaborHours,
+          });
+        }
+      });
+    });
+
     let check = 0;
-    tempData.forEach(element => {
+    resultData.forEach(element => {
       if (element.TaskID == 0) {
         check += 1;
       }
@@ -1001,7 +987,7 @@ const Timesheet = () => {
       return null;
     }
 
-    setData(old => [...old, ...tempData]);
+    setData(old => [...old, ...resultData]);
     setSelectedSummaryEmployee(selectedInputEmployee);
   };
 
@@ -1011,8 +997,20 @@ const Timesheet = () => {
       if (element.EmployeeID != selectedInputEmployee) tempData.push(element);
     });
     let tempDataTable = dataTable;
+    let resultData = [];
+    tempDataTable.forEach(el1 => {
+      dataLaborHours.forEach(el2 => {
+        if (el1.Id == el2.Id) {
+          resultData.push({
+            ...el1,
+            TotalHours: el2.TaskLaborHours,
+          });
+        }
+      });
+    });
+
     let check = 0;
-    tempDataTable.forEach(element => {
+    resultData.forEach(element => {
       if (element.TaskID == 0) {
         check += 1;
       }
@@ -1033,7 +1031,7 @@ const Timesheet = () => {
       );
       return null;
     }
-    setData(() => [...tempData, ...tempDataTable]);
+    setData(() => [...tempData, ...resultData]);
     setSelectedInputEmployee(0);
     setSelectedSummaryEmployee(0);
   };
@@ -1096,6 +1094,71 @@ const Timesheet = () => {
     else return false;
   };
 
+  useEffect(() => {
+    // let taskLaborHour =
+    //   (moment(object.EndTime, "h:mma")._d -
+    //     moment(object.StartTime, "h:mma")._d) /
+    //   3600000;
+    // if (object.TaskID != -2) {
+    //   dataTable.forEach(element => {
+    //     if (element.TaskID == -2) {
+    //       let overlap =
+    //         (Math.min(
+    //           moment(object.EndTime, "h:mma")._d,
+    //           moment(element.EndTime, "h:mma")._d
+    //         ) -
+    //           Math.max(
+    //             moment(object.StartTime, "h:mma")._d,
+    //             moment(element.StartTime, "h:mma")._d
+    //           )) /
+    //         3600000;
+    //       taskLaborHour = taskLaborHour - overlap;
+    //     }
+    //   });
+    // }
+
+    let tempDataTable = dataTable;
+    let resultTable = [];
+    tempDataTable.forEach(el => {
+      let taskLaborHours =
+        (moment(el.EndTime, "h:mma")._d - moment(el.StartTime, "h:mma")._d) /
+        3600000;
+      if (el.TaskID != -2) {
+        tempDataTable.forEach(element => {
+          if (element.TaskID == -2) {
+            if (
+              moment(el.StartTime, "h:mma")._d - 0 <=
+                moment(element.EndTime, "h:mma")._d - 0 &&
+              moment(el.EndTime, "h:mma")._d - 0 >=
+                moment(element.StartTime, "h:mma")._d - 0
+            ) {
+              let overlap =
+                (Math.min(
+                  moment(el.EndTime, "h:mma")._d,
+                  moment(element.EndTime, "h:mma")._d
+                ) -
+                  Math.max(
+                    moment(el.StartTime, "h:mma")._d,
+                    moment(element.StartTime, "h:mma")._d
+                  )) /
+                3600000;
+              taskLaborHours = taskLaborHours - overlap;
+            } else {
+              let overlap = 0;
+              taskLaborHours = taskLaborHours - overlap;
+            }
+          }
+        });
+      }
+      resultTable.push({
+        Id: el.Id,
+        TaskLaborHours: taskLaborHours,
+      });
+    });
+
+    setDataLaborHours(resultTable);
+  }, [dataTable]);
+
   return (
     <>
       {console.log("data")}
@@ -1104,6 +1167,8 @@ const Timesheet = () => {
       {console.log(dataView)}
       {console.log("dataTable")}
       {console.log(dataTable)}
+      {console.log("dataLaborHours")}
+      {console.log(dataLaborHours)}
 
       <Head>
         <title>Daily Report</title>
@@ -1560,9 +1625,12 @@ const Timesheet = () => {
                                 <TableCell>
                                   <div>
                                     <span>
-                                      {parseFloat(element.TotalHours).toFixed(
-                                        2
-                                      )}
+                                      {dataLaborHours.map(el => {
+                                        if (el.Id == element.Id) {
+                                          return el.TaskLaborHours.toFixed(2);
+                                        }
+                                      })}
+
                                       {/* {(
                                         (new Date(
                                           convertInputToTime(
