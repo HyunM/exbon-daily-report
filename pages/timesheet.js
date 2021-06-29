@@ -61,6 +61,7 @@ let dataEmployees = [];
 let dataTasks = [];
 let dataLatest = [];
 let id = -1000000;
+let checkUseEffectDataTable = 0;
 
 const convertInputToTime = time => {
   let match = inputTime.filter(data => data.input === time);
@@ -147,6 +148,7 @@ const Timesheet = () => {
       TaskID: 0,
       StartTime: "07:00AM",
       EndTime: "04:00PM",
+      TotalHours: 9,
     },
   ]);
   const [dataView, setDataView] = useState(() => []);
@@ -278,6 +280,7 @@ const Timesheet = () => {
               TaskID: 0,
               StartTime: "07:00AM",
               EndTime: "04:00PM",
+              TotalHours: 9,
             },
           ]);
           dataEmployees = result.data.result[1];
@@ -435,24 +438,15 @@ const Timesheet = () => {
                         Start: taskElement.StartTime,
                         End: taskElement.EndTime,
                         ProjectID: parseInt(projectState),
-                        MealStart:
-                          employeeElement.MealStart ==
-                          employeeElement.MealFinish
-                            ? "12:00:00"
-                            : moment(employeeElement.MealStart).format("LT"),
-                        MealEnd:
-                          employeeElement.MealStart ==
-                          employeeElement.MealFinish
-                            ? "12:00:00"
-                            : moment(employeeElement.MealFinish).format("LT"),
+                        LaborHours: taskElement.LaborHours,
 
                         /* --Params--
-                  ${body.TimesheetID},
-                  ${body.TaskID},
-                  '${body.Start}',
-                  '${body.End}',
-                  ${body.ProjectID}
-                  */
+                        ${body.TimesheetID},
+                        ${body.TaskID},
+                        '${body.Start}',
+                        '${body.End}',
+                        ${body.ProjectID}
+                        */
                       },
                     });
                   }
@@ -729,6 +723,33 @@ const Timesheet = () => {
   }, [data]);
 
   const clickAddTaskBtn = () => {
+    // console.log(moment("08:00AM", "h:mma"));
+    // console.log(
+    //   Math.min(moment("07:00AM", "h:mma")._d, moment("04:00PM", "h:mma")._d)
+    // );
+
+    // console.log(
+    //   moment(
+    //     Math.min(moment("07:00AM", "h:mma")._d, moment("04:00PM", "h:mma")._d)
+    //   ).format("LT")
+    // );
+    let taskLaborHour = 9;
+    dataTable.forEach(element => {
+      if (element.TaskID == -2) {
+        let overlap =
+          (Math.min(
+            moment("04:00PM", "h:mma")._d,
+            moment(element.EndTime, "h:mma")._d
+          ) -
+            Math.max(
+              moment("07:00AM", "h:mma")._d,
+              moment(element.StartTime, "h:mma")._d
+            )) /
+          3600000;
+        taskLaborHour = 9 - overlap;
+      }
+    });
+
     setDataTable(old => [
       ...old,
       {
@@ -738,6 +759,7 @@ const Timesheet = () => {
         TaskID: 0,
         StartTime: "07:00AM",
         EndTime: "04:00PM",
+        TotalHours: taskLaborHour.toFixed(2),
       },
     ]);
   };
@@ -751,14 +773,73 @@ const Timesheet = () => {
   };
 
   const changeTaskID = (Id, value) => {
+    if (value == -2) {
+      if (hasMealCheck()) {
+        alert("You cannot select 2 Meals.");
+        return;
+      }
+    }
+    // setDataTable(old => [
+    //   ...old,
+    //   {
+    //     Id: id++,
+    //     EmployeeID: old[0] !== undefined ? old[0].EmployeeID : 0,
+    //     EmployeeName: "",
+    //     TaskID: 0,
+    //     StartTime: "07:00AM",
+    //     EndTime: "04:00PM",
+    //     TotalHours: taskLaborHour.toFixed(2),
+    //   },
+    // ]);
+
+    // let taskLaborHour = 9;
+    // dataTable.forEach(element => {
+    //   if (element.TaskID == -2) {
+    //     let overlap =
+    //       (Math.min(
+    //         moment("04:00PM", "h:mma")._d,
+    //         moment(element.EndTime, "h:mma")._d
+    //       ) -
+    //         Math.max(
+    //           moment("07:00AM", "h:mma")._d,
+    //           moment(element.StartTime, "h:mma")._d
+    //         )) /
+    //       3600000;
+    //     taskLaborHour = 9 - overlap;
+    //   }
+    // });
+
     setDataTable(
       [...dataTable].map(object => {
+        let taskLaborHour =
+          (moment(object.EndTime, "h:mma")._d -
+            moment(object.StartTime, "h:mma")._d) /
+          3600000;
+        if (object.TaskID != -2) {
+          dataTable.forEach(element => {
+            if (element.TaskID == -2) {
+              let overlap =
+                (Math.min(
+                  moment(object.EndTime, "h:mma")._d,
+                  moment(element.EndTime, "h:mma")._d
+                ) -
+                  Math.max(
+                    moment(object.StartTime, "h:mma")._d,
+                    moment(element.StartTime, "h:mma")._d
+                  )) /
+                3600000;
+              taskLaborHour = taskLaborHour - overlap;
+            }
+          });
+        }
+
         if (object.Id === Id) {
           return {
             ...object,
             TaskID: value,
+            TotalHours: taskLaborHour,
           };
-        } else return object;
+        } else return { ...object, TotalHours: taskLaborHour };
       })
     );
   };
@@ -844,6 +925,10 @@ const Timesheet = () => {
   };
 
   useEffect(() => {
+    setDataTable();
+  }, [checkUseEffectDataTable]);
+
+  useEffect(() => {
     let tempData = [];
     if (selectedSummaryEmployee !== 0) {
       data.forEach(element => {
@@ -860,6 +945,7 @@ const Timesheet = () => {
           TaskID: 0,
           StartTime: "07:00AM",
           EndTime: "04:00PM",
+          TotalHours: 9,
         },
       ];
     }
@@ -998,14 +1084,26 @@ const Timesheet = () => {
     setData(() => tempData);
   };
 
+  const hasMealCheck = () => {
+    let check = 0;
+    dataTable.forEach(element => {
+      if (element.TaskID == -2) {
+        check++;
+      }
+    });
+
+    if (check) return true;
+    else return false;
+  };
+
   return (
     <>
-      {/* {console.log("data")}
+      {console.log("data")}
       {console.log(data)}
       {console.log("dataView")}
       {console.log(dataView)}
       {console.log("dataTable")}
-      {console.log(dataTable)} */}
+      {console.log(dataTable)}
 
       <Head>
         <title>Daily Report</title>
@@ -1335,39 +1433,6 @@ const Timesheet = () => {
                                       <option value="11">11</option>
                                       <option value="12">12</option>
                                     </select>
-                                    {/* <InputMask
-                                      className={
-                                        afterSundayCheck
-                                          ? classNames(
-                                              "table__time-wrapper__target-disabled",
-                                              styles[
-                                                "table__time-wrapper__hour-input"
-                                              ]
-                                            )
-                                          : classNames(
-                                              "table__time-wrapper__target-disabled",
-                                              styles[
-                                                "table__time-wrapper__hour-input-before-sunday"
-                                              ]
-                                            )
-                                      }
-                                      mask="29"
-                                      placeholder="01~12"
-                                      formatChars={{
-                                        2: "[0-1]",
-                                        9: "[0-9]",
-                                      }}
-                                      disabled={afterSundayCheck ? false : true}
-                                      value={element.StartTime.slice(0, 2)}
-                                      onChange={e =>
-                                        changeTime(
-                                          element.Id,
-                                          "start",
-                                          "hh",
-                                          e.target.value
-                                        )
-                                      }
-                                    /> */}
                                     :
                                     <select
                                       className={classNames(
@@ -1392,38 +1457,6 @@ const Timesheet = () => {
                                       <option value="40">40</option>
                                       <option value="50">50</option>
                                     </select>
-                                    {/* <InputMask
-                                      className={
-                                        afterSundayCheck
-                                          ? classNames(
-                                              "table__time-wrapper__target-disabled",
-                                              styles[
-                                                "table__time-wrapper__min-input"
-                                              ]
-                                            )
-                                          : classNames(
-                                              "table__time-wrapper__target-disabled",
-                                              styles[
-                                                "table__time-wrapper__min-input-before-sunday"
-                                              ]
-                                            )
-                                      }
-                                      placeholder="00~50"
-                                      mask="50"
-                                      formatChars={{
-                                        5: "[0-5]",
-                                      }}
-                                      disabled={afterSundayCheck ? false : true}
-                                      value={element.StartTime.slice(3, 5)}
-                                      onChange={e =>
-                                        changeTime(
-                                          element.Id,
-                                          "start",
-                                          "mm",
-                                          e.target.value
-                                        )
-                                      }
-                                    /> */}
                                     <select
                                       className={classNames(
                                         "table__time-wrapper__target-disabled",
@@ -1479,39 +1512,6 @@ const Timesheet = () => {
                                       <option value="11">11</option>
                                       <option value="12">12</option>
                                     </select>
-                                    {/* <InputMask
-                                      className={
-                                        afterSundayCheck
-                                          ? classNames(
-                                              "table__time-wrapper__target-disabled",
-                                              styles[
-                                                "table__time-wrapper__hour-input"
-                                              ]
-                                            )
-                                          : classNames(
-                                              "table__time-wrapper__target-disabled",
-                                              styles[
-                                                "table__time-wrapper__hour-input-before-sunday"
-                                              ]
-                                            )
-                                      }
-                                      mask="29"
-                                      placeholder="01~12"
-                                      formatChars={{
-                                        2: "[0-1]",
-                                        9: "[0-9]",
-                                      }}
-                                      disabled={afterSundayCheck ? false : true}
-                                      value={element.EndTime.slice(0, 2)}
-                                      onChange={e =>
-                                        changeTime(
-                                          element.Id,
-                                          "end",
-                                          "hh",
-                                          e.target.value
-                                        )
-                                      }
-                                    /> */}
                                     :
                                     <select
                                       className={classNames(
@@ -1536,38 +1536,6 @@ const Timesheet = () => {
                                       <option value="40">40</option>
                                       <option value="50">50</option>
                                     </select>
-                                    {/* <InputMask
-                                      className={
-                                        afterSundayCheck
-                                          ? classNames(
-                                              "table__time-wrapper__target-disabled",
-                                              styles[
-                                                "table__time-wrapper__min-input"
-                                              ]
-                                            )
-                                          : classNames(
-                                              "table__time-wrapper__target-disabled",
-                                              styles[
-                                                "table__time-wrapper__min-input-before-sunday"
-                                              ]
-                                            )
-                                      }
-                                      placeholder="00~50"
-                                      mask="50"
-                                      formatChars={{
-                                        5: "[0-5]",
-                                      }}
-                                      disabled={afterSundayCheck ? false : true}
-                                      value={element.EndTime.slice(3, 5)}
-                                      onChange={e =>
-                                        changeTime(
-                                          element.Id,
-                                          "end",
-                                          "mm",
-                                          e.target.value
-                                        )
-                                      }
-                                    /> */}
                                     <select
                                       className={classNames(
                                         "table__time-wrapper__target-disabled",
@@ -1592,7 +1560,10 @@ const Timesheet = () => {
                                 <TableCell>
                                   <div>
                                     <span>
-                                      {(
+                                      {parseFloat(element.TotalHours).toFixed(
+                                        2
+                                      )}
+                                      {/* {(
                                         (new Date(
                                           convertInputToTime(
                                             element.EndTime
@@ -1604,7 +1575,7 @@ const Timesheet = () => {
                                             ).replace(" ", "T")
                                           )) /
                                         3600000
-                                      ).toFixed(2)}
+                                      ).toFixed(2)} */}
                                     </span>
                                   </div>
                                 </TableCell>

@@ -19,8 +19,7 @@ const timesheetItemHandler = (req, res) => {
           '${body.Start}',
           '${body.End}',
           ${body.ProjectID},
-          '${body.MealStart}',
-          '${body.MealEnd}'`;
+          '${body.LaborHours}'`;
 
           /* --Params--
           @timesheetID int,
@@ -28,8 +27,7 @@ const timesheetItemHandler = (req, res) => {
           @start time(0),
           @end time(0),
           @projectID int,
-          @mealStart time(0),
-          @mealEnd time(0),
+          @laborHours float
           */
 
           request.query(query, (err, recordset) => {
