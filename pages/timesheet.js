@@ -356,13 +356,25 @@ const Timesheet = () => {
               ProjectID: projectState,
               Date: formatDate(selectedDate),
               EmployeeID: employeeElement.EmployeeID,
-              Start: employeeElement.StartTime,
-              Finish: employeeElement.EndTime,
-              MealStart: employeeElement.MealStart,
-              MealFinish: employeeElement.MealFinish,
-              TravelStart: employeeElement.TravelStart,
-              TravelFinish: employeeElement.TravelFinish,
-              Type: employeeElement.Type,
+              Start: moment(employeeElement.StartTime).format("LT"),
+              Finish: moment(employeeElement.EndTime).format("LT"),
+              MealStart:
+                employeeElement.MealStart == employeeElement.MealFinish
+                  ? "12:00:00"
+                  : moment(employeeElement.MealStart).format("LT"),
+              MealFinish:
+                employeeElement.MealStart == employeeElement.MealFinish
+                  ? "12:00:00"
+                  : moment(employeeElement.MealFinish).format("LT"),
+              TravelStart:
+                employeeElement.TravelStart == employeeElement.TravelFinish
+                  ? "12:00:00"
+                  : moment(employeeElement.TravelStart).format("LT"),
+              TravelFinish:
+                employeeElement.TravelStart == employeeElement.TravelFinish
+                  ? "12:00:00"
+                  : moment(employeeElement.TravelFinish).format("LT"),
+              Type: employeeTypeCheck(employeeElement.EmployeeID),
 
               /* --Params--
               ${body.ProjectID},
@@ -378,7 +390,9 @@ const Timesheet = () => {
               */
             },
           }).then(result => {
-            timesheetID = result.data.result.recordsets[0][0];
+            timesheetID = result.data.result.recordsets[0][0].TimesheetID;
+            console.log("TimesheetID");
+            console.log(timesheetID);
           });
 
           data.forEach(async taskElement => {
@@ -563,22 +577,47 @@ const Timesheet = () => {
     return new Date(convertInputToTime(dataTime).replace(" ", "T"));
   };
 
+  const employeeTypeCheck = employeeID => {
+    data.forEach(element => {
+      if (employeeID == element.EmployeeID && -1 == element.TaskID) {
+        return "Officer";
+      }
+    });
+    return "Field";
+  };
+
   useEffect(() => {
     let tempData = [];
     data.forEach(element => {
-      if (element.TaskID != -3) {
-        tempData.push({
-          EmployeeID: element.EmployeeID,
-          Name: element.EmployeeName,
-          StartTime: element.TaskID == -2 ? 0 : toMilli(element.StartTime),
-          EndTime: element.TaskID == -2 ? 0 : toMilli(element.EndTime),
-          MealStart: element.TaskID == -2 ? toMilli(element.StartTime) : 0,
-          MealFinish: element.TaskID == -2 ? toMilli(element.EndTime) : 0,
-        });
-      }
+      tempData.push({
+        EmployeeID: element.EmployeeID,
+        Name: element.EmployeeName,
+        StartTime:
+          element.TaskID == -2 || element.TaskID == -3
+            ? 0
+            : toMilli(element.StartTime),
+        EndTime:
+          element.TaskID == -2 || element.TaskID == -3
+            ? 0
+            : toMilli(element.EndTime),
+        MealStart: element.TaskID == -2 ? toMilli(element.StartTime) : 0,
+        MealFinish: element.TaskID == -2 ? toMilli(element.EndTime) : 0,
+        TravelStart: element.TaskID == -3 ? toMilli(element.StartTime) : 0,
+        TravelFinish: element.TaskID == -3 ? toMilli(element.EndTime) : 0,
+      });
     });
 
     let realData = [];
+    //  ProjectID: projectState,
+    //  Date: formatDate(selectedDate),
+    //  EmployeeID: employeeElement.EmployeeID,
+    //  Start: employeeElement.StartTime,
+    //  Finish: employeeElement.EndTime,
+    //  MealStart: employeeElement.MealStart,
+    //  MealFinish: employeeElement.MealFinish,
+    //  TravelStart: employeeElement.TravelStart,
+    //  TravelFinish: employeeElement.TravelFinish,
+    //  Type: employeeTypeCheck(employeeElement.EmployeeID),
     for (let i = 0; i < tempData.length; i++) {
       if (i === 0) {
         realData.push({
@@ -588,6 +627,8 @@ const Timesheet = () => {
           EndTime: tempData[i].EndTime,
           MealStart: tempData[i].MealStart,
           MealFinish: tempData[i].MealFinish,
+          TravelStart: tempData[i].TravelStart,
+          TravelFinish: tempData[i].TravelFinish,
         });
       }
       let check = 0;
@@ -615,6 +656,17 @@ const Timesheet = () => {
             realData[j].MealFinish !== 0
               ? realData[j].MealFinish
               : tempData[i].MealFinish;
+          realData[j].TravelStart =
+            realData[j].TravelStart > tempData[i].TravelStart &&
+            tempData[i].TravelStart !== 0
+              ? tempData[i].TravelStart
+              : realData[j].TravelStart;
+          realData[j].TravelFinish =
+            (realData[j].TravelFinish > tempData[i].TravelFinish ||
+              tempData[i].TravelFinish === 0) &&
+            realData[j].TravelFinish !== 0
+              ? realData[j].TravelFinish
+              : tempData[i].TravelFinish;
           check += 1;
         }
       }
@@ -626,6 +678,8 @@ const Timesheet = () => {
           EndTime: tempData[i].EndTime,
           MealStart: tempData[i].MealStart,
           MealFinish: tempData[i].MealFinish,
+          TravelStart: tempData[i].TravelStart,
+          TravelFinish: tempData[i].TravelFinish,
         });
       }
     }
