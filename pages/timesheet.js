@@ -98,6 +98,13 @@ const Timesheet = () => {
     return new Date(d.setDate(diff));
   };
 
+  const getMonday = d => {
+    d = new Date(d);
+    var day = d.getDay(),
+      diff = d.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
+    return new Date(d.setDate(diff));
+  };
+
   const date_diff_indays = (date1, date2) => {
     return Math.floor(
       (Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate()) -
@@ -115,8 +122,8 @@ const Timesheet = () => {
       "/" +
       toStr.split("/")[2].slice(0, 4);
     const dateFromStr = new Date(newStr);
-    const sundayOfSelected = getSunday(dateFromStr);
-    const sundayOfToday = getSunday(now);
+    const sundayOfSelected = getMonday(dateFromStr);
+    const sundayOfToday = getMonday(now);
     if (date_diff_indays(sundayOfToday, sundayOfSelected) >= 0) {
       afterSundayCheck = true;
       return true;
@@ -295,7 +302,7 @@ const Timesheet = () => {
     return 0;
   }
 
-  const handleSaveTimesheetBtn = () => {
+  const handleSaveTimesheetBtn = async () => {
     let promises = [];
     let param_CalculateHours = [];
 
@@ -328,8 +335,6 @@ const Timesheet = () => {
     } else {
       const fetchData = async () => {
         let tempDataView = dataView.sort(compare);
-        console.log("save");
-        console.log(tempDataView);
 
         await axios({
           method: "delete",
@@ -341,42 +346,64 @@ const Timesheet = () => {
             Date: formatDate(selectedDate),
           },
         }).then(result => {
-          console.log("delete api/timesheets");
           param_CalculateHours = result.data.result.recordsets[0];
+
+          dataView.forEach(elementDataView => {
+            let employeeDuplicateCheck = 0;
+            param_CalculateHours.forEach(elementParam => {
+              if (elementDataView.EmployeeID == elementParam.EmployeeID)
+                employeeDuplicateCheck++;
+            });
+
+            if (!employeeDuplicateCheck) {
+              param_CalculateHours.push({
+                EmployeeID: elementDataView.EmployeeID,
+                Type: employeeTypeCheck(elementDataView.EmployeeID),
+              });
+            }
+          });
+
+          console.log("param_CalculateHours");
+          console.log(param_CalculateHours);
         });
 
-        await tempDataView.forEach(async employeeElement => {
-          let timesheetID = 0;
-          await axios({
-            method: "post",
-            url: `/api/timesheets`,
-            timeout: 3000, // 3 seconds timeout
-            headers: {},
-            data: {
-              ProjectID: projectState,
-              Date: formatDate(selectedDate),
-              EmployeeID: employeeElement.EmployeeID,
-              Start: moment(employeeElement.StartTime).format("LT"),
-              Finish: moment(employeeElement.EndTime).format("LT"),
-              MealStart:
-                employeeElement.MealStart == employeeElement.MealFinish
-                  ? "12:00:00"
-                  : moment(employeeElement.MealStart).format("LT"),
-              MealFinish:
-                employeeElement.MealStart == employeeElement.MealFinish
-                  ? "12:00:00"
-                  : moment(employeeElement.MealFinish).format("LT"),
-              TravelStart:
-                employeeElement.TravelStart == employeeElement.TravelFinish
-                  ? "12:00:00"
-                  : moment(employeeElement.TravelStart).format("LT"),
-              TravelFinish:
-                employeeElement.TravelStart == employeeElement.TravelFinish
-                  ? "12:00:00"
-                  : moment(employeeElement.TravelFinish).format("LT"),
-              Type: employeeTypeCheck(employeeElement.EmployeeID),
+        await tempDataView.forEach(
+          async (
+            employeeElement,
+            idx_employeeElement,
+            array_employeeElement
+          ) => {
+            let timesheetID = 0;
+            await axios({
+              method: "post",
+              url: `/api/timesheets`,
+              timeout: 3000, // 3 seconds timeout
+              headers: {},
+              data: {
+                ProjectID: projectState,
+                Date: formatDate(selectedDate),
+                EmployeeID: employeeElement.EmployeeID,
+                Start: moment(employeeElement.StartTime).format("LT"),
+                Finish: moment(employeeElement.EndTime).format("LT"),
+                MealStart:
+                  employeeElement.MealStart == employeeElement.MealFinish
+                    ? "12:00:00"
+                    : moment(employeeElement.MealStart).format("LT"),
+                MealFinish:
+                  employeeElement.MealStart == employeeElement.MealFinish
+                    ? "12:00:00"
+                    : moment(employeeElement.MealFinish).format("LT"),
+                TravelStart:
+                  employeeElement.TravelStart == employeeElement.TravelFinish
+                    ? "12:00:00"
+                    : moment(employeeElement.TravelStart).format("LT"),
+                TravelFinish:
+                  employeeElement.TravelStart == employeeElement.TravelFinish
+                    ? "12:00:00"
+                    : moment(employeeElement.TravelFinish).format("LT"),
+                Type: employeeTypeCheck(employeeElement.EmployeeID),
 
-              /* --Params--
+                /* --Params--
               ${body.ProjectID},
               '${body.Date}',
               ${body.EmployeeID},
@@ -388,75 +415,85 @@ const Timesheet = () => {
               '${body.TravelFinish}',
               '${body.Type}'
               */
-            },
-          }).then(result => {
-            console.log("post api/timesheets");
-            timesheetID = result.data.result.recordsets[0][0].TimesheetID;
-            console.log("TimesheetID");
-            console.log(timesheetID);
-          });
+              },
+            }).then(result => {
+              timesheetID = result.data.result.recordsets[0][0].TimesheetID;
+            });
 
-          await data.forEach(async taskElement => {
-            if (taskElement.EmployeeID == employeeElement.EmployeeID) {
-              if (taskElement.TaskID != -2 && taskElement.TaskID != -3) {
-                await axios({
-                  method: "post",
-                  url: `/api/timesheet-items`,
-                  timeout: 3000, // 3 seconds timeout
-                  headers: {},
-                  data: {
-                    TimesheetID: parseInt(timesheetID),
-                    TaskID: parseInt(taskElement.TaskID),
-                    Start: taskElement.StartTime,
-                    End: taskElement.EndTime,
-                    ProjectID: parseInt(projectState),
-                    MealStart:
-                      employeeElement.MealStart == employeeElement.MealFinish
-                        ? "12:00:00"
-                        : moment(employeeElement.MealStart).format("LT"),
-                    MealEnd:
-                      employeeElement.MealStart == employeeElement.MealFinish
-                        ? "12:00:00"
-                        : moment(employeeElement.MealFinish).format("LT"),
+            await data.forEach(
+              async (taskElement, idx_taskElement, array_taskElement) => {
+                if (taskElement.EmployeeID == employeeElement.EmployeeID) {
+                  if (taskElement.TaskID != -2 && taskElement.TaskID != -3) {
+                    await axios({
+                      method: "post",
+                      url: `/api/timesheet-items`,
+                      timeout: 3000, // 3 seconds timeout
+                      headers: {},
+                      data: {
+                        TimesheetID: parseInt(timesheetID),
+                        TaskID: parseInt(taskElement.TaskID),
+                        Start: taskElement.StartTime,
+                        End: taskElement.EndTime,
+                        ProjectID: parseInt(projectState),
+                        MealStart:
+                          employeeElement.MealStart ==
+                          employeeElement.MealFinish
+                            ? "12:00:00"
+                            : moment(employeeElement.MealStart).format("LT"),
+                        MealEnd:
+                          employeeElement.MealStart ==
+                          employeeElement.MealFinish
+                            ? "12:00:00"
+                            : moment(employeeElement.MealFinish).format("LT"),
 
-                    /* --Params--
+                        /* --Params--
                   ${body.TimesheetID},
                   ${body.TaskID},
                   '${body.Start}',
                   '${body.End}',
                   ${body.ProjectID}
                   */
-                  },
-                }).then(result => {
-                  console.log("post api/timesheet-items");
-                });
-              }
-            }
-          });
-        });
+                      },
+                    });
+                  }
+                }
 
-        console.log("param_CalculateHours");
-        console.log(param_CalculateHours);
-        await param_CalculateHours.forEach(elementParam => {
-          // axios({
-          //   method: "post",
-          //   url: `/api/timesheets/calculate-hours`,
-          //   timeout: 5000, // 5 seconds timeout
-          //   headers: {},
-          //   data: {
-          //     StartDate: '2021-06-28',
-          //     EndDate: '2021-07-04',
-          //     ProjectID: projectState,
-          //     EmployeeID: elementParam.EmployeeID,
-          //     IsOfficer: elementParam.Type,
-          //   },
-          // });
-          console.log("api-calculate-hours");
-        });
+                if (
+                  idx_employeeElement == array_employeeElement.length - 1 &&
+                  idx_taskElement == array_taskElement.length - 1
+                ) {
+                  await param_CalculateHours.forEach(async elementParam => {
+                    await axios({
+                      method: "post",
+                      url: `/api/timesheets/calculate-hours`,
+                      timeout: 5000, // 5 seconds timeout
+                      headers: {},
+                      data: {
+                        StartDate: moment(selectedDate)
+                          .startOf("isoweek")
+                          .toDate(),
+                        EndDate: moment(selectedDate).endOf("week").toDate(),
+                        ProjectID: parseInt(projectState),
+                        EmployeeID: elementParam.EmployeeID,
+                        IsOfficer: elementParam.Type == "Officer" ? 1 : 0,
+                      },
+                    });
+
+                    // '${body.StartDate}',
+                    // '${body.EndDate}',
+                    // ${body.ProjectID},
+                    // ${body.EmployeeID},
+                    // '${body.IsOfficer}'
+                  });
+                }
+              }
+            );
+          }
+        );
       };
 
-      trackPromise(fetchData());
-      trackPromise(
+      await trackPromise(fetchData());
+      await trackPromise(
         Promise.all(promises).then(() => {
           toast.success(
             <div className={styles["alert__complete"]}>
@@ -963,12 +1000,12 @@ const Timesheet = () => {
 
   return (
     <>
-      {console.log("data")}
+      {/* {console.log("data")}
       {console.log(data)}
       {console.log("dataView")}
       {console.log(dataView)}
       {console.log("dataTable")}
-      {console.log(dataTable)}
+      {console.log(dataTable)} */}
 
       <Head>
         <title>Daily Report</title>
@@ -1567,37 +1604,7 @@ const Timesheet = () => {
                                             ).replace(" ", "T")
                                           )) /
                                         3600000
-                                      ).toFixed(2) > 0
-                                        ? (
-                                            (new Date(
-                                              convertInputToTime(
-                                                element.EndTime
-                                              ).replace(" ", "T")
-                                            ) -
-                                              new Date(
-                                                convertInputToTime(
-                                                  element.StartTime
-                                                ).replace(" ", "T")
-                                              )) /
-                                            3600000
-                                          ).toFixed(2)
-                                        : (
-                                            parseFloat(
-                                              (
-                                                (new Date(
-                                                  convertInputToTime(
-                                                    element.EndTime
-                                                  ).replace(" ", "T")
-                                                ) -
-                                                  new Date(
-                                                    convertInputToTime(
-                                                      element.StartTime
-                                                    ).replace(" ", "T")
-                                                  )) /
-                                                3600000
-                                              ).toFixed(2)
-                                            ) + 24
-                                          ).toFixed(2)}
+                                      ).toFixed(2)}
                                     </span>
                                   </div>
                                 </TableCell>
