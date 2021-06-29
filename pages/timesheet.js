@@ -397,27 +397,29 @@ const Timesheet = () => {
 
           data.forEach(async taskElement => {
             if (taskElement.EmployeeID == employeeElement.EmployeeID) {
-              await axios({
-                method: "post",
-                url: `/api/timesheet-items`,
-                timeout: 3000, // 3 seconds timeout
-                headers: {},
-                data: {
-                  TimesheetID: timesheetID,
-                  TaskID: employeeElement.TaskID,
-                  Start: employeeElement.StartTime,
-                  End: employeeElement.EndTime,
-                  ProjectID: projectState,
+              if (taskElement.TaskID != -2 && taskElement.TaskID != -3) {
+                await axios({
+                  method: "post",
+                  url: `/api/timesheet-items`,
+                  timeout: 3000, // 3 seconds timeout
+                  headers: {},
+                  data: {
+                    TimesheetID: parseInt(timesheetID),
+                    TaskID: parseInt(taskElement.TaskID),
+                    Start: taskElement.StartTime,
+                    End: taskElement.EndTime,
+                    ProjectID: parseInt(projectState),
 
-                  /* --Params--
+                    /* --Params--
                   ${body.TimesheetID},
                   ${body.TaskID},
                   '${body.Start}',
                   '${body.End}',
                   ${body.ProjectID}
                   */
-                },
-              });
+                  },
+                });
+              }
             }
           });
         });
@@ -578,12 +580,18 @@ const Timesheet = () => {
   };
 
   const employeeTypeCheck = employeeID => {
+    let checkOfficer = 0;
     data.forEach(element => {
       if (employeeID == element.EmployeeID && -1 == element.TaskID) {
-        return "Officer";
+        checkOfficer += 1;
       }
     });
-    return "Field";
+
+    if (checkOfficer > 0) {
+      return "Officer";
+    } else {
+      return "Field";
+    }
   };
 
   useEffect(() => {
