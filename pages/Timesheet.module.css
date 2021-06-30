@@ -1,5 +1,5 @@
 #mainDiv {
-  width: 800px;
+  width: 900px;
   margin: auto;
   margin-bottom: 150px;
 }
@@ -61,11 +61,13 @@
   align-content: center;
   flex-grow: 1;
   font-family: "Roboto";
+  margin-top: 30px;
+  margin-bottom: 50px;
 }
 
 .header__right__add-btn {
   margin-right: 10px !important;
-  width: 160px;
+  width: 140px;
 }
 
 .header__right__add-btn-before-sunday {
@@ -75,7 +77,7 @@
 
 .header__right__update-btn {
   margin-right: 10px !important;
-  width: 160px;
+  width: 140px;
   background-color: #ee7504 !important;
 }
 
@@ -86,6 +88,13 @@
 
 .header__right__save-btn-before-sunday {
   visibility: hidden;
+}
+
+.header__right__add-task-btn {
+  background-color: #f3aa22 !important;
+  color: white !important;
+  width: 100px !important;
+  margin-right: 10px !important;
 }
 
 .header__right__checkbox {
@@ -112,7 +121,6 @@
 .header__right__date-picker {
   margin-left: 20px !important;
   width: 120px;
-  margin-right: 20px !important;
   margin-bottom: 17px !important;
 }
 
@@ -487,19 +495,16 @@
 }
 
 .employee-dropdown-wrapper {
-  width: 800px;
-  margin-left: auto;
+  width: 300px;
   margin-right: auto;
-  margin-top: 50px;
-  margin-bottom: 10px;
   display: flex;
   justify-content: space-between;
 }
 
 .employee-dropdown {
   display: inline-block;
-  height: 25px;
-  width: 200px;
+  height: 30px;
+  width: 175px;
   color: #74646e;
   border: 1px solid #c8bfc4;
   border-radius: 4px;

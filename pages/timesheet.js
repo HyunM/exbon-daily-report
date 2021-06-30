@@ -1232,9 +1232,10 @@ const Timesheet = () => {
                         background: "#fff",
                         zIndex: "0",
                         position: "relative",
-                        width: "450px",
-                        maxWidth: "700px",
+                        width: "760px",
+                        maxWidth: "760px",
                         height: "30px",
+                        marginRight: "60px",
                       }}
                     >
                       {stateAssignedProject.map(item => {
@@ -1294,7 +1295,6 @@ const Timesheet = () => {
                                   "header__right__update-btn-before-sunday"
                                 ]
                           }
-                          startIcon={<AddIcon />}
                           disabled={checkDisableAddEmployeeButton}
                           onClick={handleClickUpdateEmployee}
                         >
@@ -1311,7 +1311,6 @@ const Timesheet = () => {
                               ? styles["header__right__add-btn"]
                               : styles["header__right__add-btn-before-sunday"]
                           }
-                          startIcon={<AddIcon />}
                           disabled={checkDisableAddEmployeeButton}
                           onClick={handleClickAddEmployee}
                         >
@@ -1353,70 +1352,87 @@ const Timesheet = () => {
                         }}
                         onClick={handleSetSameTask}
                       >
-                        Set Same Task
+                        Copy First Employee
                       </Button>
+                      <div className={styles["employee-dropdown-wrapper"]}>
+                        {!selectedSummaryEmployee ? (
+                          <select
+                            className={styles["employee-dropdown"]}
+                            value={selectedInputEmployee}
+                            onChange={e =>
+                              setSelectedInputEmployee(e.target.value)
+                            }
+                            disabled={afterSundayCheck ? false : true}
+                            style={
+                              !afterSundayCheck && data.length === 0
+                                ? { display: "none" }
+                                : {}
+                            }
+                          >
+                            <option value="0">
+                              ------Choose Employee------
+                            </option>
+                            {dataEmployees.map(element => {
+                              for (let i = 0; i < data.length; i++) {
+                                if (element.EmployeeID == data[i].EmployeeID)
+                                  return null;
+                              }
+                              return (
+                                <option
+                                  key={element.EmployeeID}
+                                  value={element.EmployeeID}
+                                >
+                                  {element.EmployeeName}
+                                </option>
+                              );
+                            })}
+                          </select>
+                        ) : (
+                          <select
+                            className={styles["employee-dropdown"]}
+                            value={selectedSummaryEmployee}
+                            onChange={e =>
+                              setSelectedInputEmployee(e.target.value)
+                            }
+                            disabled={true}
+                          >
+                            <option value="0">
+                              --------Choose Employee--------
+                            </option>
+                            {dataEmployees.map(element => {
+                              return (
+                                <option
+                                  key={element.EmployeeID}
+                                  value={element.EmployeeID}
+                                >
+                                  {element.EmployeeName}
+                                </option>
+                              );
+                            })}
+                          </select>
+                        )}
+
+                        {afterSundayCheck && (
+                          <Button
+                            onClick={clickAddTaskBtn}
+                            variant="contained"
+                            size="small"
+                            className={
+                              dateCheckEditable(selectedDate)
+                                ? styles["header__right__add-task-btn"]
+                                : styles[
+                                    "header__right__add-task-before-sunday"
+                                  ]
+                            }
+                          >
+                            Add Task
+                          </Button>
+                        )}
+                      </div>
                     </>
                   </div>
                 </div>
                 <div>
-                  <div className={styles["employee-dropdown-wrapper"]}>
-                    {!selectedSummaryEmployee ? (
-                      <select
-                        className={styles["employee-dropdown"]}
-                        value={selectedInputEmployee}
-                        onChange={e => setSelectedInputEmployee(e.target.value)}
-                        disabled={afterSundayCheck ? false : true}
-                        style={
-                          !afterSundayCheck && data.length === 0
-                            ? { display: "none" }
-                            : {}
-                        }
-                      >
-                        <option value="0">
-                          --------Choose Employee--------
-                        </option>
-                        {dataEmployees.map(element => {
-                          for (let i = 0; i < data.length; i++) {
-                            if (element.EmployeeID == data[i].EmployeeID)
-                              return null;
-                          }
-                          return (
-                            <option
-                              key={element.EmployeeID}
-                              value={element.EmployeeID}
-                            >
-                              {element.EmployeeName}
-                            </option>
-                          );
-                        })}
-                      </select>
-                    ) : (
-                      <select
-                        className={styles["employee-dropdown"]}
-                        value={selectedSummaryEmployee}
-                        onChange={e => setSelectedInputEmployee(e.target.value)}
-                        disabled={true}
-                      >
-                        <option value="0">
-                          --------Choose Employee--------
-                        </option>
-                        {dataEmployees.map(element => {
-                          return (
-                            <option
-                              key={element.EmployeeID}
-                              value={element.EmployeeID}
-                            >
-                              {element.EmployeeName}
-                            </option>
-                          );
-                        })}
-                      </select>
-                    )}
-
-                    {afterSundayCheck && (
-                      <Button onClick={clickAddTaskBtn}>Add Task</Button>
-                    )}
-                  </div>
                   <div
                     className={styles["table"]}
                     style={
