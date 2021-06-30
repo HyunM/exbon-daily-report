@@ -364,10 +364,9 @@ const Timesheet = () => {
               });
             }
           });
-
-          console.log("param_CalculateHours");
-          console.log(param_CalculateHours);
         });
+
+        for (let i = 0; i < tempDataView.length; i++) {}
 
         await tempDataView.forEach(
           async (
@@ -422,21 +421,21 @@ const Timesheet = () => {
               timesheetID = result.data.result.recordsets[0][0].TimesheetID;
             });
 
-            for (let i = 0; i < data.length; i++) {
-              if (data[i].EmployeeID == employeeElement.EmployeeID) {
-                if (data[i].TaskID != -2 && data[i].TaskID != -3) {
-                  axios({
+            for (let j = 0; j < data.length; j++) {
+              if (data[j].EmployeeID == employeeElement.EmployeeID) {
+                if (data[j].TaskID != -2 && data[j].TaskID != -3) {
+                  await axios({
                     method: "post",
                     url: `/api/timesheet-items`,
                     timeout: 3000, // 3 seconds timeout
                     headers: {},
                     data: {
                       TimesheetID: parseInt(timesheetID),
-                      TaskID: parseInt(data[i].TaskID),
-                      Start: data[i].StartTime,
-                      End: data[i].EndTime,
+                      TaskID: parseInt(data[j].TaskID),
+                      Start: data[j].StartTime,
+                      End: data[j].EndTime,
                       ProjectID: parseInt(projectState),
-                      LaborHours: data[i].TotalHours,
+                      LaborHours: data[j].TotalHours,
 
                       /* --Params--
                         ${body.TimesheetID},
@@ -452,10 +451,10 @@ const Timesheet = () => {
 
               if (
                 idx_employeeElement == array_employeeElement.length - 1 &&
-                data[i] == data.length - 1
+                j == data.length - 1
               ) {
-                for (let k = 0; param_CalculateHours.length; k++) {
-                  axios({
+                for (let k = 0; k < param_CalculateHours.length; k++) {
+                  await axios({
                     method: "post",
                     url: `/api/timesheets/calculate-hours`,
                     timeout: 5000, // 5 seconds timeout
@@ -468,7 +467,7 @@ const Timesheet = () => {
                       ProjectID: parseInt(projectState),
                       EmployeeID: param_CalculateHours[k].EmployeeID,
                       IsOfficer:
-                        aram_CalculateHours[k].Type == "Officer" ? 1 : 0,
+                        param_CalculateHours[k].Type == "Officer" ? 1 : 0,
                     },
                   });
                 }
