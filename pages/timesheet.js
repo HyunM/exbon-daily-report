@@ -1369,9 +1369,7 @@ const Timesheet = () => {
                                 : {}
                             }
                           >
-                            <option value="0">
-                              ------Choose Employee------
-                            </option>
+                            <option value="0">-----Choose Employee-----</option>
                             {dataEmployees.map(element => {
                               for (let i = 0; i < data.length; i++) {
                                 if (element.EmployeeID == data[i].EmployeeID)
@@ -1445,9 +1443,9 @@ const Timesheet = () => {
                       <Table>
                         <TableHead>
                           <TableRow>
-                            <TableCell width={300}>Task</TableCell>
-                            <TableCell widht={100}>Start Time</TableCell>
-                            <TableCell widht={100}>End Time</TableCell>
+                            <TableCell width={450}>Task</TableCell>
+                            <TableCell widht={80}>Start Time</TableCell>
+                            <TableCell widht={80}>End Time</TableCell>
                             <TableCell widht={70}>Hours</TableCell>
                             <TableCell widht={10}></TableCell>
                           </TableRow>
@@ -1467,8 +1465,8 @@ const Timesheet = () => {
                                       disabled={afterSundayCheck ? false : true}
                                     >
                                       <option value="0">
-                                        ------------------Choose
-                                        Task------------------
+                                        ---------------------------------Choose
+                                        Task---------------------------------
                                       </option>
 
                                       {dataTasks.map(elementTask => {
@@ -1736,36 +1734,116 @@ const Timesheet = () => {
                                         color: "#ffffff",
                                         fontWeight: "500",
                                       }
-                                    : {}
+                                    : { fontWeight: "500", color: "#8f8c8c" }
                                 }
                               >
                                 {cell.Name}
                               </td>
-                              <td style={{ textAlign: "right", width: "80px" }}>
+                              <td
+                                style={
+                                  cell.EmployeeID === selectedSummaryEmployee
+                                    ? {
+                                        textAlign: "right",
+                                        width: "100px",
+                                        fontWeight: "500",
+                                        color: "#ffffff",
+                                      }
+                                    : {
+                                        textAlign: "right",
+                                        width: "100px",
+                                        fontWeight: "500",
+                                        color: "#8f8c8c",
+                                      }
+                                }
+                              >
                                 {moment(cell.StartTime).format("LT") ===
                                 moment(cell.EndTime).format("LT")
                                   ? ""
                                   : moment(cell.StartTime).format("LT")}
                               </td>
-                              <td style={{ textAlign: "right", width: "80px" }}>
+                              <td
+                                style={
+                                  cell.EmployeeID === selectedSummaryEmployee
+                                    ? {
+                                        textAlign: "right",
+                                        width: "100px",
+                                        fontWeight: "500",
+                                        color: "#ffffff",
+                                      }
+                                    : {
+                                        textAlign: "right",
+                                        width: "100px",
+                                        fontWeight: "500",
+                                        color: "#8f8c8c",
+                                      }
+                                }
+                              >
                                 {moment(cell.StartTime).format("LT") ===
                                 moment(cell.EndTime).format("LT")
                                   ? ""
                                   : moment(cell.EndTime).format("LT")}
                               </td>
-                              <td style={{ textAlign: "right", width: "80px" }}>
+                              <td
+                                style={
+                                  cell.EmployeeID === selectedSummaryEmployee
+                                    ? {
+                                        textAlign: "right",
+                                        width: "100px",
+                                        fontWeight: "500",
+                                        color: "#ffffff",
+                                      }
+                                    : {
+                                        textAlign: "right",
+                                        width: "100px",
+                                        fontWeight: "500",
+                                        color: "#8f8c8c",
+                                      }
+                                }
+                              >
                                 {moment(cell.MealStart).format("LT") ===
                                 moment(cell.MealFinish).format("LT")
                                   ? ""
                                   : moment(cell.MealStart).format("LT")}
                               </td>
-                              <td style={{ textAlign: "right", width: "80px" }}>
+                              <td
+                                style={
+                                  cell.EmployeeID === selectedSummaryEmployee
+                                    ? {
+                                        textAlign: "right",
+                                        width: "100px",
+                                        fontWeight: "500",
+                                        color: "#ffffff",
+                                      }
+                                    : {
+                                        textAlign: "right",
+                                        width: "100px",
+                                        fontWeight: "500",
+                                        color: "#8f8c8c",
+                                      }
+                                }
+                              >
                                 {moment(cell.MealStart).format("LT") ===
                                 moment(cell.MealFinish).format("LT")
                                   ? ""
                                   : moment(cell.MealFinish).format("LT")}
                               </td>
-                              <td style={{ textAlign: "right", width: "90px" }}>
+                              <td
+                                style={
+                                  cell.EmployeeID === selectedSummaryEmployee
+                                    ? {
+                                        textAlign: "right",
+                                        width: "100px",
+                                        fontWeight: "500",
+                                        color: "#ffffff",
+                                      }
+                                    : {
+                                        textAlign: "right",
+                                        width: "100px",
+                                        fontWeight: "500",
+                                        color: "#8f8c8c",
+                                      }
+                                }
+                              >
                                 {cell.TotalHours.toFixed(2)}
                                 {/* {cell.StartTime <= cell.MealFinish &&
                                 cell.EndTime >= cell.MealStart
