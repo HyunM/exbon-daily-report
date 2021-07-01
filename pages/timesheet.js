@@ -145,7 +145,7 @@ const Timesheet = () => {
       Id: id++,
       EmployeeID: 0,
       EmployeeName: "",
-      TaskID: 0,
+      TaskID: -1,
       StartTime: "07:00AM",
       EndTime: "04:00PM",
     },
@@ -277,7 +277,7 @@ const Timesheet = () => {
               Id: id++,
               EmployeeID: 0,
               EmployeeName: "",
-              TaskID: 0,
+              TaskID: -1,
               StartTime: "07:00AM",
               EndTime: "04:00PM",
             },
@@ -424,7 +424,7 @@ const Timesheet = () => {
 
           for (let j = 0; j < data.length; j++) {
             if (data[j].EmployeeID == tempDataView[i].EmployeeID) {
-              if (data[j].TaskID != -2 && data[j].TaskID != -3) {
+              if (data[j].TaskID != -10 && data[j].TaskID != -11) {
                 await axios({
                   method: "post",
                   url: `/api/timesheet-items`,
@@ -603,14 +603,27 @@ const Timesheet = () => {
 
   const employeeTypeCheck = employeeID => {
     let checkOfficer = 0;
+    let checkSubsistence = 0;
+    /*
+    -1 Precon
+    -2 Office
+    -3 Supervision - On Field
+
+    */
     data.forEach(element => {
-      if (employeeID == element.EmployeeID && -1 == element.TaskID) {
+      if (
+        employeeID == element.EmployeeID &&
+        (-1 == element.TaskID || -2 == element.TaskID || -3 == element.TaskID)
+      ) {
         checkOfficer += 1;
+        if (element.TaskID == -3) checkSubsistence++;
       }
     });
 
     if (checkOfficer > 0) {
-      return "Officer";
+      if (checkSubsistence > 0) {
+        return "Officer_Subsistence";
+      } else return "Officer";
     } else {
       return "Field";
     }
@@ -624,19 +637,21 @@ const Timesheet = () => {
         Name: element.EmployeeName,
         TaskID: element.TaskID,
         StartTime:
-          element.TaskID == -2 || element.TaskID == -3
+          element.TaskID == -10 || element.TaskID == -11
             ? 0
             : toMilli(element.StartTime),
         EndTime:
-          element.TaskID == -2 || element.TaskID == -3
+          element.TaskID == -10 || element.TaskID == -11
             ? 0
             : toMilli(element.EndTime),
-        MealStart: element.TaskID == -2 ? toMilli(element.StartTime) : 0,
-        MealFinish: element.TaskID == -2 ? toMilli(element.EndTime) : 0,
-        TravelStart: element.TaskID == -3 ? toMilli(element.StartTime) : 0,
-        TravelFinish: element.TaskID == -3 ? toMilli(element.EndTime) : 0,
+        MealStart: element.TaskID == -10 ? toMilli(element.StartTime) : 0,
+        MealFinish: element.TaskID == -10 ? toMilli(element.EndTime) : 0,
+        TravelStart: element.TaskID == -11 ? toMilli(element.StartTime) : 0,
+        TravelFinish: element.TaskID == -11 ? toMilli(element.EndTime) : 0,
         TotalHours:
-          element.TaskID == -2 || element.TaskID == -3 ? 0 : element.TotalHours,
+          element.TaskID == -10 || element.TaskID == -11
+            ? 0
+            : element.TotalHours,
       });
     });
 
@@ -738,7 +753,7 @@ const Timesheet = () => {
     // );
     let taskLaborHour = 9;
     dataTable.forEach(element => {
-      if (element.TaskID == -2) {
+      if (element.TaskID == -10) {
         let overlap =
           (Math.min(
             moment("04:00PM", "h:mma")._d,
@@ -759,7 +774,7 @@ const Timesheet = () => {
         Id: id++,
         EmployeeID: old[0] !== undefined ? old[0].EmployeeID : 0,
         EmployeeName: "",
-        TaskID: 0,
+        TaskID: -1, //default 'Precon'
         StartTime: "07:00AM",
         EndTime: "04:00PM",
       },
@@ -775,7 +790,7 @@ const Timesheet = () => {
   };
 
   const changeTaskID = (Id, value) => {
-    if (value == -2) {
+    if (value == -10) {
       if (hasMealCheck()) {
         toast.error(
           <div className={styles["alert__table__employee-input"]}>
@@ -920,7 +935,7 @@ const Timesheet = () => {
           Id: id++,
           EmployeeID: 0,
           EmployeeName: "",
-          TaskID: 0,
+          TaskID: -1, //default 'Precon'
           StartTime: "07:00AM",
           EndTime: "04:00PM",
         },
@@ -1089,7 +1104,7 @@ const Timesheet = () => {
   const hasMealCheck = () => {
     let check = 0;
     dataTable.forEach(element => {
-      if (element.TaskID == -2) {
+      if (element.TaskID == -10) {
         check++;
       }
     });
@@ -1127,9 +1142,9 @@ const Timesheet = () => {
       let taskLaborHours =
         (moment(el.EndTime, "h:mma")._d - moment(el.StartTime, "h:mma")._d) /
         3600000;
-      if (el.TaskID != -2) {
+      if (el.TaskID != -10) {
         tempDataTable.forEach(element => {
-          if (element.TaskID == -2) {
+          if (element.TaskID == -10) {
             if (
               moment(el.StartTime, "h:mma")._d - 0 <=
                 moment(element.EndTime, "h:mma")._d - 0 &&
@@ -1464,11 +1479,6 @@ const Timesheet = () => {
                                       }
                                       disabled={afterSundayCheck ? false : true}
                                     >
-                                      <option value="0">
-                                        ---------------------------------Choose
-                                        Task---------------------------------
-                                      </option>
-
                                       {dataTasks.map(elementTask => {
                                         return (
                                           <option
