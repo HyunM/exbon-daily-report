@@ -816,40 +816,31 @@ const Timesheet = () => {
       }
     }
 
-    setDataTable(
-      [...dataTable].map(object => {
-        // let taskLaborHour =
-        //   (moment(object.EndTime, "h:mma")._d -
-        //     moment(object.StartTime, "h:mma")._d) /
-        //   3600000;
-        // if (object.TaskID != -2) {
-        //   dataTable.forEach(element => {
-        //     if (element.TaskID == -2) {
-        //       let overlap =
-        //         (Math.min(
-        //           moment(object.EndTime, "h:mma")._d,
-        //           moment(element.EndTime, "h:mma")._d
-        //         ) -
-        //           Math.max(
-        //             moment(object.StartTime, "h:mma")._d,
-        //             moment(element.StartTime, "h:mma")._d
-        //           )) /
-        //         3600000;
-        //       taskLaborHour = taskLaborHour - overlap;
-        //     }
-        //   });
-        // }
-
-        if (object.Id === Id) {
-          return {
-            ...object,
-            TaskID: value,
-            // TotalHours: taskLaborHour,
-          };
-          // } else return { ...object, TotalHours: taskLaborHour };
-        } else return object;
-      })
-    );
+    if (value == -10) {
+      setDataTable(
+        [...dataTable].map(object => {
+          if (object.Id === Id) {
+            return {
+              ...object,
+              TaskID: value,
+              StartTime: "12:00PM",
+              EndTime: "01:00PM",
+            };
+          } else return object;
+        })
+      );
+    } else {
+      setDataTable(
+        [...dataTable].map(object => {
+          if (object.Id === Id) {
+            return {
+              ...object,
+              TaskID: value,
+            };
+          } else return object;
+        })
+      );
+    }
   };
 
   const changeTime = (Id, when, format, timeValue) => {
