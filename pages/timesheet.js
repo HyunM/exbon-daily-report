@@ -1719,7 +1719,11 @@ const Timesheet = () => {
                             ? styles["header__right__save-btn"]
                             : styles["header__right__save-btn-before-sunday"]
                         }
-                        onClick={handleSaveTimesheetBtn2}
+                        onClick={
+                          selectedInputEmployee == 0
+                            ? handleSaveTimesheetBtn
+                            : handleSaveTimesheetBtn2
+                        }
                         startIcon={<SaveIcon />}
                       >
                         Save
