@@ -140,6 +140,9 @@ const Timesheet = () => {
   };
 
   const [data, setData] = useState(() => []);
+  const [data2, setData2] = useState(() => {
+    init: "first";
+  });
   const [dataTable, setDataTable] = useState(() => [
     {
       Id: id++,
@@ -152,6 +155,9 @@ const Timesheet = () => {
   ]);
   const [dataLaborHours, setDataLaborHours] = useState(() => []);
   const [dataView, setDataView] = useState(() => []);
+  const [dataView2, setDataView2] = useState(() => {
+    init: "first";
+  });
   const [selectedInputEmployee, setSelectedInputEmployee] = useState(() => 0);
   const [selectedSummaryEmployee, setSelectedSummaryEmployee] = useState(
     () => 0
@@ -511,6 +517,11 @@ const Timesheet = () => {
         },
       });
     }
+  };
+
+  const handleSaveTimesheetBtn2 = async () => {
+    if (selectedSummaryEmployee == 0) handleClickAddEmployee2();
+    else handleClickUpdateEmployee2();
   };
 
   const { promiseInProgress } = usePromiseTracker();
@@ -1010,6 +1021,385 @@ const Timesheet = () => {
     setSelectedSummaryEmployee(selectedInputEmployee);
   };
 
+  const handleClickAddEmployee2 = () => {
+    if (selectedInputEmployee == 0) {
+      toast.error(
+        <div className={styles["alert__table__employee-input"]}>
+          Unable to add. <br /> Please choose <strong>Employee</strong>.
+        </div>,
+        {
+          position: toast.POSITION.BOTTOM_CENTER,
+          hideProgressBar: true,
+        }
+      );
+      return null;
+    }
+    let oldData = data;
+    let tempData = dataTable;
+    let resultData = [];
+    tempData.forEach(el1 => {
+      dataLaborHours.forEach(el2 => {
+        if (el1.Id == el2.Id) {
+          resultData.push({
+            ...el1,
+            TotalHours: el2.TaskLaborHours,
+          });
+        }
+      });
+    });
+
+    let check = 0;
+    resultData.forEach(element => {
+      if (element.TaskID == 0) {
+        check += 1;
+      }
+      element.EmployeeID = selectedInputEmployee;
+      element.EmployeeName = convertEmployeeIDtoEmployeeName(
+        selectedInputEmployee
+      );
+    });
+
+    if (check > 0) {
+      toast.error(
+        <div className={styles["alert__table__employee-input"]}>
+          Unable to add. <br /> Please choose <strong>Task</strong>.
+        </div>,
+        {
+          position: toast.POSITION.BOTTOM_CENTER,
+          hideProgressBar: true,
+        }
+      );
+      return null;
+    }
+
+    setData(old => [...old, ...resultData]);
+    setData2([...oldData, ...resultData]);
+  };
+
+  useEffect(() => {
+    if (typeof data2 == "undefined") return;
+    else if (data2.init == "first") return;
+    let tempData = [];
+    data2.forEach(element => {
+      tempData.push({
+        EmployeeID: element.EmployeeID,
+        Name: element.EmployeeName,
+        TaskID: element.TaskID,
+        StartTime:
+          element.TaskID == -10 || element.TaskID == -11
+            ? 0
+            : toMilli(element.StartTime),
+        EndTime:
+          element.TaskID == -10 || element.TaskID == -11
+            ? 0
+            : toMilli(element.EndTime),
+        MealStart: element.TaskID == -10 ? toMilli(element.StartTime) : 0,
+        MealFinish: element.TaskID == -10 ? toMilli(element.EndTime) : 0,
+        TravelStart: element.TaskID == -11 ? toMilli(element.StartTime) : 0,
+        TravelFinish: element.TaskID == -11 ? toMilli(element.EndTime) : 0,
+        TotalHours:
+          element.TaskID == -10 || element.TaskID == -11
+            ? 0
+            : element.TotalHours,
+      });
+    });
+
+    let realData = [];
+    //  ProjectID: projectState,
+    //  Date: formatDate(selectedDate),
+    //  EmployeeID: employeeElement.EmployeeID,
+    //  Start: employeeElement.StartTime,
+    //  Finish: employeeElement.EndTime,
+    //  MealStart: employeeElement.MealStart,
+    //  MealFinish: employeeElement.MealFinish,
+    //  TravelStart: employeeElement.TravelStart,
+    //  TravelFinish: employeeElement.TravelFinish,
+    //  Type: employeeTypeCheck(employeeElement.EmployeeID),
+    for (let i = 0; i < tempData.length; i++) {
+      if (i === 0) {
+        realData.push({
+          EmployeeID: tempData[i].EmployeeID,
+          TaskID: tempData[i].TaskID,
+          Name: tempData[i].Name,
+          StartTime: tempData[i].StartTime,
+          EndTime: tempData[i].EndTime,
+          MealStart: tempData[i].MealStart,
+          MealFinish: tempData[i].MealFinish,
+          TravelStart: tempData[i].TravelStart,
+          TravelFinish: tempData[i].TravelFinish,
+          TotalHours: tempData[i].TotalHours,
+        });
+      }
+      let check = 0;
+      for (let j = 0; j < realData.length; j++) {
+        if (tempData[i].Name == realData[j].Name) {
+          realData[j].StartTime =
+            realData[j].StartTime > tempData[i].StartTime &&
+            tempData[i].StartTime !== 0
+              ? tempData[i].StartTime
+              : realData[j].StartTime;
+          realData[j].EndTime =
+            (realData[j].EndTime > tempData[i].EndTime ||
+              tempData[i].EndTime === 0) &&
+            realData[j].EndTime !== 0
+              ? realData[j].EndTime
+              : tempData[i].EndTime;
+          realData[j].MealStart =
+            realData[j].MealStart > tempData[i].MealStart &&
+            tempData[i].MealStart !== 0
+              ? tempData[i].MealStart
+              : realData[j].MealStart;
+          realData[j].MealFinish =
+            (realData[j].MealFinish > tempData[i].MealFinish ||
+              tempData[i].MealFinish === 0) &&
+            realData[j].MealFinish !== 0
+              ? realData[j].MealFinish
+              : tempData[i].MealFinish;
+          realData[j].TravelStart =
+            realData[j].TravelStart > tempData[i].TravelStart &&
+            tempData[i].TravelStart !== 0
+              ? tempData[i].TravelStart
+              : realData[j].TravelStart;
+          realData[j].TravelFinish =
+            (realData[j].TravelFinish > tempData[i].TravelFinish ||
+              tempData[i].TravelFinish === 0) &&
+            realData[j].TravelFinish !== 0
+              ? realData[j].TravelFinish
+              : tempData[i].TravelFinish;
+
+          if (i != 0) realData[j].TotalHours += tempData[i].TotalHours;
+
+          check += 1;
+        }
+      }
+      if (check === 0) {
+        realData.push({
+          EmployeeID: tempData[i].EmployeeID,
+          Name: tempData[i].Name,
+          StartTime: tempData[i].StartTime,
+          EndTime: tempData[i].EndTime,
+          MealStart: tempData[i].MealStart,
+          MealFinish: tempData[i].MealFinish,
+          TravelStart: tempData[i].TravelStart,
+          TravelFinish: tempData[i].TravelFinish,
+          TotalHours: tempData[i].TotalHours,
+        });
+      }
+    }
+    setDataView2(realData);
+  }, [data2]);
+
+  useEffect(() => {
+    if (typeof dataView2 == "undefined") return;
+    else if (dataView2.init == "first") return;
+    let promises = [];
+    let param_CalculateHours = [];
+
+    let checkEmployeeName = data2.find(element => element.EmployeeID == 0);
+    let checkTaskName = data2.find(element => element.TaskID == 0);
+
+    if (checkEmployeeName) {
+      checkSave += 1;
+      toast.error(
+        <div className={styles["alert__table__employee-input"]}>
+          Unable to save. <br /> Please check <strong>Employee Name </strong>.
+        </div>,
+        {
+          position: toast.POSITION.BOTTOM_CENTER,
+          hideProgressBar: true,
+        }
+      );
+      return null;
+    } else if (checkTaskName) {
+      toast.error(
+        <div className={styles["alert__table__employee-input"]}>
+          Unable to save. <br /> Please check <strong>Task Name </strong>.
+        </div>,
+        {
+          position: toast.POSITION.BOTTOM_CENTER,
+          hideProgressBar: true,
+        }
+      );
+      return null;
+    } else {
+      const fetchData = async () => {
+        let tempDataView = dataView2.sort(compare);
+
+        await axios({
+          method: "delete",
+          url: `/api/timesheets`,
+          timeout: 3000, // 3 seconds timeout
+          headers: {},
+          data: {
+            ProjectID: projectState,
+            Date: formatDate(selectedDate),
+          },
+        }).then(result => {
+          param_CalculateHours = result.data.result.recordsets[0];
+
+          dataView2.forEach(elementDataView => {
+            let employeeDuplicateCheck = 0;
+            param_CalculateHours.forEach(elementParam => {
+              if (elementDataView.EmployeeID == elementParam.EmployeeID)
+                employeeDuplicateCheck++;
+            });
+
+            if (!employeeDuplicateCheck) {
+              param_CalculateHours.push({
+                EmployeeID: elementDataView.EmployeeID,
+                Type: employeeTypeCheck(elementDataView.EmployeeID),
+              });
+            }
+          });
+        });
+
+        // await tempDataView.forEach(
+        //   async (
+        //     employeeElement,
+        //     idx_employeeElement,
+        //     array_employeeElement
+        //   ) => {}
+        // );
+
+        for (let i = 0; i < tempDataView.length; i++) {
+          let timesheetID = 0;
+          await axios({
+            method: "post",
+            url: `/api/timesheets`,
+            timeout: 3000, // 3 seconds timeout
+            headers: {},
+            data: {
+              ProjectID: projectState,
+              Date: formatDate(selectedDate),
+              EmployeeID: tempDataView[i].EmployeeID,
+              Start: moment(tempDataView[i].StartTime).format("LT"),
+              Finish: moment(tempDataView[i].EndTime).format("LT"),
+              MealStart:
+                tempDataView[i].MealStart == tempDataView[i].MealFinish
+                  ? "12:00:00"
+                  : moment(tempDataView[i].MealStart).format("LT"),
+              MealFinish:
+                tempDataView[i].MealStart == tempDataView[i].MealFinish
+                  ? "12:00:00"
+                  : moment(tempDataView[i].MealFinish).format("LT"),
+              TravelStart:
+                tempDataView[i].TravelStart == tempDataView[i].TravelFinish
+                  ? "12:00:00"
+                  : moment(tempDataView[i].TravelStart).format("LT"),
+              TravelFinish:
+                tempDataView[i].TravelStart == tempDataView[i].TravelFinish
+                  ? "12:00:00"
+                  : moment(tempDataView[i].TravelFinish).format("LT"),
+              Type: employeeTypeCheck(tempDataView[i].EmployeeID),
+
+              /* --Params--
+              ${body.ProjectID},
+              '${body.Date}',
+              ${body.EmployeeID},
+              '${body.Start}',
+              '${body.Finish}',
+              '${body.MealStart}',
+              '${body.MealFinish}',
+              '${body.TravelStart}',
+              '${body.TravelFinish}',
+              '${body.Type}'
+              */
+            },
+          }).then(result => {
+            timesheetID = result.data.result.recordsets[0][0].TimesheetID;
+          });
+
+          for (let j = 0; j < data2.length; j++) {
+            if (data2[j].EmployeeID == tempDataView[i].EmployeeID) {
+              if (data2[j].TaskID != -10 && data2[j].TaskID != -11) {
+                await axios({
+                  method: "post",
+                  url: `/api/timesheet-items`,
+                  timeout: 3000, // 3 seconds timeout
+                  headers: {},
+                  data: {
+                    TimesheetID: parseInt(timesheetID),
+                    TaskID: parseInt(data[j].TaskID),
+                    Start: data2[j].StartTime,
+                    End: data2[j].EndTime,
+                    ProjectID: parseInt(projectState),
+                    LaborHours: data2[j].TotalHours,
+
+                    /* --Params--
+                        ${body.TimesheetID},
+                        ${body.TaskID},
+                        '${body.Start}',
+                        '${body.End}',
+                        ${body.ProjectID}
+                        */
+                  },
+                });
+              }
+            }
+
+            if (i == tempDataView.length - 1 && j == data2.length - 1) {
+              for (let k = 0; k < param_CalculateHours.length; k++) {
+                await axios({
+                  method: "post",
+                  url: `/api/timesheets/calculate-hours`,
+                  timeout: 5000, // 5 seconds timeout
+                  headers: {},
+                  data: {
+                    StartDate: moment(selectedDate).startOf("isoweek").toDate(),
+                    EndDate: moment(selectedDate).endOf("week").toDate(),
+                    ProjectID: parseInt(projectState),
+                    EmployeeID: param_CalculateHours[k].EmployeeID,
+                    IsOfficer:
+                      param_CalculateHours[k].Type == "Officer" ? 1 : 0,
+                  },
+                });
+              }
+            }
+          }
+        }
+
+        // await tempDataView.forEach(
+        //   async (
+        //     employeeElement,
+        //     idx_employeeElement,
+        //     array_employeeElement
+        //   ) => {}
+        // );
+      };
+
+      trackPromise(fetchData());
+      trackPromise(
+        Promise.all(promises).then(() => {
+          toast.success(
+            <div className={styles["alert__complete"]}>
+              <strong>Save Complete</strong>
+            </div>,
+            {
+              position: toast.POSITION.BOTTOM_CENTER,
+              hideProgressBar: true,
+            }
+          );
+        })
+      );
+      setSelectedSummaryEmployee(0);
+      setSelectedInputEmployee(0);
+
+      axios({
+        method: "post",
+        url: `/api/log-daily-reports`,
+        timeout: 5000, // 5 seconds timeout
+        headers: {},
+        data: {
+          EmployeeID: status.cookies.employeeid,
+          ProjectID: projectState,
+          Date: formatDate(selectedDate),
+          Category: "Timesheet",
+          Action: "update",
+        },
+      });
+    }
+  }, [dataView2]);
+
   const handleClickUpdateEmployee = () => {
     let tempData = [];
     data.forEach(element => {
@@ -1051,6 +1441,52 @@ const Timesheet = () => {
       return null;
     }
     setData(() => [...tempData, ...resultData]);
+    setSelectedInputEmployee(0);
+    setSelectedSummaryEmployee(0);
+  };
+
+  const handleClickUpdateEmployee2 = () => {
+    let tempData = [];
+    data.forEach(element => {
+      if (element.EmployeeID != selectedInputEmployee) tempData.push(element);
+    });
+    let tempDataTable = dataTable;
+    let resultData = [];
+    tempDataTable.forEach(el1 => {
+      dataLaborHours.forEach(el2 => {
+        if (el1.Id == el2.Id) {
+          resultData.push({
+            ...el1,
+            TotalHours: el2.TaskLaborHours,
+          });
+        }
+      });
+    });
+
+    let check = 0;
+    resultData.forEach(element => {
+      if (element.TaskID == 0) {
+        check += 1;
+      }
+      element.EmployeeID = selectedInputEmployee;
+      element.EmployeeName = convertEmployeeIDtoEmployeeName(
+        selectedInputEmployee
+      );
+    });
+    if (check > 0) {
+      toast.error(
+        <div className={styles["alert__table__employee-input"]}>
+          Unable to add. <br /> Please choose <strong>Task</strong>.
+        </div>,
+        {
+          position: toast.POSITION.BOTTOM_CENTER,
+          hideProgressBar: true,
+        }
+      );
+      return null;
+    }
+    setData(() => [...tempData, ...resultData]);
+    setData2(() => [...tempData, ...resultData]);
     setSelectedInputEmployee(0);
     setSelectedSummaryEmployee(0);
   };
@@ -1292,7 +1728,7 @@ const Timesheet = () => {
                             ? styles["header__right__save-btn"]
                             : styles["header__right__save-btn-before-sunday"]
                         }
-                        onClick={handleSaveTimesheetBtn}
+                        onClick={handleSaveTimesheetBtn2}
                         startIcon={<SaveIcon />}
                       >
                         Save
