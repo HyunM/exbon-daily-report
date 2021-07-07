@@ -294,10 +294,21 @@
   text-align: center;
 }
 
+.table__add-row {
+  display: flex;
+  width: 1130px;
+}
+
 @media screen and (max-width: 1138px) {
   #mainDiv {
     width: 1070px;
   }
+
+  .table__add-row {
+    display: flex;
+    width: 1068px;
+  }
+
   .header {
     /* flex-direction: column; */
     justify-content: space-between;
@@ -383,6 +394,11 @@
 @media screen and (max-width: 712px) {
   #mainDiv {
     width: 680px;
+  }
+
+  .table__add-row {
+    display: flex;
+    width: 1068px;
   }
   .header {
     flex-direction: column;

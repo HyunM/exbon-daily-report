@@ -1211,7 +1211,7 @@ const workActivities = () => {
                         </tr>
                       );
                     })}
-                    <tr style={{ display: "flex", width: "1130px" }}>
+                    <tr className={styles["table__add-row"]}>
                       <td
                         className={styles["table__button-add"]}
                         onClick={addActivityRow}
