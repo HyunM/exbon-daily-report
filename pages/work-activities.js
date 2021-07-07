@@ -107,9 +107,9 @@ const workActivities = () => {
   const [checkDownload, setCheckDownload] = useState(0);
   const { promiseInProgress } = usePromiseTracker();
 
-  const resolution1080 = useMediaQuery({
-    maxWidth: "1080px",
-    minWidth: "810px",
+  const resolution1138 = useMediaQuery({
+    maxWidth: "1138px",
+    minWidth: "712px",
   });
 
   const columns = React.useMemo(
@@ -117,12 +117,12 @@ const workActivities = () => {
       {
         Header: "Contractor",
         accessor: "Contractor",
-        width: resolution1080 ? 180 : 220,
+        width: resolution1138 ? 200 : 220,
       },
       {
         Header: "Trade",
         accessor: "Trade",
-        width: resolution1080 ? 210 : 250,
+        width: resolution1138 ? 220 : 250,
       },
       {
         Header: "Manpower",
@@ -143,12 +143,12 @@ const workActivities = () => {
       {
         Header: "Equipment Utilization",
         accessor: "Equipment",
-        width: resolution1080 ? 185 : 203,
+        width: resolution1138 ? 200 : 203,
       },
       {
         Header: "Work Performed",
         accessor: "WorkPerformed",
-        width: resolution1080 ? 230 : 260,
+        width: resolution1138 ? 250 : 260,
       },
       {
         Header: "",
@@ -939,7 +939,6 @@ const workActivities = () => {
 
   return (
     <>
-      {/* {console.log(selectedDays)} */}
       <Head>
         <title>Daily Report</title>
         <link rel="icon" href="/favicon.ico" />
