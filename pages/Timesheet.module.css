@@ -67,7 +67,7 @@
 
 .header__right__add-btn {
   margin-right: 10px !important;
-  width: 140px;
+  width: 150px;
 }
 
 .header__right__add-btn-before-sunday {
@@ -77,7 +77,7 @@
 
 .header__right__update-btn {
   margin-right: 10px !important;
-  width: 140px;
+  width: 150px;
   background-color: #ec6c45 !important;
 }
 
@@ -370,44 +370,72 @@
   color: slateblue;
 }
 
-@media screen and (max-width: 810px) {
+@media screen and (max-width: 712px) {
   #mainDiv {
-    width: 750px;
+    width: 680px;
   }
   .header {
-    flex-direction: column;
-    justify-content: space-between;
+    flex-direction: flex;
+    justify-content: flex-start;
   }
 
   .header__left {
     margin-top: 20px;
   }
   .header__left select {
-    width: 600px !important;
+    width: 570px !important;
   }
   .tablet-button {
     visibility: visible !important;
   }
 
   .table {
-    width: 750px !important;
+    width: 680px !important;
   }
   .employee-dropdown-wrapper {
-    width: 750px !important;
+    width: 680px !important;
+  }
+
+  .task-dropdown {
+    width: 200px !important;
   }
 
   .second-table table {
     margin-left: 0px !important;
-    width: 750px !important;
+    width: 680px !important;
   }
   .table__hour-dropdown,
   .table__min-dropdown,
   .table__ampm-dropdown {
     text-indent: 4px !important;
   }
+
+  .header__right__add-task-btn {
+    background-color: #f3aa22 !important;
+    color: white !important;
+    width: 100px !important;
+    height: 72px !important;
+    margin-right: 10px !important;
+  }
+
+  .header__right__add-btn {
+    margin-right: 10px !important;
+    height: 72px;
+  }
+
+  .header__right__update-btn {
+    margin-right: 10px !important;
+    height: 72px;
+  }
+
+  .header__right__save-btn {
+    width: 140px !important;
+    height: 72px;
+    padding: 18px !important;
+  }
 }
 
-@media screen and (max-width: 1080px) {
+@media screen and (max-width: 1139px) {
   .tablet-button {
     visibility: visible !important;
   }
@@ -495,8 +523,7 @@
 }
 
 .employee-dropdown-wrapper {
-  width: 300px;
-  margin-right: auto;
+  width: 293px;
   display: flex;
   justify-content: space-between;
 }
@@ -504,7 +531,7 @@
 .employee-dropdown {
   display: inline-block;
   height: 30px;
-  width: 175px;
+  width: 165px;
   color: #74646e;
   border: 1px solid #c8bfc4;
   border-radius: 4px;

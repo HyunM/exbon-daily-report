@@ -55,6 +55,8 @@ import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import moment from "moment";
 import Modal from "react-modal";
 
+import { useMediaQuery } from "react-responsive";
+
 toast.configure();
 let afterSundayCheck = true;
 let dataEmployees = [];
@@ -72,6 +74,10 @@ const convertInputToTime = time => {
 };
 
 const Timesheet = () => {
+  const resolution712 = useMediaQuery({
+    maxWidth: "712px",
+  });
+
   const router = useRouter();
   const [projectState, setProjectState] = useState(undefined);
   const [checkDisableAddEmployeeButton, setCheckDisableAddEmployeeButton] =
@@ -1676,7 +1682,6 @@ const Timesheet = () => {
                         width: "760px",
                         maxWidth: "760px",
                         height: "30px",
-                        marginRight: "60px",
                       }}
                     >
                       {stateAssignedProject.map(item => {
@@ -1743,7 +1748,7 @@ const Timesheet = () => {
                           disabled={checkDisableAddEmployeeButton}
                           onClick={handleClickUpdateEmployee}
                         >
-                          Update&nbsp;Employee
+                          Update Employee
                         </Button>
                       ) : (
                         <Button
@@ -1759,7 +1764,7 @@ const Timesheet = () => {
                           disabled={checkDisableAddEmployeeButton}
                           onClick={handleClickAddEmployee}
                         >
-                          Add&nbsp;Employee
+                          Add Employee
                         </Button>
                       )}
 
@@ -1888,7 +1893,9 @@ const Timesheet = () => {
                       <Table>
                         <TableHead>
                           <TableRow>
-                            <TableCell width={450}>Task</TableCell>
+                            <TableCell width={resolution712 ? 250 : 450}>
+                              Task
+                            </TableCell>
                             <TableCell widht={80}>Start Time</TableCell>
                             <TableCell widht={80}>End Time</TableCell>
                             <TableCell widht={70}>Hours</TableCell>
