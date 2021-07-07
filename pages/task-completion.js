@@ -495,7 +495,6 @@ const Task = () => {
       );
     } else if (id === "CurrentWork") {
       let previousWork;
-      console.log(row.allCells);
       row.allCells.forEach(horizontalLine => {
         if (horizontalLine.column.id === "PreviousWork") {
           previousWork = horizontalLine.value;
