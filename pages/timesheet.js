@@ -1612,14 +1612,14 @@ const Timesheet = () => {
 
   return (
     <>
-      {console.log("data")}
+      {/* {console.log("data")}
       {console.log(data)}
       {console.log("dataView")}
       {console.log(dataView)}
       {console.log("dataTable")}
       {console.log(dataTable)}
       {console.log("dataLaborHours")}
-      {console.log(dataLaborHours)}
+      {console.log(dataLaborHours)} */}
 
       <Head>
         <title>Daily Report</title>
