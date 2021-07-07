@@ -523,7 +523,6 @@ const Timesheet = () => {
     if (selectedSummaryEmployee == 0) handleClickAddEmployee2();
     else handleClickUpdateEmployee2();
   };
-
   const { promiseInProgress } = usePromiseTracker();
 
   const signin = async (username, password) => {

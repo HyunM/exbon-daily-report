@@ -56,14 +56,14 @@ const themeForNoWork = createMuiTheme({
 });
 
 const Task = () => {
-  const resolution1080 = useMediaQuery({
-    maxWidth: "1080px",
-    minWidth: "810px",
+  const resolution1138 = useMediaQuery({
+    maxWidth: "1138px",
+    minWidth: "712px",
   });
 
-  const resolution810 = useMediaQuery({
-    maxWidth: "810px",
-    minWidth: "1080px",
+  const resolution712 = useMediaQuery({
+    maxWidth: "712px",
+    minWidth: "1138px",
   });
 
   const router = useRouter();
@@ -87,45 +87,45 @@ const Task = () => {
   const columns = useMemo(
     () => [
       {
-        Header: resolution1080 ? "§" : "Section",
+        Header: resolution1138 ? "§" : "Section",
         accessor: "Section",
-        width: resolution1080 ? 20 : 65,
+        width: resolution1138 ? 20 : 65,
       },
       {
         Header: "Summary Task",
         accessor: "License",
-        width: resolution1080 ? 100 : 160,
+        width: resolution1138 ? 120 : 160,
       },
 
       {
         Header: "Task",
         accessor: "TaskName",
-        width: resolution1080 ? 280 : 360,
+        width: resolution1138 ? 320 : 360,
       },
       {
         Header: "Resource",
         accessor: "Company",
-        width: resolution1080 ? 150 : 260,
+        width: resolution1138 ? 170 : 260,
       },
       {
         Header: "Start Date",
         accessor: "StartDate",
-        width: resolution1080 ? 85 : 100,
+        width: resolution1138 ? 85 : 100,
       },
       {
         Header: "Finish Date",
         accessor: "FinishDate",
-        width: resolution1080 ? 85 : 100,
+        width: resolution1138 ? 85 : 100,
       },
       {
-        Header: resolution1080 ? "Req. Start Date" : "Request Start Date",
+        Header: resolution1138 ? "Req. Start Date" : "Request Start Date",
         accessor: "ReqStartDate",
-        width: resolution1080 ? 85 : 100,
+        width: resolution1138 ? 85 : 100,
       },
       {
-        Header: resolution1080 ? "Req. Finish Date" : "Request Finish Date",
+        Header: resolution1138 ? "Req. Finish Date" : "Request Finish Date",
         accessor: "ReqFinishDate",
-        width: resolution1080 ? 85 : 100,
+        width: resolution1138 ? 85 : 100,
       },
       // {
       //   Header: "Finish Date",
@@ -133,14 +133,14 @@ const Task = () => {
       //   width: 90,
       // },
       {
-        Header: resolution1080 ? "Prev. Work %" : "Previous Work %",
+        Header: resolution1138 ? "Prev. Work %" : "Previous Work %",
         accessor: "PreviousWork",
-        width: resolution1080 ? 63 : 73,
+        width: resolution1138 ? 63 : 73,
       },
       {
-        Header: resolution1080 ? "Curr. Work %" : "Current Work %",
+        Header: resolution1138 ? "Curr. Work %" : "Current Work %",
         accessor: "CurrentWork",
-        width: resolution1080 ? 63 : 73,
+        width: resolution1138 ? 63 : 73,
       },
       // {
       //   Header: "Message",

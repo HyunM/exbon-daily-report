@@ -594,13 +594,14 @@
   color: gray;
 }
 
-@media screen and (max-width: 1080px) {
+@media screen and (max-width: 1138px) {
   #mainDiv {
-    width: 1020px;
+    width: 1100px;
   }
 
   .header {
-    display: block !important;
+    /* display: block !important; */
+    display: flex;
   }
   .table thead td {
     font-size: 0.8rem !important;
@@ -664,9 +665,9 @@
   }
 }
 
-@media screen and (max-width: 810px) {
+@media screen and (max-width: 712px) {
   #mainDiv {
-    width: 750px;
+    width: 650px !important;
   }
 
   .header {
@@ -679,7 +680,7 @@
   }
 
   .header__left select {
-    width: 600px;
+    width: 510px;
   }
 
   .table thead td {
