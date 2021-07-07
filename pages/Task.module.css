@@ -594,7 +594,7 @@
   color: gray;
 }
 
-@media screen and (max-width: 1138px) {
+@media screen and (max-width: 1139px) {
   #mainDiv {
     width: 1100px;
   }
