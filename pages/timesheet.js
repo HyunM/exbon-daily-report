@@ -1819,7 +1819,7 @@ const Timesheet = () => {
                                 : {}
                             }
                           >
-                            <option value="0">-----Choose Employee-----</option>
+                            <option value="0">----Choose Employee----</option>
                             {dataEmployees.map(element => {
                               for (let i = 0; i < data.length; i++) {
                                 if (element.EmployeeID == data[i].EmployeeID)

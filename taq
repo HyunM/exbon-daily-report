@@ -1,0 +1,673 @@
+[33m84cf036[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m make the console the comment
+[33m2d56286[m PreviousWork id
+[33mc3eb847[m Task Completion PreviousWork chagned
+[33md378688[m Timesheet table view complete
+[33mda8a9ee[m Task COmpletion and Work Activities Table view complete
+[33m09df91f[m Work Activities for Table view complete
+[33m43ca3b1[m Work Acitivities for Table view complete
+[33m0b80614[m Task Completion Table view end
+[33md05a5cc[m selectedInputEmployee == 0 ? 1 : 2
+[33me25e116[m default meal time
+[33ma7d8ccb[m auto add and update complete
+[33mf1ac4df[m July 1st edit complete
+[33m4d6365b[m end 6/29
+[33mb97c6e3[m header design complete
+[33m4021a54[m work complete
+[33m5682c68[m before for loop
+[33ma1dcb19[m for loop 1
+[33mae51125[m before foreach to for loop
+[33mce8744e[m prevent meal duplicate
+[33m8489052[m complete api call
+[33m3fc8102[m TimesheetItems mealtime calculated
+[33m564162b[m except SP all of them complete
+[33m87e5d45[m TravelTime finished
+[33m5f1ac0b[m API and API call complete
+[33mcdd99d5[m API edited
+[33m0ac50f9[m no checkTime at handleSavebtn
+[33m77e0245[m Stored Procedure and API chagned
+[33mac96491[m port 5010
+[33m304496c[m select complete
+[33mfffeb67[m port 5001
+[33mfd4ed73[m EmployeeID Array duplicate complete
+[33m0de62c3[m afterSundayCheck deleteIcon
+[33m9e141e1[m afterSundayCheck disabled and display none set
+[33md2e50e7[m select width align
+[33mb4e4fd3[m Work Activities IPAD VIEW COMplete
+[33mf7643d8[m Task Completion Set No Work Days Modal Ipad view
+[33mbad92ba[m IPad Task Completion
+[33me3b11d6[m main title visibility hidden
+[33mee1bdb9[m replace input with dropdown
+[33mae328b5[m before dropdown
+[33m1299600[m handleSave check Save complete
+[33m8cfb540[m No task found
+[33m599ae49[m SetSameTask button complete
+[33mece4e0d[m before set same task
+[33m6ff5294[m update complete
+[33m8953631[m June 18 complete
+[33m378a643[m Add Employee exception complete
+[33m09866dd[m return null
+[33m4b6da13[m handleClickUpdateEmployee complete
+[33m1a17e5f[m before update employee btn
+[33mf449d98[m employee add task complete
+[33maa00da3[m summary view complete
+[33mfb3e1d4[m column name changed
+[33mf3375e4[m summary task view on click
+[33m9e5e2f4[m employee input disabled
+[33ma9dcc6a[m selectedSummaryEmployee(0)
+[33meb4f465[m selectedSummaryEmployee
+[33mbe99986[m Hours calculated
+[33maf2e227[m employee duplicate prevented
+[33ma67e1cb[m selectedEmployee edited
+[33m5e3e296[m employee dataTable complete
+[33mc2dc92e[m Task select dataTable complete
+[33mbc7bcc1[m EmployeeInput and TaskInput
+[33mf73526c[m Timesheet table structure
+[33m93a49e5[m Timesheet table design start
+[33m033f75d[m Timesheet new row
+[33m3b937ce[m Only Timesheet summary
+[33md305258[m delete useless code
+[33m2e0763a[m Timesheet backup2 before starting for new Timesheet table
+[33m7c6d1de[m Timesheet summary
+[33mfd73c4e[m label updated
+[33m2267ef4[m sql sort default employeeid
+[33mff062cd[m table updated for Start === Finish
+[33m2cf4d85[m tablet table complete
+[33m7d0bc6b[m visibility setting done
+[33m0fb22c5[m modal complete
+[33m3d74862[m dataView complete
+[33me0abb5a[m rebuild
+[33m77806b1[m test
+[33mbecacfe[m test deploh
+[33m678e0cb[m padding resized
+[33me194f62[m padding 5px
+[33m034054a[m June 11 complete
+[33m10244f4[m set same time start
+[33m7b3a9a3[m button align
+[33m4c32dc2[m select Project height 30px
+[33me765ce6[m Maintab No changed
+[33me2f3d32[m table td align center justify center complete
+[33m4def006[m Labor Hours flex complete
+[33m7b4d267[m Timesheet row size reduced
+[33mda1a267[m disable afterSundayCheck clickGetTheLatestData
+[33m87ddb5c[m No data found alert
+[33me410bb0[m clickGetTheLateastData function
+[33m8331a0f[m before setData(dataLatest)
+[33md5384bb[m get latest data complete
+[33ma7a0ead[m Labor Hours calculated complete
+[33m78eca27[m index page responsive
+[33me535c87[m Timesheet respomsive
+[33mfe57b38[m Permission for no assigned complete
+[33mc21a165[m Timesheet stateNoAssigned success
+[33m56e5d4f[m ega.herlim added
+[33maa7eeb1[m Add Employee bug fixed
+[33ma76ae80[m checkSave
+[33ma8b20b1[m timesheet complete
+[33m0de5ea4[m EmployeeName chagned
+[33m28302c5[m setGroupby EmployeeID
+[33mbfcd4c6[m font standardized
+[33m6866717[m Select Timesheet complete
+[33mfdaeb9f[m Dropdown for Timesheet compelte
+[33meb16f3d[m EmployeeName dropdown complete
+[33m47f15d7[m SelfTimesheet complete
+[33m4f031e5[m Timesheet updated for Length
+[33me389da4[m Self Timesheet Portrait view
+[33m602cfbc[m Work Activities Portrait view
+[33ma11bce7[m portrait view for tablet
+[33m2b6ca15[m Task tab portrait mode
+[33mf9bd21f[m task css for media query
+[33mccaf625[m function to ES6
+[33m54369a9[m afterSundayCheck -> afterMondayCheck
+[33m2ea2af7[m overflow protected for Timesheet Task
+[33m254f952[m column width adjust
+[33m0a2a0fb[m Status deleted
+[33medd50e7[m paper deleted
+[33m48411bb[m selftimesheet loader
+[33m152f6ff[m SelfTimesheet update
+[33m0dd7b66[m history displayed
+[33ma558f9a[m selfTimesheet history
+[33m5dd78e4[m new employee permission for pdf and xlsx
+[33mdb6002a[m UI complete and JobNumber display complete
+[33mb7dd6d5[m arrow emoji change
+[33m31c2ea7[m reactLoader changed and meal Task deleted
+[33mba53695[m handleSaveTimesheet return null
+[33m2f97fe7[m autoResetExpanded true
+[33m7a87c5e[m TimesheetID param for deleteTimesheetRow
+[33m601152b[m timesheet add row complete
+[33m902a318[m 0525 complete
+[33m297a5d7[m time calculated complete
+[33m7e26971[m ADD Employee activated
+[33m9328a59[m EmployeeName applied
+[33m9560783[m temp checkAddEmployeeStatus
+[33m19b34af[m add icon
+[33m7bac071[m action delete not showing
+[33mc761f76[m useEffect data groupby
+[33mffd5b0f[m setGroupBy default success
+[33m729bada[m groupby working
+[33mf7ca166[m groupby added
+[33mc310b6b[m checkState disabled
+[33mde301b7[m delete action column moved
+[33m5e541df[m timesheet backup before edit for multi tables
+[33m6f47f86[m Loader changed on Timesheet
+[33m1430816[m Timesheet deleteandinsert changed
+[33m6082ed1[m select project maxWidth
+[33maef06c0[m task input css
+[33mf6e4dba[m permission added
+[33m1664ef5[m complete 5/17
+[33m82a6f40[m Task autocomplete
+[33m9605271[m select complete
+[33md13b275[m checkState for SetSameTimeofAll
+[33mf9fe7dc[m delete icon added
+[33m159194a[m add row added
+[33ma23c80b[m timesheet tab created
+[33mae4e6c8[m prevPid param added for SelfTimesheet
+[33m2fe358a[m port 5010 changed
+[33meb2f63a[m lunch error pops up
+[33me0a0b4a[m default but beforesunday none
+[33m6fb06ce[m Save button to change status complete
+[33ma567dea[m self-select api complete
+[33m852324a[m 00 not permited
+[33m7ec008c[m DeleteAndInsert for SelfTimesheet
+[33mf78b2c1[m Save column added
+[33ma54f712[m Self Timesheet UI complete
+[33m50b691f[m self timesheet in progress 2
+[33m8756582[m Self Timesheet in progress
+[33m7ec71a6[m complete on May 11
+[33mc387681[m ready for publish and port 5001
+[33m6f82633[m selectedDays Set
+[33mb21e98f[m Merge branch 'master' of https://github.com/HyunM/exbon-daily-report
+[33me1fa5ba[m calendar selectedDays set
+[33m435c8ad[m Time set complete
+[33m76a0e3f[m pdf form fixed
+[33mbc43dfc[m export a tag location changed
+[33m959df9b[m complete promise
+[33ma50d264[m Task Completion Promise complete
+[33mfc0c53f[m complete pdf export
+[33m473961f[m test success form fixed
+[33m14e1650[m layout test
+[33m41c303b[m form changed again
+[33m98911b3[m form layout changed again
+[33mef6d4ed[m excel source file layout changed
+[33m3bc7bc9[m excel layout edited
+[33m02b224c[m office-converter trying
+[33mcb48055[m linux test
+[33mad7bb5f[m useless npm delete
+[33mfb392ea[m failed to export pdf on Linux
+[33mf95e2a4[m window server needed?
+[33mef74d97[m pdf file create complete
+[33mc3d4021[m pdf export complete
+[33m9ea4c0e[m useless edgejs removed
+[33mf5a1ec8[m pdf test success
+[33maf25418[m before pdf
+[33m320f49d[m narrow
+[33m4776a74[m file name updated
+[33m78555be[m port 5010 for temp
+[33m4587e5a[m replaced excel template
+[33m2a7743a[m Merge branch 'master' of https://github.com/HyunM/exbon-daily-report
+[33m178e000[m port 5001
+[33me07604c[m stop 600s
+[33m2f63974[m revert timeInput complete
+[33m6f0ef41[m[33m ([m[1;32mnoInputMaskForTime[m[33m)[m toast message revised
+[33m214fb11[m 12:00 AM resolved in mssql
+[33md556e38[m in progress for 12:00 AM
+[33m87ebeba[m input and font size standardized
+[33m23def43[m time input complete
+[33m1c92b47[m 12 hh exception complete
+[33m33dd8cf[m in case of 00 for hh unit
+[33m960b378[m Export time hh format complete
+[33mb2cada4[m time inputmask export inprogress
+[33me37d093[m excel removing highlight
+[33md887937[m width 1397 maindiv
+[33m4b3603b[m font size 0.93
+[33m3be1a76[m Task Completion font Standardized for CurrentWork input
+[33m6a9038d[m Font standardize
+[33mda0d0d4[m file name changed
+[33m7a75e7a[m button design complete
+[33m118fb99[m seperate download and save complete
+[33mf010789[m file format changed for black font
+[33m51cae25[m filename fixed
+[33m2427a6b[m user file added
+[33m60e6c46[m file name fix
+[33m1acb0fd[m file create export_hyunmyung.kim.xlsx
+[33mcafe2cd[m bug fixed test
+[33m7240a3c[m complete fix
+[33md858404[m complete bug fix
+[33m784f2f1[m demoable complete
+[33m425c0e4[m complete
+[33m446646d[m startTime and endTime substring in nodejs
+[33mb73fb8e[m unique excelfile name set
+[33mb9310cb[m table row added to excel
+[33mda8ed65[m test api fixed
+[33m47ea998[m await fixed
+[33mec19b8d[m excel inprogress
+[33m9e8484c[m download macro complete
+[33m4883196[m Click macro and api 200 success
+[33me271460[m standardize fonts
+[33m8943c6c[m multiline added
+[33m3dcf220[m No Work Date Validation complete
+[33m9a94f2f[m Task Date Validation complete
+[33m00bec1f[m test branch
+[33m01c52ee[m Weather StartTime EndTime default set
+[33mb0eacff[m Weather select complete
+[33maef0bf5[m complete for startTime and endTime
+[33ma5ca2db[m ProjectActivity api changed due to weather, startTime, EndTime
+[33mff9eb6c[m column design update
+[33mc24e96d[m paragraph color edit
+[33m3c81415[m totalWorkers calculate parseint
+[33m365aecc[m design done
+[33ma2eec6a[m Weather design added
+[33macee2af[m Total Workers added
+[33m3dbe68e[m before how to set total number in JSX
+[33maec8758[m css name changed
+[33m06adbbc[m column name and paragraph name changed
+[33m142cd18[m API edited
+[33m3a04f4e[m log added
+[33mbd2feb3[m permission and sync, toast completed
+[33m0694ca9[m Task Completion async logic changed
+[33m7a9c360[m sync complete
+[33m7edbb36[m toast complete
+[33m8b16212[m filter error resolved
+[33m12d0d4b[m permission complete
+[33md1824df[m before project permission
+[33md83bfea[m auto complete complete
+[33m2d9b9f8[m Save button action complete
+[33m143886e[m Delete ProjectActivityItem api added
+[33md97da93[m ProjectActivityItem insert api added
+[33m8fc2730[m ActivityID Scope
+[33mc6d3fbe[m console deleted
+[33md10dd9b[m Save ProjectActivity complete
+[33m4877a06[m duplicate key fixed
+[33ma79b1c9[m before duplicate key fix
+[33mbcc1a64[m Project-Activity post api created
+[33me3b3b57[m selectedDate applied
+[33m6a25831[m Select ProjectActivity And ProjectActivityItem complete
+[33ma7ebaa3[m WorkActivities Fri Complete
+[33m923d80b[m addActivityRow function added
+[33mc5a8652[m delete icon added
+[33md4be8ea[m pagenation deleted
+[33m05e3c4a[m edit table size
+[33m06c952b[m table design in progress
+[33ma88100a[m header position complete
+[33mbe7ecb6[m datepicker hightlight complete
+[33m1664c51[m date highlight
+[33m36371aa[m before highlight date
+[33me4a349d[m Table temp data
+[33mc1d5cee[m table applied
+[33mf46ce54[m login and logout for Work Activities
+[33maf9e8ea[m in progress
+[33m2bad3ea[m updated for cookies
+[33md8336c3[m ProjectState keedped
+[33m5b386b6[m Loader position changed
+[33md13a46e[m port 5010
+[33m0be2727[m Work Activities in Progress
+[33m59e8f63[m Task Completion Complete
+[33m01b299c[m isRouter ready
+[33m847e1a1[m nextjs update required
+[33mad6d105[m pid error in progress
+[33m47f438f[m in Progress task completion changed
+[33mcab36a0[m[33m ([m[1;32mliverserver04262021[m[33m)[m test
+[33md39aade[m xltx complete
+[33m888390d[m test complete
+[33m051ad49[m only file load success
+[33m36d9d0e[m xlsx error -> exceljs testing
+[33m5b5d5e6[m excel nodejs in progress
+[33md2b4f08[m nodejs excel load test
+[33m82849ac[m timeout setting 1000000
+[33m24c0248[m For bug ' Deficiency Log
+[33m93edeab[m ' bug resolve replaceAll (', '')
+[33mfc8796c[m Request Yellow -> Pending
+[33mc6adb99[m Status and Project Group added
+[33m4c904e8[m calendar css useless deleted
+[33m222dd52[m animation 1s -> 0.5s
+[33ma77b691[m You have no permission
+[33mc0ec4e9[m complete
+[33m10a1dbe[m scroll designed only for Calendar
+[33m671b847[m scroll design complete
+[33m225522e[m calendar font standardized
+[33m5321a83[m Timesheet and Deficiency Log tabs hided
+[33m80a2ea5[m calendar start and end date
+[33md72ac60[m index.js next/head added
+[33m308fa4f[m fullcalendar uninstall and reinstall
+[33me270309[m start date -> task start date & Project Start Date -> Start Date
+[33m5ef6e5c[m Firefox arrow problem resolved
+[33mf549231[m security update
+[33md878f78[m No Work Overflow complete
+[33m181c670[m SP Temp deleted
+[33mb758fa2[m useless file deleted
+[33mca935f1[m Deficiency-log header complete
+[33m931fc3d[m Task Completeion tab overflow header complete
+[33maeeb2be[m Task Completion Header complete
+[33m4614657[m Timesheet header complete
+[33mf1c578b[m ProjectInfo load success
+[33m448c3d3[m temp sp for ProjectGroup and ProjectName in progress
+[33m2d0627f[m object-path update for security
+[33m4c52a1f[m version upgrade
+[33m5b170ce[m Task logic CurrentWork same PreviousWork removed
+[33m026bd98[m back to the office
+[33m922be02[m index.js api undefined call fixed
+[33m4ee7069[m test to live server and port change 5335 to 5001
+[33mfd4b09e[m test to live server
+[33m870262c[m[33m ([m[1;31morigin/liveserver[m[33m, [m[1;32mliveserver[m[33m)[m Turn on the lockout
+[33m6b01c4e[m how to turn on/off lockout added
+[33mb5dbe4c[m turning off lockout complete (including for Firefox)
+[33me68f8b9[m requested for timesheet turning off time based lockout
+[33m7e0312e[m for liveserver commit
+[33m7d84747[m NotPermission js added
+[33ma346d5d[m Login keypress complete
+[33m6084972[m completed for all tabs
+[33m3a0005c[m applying for task completed befor applying timehseet
+[33mccde4dd[m before applying for task and timesheet
+[33ma966ff6[m perfectly completed for deficiency-log
+[33mca09d6c[m deficiency log permission completed
+[33mc9b4054[m before permisson check
+[33m3ae5ad8[m user change enable
+[33m668c44f[m rollback
+[33m5813f36[m user change
+[33m78a942d[m toast bug fixed
+[33m48eb154[m cookie check employeeid
+[33m8129b86[m filename changed
+[33m7a809cc[m all tab applied cookies
+[33maceb9fb[m complete signin and cookies
+[33mdaf4046[m In Definiency-log tab, login cookie succeed
+[33m12c3067[m if having cookies signin page on DeficiencyLog
+[33mb2a13d1[m before blinking resolved
+[33mf2ca474[m project id router completed
+[33m10b0e83[m using router query
+[33m21523e4[m main page completed
+[33mf97a507[m create home page
+[33ma029fa3[m progress bar changed and url link completed
+[33m22479af[m tab ripple disabled
+[33m01233b7[m 5% increment task-completion url
+[33mdba0491[m completed step 5 and Firefox issue resolved
+[33m9ffd980[m before setting by 5 increase
+[33mf53afdf[m Req column padding complete
+[33m38f1373[m complete for saving task date change and red bold changed
+[33mcff6dbd[m before saving completed for task change
+[33mb759882[m in progress for changing modal to datepicker
+[33m3b4a851[m Req Start Date / Req Finish Date css complete
+[33m4f5cca1[m showing ReqDate default Date
+[33mc6ee2da[m cannot delete pending, only possible for request
+[33m67f9a01[m delete button added only for design
+[33md048cce[m view only for task and timesheet url
+[33m66b3001[m toast disapper for employee name warning
+[33m05b0d7f[m default export needed
+[33m8ef9398[m Timesheet firefox error fixed
+[33m7a4be71[m needed FEEDBACK first
+[33mf0f71a4[m save function complete
+[33mb58657d[m not completed but complete
+[33m4f1cd9d[m wording change Approval in Completed
+[33mcd41846[m delete no work disable input 5335
+[33mdb1dadc[m request color edited 5335
+[33m07441ad[m demo no work 5335
+[33mdba4aa2[m showing request for nowork but id column needed
+[33me5448d9[m before nowork adding request
+[33mb577d9f[m test sp name changed 5335
+[33m50377ea[m NewReqStartDate initialize 5335
+[33mf0bd8dd[m readme edited
+[33me3cb21a[m test 5335 port
+[33m4a6e0e1[m task change duplicate prevented
+[33m22d6b01[m css updated for nowork modal
+[33md4f2460[m showing no work request of which status is pending
+[33m4f431dd[m ReqStartDate ReqFinishDate completed except Save to db
+[33m067b5df[m StartDate modal and Finish Date modal view updated
+[33m1ce8381[m cookie set completed
+[33m09a1776[m Start Date modal design completed
+[33mf5e5255[m table column completed
+[33m1345be3[m ok button deleted
+[33mc68b73c[m datepicker autoOk true
+[33m575cc40[m cookie set for 30 days
+[33mbb43c70[m body background css modified
+[33m4d90a59[m timesheet table boxshadow
+[33m34034fc[m deficiency css
+[33m8a7f2d3[m background and css mui all
+[33m83b9a12[m background image completed
+[33m8dbfc02[m login background image
+[33m304bad1[m project start date and project end date
+[33mccbaa4e[m link changed to protocol and localhost
+[33mf24024b[m calendar link updated
+[33m577c637[m changing nbsp to emsp
+[33m1d72b5e[m completed design of schdule link
+[33md978e37[m schedule link design in progress
+[33m461187c[m if nothing matches ProjectID
+[33md6ff696[m mainDiv 1100px for laptop display
+[33mb57a3c9[m previous project selected
+[33m0e52aad[m employee name input
+[33mcfa552d[m disabled input finished
+[33m69700da[m Deleted Requested By
+[33m48dc12a[m margin top changed
+[33ma762d00[m Set no work days is working now
+[33m1da491b[m button padding 0
+[33m13b15e5[m in progress for No Work action
+[33me2c5c6d[m enter login on the ID input
+[33maa77691[m inline calendar
+[33m6edc662[m Line alignment fixed
+[33ma0997a8[m alignment line
+[33mdfc0c15[m button margin matched
+[33m8b33a72[m set no work days design
+[33m7e91373[m alignment
+[33mca122f9[m margin-bottom little changed
+[33ma121982[m date label changed
+[33m639e2dc[m basic design structure for nowork is completed
+[33m8c1e80c[m sorting changed taskid
+[33m5996c23[m date right completed
+[33mad07e8c[m overflow not scroll
+[33mc335013[m default project 0
+[33m24c5af3[m margin-top modified
+[33m5d684b6[m button css completed
+[33m7fa0e3c[m setCheckState error fixed
+[33m91c0acc[m deficiency log completed
+[33m6b433e8[m loading employee data by projectID and selectedDate
+[33mfd603f7[m text align center for Section
+[33mf71825c[m default tab changed
+[33mfdcb304[m tooltip for nowork reason
+[33m816f874[m trade -> position on timesheet
+[33m2059478[m default project 0
+[33m774ff7c[m arrow key enabled
+[33m5a5447c[m default project 0
+[33m2115f92[m Note for SET NO WORK DAYS is completed
+[33mddf688b[m section column css
+[33m3ada058[m thinking backspace
+[33ma0bb415[m default changed
+[33m4b99d26[m Section column completed
+[33m9bbb726[m Tasks column modified
+[33m4a6c3f6[m before adding Trade column
+[33mfab55ce[m useless modules deleted
+[33m0a45e78[m removed useless tabofmobile and tablet
+[33mb90f403[m logout completed
+[33m1e3ca22[m completed cookie
+[33m6ddad97[m auto login completed
+[33m43f6568[m <> -> <div> changed but warning continuing
+[33m6a69f76[m Using cookie but too slow
+[33m11f3970[m ProjectID font color
+[33mb8df880[m text-deco
+[33mfe88e7f[m text project id added
+[33m31ce1cf[m note column completed
+[33m7522d7f[m Company -> Resource and 'Request For' text deleted
+[33m5bd2cf8[m ProjectID completed
+[33maaef6cc[m user can change projectID
+[33m5632beb[m select projectID designed
+[33m7e5ea94[m test for not require project id
+[33ma4c0139[m project select center
+[33m4318dbb[m All tab test completed
+[33m26b649c[m projectState
+[33m13dbeee[m designed Login form
+[33m390ee83[m username display properly
+[33mc1ef318[m tasks table width updated
+[33m2fdde6d[m deleted index.js
+[33m2da1279[m projectID 6130 -> 6074
+[33m2fd63ab[m in progress for login connection username
+[33m5de2004[m Delete Message column on Tasks tab temporarily
+[33m56bd290[m ref dev
+[33m8db22e7[m Loading data for assigned project
+[33m51780e3[m index.js changed for login
+[33m8b987e8[m Set up modal needed
+[33m5b78b62[m before signin work
+[33mf09d05c[m Completed Set no work day
+[33m92857de[m modal design for none of noWork data
+[33m92ca206[m Completed modal design 2
+[33mbb85808[m Completed modal for no work design
+[33mff9a9da[m design completed except new
+[33md50eca5[m before designing double modal
+[33m5d6f44a[m tasks tab design update
+[33m3d19f3a[m delete deprecated files and working for changing Work Date but needs to change the type of nchar(10) to date
+[33m2ea9db7[m completed modal view for WorkDateofTask
+[33m5acb841[m modal for Work Date designed
+[33m57a8177[m Changing two state successfully
+[33md68c550[m Clcking Work Date is opening modal
+[33md59a054[m task table column changed
+[33m7585bc7[m default tab changed
+[33m8979a27[m set no work days designed
+[33m4da8072[m event hover designed
+[33m35a2056[m tooltip offset changed and loader changed to Oval
+[33m3afd436[m Loader changed
+[33me6648cf[m all event show
+[33m3d3c669[m calendar Head icon changed
+[33m16d1656[m bordertop and border-radius
+[33medc72dd[m added border-shadow for calendar
+[33mebc285e[m design updated
+[33mf978eac[m added colorchart
+[33m97ea8d4[m make calendar for one user
+[33mced9739[m make startdate editable
+[33m2dd674d[m changed startdate editable
+[33m49868c4[m date per user
+[33mc8b6cb3[m data calendar color changed 2
+[33m514afc7[m calendar color changed
+[33mea25e93[m calendar tooltip
+[33mf9a3820[m title changed as employee name
+[33mc0042bc[m calendar data loaded
+[33m7a17601[m applying Fullcalendar (server needs to change node_modules)
+[33mc7c2f72[m in progress for calendar
+[33m07ff5e5[m removed warning
+[33m7ec9a5f[m changed spell
+[33m8bdab12[m modified for input blur
+[33m6add1d1[m padding added
+[33md4b087a[m not limited to prevent entry data for last week
+[33mb2c9e56[m deleted useless console
+[33me067fbb[m deleted console password
+[33mb093d7e[m default tab changed
+[33m46c1736[m login hash sha256
+[33m3ffb33a[m designed table
+[33m975bf53[m Nov 13 final in progress for design
+[33m21ccde5[m table design in progress #2
+[33m00b6cbb[m In progress to design for Tasks Tab
+[33md01638c[m in progress for design table
+[33mc50f5c9[m a lot of css edit
+[33mabca4d0[m first name sorting
+[33me449f2f[m employee update
+[33m2c50e12[m Employee data most recent
+[33me0211a6[m update -> insert and delete
+[33m1a24c9c[m projectID flex-basis changed
+[33m78b1c84[m invalide date format change
+[33mb9a22c5[m changed logic for Tasks
+[33m2311fcc[m Promise all
+[33m3bb8764[m default tab change
+[33mb77c66d[m Tasks Table designed
+[33me849ee3[m applied Promise for data sync
+[33mbc8edbc[m checkbox modified
+[33m946efcc[m for test
+[33m143dae4[m implement login
+[33m7f72299[m signin connected to SP
+[33m4cb5119[m Merge branch 'master' of https://github.com/HyunM/exbon-daily-report
+[33mc853f80[m label Email -> Username
+[33mb414f12[m Rename SignIn.module.css to signin.module.css
+[33m807321c[m Rename SignIn.js to signin.js
+[33m070ec19[m url changed
+[33m3fb248a[m applied mui theme
+[33mf00b76b[m Material ui and Next setting for SSR
+[33m4f82770[m log completed for Timesheet
+[33m2e248aa[m edited default tab
+[33m82aefd6[m 2 tab merge
+[33m1018231[m befored important edit
+[33m73232ac[m added 2 bug fixed using updateTimesheetIDData
+[33m9191b3c[m return TimesheetID after insert
+[33mf646e3b[m color change for exclamation
+[33m7168314[m edited exclamation
+[33m9c1b728[m exclamation added
+[33m27ee009[m in progress for redux addUpdateQueue
+[33mb14fea4[m default first page change
+[33m87b1191[m demo completed
+[33m4cb0fec[m input lorem ipsum
+[33mc3c0db1[m first design complete for Miscellaneous
+[33m3b04952[m In progress on designing Miscellaneous
+[33m0d38634[m applying action Sub
+[33ma191a63[m Not applying for Subcontractor action
+[33m27d1981[m complete Self-Performed and Subcontractor
+[33m86a1f53[m in progress for Subcontractor Tasks
+[33m1e857fc[m SelfPerformed Complete
+[33m4035d00[m complete Self-Performed table design
+[33m0e30ccd[m applying BEM completed
+[33m96e2af5[m BEM methodology applying for Timesheet
+[33m3bea3ea[m In progress applying css module
+[33m40caba1[m tab name change
+[33mdf7c2e9[m add 2 columns Start Date and Finish Date
+[33m63b8b65[m es6 standard
+[33m7d6595a[m Subcontractor Tasks Tab
+[33mcbd79d1[m Subcontractor start
+[33m3d5b890[m edit label timesheet date
+[33m8ea49e7[m media query for tablet
+[33mea3bacb[m type number edit
+[33mbbf8b3a[m save apply
+[33mb59746c[m add api update and insert for project-self-tasks
+[33m1d1455b[m edit tab name
+[33m24655d0[m rename api
+[33ma8f3243[m input bug fixed
+[33me13fd95[m add apidoc
+[33m5e0ce19[m Oct 20 final
+[33m3a8f566[m SelfPerforemdTask start
+[33m20a989a[m swagger update
+[33m393f43a[m yaml update
+[33m5c6d240[m update yaml
+[33mfd396df[m applying Swagger
+[33mf28d1cd[m before
+[33m1e9d5d9[m swagger in progress
+[33m27eeb7f[m input bug fixed
+[33ma6b1fa5[m button date bug fixed
+[33m64f1710[m timeout 15 sec
+[33m882a93e[m bug fixed
+[33m23b718b[m today checkState check
+[33m1353f21[m publish final
+[33m4d0893e[m main folder
+[33m217ac5c[m before publish
+[33mc53f5cf[m time bug fixed but why
+[33mb49b559[m completed Oct 14
+[33m919e0dc[m invisible update
+[33m2495f68[m complete redux
+[33mbf3ed2f[m meeting material
+[33ma3cdc75[m using global var
+[33m7d9874b[m complete 1,4,5 request
+[33m7b0f945[m api change
+[33m833a7e4[m complete alert to toast
+[33mf1c12a5[m check time NaN
+[33mc46f5fa[m before alert
+[33md48799e[m insert completed
+[33md04048d[m complete auto complete
+[33m0761285[m completed update (put)
+[33m978ce1e[m before update and insert
+[33mc75ac74[m I need this
+[33me0818c3[m master from now
+[33m9437f75[m Oct 5 final 2
+[33m828eddc[m Oct 5 final
+[33m8aa839b[m get request and response
+[33m2019d1e[m Oct 1 final
+[33m45801cd[m sep 30 final
+[33m0ea577f[m add icon and title
+[33m5b50f8a[m sep 29 final
+[33m9b633fa[m Merge pull request #4 from HyunM/new
+[33m9b5e438[m[33m ([m[1;31morigin/new[m[33m)[m relief
+[33m6032fce[m no
+[33m0e25b80[m Merge pull request #3 from HyunM/new
+[33m55538cd[m time input change in progress
+[33m9d3dfb9[m final
+[33mec98eb7[m dropdown time
+[33md3c0499[m sep 25 finish
+[33m1272b10[m sep 25
+[33m1264ab4[m input table change
+[33mc9b8477[m fixed
+[33m87c0054[m Merge pull request #2 from HyunM/branch
+[33m689b32c[m[33m ([m[1;31morigin/branch[m[33m)[m just component name edited
+[33m5205c90[m Merge pull request #1 from HyunM/branch
+[33m2df0514[m depending on device
+[33m46251ae[m re try
+[33m175a193[m test failed
+[33m54c23ce[m Sep 23 Tab completed
+[33m72f8d89[m readme edit
+[33m7154f25[m Initial commit from Create Next App
