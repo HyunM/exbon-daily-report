@@ -478,6 +478,10 @@ const Timesheet = () => {
                       param_CalculateHours[k].Type == "Officer" ? 1 : 0,
                   },
                 });
+
+                if (k == param_CalculateHours.length - 1) {
+                  //call procedure
+                }
               }
             }
           }
